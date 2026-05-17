@@ -3,8 +3,8 @@
   "mode": "autopilot",
   "_mode_options": "standby（待启动） | autopilot（自治中） | paused（暂停） | done（全部完成）",
   "started_at": "2026-05-17T21:56:17.0002215+08:00",
-  "last_session_at": "2026-05-18T01:13:26.4148029+08:00",
-  "current_task": "01-E1",
+  "last_session_at": "2026-05-18T01:19:30.6212925+08:00",
+  "current_task": "01-E2",
   "_current_task_format": "格式：'{spec_no}-{phase}{order}' 例如 '02-A1a' / '22-H3' / '99-FINAL-1'",
   "phase": "1-infra",
   "_phase_options": "0-pre-flight | 1-infra | 2-business-core | 3-killer-apps | 4-knowledge | 5-workspace | 6-horizontal | 7-compliance | 99-final | done",
@@ -59,7 +59,7 @@
   },
 
   "blocked_count": 0,
-  "done_count": 22,
+  "done_count": 23,
   "total_count": 230,
 
   "credentials_check": {
@@ -227,7 +227,7 @@
       "deps": ["01-D3"]
     },
     "01-E1": {
-      "status": "pending",
+      "status": "done",
       "spec": "01-infra-monorepo",
       "title": "deploy.sh",
       "deps": ["01-D4"]
