@@ -1,0 +1,148 @@
+name: Build Images
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: build-images-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DEFAULT_ACR_REGISTRY: registry.cn-hangzhou.aliyuncs.com
+  DEFAULT_ACR_NAMESPACE: tongqian
+  IMAGE_TAG: ${{ github.ref_name == 'main' && format('prod-{0}', github.sha) || format('staging-{0}', github.sha) }}
+
+jobs:
+  build:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Resolve image registry
+        id: registry
+        env:
+          ACR_REGISTRY_SECRET: ${{ secrets.ALIYUN_ACR_REGISTRY }}
+          ACR_NAMESPACE_SECRET: ${{ secrets.ALIYUN_ACR_NAMESPACE }}
+          ACR_USERNAME: ${{ secrets.ALIYUN_ACR_USERNAME }}
+          ACR_PASSWORD: ${{ secrets.ALIYUN_ACR_PASSWORD }}
+        run: |
+          REGISTRY="${ACR_REGISTRY_SECRET:-$DEFAULT_ACR_REGISTRY}"
+          NAMESPACE="${ACR_NAMESPACE_SECRET:-$DEFAULT_ACR_NAMESPACE}"
+          if [ -n "$ACR_USERNAME" ] && [ -n "$ACR_PASSWORD" ]; then
+            echo "push_enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "push_enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::ACR secrets missing; images will be built but not pushed."
+          fi
+          echo "registry=$REGISTRY" >> "$GITHUB_OUTPUT"
+          echo "namespace=$NAMESPACE" >> "$GITHUB_OUTPUT"
+          echo "prefix=$REGISTRY/$NAMESPACE" >> "$GITHUB_OUTPUT"
+
+      - name: Login to ACR
+        if: steps.registry.outputs.push_enabled == 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ steps.registry.outputs.registry }}
+          username: ${{ secrets.ALIYUN_ACR_USERNAME }}
+          password: ${{ secrets.ALIYUN_ACR_PASSWORD }}
+
+      - name: Build api image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: infra/docker/Dockerfile.api
+          push: ${{ steps.registry.outputs.push_enabled == 'true' }}
+          tags: |
+            ${{ steps.registry.outputs.prefix }}/api:${{ env.IMAGE_TAG }}
+            ${{ steps.registry.outputs.prefix }}/api:${{ github.ref_name == 'main' && 'prod-latest' || 'staging-latest' }}
+          cache-from: type=gha,scope=api
+          cache-to: type=gha,mode=max,scope=api
+
+      - name: Build worker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: infra/docker/Dockerfile.worker
+          push: ${{ steps.registry.outputs.push_enabled == 'true' }}
+          tags: |
+            ${{ steps.registry.outputs.prefix }}/worker:${{ env.IMAGE_TAG }}
+            ${{ steps.registry.outputs.prefix }}/worker:${{ github.ref_name == 'main' && 'prod-latest' || 'staging-latest' }}
+          cache-from: type=gha,scope=worker
+          cache-to: type=gha,mode=max,scope=worker
+
+      - name: Build web image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: infra/docker/Dockerfile.next
+          build-args: APP_NAME=web
+          push: ${{ steps.registry.outputs.push_enabled == 'true' }}
+          tags: |
+            ${{ steps.registry.outputs.prefix }}/web:${{ env.IMAGE_TAG }}
+            ${{ steps.registry.outputs.prefix }}/web:${{ github.ref_name == 'main' && 'prod-latest' || 'staging-latest' }}
+          cache-from: type=gha,scope=web
+          cache-to: type=gha,mode=max,scope=web
+
+      - name: Build gov image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: infra/docker/Dockerfile.next
+          build-args: APP_NAME=gov
+          push: ${{ steps.registry.outputs.push_enabled == 'true' }}
+          tags: |
+            ${{ steps.registry.outputs.prefix }}/gov:${{ env.IMAGE_TAG }}
+            ${{ steps.registry.outputs.prefix }}/gov:${{ github.ref_name == 'main' && 'prod-latest' || 'staging-latest' }}
+          cache-from: type=gha,scope=gov
+          cache-to: type=gha,mode=max,scope=gov
+
+      - name: Build agent image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: infra/docker/Dockerfile.next
+          build-args: APP_NAME=agent
+          push: ${{ steps.registry.outputs.push_enabled == 'true' }}
+          tags: |
+            ${{ steps.registry.outputs.prefix }}/agent:${{ env.IMAGE_TAG }}
+            ${{ steps.registry.outputs.prefix }}/agent:${{ github.ref_name == 'main' && 'prod-latest' || 'staging-latest' }}
+          cache-from: type=gha,scope=agent
+          cache-to: type=gha,mode=max,scope=agent
+
+      - name: Build admin image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: infra/docker/Dockerfile.next
+          build-args: APP_NAME=admin
+          push: ${{ steps.registry.outputs.push_enabled == 'true' }}
+          tags: |
+            ${{ steps.registry.outputs.prefix }}/admin:${{ env.IMAGE_TAG }}
+            ${{ steps.registry.outputs.prefix }}/admin:${{ github.ref_name == 'main' && 'prod-latest' || 'staging-latest' }}
+          cache-from: type=gha,scope=admin
+          cache-to: type=gha,mode=max,scope=admin
+
+      - name: Build nginx image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: infra/docker/Dockerfile.nginx
+          push: ${{ steps.registry.outputs.push_enabled == 'true' }}
+          tags: |
+            ${{ steps.registry.outputs.prefix }}/nginx:${{ env.IMAGE_TAG }}
+            ${{ steps.registry.outputs.prefix }}/nginx:${{ github.ref_name == 'main' && 'prod-latest' || 'staging-latest' }}
+          cache-from: type=gha,scope=nginx
+          cache-to: type=gha,mode=max,scope=nginx

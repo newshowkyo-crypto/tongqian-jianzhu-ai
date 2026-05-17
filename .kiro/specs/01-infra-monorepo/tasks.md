@@ -77,7 +77,7 @@
 - [x] **D1** 编写 `.github/workflows/ci.yml`（typecheck + lint + test + build）
   - 验收：PR 触发后 8 分钟内完成
 
-- [ ] **D2** 编写 `.github/workflows/build-images.yml`
+- [x] **D2** 编写 `.github/workflows/build-images.yml`
   - 触发：push to develop / main
   - 验收：构建 7 个镜像 + 推 ACR
 
