@@ -55,7 +55,7 @@
 
 ## Phase C：Docker 镜像（5 个）
 
-- [ ] **C1** 编写 `infra/docker/Dockerfile.api`
+- [x] **C1** 编写 `infra/docker/Dockerfile.api`
   - 验收：`docker build -f infra/docker/Dockerfile.api .` 出镜像 ≤ 150MB
 
 - [ ] **C2** 编写 `infra/docker/Dockerfile.worker`
