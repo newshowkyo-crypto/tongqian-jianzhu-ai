@@ -69,42 +69,11 @@ jobs:
 
             echo "$ACR_PASSWORD" | docker login "$ACR_REGISTRY" -u "$ACR_USERNAME" --password-stdin
             export ACR_REGISTRY="$ACR_REGISTRY/$ACR_NAMESPACE"
-
-            health_check() {
-              for i in $(seq 1 12); do
-                unhealthy="$(docker compose -f infra/docker-compose.prod.yml ps --format json \
-                  | grep -E 'unhealthy|starting' || true)"
-                if [ -z "$unhealthy" ]; then
-                  return 0
-                fi
-                sleep 5
-              done
-              return 1
-            }
-
             export TAG="$DEPLOY_TAG"
-            docker compose -f infra/docker-compose.prod.yml pull
-            docker compose -f infra/docker-compose.prod.yml up -d
+            export ROLLBACK_TAG="$ROLLBACK_TAG"
+            export AUTO_ROLLBACK=1
+            export CANARY_STEPS="5 25 50 100"
+            export HEALTH_TIMEOUT_SECONDS=90
+            export STEP_PAUSE_SECONDS=5
 
-            if health_check; then
-              echo "Production deployment healthy."
-              exit 0
-            fi
-
-            echo "Production health check failed; attempting rollback to $ROLLBACK_TAG."
-            docker compose -f infra/docker-compose.prod.yml ps
-            docker compose -f infra/docker-compose.prod.yml logs --tail 120
-
-            export TAG="$ROLLBACK_TAG"
-            docker compose -f infra/docker-compose.prod.yml pull || true
-            docker compose -f infra/docker-compose.prod.yml up -d
-
-            if health_check; then
-              echo "Rollback completed."
-              exit 1
-            fi
-
-            echo "Rollback failed."
-            docker compose -f infra/docker-compose.prod.yml ps
-            docker compose -f infra/docker-compose.prod.yml logs --tail 120
-            exit 1
+            bash infra/deploy/canary.sh "$DEPLOY_TAG"
