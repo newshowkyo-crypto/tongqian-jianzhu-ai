@@ -6,13 +6,13 @@
 
 ## 段 1 · 首次启动（**今天用这段**）
 
-> 用法：在 `C:\Users\Administrator\Desktop\同乾` 打开 Codex CLI，粘贴下面三反引号内全部内容，按 Enter。
+> 用法：在 `D:\tongqian` 打开 Codex CLI，粘贴下面三反引号内全部内容，按 Enter。
 
 ```
 开始 autopilot 自治循环开发模式（V4 IMPROVEMENTS 终版 · 2026-05-16）。
 
 【环境信息】
-- 项目根：C:\Users\Administrator\Desktop\同乾
+- 项目根：D:\tongqian
 - Git 仓库：https://github.com/newshowkyo-crypto/tongqian-jianzhu-ai
 - 默认分支：main
 - Git 用户：Tongqian Founder <biz@tongqian.io>
@@ -214,7 +214,7 @@ git remote set-url origin https://TOKEN@github.com/newshowkyo-crypto/tongqian-ji
 ## 启动前最后清单
 
 - [ ] 本地装好 Node 22 / pnpm 9 / Docker Desktop / Git
-- [ ] 项目根目录：`C:\Users\Administrator\Desktop\同乾`
+- [ ] 项目根目录：`D:\tongqian`
 - [ ] `.env` 已就绪（已自动生成）
 - [ ] Git 远程 origin 已配（已配 newshowkyo-crypto/tongqian-jianzhu-ai）
 - [ ] 第一次 commit 已 push（已完成）
