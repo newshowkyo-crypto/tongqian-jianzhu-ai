@@ -1,0 +1,164 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: tqj-prod-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+      POSTGRES_DB: ${POSTGRES_DB:-tongqian_prod}
+    volumes:
+      - ./data/pg:/var/lib/postgresql/data
+      - ./data/backup:/data/backup
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  redis:
+    image: redis:7-alpine
+    container_name: tqj-prod-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:?REDIS_PASSWORD is required}
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?REDIS_PASSWORD is required}
+    volumes:
+      - ./data/redis:/data
+    healthcheck:
+      test: ['CMD-SHELL', 'redis-cli -a "$$REDIS_PASSWORD" ping | grep PONG']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  api:
+    image: ${ACR_REGISTRY:-registry.cn-hangzhou.aliyuncs.com/tongqian}/api:${TAG:-prod-latest}
+    container_name: tqj-prod-api
+    restart: unless-stopped
+    init: true
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      TZ: ${TZ:-Asia/Shanghai}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-tongqian_prod}?schema=public
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:4000/health || exit 1']
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  worker:
+    image: ${ACR_REGISTRY:-registry.cn-hangzhou.aliyuncs.com/tongqian}/worker:${TAG:-prod-latest}
+    container_name: tqj-prod-worker
+    restart: unless-stopped
+    init: true
+    environment:
+      NODE_ENV: production
+      PORT: 4100
+      TZ: ${TZ:-Asia/Shanghai}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-tongqian_prod}?schema=public
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:4100/health || exit 1']
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  web:
+    image: ${ACR_REGISTRY:-registry.cn-hangzhou.aliyuncs.com/tongqian}/web:${TAG:-prod-latest}
+    container_name: tqj-prod-web
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      TZ: ${TZ:-Asia/Shanghai}
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:3000/ || exit 1']
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  gov:
+    image: ${ACR_REGISTRY:-registry.cn-hangzhou.aliyuncs.com/tongqian}/gov:${TAG:-prod-latest}
+    container_name: tqj-prod-gov
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      TZ: ${TZ:-Asia/Shanghai}
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:3000/ || exit 1']
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  agent:
+    image: ${ACR_REGISTRY:-registry.cn-hangzhou.aliyuncs.com/tongqian}/agent:${TAG:-prod-latest}
+    container_name: tqj-prod-agent
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      TZ: ${TZ:-Asia/Shanghai}
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:3000/ || exit 1']
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  admin:
+    image: ${ACR_REGISTRY:-registry.cn-hangzhou.aliyuncs.com/tongqian}/admin:${TAG:-prod-latest}
+    container_name: tqj-prod-admin
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      TZ: ${TZ:-Asia/Shanghai}
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:3000/ || exit 1']
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  nginx:
+    image: ${ACR_REGISTRY:-registry.cn-hangzhou.aliyuncs.com/tongqian}/nginx:${TAG:-prod-latest}
+    container_name: tqj-prod-nginx
+    restart: unless-stopped
+    ports:
+      - '${HTTP_PORT:-80}:80'
+    depends_on:
+      api:
+        condition: service_healthy
+      web:
+        condition: service_healthy
+      gov:
+        condition: service_healthy
+      agent:
+        condition: service_healthy
+      admin:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD-SHELL', 'nginx -t || exit 1']
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

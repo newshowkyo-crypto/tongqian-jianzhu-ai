@@ -67,7 +67,7 @@
 - [x] **C4** 编写 `infra/docker/Dockerfile.nginx` + 4 个 conf.d 配置
   - 验收：本地 `docker run` 后能反代到对应 upstream
 
-- [ ] **C5** 编写 `infra/docker-compose.prod.yml`
+- [x] **C5** 编写 `infra/docker-compose.prod.yml`
   - 验收：在 staging VPS 上 `docker compose up -d` 启动全套
 
 ---
