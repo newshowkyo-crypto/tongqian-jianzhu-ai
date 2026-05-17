@@ -28,15 +28,38 @@
   "total_count": 230,
 
   "credentials_check": {
-    "DATABASE_URL": null,
-    "REDIS_URL": null,
-    "ALIYUN_DASHSCOPE_API_KEY": null,
-    "OPENROUTER_API_KEY": null,
-    "DEEPSEEK_API_KEY": null,
-    "JWT_SECRET": null,
-    "WECHAT_PAY_MCH_ID": null,
-    "WECHAT_MP_APP_ID": null,
-    "_note": "Autopilot 启动前 P0 = 上面 8 项最小集（V4 IMPROVEMENTS 精简版）。其他凭证（OSS/SLS/OCR/SMS/支付宝/企微/DashVector）属 P1 在 W4 后逐步补，缺则对应 spec BLOCKED 但不影响整体启动。火山方舟已移除（DeepSeek 直连替代）。"
+    "_doc": "P0-real = 真凭证必填（启动前必须真实有效）；P1-placeholder = 占位即可，开发期 mock provider，admin 后台可视化替换；P2-auto = Codex 自动生成或 docker-compose 自带。",
+    "P0_real": {
+      "ALIYUN_DASHSCOPE_API_KEY": null,
+      "OPENROUTER_API_KEY": null,
+      "DEEPSEEK_API_KEY": null
+    },
+    "P1_placeholder": {
+      "WECHAT_PAY_MCH_ID": "PLACEHOLDER_REPLACE_VIA_ADMIN_PANEL",
+      "WECHAT_PAY_API_KEY": "PLACEHOLDER_REPLACE_VIA_ADMIN_PANEL",
+      "WECHAT_MP_APP_ID": "PLACEHOLDER_REPLACE_VIA_ADMIN_PANEL",
+      "WECHAT_MP_APP_SECRET": "PLACEHOLDER_REPLACE_VIA_ADMIN_PANEL",
+      "ALIPAY_APP_ID": "PLACEHOLDER_REPLACE_VIA_ADMIN_PANEL",
+      "ALIPAY_PRIVATE_KEY": "PLACEHOLDER_REPLACE_VIA_ADMIN_PANEL",
+      "ALIYUN_OSS_ACCESS_KEY_ID": "PLACEHOLDER_REPLACE_VIA_ADMIN_PANEL",
+      "ALIYUN_OSS_ACCESS_KEY_SECRET": "PLACEHOLDER_REPLACE_VIA_ADMIN_PANEL",
+      "ALIYUN_SMS_ACCESS_KEY_ID": "PLACEHOLDER_REPLACE_VIA_ADMIN_PANEL",
+      "ALIYUN_SMS_ACCESS_KEY_SECRET": "PLACEHOLDER_REPLACE_VIA_ADMIN_PANEL",
+      "ALIYUN_SLS_ENDPOINT": "PLACEHOLDER_REPLACE_VIA_ADMIN_PANEL",
+      "ALIYUN_OCR_ACCESS_KEY_ID": "PLACEHOLDER_REPLACE_VIA_ADMIN_PANEL",
+      "WECHAT_WORK_AGENT_ID": "PLACEHOLDER_REPLACE_VIA_ADMIN_PANEL",
+      "WECHAT_WORK_SECRET": "PLACEHOLDER_REPLACE_VIA_ADMIN_PANEL",
+      "DASHVECTOR_API_KEY": "PLACEHOLDER_REPLACE_VIA_ADMIN_PANEL"
+    },
+    "P2_auto": {
+      "DATABASE_URL": "auto via docker-compose.dev.yml",
+      "REDIS_URL": "auto via docker-compose.dev.yml",
+      "JWT_SECRET": "auto generate 64-byte hex",
+      "ENCRYPTION_KEY": "auto generate 32-byte base64",
+      "CSRF_SECRET": "auto generate 32-byte hex",
+      "POSTGRES_PASSWORD": "auto generate 24-char password"
+    },
+    "_note": "Autopilot 启动只检查 P0_real（3 项 AI Key）。P1_placeholder 全部用占位值跑，启用 mock provider，e2e 自动 skip。admin-console（24-spec）必含『系统配置 → 凭证管理』可视化页面，用户后期填真凭证一键热更新无需改代码。火山方舟已移除（DeepSeek 直连替代）。"
   },
 
   "tasks": {
