@@ -1,9 +1,9 @@
 {
   "_doc": "Autopilot 进度追踪文件。Codex 每次会话首先读此文件找下一个 task。状态枚举：pending / in_progress / partial / done / blocked",
-  "mode": "autopilot",
+  "mode": "paused",
   "_mode_options": "standby（待启动） | autopilot（自治中） | paused（暂停） | done（全部完成）",
   "started_at": "2026-05-17T21:56:17.0002215+08:00",
-  "last_session_at": "2026-05-18T02:59:00.0000000+08:00",
+  "last_session_at": "2026-05-18T03:38:00.9380159+08:00",
   "current_task": "01-I2",
   "_current_task_format": "格式：'{spec_no}-{phase}{order}' 例如 '02-A1a' / '22-H3' / '99-FINAL-1'",
   "phase": "1-infra",
@@ -58,7 +58,7 @@
     }
   },
 
-  "blocked_count": 0,
+  "blocked_count": 1,
   "done_count": 37,
   "total_count": 230,
 
@@ -317,7 +317,7 @@
       "deps": ["01-D1"]
     },
     "01-I2": {
-      "status": "pending",
+      "status": "blocked",
       "spec": "01-infra-monorepo",
       "title": "部署时长验证",
       "deps": ["01-D4"]
@@ -1250,7 +1250,16 @@
   "session_log": [],
   "_session_log_format": "每次会话结束时 append { session_id, started_at, ended_at, tasks_completed, blocked, commit_shas }",
 
-  "blocked_tasks": [],
+  "blocked_tasks": [
+    {
+      "task_id": "01-I2",
+      "reason": "Deploy Production failed three times in the GitHub Actions SSH deploy phase before canary duration could be measured.",
+      "attempts": 3,
+      "last_error": "Deploy run 26000657542 failed in 10s after CI and Build Images succeeded. Public API access does not expose private job logs; local direct SSH to deploy@101.132.191.128 is denied.",
+      "suggested_action": "Provide the masked Deploy over SSH log excerpt, a working local SSH key, or temporary GitHub Actions log access so the deploy failure can be diagnosed.",
+      "requires_user": true
+    }
+  ],
   "_blocked_format": "每个 blocked task：{ task_id, reason, attempts, last_error, suggested_action, requires_user }",
 
   "_implementation_note": "对于 11-ALL / 12-ALL 等 ALL 占位项，Codex 实施时应展开为该 spec 的真实子 task（11-A1 / 11-A2 / ...），按 tasks.md 顺序逐个推进。每完成一个真实子 task 立即更新 progress.json（追加 entry 而非改 ALL 状态）。",
