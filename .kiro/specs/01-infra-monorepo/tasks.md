@@ -61,7 +61,7 @@
 - [x] **C2** 编写 `infra/docker/Dockerfile.worker`
   - 同上验收
 
-- [ ] **C3** 编写通用 `infra/docker/Dockerfile.next`（带 APP_NAME build-arg）
+- [x] **C3** 编写通用 `infra/docker/Dockerfile.next`（带 APP_NAME build-arg）
   - 验收：能用同一 Dockerfile 构建 web/gov/agent/admin 4 个镜像
 
 - [ ] **C4** 编写 `infra/docker/Dockerfile.nginx` + 4 个 conf.d 配置
