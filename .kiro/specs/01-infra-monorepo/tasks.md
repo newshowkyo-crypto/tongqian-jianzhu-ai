@@ -133,7 +133,7 @@
 
 - [x] **H1** 完善仓库根 README.md（项目介绍 + 快速开始 + 技术栈 + 文档导览）
 - [x] **H2** 给每个 app 写 README.md（职责 / 主要文件 / 启动方式）
-- [ ] **H3** 给每个 package 写 README.md
+- [x] **H3** 给每个 package 写 README.md
 
 ---
 
