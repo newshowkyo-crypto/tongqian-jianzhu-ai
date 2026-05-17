@@ -17,7 +17,10 @@
   ],
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": "latest"
+    "ecmaVersion": "latest",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "settings": {
     "import/resolver": {

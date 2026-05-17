@@ -35,7 +35,7 @@
 - [x] **B1** 编写 `infra/docker-compose.yml`（PG + Redis + MinIO + Mailhog）
   - 验收：`pnpm docker:up` 后 4 个服务都 healthy
 
-- [ ] **B2** 编写各 app 的最小 hello-world：
+- [x] **B2** 编写各 app 的最小 hello-world：
   - apps/api：NestJS 启动 + `/health` 返回 200
   - apps/worker：BullMQ 启动 + 监听一个 dummy queue
   - apps/web/gov/agent/admin：Next.js + 一个空首页
