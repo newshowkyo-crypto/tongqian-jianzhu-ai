@@ -24,7 +24,7 @@
   - 文件：`apps/{api,worker,web,gov,agent,admin,desktop}/`
   - 验收：`pnpm install` 后 workspace 识别全部 7 个 apps
 
-- [ ] **A5** 初始化 Prisma（`prisma/schema.prisma` 仅含 generator + datasource）
+- [x] **A5** 初始化 Prisma（`prisma/schema.prisma` 仅含 generator + datasource）
   - 文件：`prisma/`
   - 验收：`pnpm db:studio` 能打开（空 schema 也行）
 
