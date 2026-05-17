@@ -1,0 +1,7 @@
+{
+  "name": "@tongqian/agent",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Next.js workspace for agent-facing operations.",
+  "type": "module"
+}

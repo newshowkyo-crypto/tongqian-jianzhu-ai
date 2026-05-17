@@ -1,0 +1,7 @@
+{
+  "name": "@tongqian/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tauri desktop shell for the Tongqian web application.",
+  "type": "module"
+}

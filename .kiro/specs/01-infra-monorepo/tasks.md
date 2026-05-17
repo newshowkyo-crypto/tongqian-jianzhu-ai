@@ -20,7 +20,7 @@
   - 文件：`packages/{types,contracts,permissions,errors,constants,ui,utils,test-fixtures}/`
   - 验收：`pnpm install` 后 workspace 识别全部 8 个 packages
 
-- [ ] **A4** 创建 apps 占位目录（仅 package.json + tsconfig.json，不含业务代码）
+- [x] **A4** 创建 apps 占位目录（仅 package.json + tsconfig.json，不含业务代码）
   - 文件：`apps/{api,worker,web,gov,agent,admin,desktop}/`
   - 验收：`pnpm install` 后 workspace 识别全部 7 个 apps
 

@@ -1,0 +1,7 @@
+{
+  "name": "@tongqian/worker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "NestJS worker application for queues and scheduled jobs.",
+  "type": "module"
+}

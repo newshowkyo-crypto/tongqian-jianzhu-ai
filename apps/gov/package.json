@@ -1,0 +1,7 @@
+{
+  "name": "@tongqian/gov",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Next.js workspace for government and SOE users.",
+  "type": "module"
+}

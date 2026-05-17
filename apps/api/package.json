@@ -1,0 +1,7 @@
+{
+  "name": "@tongqian/api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "NestJS API application for the Tongqian platform.",
+  "type": "module"
+}
