@@ -69,7 +69,7 @@
 
 ### Requirement 8：边界
 
-1. SHALL NOT 暴露给非 PLATFORM_OWNER 公开访问（独立 admin.tongqian.com 子域 + 强制 2FA）
+1. SHALL NOT 暴露给非 PLATFORM_OWNER 公开访问（独立 admin.tongqian.xin 子域 + 强制 2FA）
 2. SHALL NOT 直接修改生产 DB 数据（必须经 service / migration）
 3. SHALL NOT 跳过审计
 

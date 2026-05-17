@@ -326,9 +326,9 @@ info:
   description: |
     所有业务端点的契约文件。修改此文件请遵守 packages 修改顺序（types 先行）。
 servers:
-  - url: https://api.tongqian.cn/api/v1
+  - url: https://api.tongqian.xin/api/v1
     description: 生产
-  - url: https://api-staging.tongqian.cn/api/v1
+  - url: https://api-staging.tongqian.xin/api/v1
     description: 测试
   - url: http://localhost:4000/api/v1
     description: 本地

@@ -12,7 +12,7 @@
 - [x] 企业微信已有
 - [x] 支付宝商户已申请
 - [x] DeepSeek 直连 API Key 已有
-- [x] 域名 tongqian.io 已有
+- [x] 域名 tongqian.xin 已有
 - [x] GitHub 私有仓库已创建（推测，需确认）
 
 ---
@@ -237,7 +237,7 @@ Codex 跑到合同审查 / 标书 / 资质 / 资金匹配 / 早安简报 时会�
 
 ## 🎯 上线后日常运维（≤ 5 分钟 / 天）
 
-打开 `https://admin.tongqian.io`：
+打开 `https://admin.tongqian.xin`：
 - 红线告警（自动企微推送）
 - 智能管家审核队列
 - 退款 / 提现审批

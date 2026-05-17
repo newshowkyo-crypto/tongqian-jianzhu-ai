@@ -54,10 +54,10 @@
 
 ```
 3 个外部入口（域名分流 + 角色硬绑定）：
-- www.tongqian.io       → 建筑老板
-- agents.tongqian.io    → 智能管家（审核制）
-- gov.tongqian.io       → 政企央国企（公函审核）
-- admin.tongqian.io     → 平台运营（无注册）
+- www.tongqian.xin       → 建筑老板
+- agents.tongqian.xin    → 智能管家（审核制）
+- gov.tongqian.xin       → 政企央国企（公函审核）
+- admin.tongqian.xin     → 平台运营（无注册）
 
 共用入口：手机号 + 短信验证 + 微信扫码绑定
 （未来小程序无需重新设计鉴权）

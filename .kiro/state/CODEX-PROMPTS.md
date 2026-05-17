@@ -15,7 +15,7 @@
 - 项目根：D:\tongqian
 - Git 仓库：https://github.com/newshowkyo-crypto/tongqian-jianzhu-ai
 - 默认分支：main
-- Git 用户：Tongqian Founder <biz@tongqian.io>
+- Git 用户：Tongqian Founder <biz@tongqian.xin>
 - 包管理：pnpm 9 / Node 22 / Docker Desktop
 - 平台：Windows 11，PowerShell
 
@@ -128,7 +128,7 @@ LOAD（≤ 8 工具调用）
 - VPS OS：<待你提供>
 - VPS 用户：<待你提供>
 - VPS SSH 方式：<密码 / 密钥>
-- 主域名：<待你提供，建议 tongqian.cn 或 tongqian.io>
+- 主域名：<待你提供，建议 tongqian.xin 或 tongqian.xin>
 - 阿里云 ACR：<待开通后提供 registry URL>
 
 【任务】
@@ -228,7 +228,7 @@ git remote set-url origin https://TOKEN@github.com/newshowkyo-crypto/tongqian-ji
 | 阶段 | 周次 | 你做 | Codex 做 |
 |---|---|---|---|
 | **现在** | Day 0 | 粘贴段 1 启动 | 跑 01-A1 ~ 03-G2 基础设施 |
-| **域名** | W1 | 买 tongqian.cn + tongqian.io / 提交备案 | 继续推进 |
+| **域名** | W1 | 买 tongqian.xin + tongqian.xin / 提交备案 | 继续推进 |
 | **W2-W3** | Day 7-21 | 看进度 | 跑 06-09 商业核心 + 04 AI Gateway |
 | **W4** | Day 28 | 提供 VPS 信息 + 粘贴段 3 | 配 VPS 部署链路 |
 | **W5** | Day 35 | 配 GitHub Secrets / VPS 首次部署 | 跑 5 大杀手锏 |
@@ -240,5 +240,5 @@ git remote set-url origin https://TOKEN@github.com/newshowkyo-crypto/tongqian-ji
 ## 一句话总结
 
 **今天**：粘贴段 1，让 Codex 开跑。
-**这周内**：买域名（tongqian.cn 优先备案 + tongqian.io 备）。
+**这周内**：买域名（tongqian.xin 优先备案 + tongqian.xin 备）。
 **4 周后**：把 VPS 信息发我（IP / OS / 用户 / SSH），我帮你拼段 3 让 Codex 配部署。

@@ -150,7 +150,7 @@ WECHAT_PAY_API_KEY=32位随机字符        # ⭐ APIv2 密钥（已废弃但仍
 WECHAT_PAY_API_V3_KEY=32位随机字符      # ⭐ APIv3 密钥
 WECHAT_PAY_CERT_PATH=./secrets/apiclient_cert.p12      # 把下载的证书放此处
 WECHAT_PAY_KEY_PATH=./secrets/apiclient_key.pem
-WECHAT_PAY_NOTIFY_URL=https://api.tongqian.com/api/v1/payments/wechat/notify
+WECHAT_PAY_NOTIFY_URL=https://api.tongqian.xin/api/v1/payments/wechat/notify
 ```
 
 把下载的证书 `apiclient_cert.p12` 和 `apiclient_key.pem` 放到 `项目根/secrets/` 目录（已在 .gitignore，不会提交）。
@@ -173,7 +173,7 @@ WECOM_AGENT_SECRET=xxxxxxxxxxxxxxxxxx  # ⭐ Secret
 ALIPAY_APPID=
 ALIPAY_PRIVATE_KEY=
 ALIPAY_PUBLIC_KEY=
-ALIPAY_NOTIFY_URL=https://api.tongqian.com/api/v1/payments/alipay/notify
+ALIPAY_NOTIFY_URL=https://api.tongqian.xin/api/v1/payments/alipay/notify
 ```
 
 ## 八、安全密钥 ⭐（命令行生成）

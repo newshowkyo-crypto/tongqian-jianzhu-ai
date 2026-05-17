@@ -644,11 +644,11 @@ services:
 ### 6.1 host 路由
 
 ```
-www.tongqian.cn       → web 容器 :3000
-gov.tongqian.cn       → gov 容器 :3003
-agent.tongqian.cn     → agent 容器 :3002
-admin.tongqian.cn     → admin 容器 :3001
-api.tongqian.cn       → api 容器 :4000
+www.tongqian.xin       → web 容器 :3000
+gov.tongqian.xin       → gov 容器 :3003
+agent.tongqian.xin     → agent 容器 :3002
+admin.tongqian.xin     → admin 容器 :3001
+api.tongqian.xin       → api 容器 :4000
 ```
 
 ### 6.2 SSL termination

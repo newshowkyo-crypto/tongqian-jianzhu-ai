@@ -204,7 +204,7 @@ model AIDataSource {
   source_type  String   // public_government / public_industry
   authorized   Boolean  @default(false)  // 是否签订授权
   qps_limit    Int      @default(1)
-  user_agent   String   // "同乾方略科研爬虫 + biz@tongqian.io"
+  user_agent   String   // "同乾方略科研爬虫 + biz@tongqian.xin"
   robots_compliant Boolean @default(true)
   last_audit_at DateTime?
 }

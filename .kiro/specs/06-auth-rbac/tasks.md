@@ -79,7 +79,7 @@
 ## V4 升级新增任务（注册流程升级 + P5 补丁）
 
 - [ ] **06-V4-1** 手机号 + 短信 + 微信扫码统一注册（unionid 绑定，未来小程序复用）
-- [ ] **06-V4-2** 3 个外部入口域名分流 + 角色硬绑定（agents.tongqian.io / gov.tongqian.io / www）
+- [ ] **06-V4-2** 3 个外部入口域名分流 + 角色硬绑定（agents.tongqian.xin / gov.tongqian.xin / www）
 - [ ] **06-V4-3** 注册手机号冲突检测（BUILDING_COMPANY ↔ AGENT 互斥 / GOV 严禁兼任）
 - [ ] **06-V4-4** "客服迁移"流程（智能管家 ↔ 老板身份切换）
 - [ ] **06-V4-5** AGENT 工作台"代企业注册"功能（用客户手机号注册并永久绑定到该 AGENT）

@@ -64,10 +64,10 @@
 #### Acceptance Criteria
 
 1. **3 个外部入口域名分流 + 角色硬绑定**：
-   - `www.tongqian.io`     → BUILDING_COMPANY_USER
-   - `agents.tongqian.io`  → AGENT（审核制）
-   - `gov.tongqian.io`     → GOV_USER（公函审核）
-   - `admin.tongqian.io`   → 无注册（PLATFORM 由超管手动建）
+   - `www.tongqian.xin`     → BUILDING_COMPANY_USER
+   - `agents.tongqian.xin`  → AGENT（审核制）
+   - `gov.tongqian.xin`     → GOV_USER（公函审核）
+   - `admin.tongqian.xin`   → 无注册（PLATFORM 由超管手动建）
 2. **共用注册流程**：手机号 + 短信验证码 + 微信扫码绑定（用户首次注册即绑定 unionid，未来小程序无缝复用）
 3. **登录方式**：手机号 + 短信 / 密码 / 微信扫码 三选一（同一账号）
 4. **反薅 5 维去重**（BR-315）：手机号 / 身份证 / 营业执照 / IP / 设备指纹

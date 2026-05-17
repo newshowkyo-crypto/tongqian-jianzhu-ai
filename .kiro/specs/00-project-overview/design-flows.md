@@ -89,7 +89,7 @@ sequenceDiagram
   participant Notif as 27 notification
   participant CS as 平台客户成功
 
-  U->>Gov: 打开 gov.tongqian.com
+  U->>Gov: 打开 gov.tongqian.xin
   Gov->>Gov: 检查 host = gov 域名 → 渲染政府版前端
   Note over Gov: 物理隔离（D-2）：政府版前端<br/>SHALL NOT 暴露建筑企业模块入口
   U->>Gov: 填表：单位（机关 / 央企 / 城投）+ 公函抬头 + 工作邮箱（.gov.cn / 单位邮箱）+ 联系人
@@ -138,7 +138,7 @@ sequenceDiagram
   participant Review as 24 admin-console<br/>智能管家认证审核台
   participant Notif as 27 notification
 
-  U->>AgentApp: 打开 agents.tongqian.io/register
+  U->>AgentApp: 打开 agents.tongqian.xin/register
   U->>AgentApp: 填表：手机 + 身份证 + 子类型选择<br/>BR-004：AGENT_QUAL / TENDER / FIN / GENERAL
   U->>AgentApp: 上传：身份证扫描 + 名片 + 历史业绩（选填）
   AgentApp->>Auth: POST /auth/register {role:AGENT, subType, docs[]}
@@ -184,7 +184,7 @@ sequenceDiagram
   participant NewOp as 新运营人员
 
   Note over SuperAdmin,AdminApp: ❌ 平台运营 SHALL NOT 开放公开注册<br/>仅 PLATFORM_OWNER 后台手动建立（BR-001）
-  SuperAdmin->>AdminApp: 登录 admin.tongqian.com（强制 2FA）<br/>仅平台租户内可见此页
+  SuperAdmin->>AdminApp: 登录 admin.tongqian.xin（强制 2FA）<br/>仅平台租户内可见此页
   AdminApp->>AdminApp: 进入"用户管理 → 平台运营人员"
   SuperAdmin->>AdminApp: 填表：姓名 + 手机 + 邮箱 + 角色<br/>{PLATFORM_OPS / FINANCE / RISK / EXPERT / CS / CSM / AUDIT}
   AdminApp->>Auth: POST /admin/platform-users<br/>requires PLATFORM_OWNER + 二次密码（协议 P-7）
