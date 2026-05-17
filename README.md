@@ -1,96 +1,14 @@
 # 同乾方略 · 建筑 AI 经营管家
 
-> 中小建筑企业日常 AI 工具平台 + 同乾方略高端咨询获客器
+服务中国中小型建筑企业的 AI 工具平台，也是同乾方略高端咨询业务的获客与交付入口。
 
-## 项目简介
+平台一期面向建筑企业、政府/央国企、智能管家和平台运营四类用户，提供项目机会雷达、招投标解读、合同审查、资质管理、经营成本工具、AI 全局入口、后台运营与咨询转化能力。
 
-本项目是为中国建筑行业中小企业打造的 AI 工具平台，覆盖：
+## 快速开始
 
-- **5 大杀手锏**：项目机会雷达、招标解读 + 标书工厂、合同审查、资质智能管家、经营成本工具集
-- **17 大功能区**：建筑企业 14 区 + 智能管家工作台 + 政府 / 央国企版 + AI 全局入口 + 高端咨询入口 + 平台后台
+本仓库默认使用 Windows 11 + PowerShell + Node.js 22 + pnpm 9 + Docker Desktop。
 
-## 用户角色（4 大注册类型）
-
-1. 建筑企业用户（内部 30+ 岗位）
-2. 政府 / 央国企用户
-3. 智能管家用户
-4. 平台运营用户
-
-## 技术栈
-
-- **后端**：NestJS + Prisma + PostgreSQL + Redis
-- **前端**：Next.js (App Router) + Tailwind + shadcn/ui
-- **桌面端**：Tauri 2
-- **AI**：自建 AI Gateway，多渠道路由（OpenRouter / B.AI / 阿里百炼 / 火山方舟 / 6 月后自建 HK 直连）
-- **部署**：GitHub → VPS（阿里云轻量）
-
-## 仓库结构
-
-详见 [docs/architecture.md](./docs/architecture.md)。
-
-```
-.kiro/                 # Kiro spec + steering
-docs/                  # 项目蓝图
-packages/              # 共享类型 / 契约 / 权限 / 错误码 / 常量
-prisma/                # 数据库 schema
-apps/
-  ├── api/             # 主 API
-  ├── worker/          # 异步任务
-  ├── web/             # 建筑企业前台
-  ├── gov/             # 政府 / 央国企版
-  ├── agent/           # 智能管家工作台
-  ├── admin/           # 平台后台
-  └── desktop/         # Tauri 桌面端
-infra/                 # 部署
-```
-
-## AI 编码助手必读
-
-> **任何 AI 编码助手（Codex / Claude Code / Cursor）开始任务前必须读完这一节**
-
-### 必读文件（按顺序）
-
-1. [AGENTS.md](./AGENTS.md) — 总指令
-2. [.kiro/steering/coding-standards.md](./.kiro/steering/coding-standards.md)
-3. [.kiro/steering/security-rules.md](./.kiro/steering/security-rules.md)
-4. [.kiro/steering/api-conventions.md](./.kiro/steering/api-conventions.md)
-5. [.kiro/steering/database-conventions.md](./.kiro/steering/database-conventions.md)
-6. [.kiro/steering/ai-gateway-rules.md](./.kiro/steering/ai-gateway-rules.md)
-7. [docs/architecture.md](./docs/architecture.md)
-8. [docs/business-model.md](./docs/business-model.md)
-9. [docs/glossary.md](./docs/glossary.md)
-10. 当前任务对应的 `.kiro/specs/{module}/` 三件套
-
-### 核心物理边界
-
-- 共享类型：`packages/types`
-- 错误码：`packages/errors`
-- 权限：`packages/permissions`
-- API 契约：`packages/contracts/openapi.yaml`
-- 数据库：`prisma/schema.prisma`
-- AI 调用：`apps/api/src/ai-gateway/`
-
-详见 AGENTS.md 第 3 节。
-
-## 开发模式
-
-- **OPC 极简模式**：创始人 + 2 人团队 + AI 主导开发
-- **Spec 驱动**：每个模块走 Requirements → Design → Tasks 三阶段
-- **GitHub → VPS** 一键部署
-- **可视化后台**：所有运营操作零代码可视化
-
-## 本地开发
-
-### 1. 准备工具
-
-本仓库默认使用 Windows 11 + PowerShell 开发，先确认本机具备：
-
-- Node.js 22.x
-- pnpm 9.x
-- Docker Desktop
-- Git
-
-可用以下命令快速检查：
+1. 安装并检查工具：
 
 ```powershell
 node -v
@@ -99,7 +17,7 @@ docker version
 git --version
 ```
 
-### 2. 拉取仓库并安装依赖
+1. 拉取代码并安装依赖：
 
 ```powershell
 git clone https://github.com/newshowkyo-crypto/tongqian-jianzhu-ai.git
@@ -107,41 +25,75 @@ cd tongqian-jianzhu-ai
 pnpm install
 ```
 
-### 3. 准备本地环境变量
+1. 准备本地环境变量：
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-开发期 P1 凭证（微信、支付宝、阿里云、企微、DashVector 等）可保持 `PLACEHOLDER_REPLACE_VIA_ADMIN_PANEL`，系统会使用 mock provider。3 个 P0 AI Key 只有在真实 AI 调用时需要填入真值。
+开发期 P1 凭证可以保留 `PLACEHOLDER_REPLACE_VIA_ADMIN_PANEL`，系统按 mock provider 处理。真实 AI 调用需要填入 P0 的 3 个 AI Key。
 
-### 4. 启动基础设施并初始化数据
+1. 启动基础设施并初始化数据：
 
 ```powershell
 pnpm docker:up
 pnpm db:seed
 ```
 
-`pnpm docker:up` 会启动 PostgreSQL、Redis、MinIO、Mailhog。若本机端口冲突，可在不提交的本地环境文件中覆盖端口配置。
-
-### 5. 启动应用并访问前端
+1. 启动应用：
 
 ```powershell
 pnpm dev
 ```
 
-启动后访问：
+访问入口：
 
 | 应用            | 地址                           |
 | --------------- | ------------------------------ |
 | 建筑企业前台    | <http://localhost:3000>        |
 | 平台后台        | <http://localhost:3001>        |
 | 智能管家工作台  | <http://localhost:3002>        |
-| 政府 / 央国企版 | <http://localhost:3003>        |
+| 政府/央国企版   | <http://localhost:3003>        |
 | API 健康检查    | <http://localhost:4000/health> |
-| Worker          | <http://localhost:4100>        |
+| Worker 健康检查 | <http://localhost:4100/health> |
 
-常用检查命令：
+## 技术栈
+
+| 层级     | 技术                                                          |
+| -------- | ------------------------------------------------------------- |
+| Monorepo | pnpm workspace, Turborepo                                     |
+| 后端     | NestJS, Prisma, PostgreSQL, Redis, BullMQ                     |
+| 前端     | Next.js App Router, Tailwind CSS, shadcn/ui                   |
+| 桌面端   | Tauri 2, 复用 `apps/web`                                      |
+| AI       | AI Gateway, 阿里百炼, OpenRouter, DeepSeek 直连               |
+| 部署     | Docker Compose, Nginx, GitHub Actions, 阿里云 VPS/ACR/OSS/SLS |
+| 监控     | Uptime Kuma, 阿里云 SLS                                       |
+
+## 仓库结构
+
+```text
+.github/workflows/       CI/CD 与发布流水线
+.kiro/                   specs、steering、autopilot 状态
+apps/api/                NestJS API
+apps/worker/             BullMQ Worker
+apps/web/                建筑企业前台
+apps/admin/              平台后台
+apps/agent/              智能管家工作台
+apps/gov/                政府/央国企版
+apps/desktop/            Tauri Windows 客户端
+packages/types/          共享类型
+packages/contracts/      OpenAPI 契约
+packages/permissions/    权限常量
+packages/errors/         错误码与错误类
+packages/constants/      全局常量
+packages/ui/             共享 UI
+packages/utils/          工具函数
+prisma/                  数据库 schema 与 seed
+infra/                   Docker、Nginx、部署脚本、监控配置
+docs/                    架构、商业模式、ADR、术语表
+```
+
+## 常用命令
 
 ```powershell
 pnpm typecheck
@@ -149,9 +101,35 @@ pnpm lint
 pnpm test
 pnpm build
 pnpm clean
+pnpm docker:up
 pnpm docker:down
+pnpm db:setup
+pnpm --filter @tongqian/desktop tauri --version
+pnpm --filter @tongqian/desktop prepare:web
 ```
+
+## 文档导航
+
+| 主题          | 文档                                                             |
+| ------------- | ---------------------------------------------------------------- |
+| 最高工作指令  | [AGENTS.md](./AGENTS.md)                                         |
+| Codex 速查    | [.kiro/codex-quickstart.md](./.kiro/codex-quickstart.md)         |
+| 架构          | [docs/architecture.md](./docs/architecture.md)                   |
+| 商业模式      | [docs/business-model.md](./docs/business-model.md)               |
+| 术语表        | [docs/glossary.md](./docs/glossary.md)                           |
+| 规格总览      | [.kiro/specs/README.md](./.kiro/specs/README.md)                 |
+| 基础设施 spec | [.kiro/specs/01-infra-monorepo](./.kiro/specs/01-infra-monorepo) |
+| 决策记录      | [docs/decisions](./docs/decisions)                               |
+| 变更记录      | [docs/changelog](./docs/changelog)                               |
+
+## 开发约束摘要
+
+- 共享 DTO、枚举、错误码、权限常量必须来自 `packages/*`。
+- 数据库访问必须经 repository，业务层不写裸 SQL。
+- AI 调用必须经 `apps/api/src/ai-gateway/`。
+- 所有用户可见中文走 i18n，代码层保留英文 `agent`，用户可见层显示“智能管家”。
+- 不提交 `.env`、密钥、证书、数据库备份或用户原始资料。
 
 ## License
 
-私有项目。
+私有项目。版权所有，同乾方略。
