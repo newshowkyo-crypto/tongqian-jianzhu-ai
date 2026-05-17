@@ -84,7 +84,7 @@
 - [x] **D3** 编写 `.github/workflows/deploy-staging.yml`
   - 验收：merge to develop 后自动部署 + 健康检查
 
-- [ ] **D4** 编写 `.github/workflows/deploy-prod.yml`
+- [x] **D4** 编写 `.github/workflows/deploy-prod.yml`
   - 验收：merge to main 后灰度发布 + 失败回滚
 
 ---

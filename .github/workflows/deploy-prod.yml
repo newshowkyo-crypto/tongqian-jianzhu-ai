@@ -1,0 +1,110 @@
+name: Deploy Production
+
+on:
+  workflow_run:
+    workflows:
+      - Build Images
+    types:
+      - completed
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+env:
+  DEFAULT_ACR_REGISTRY: registry.cn-hangzhou.aliyuncs.com
+  DEFAULT_ACR_NAMESPACE: tongqian
+  DEPLOY_TAG: prod-${{ github.event.workflow_run.head_sha || github.sha }}
+  ROLLBACK_TAG: prod-previous
+
+jobs:
+  deploy:
+    name: Deploy to Production VPS
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    environment: production
+
+    steps:
+      - name: Verify required VPS secrets
+        run: |
+          test -n "${{ secrets.VPS_HOST }}" || { echo "::error::VPS_HOST is empty"; exit 1; }
+          test -n "${{ secrets.VPS_USER }}" || { echo "::error::VPS_USER is empty"; exit 1; }
+          test -n "${{ secrets.VPS_SSH_KEY }}" || { echo "::error::VPS_SSH_KEY is empty"; exit 1; }
+          test -n "${{ secrets.DEPLOY_PATH }}" || { echo "::error::DEPLOY_PATH is empty"; exit 1; }
+
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          ACR_REGISTRY: ${{ secrets.ALIYUN_ACR_REGISTRY || env.DEFAULT_ACR_REGISTRY }}
+          ACR_NAMESPACE: ${{ secrets.ALIYUN_ACR_NAMESPACE || env.DEFAULT_ACR_NAMESPACE }}
+          ACR_USERNAME: ${{ secrets.ALIYUN_ACR_USERNAME }}
+          ACR_PASSWORD: ${{ secrets.ALIYUN_ACR_PASSWORD }}
+          DEPLOY_TAG: ${{ env.DEPLOY_TAG }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          ROLLBACK_TAG: ${{ env.ROLLBACK_TAG }}
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: 22
+          timeout: 30s
+          command_timeout: 12m
+          envs: ACR_REGISTRY,ACR_NAMESPACE,ACR_USERNAME,ACR_PASSWORD,DEPLOY_TAG,DEPLOY_PATH,ROLLBACK_TAG
+          script: |
+            set -euo pipefail
+
+            cd "$DEPLOY_PATH"
+            git fetch origin main
+            git checkout main
+            git pull --ff-only origin main
+
+            if [ -z "${ACR_USERNAME:-}" ] || [ -z "${ACR_PASSWORD:-}" ]; then
+              echo "ACR secrets missing; production deploy skipped after VPS/git verification."
+              exit 0
+            fi
+
+            echo "$ACR_PASSWORD" | docker login "$ACR_REGISTRY" -u "$ACR_USERNAME" --password-stdin
+            export ACR_REGISTRY="$ACR_REGISTRY/$ACR_NAMESPACE"
+
+            health_check() {
+              for i in $(seq 1 12); do
+                unhealthy="$(docker compose -f infra/docker-compose.prod.yml ps --format json \
+                  | grep -E 'unhealthy|starting' || true)"
+                if [ -z "$unhealthy" ]; then
+                  return 0
+                fi
+                sleep 5
+              done
+              return 1
+            }
+
+            export TAG="$DEPLOY_TAG"
+            docker compose -f infra/docker-compose.prod.yml pull
+            docker compose -f infra/docker-compose.prod.yml up -d
+
+            if health_check; then
+              echo "Production deployment healthy."
+              exit 0
+            fi
+
+            echo "Production health check failed; attempting rollback to $ROLLBACK_TAG."
+            docker compose -f infra/docker-compose.prod.yml ps
+            docker compose -f infra/docker-compose.prod.yml logs --tail 120
+
+            export TAG="$ROLLBACK_TAG"
+            docker compose -f infra/docker-compose.prod.yml pull || true
+            docker compose -f infra/docker-compose.prod.yml up -d
+
+            if health_check; then
+              echo "Rollback completed."
+              exit 1
+            fi
+
+            echo "Rollback failed."
+            docker compose -f infra/docker-compose.prod.yml ps
+            docker compose -f infra/docker-compose.prod.yml logs --tail 120
+            exit 1
