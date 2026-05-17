@@ -1,0 +1,106 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+.next/
+.turbo/
+out/
+*.tsbuildinfo
+target/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+*.env
+!.env.example
+!.env.dev.template
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+pino-pretty.log
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+
+# Prisma
+prisma/migrations/dev.db
+prisma/migrations/dev.db-journal
+
+# Database dumps
+*.dump
+*.sql.bak
+
+# Tauri
+src-tauri/target/
+src-tauri/Cargo.lock
+
+# OSS / temp
+uploads/
+tmp/
+temp/
+
+# Generated
+generated/
+*.generated.ts
+
+# Cache
+.cache/
+.parcel-cache/
+
+# Lock files (keep one strategy)
+# 选择 pnpm 作为 monorepo 工具
+package-lock.json
+yarn.lock
+
+# Secrets
+secrets/
+*.pem
+*.key
+*.crt
+*.p12
+config/secrets/
+certs/
+.kiro/state/.tmp-*
+.kiro/state/.gen-*
+BLOCKED.md
+
+# 创始人原始资料（防商业敏感泄漏）
+同乾资料.txt
+同乾方略_*.docx
+*.docx
+
+# OS
+Thumbs.db
+desktop.ini
+
+# Sentry
+.sentryclirc
+
+# Vercel
+.vercel
+
+# Misc
+.history/
+.bin/

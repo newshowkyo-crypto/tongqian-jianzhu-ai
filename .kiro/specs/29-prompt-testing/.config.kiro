@@ -1,0 +1,7 @@
+{
+  "specType": "feature",
+  "workflowType": "requirements-first",
+  "specVersion": "v1.0",
+  "createdAt": "2026-05-16",
+  "_note": "V4 IMPROVEMENTS 新增子 spec：专家黄金测试集 + CI/CD 集成"
+}
