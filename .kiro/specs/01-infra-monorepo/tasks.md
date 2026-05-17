@@ -124,7 +124,7 @@
 - [x] **G2** 配置 Tauri 复用 apps/web 的 standalone 输出
   - 验收：桌面端能加载 apps/web 首页
 
-- [ ] **G3** 编写 `.github/workflows/desktop-release.yml`
+- [x] **G3** 编写 `.github/workflows/desktop-release.yml`
   - 验收：tag 触发后产出 .msi 上传到 GitHub Release
 
 ---
