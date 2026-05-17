@@ -74,7 +74,7 @@
 
 ## Phase D：CI（4 个）
 
-- [ ] **D1** 编写 `.github/workflows/ci.yml`（typecheck + lint + test + build）
+- [x] **D1** 编写 `.github/workflows/ci.yml`（typecheck + lint + test + build）
   - 验收：PR 触发后 8 分钟内完成
 
 - [ ] **D2** 编写 `.github/workflows/build-images.yml`
