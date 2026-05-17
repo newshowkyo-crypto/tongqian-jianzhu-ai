@@ -328,6 +328,9 @@ importers:
       prisma:
         specifier: ^5.22.0
         version: 5.22.0
+      tsx:
+        specifier: ^4.19.2
+        version: 4.22.1
 
 packages:
   '@alloc/quick-lru@5.2.0':

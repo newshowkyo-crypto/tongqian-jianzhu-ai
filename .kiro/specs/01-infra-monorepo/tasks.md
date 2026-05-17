@@ -44,7 +44,7 @@
 - [x] **B3** 配置 Tailwind + shadcn/ui base 到 4 个 Next 应用
   - 验收：每个 app 的 `tailwind.config.ts` 引入 `packages/ui` 的 token
 
-- [ ] **B4** 编写 prisma seed 骨架（`prisma/seed/index.ts`）
+- [x] **B4** 编写 prisma seed 骨架（`prisma/seed/index.ts`）
   - 验收：`pnpm db:seed` 跑空 seed 不报错
 
 - [ ] **B5** 编写仓库根 `README.md` 的 "本地开发" 章节

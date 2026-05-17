@@ -11,7 +11,11 @@
     "seed": "prisma db seed",
     "studio": "prisma studio"
   },
+  "prisma": {
+    "seed": "tsx seed/index.ts"
+  },
   "devDependencies": {
-    "prisma": "^5.22.0"
+    "prisma": "^5.22.0",
+    "tsx": "^4.19.2"
   }
 }
