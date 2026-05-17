@@ -81,7 +81,7 @@
   - 触发：push to develop / main
   - 验收：构建 7 个镜像 + 推 ACR
 
-- [ ] **D3** 编写 `.github/workflows/deploy-staging.yml`
+- [x] **D3** 编写 `.github/workflows/deploy-staging.yml`
   - 验收：merge to develop 后自动部署 + 健康检查
 
 - [ ] **D4** 编写 `.github/workflows/deploy-prod.yml`
