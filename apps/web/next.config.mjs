@@ -1,5 +1,7 @@
+const standaloneOutput = process.env.NEXT_STANDALONE !== 'false';
+
 const nextConfig = {
-  output: 'standalone',
+  output: standaloneOutput ? 'standalone' : undefined,
 };
 
 export default nextConfig;
