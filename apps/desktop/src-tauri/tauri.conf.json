@@ -5,7 +5,9 @@
   "identifier": "com.tongqian.jianzhu",
   "build": {
     "beforeDevCommand": "pnpm --filter @tongqian/web dev",
-    "devUrl": "http://localhost:3000"
+    "beforeBuildCommand": "pnpm --filter @tongqian/desktop prepare:web",
+    "devUrl": "http://localhost:3000",
+    "frontendDist": "../dist/web-static"
   },
   "app": {
     "windows": [
@@ -20,6 +22,7 @@
   },
   "bundle": {
     "active": false,
-    "targets": "all"
+    "targets": "all",
+    "resources": ["../dist/web-standalone/**/*"]
   }
 }

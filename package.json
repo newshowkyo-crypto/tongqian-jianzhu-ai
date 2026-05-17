@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "turbo run dev",
-    "build": "turbo run build",
+    "build": "turbo run build --concurrency=1",
     "lint": "turbo run lint && eslint . --ext .js,.cjs,.mjs,.ts,.tsx --no-error-on-unmatched-pattern",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",

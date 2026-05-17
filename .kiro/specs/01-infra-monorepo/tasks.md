@@ -121,7 +121,7 @@
 - [x] **G1** `apps/desktop/` 用 Tauri 2 初始化
   - 验收：`pnpm --filter @tongqian/desktop tauri dev` 能起本地预览
 
-- [ ] **G2** 配置 Tauri 复用 apps/web 的 standalone 输出
+- [x] **G2** 配置 Tauri 复用 apps/web 的 standalone 输出
   - 验收：桌面端能加载 apps/web 首页
 
 - [ ] **G3** 编写 `.github/workflows/desktop-release.yml`

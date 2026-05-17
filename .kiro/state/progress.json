@@ -3,8 +3,8 @@
   "mode": "autopilot",
   "_mode_options": "standby（待启动） | autopilot（自治中） | paused（暂停） | done（全部完成）",
   "started_at": "2026-05-17T21:56:17.0002215+08:00",
-  "last_session_at": "2026-05-18T01:49:39.7957060+08:00",
-  "current_task": "01-G2",
+  "last_session_at": "2026-05-18T01:58:46.1240752+08:00",
+  "current_task": "01-G3",
   "_current_task_format": "格式：'{spec_no}-{phase}{order}' 例如 '02-A1a' / '22-H3' / '99-FINAL-1'",
   "phase": "1-infra",
   "_phase_options": "0-pre-flight | 1-infra | 2-business-core | 3-killer-apps | 4-knowledge | 5-workspace | 6-horizontal | 7-compliance | 99-final | done",
@@ -59,7 +59,7 @@
   },
 
   "blocked_count": 0,
-  "done_count": 31,
+  "done_count": 32,
   "total_count": 230,
 
   "credentials_check": {
@@ -281,7 +281,7 @@
       "deps": ["01-A4"]
     },
     "01-G2": {
-      "status": "pending",
+      "status": "done",
       "spec": "01-infra-monorepo",
       "title": "Tauri 复用 apps/web standalone",
       "deps": ["01-G1"]
