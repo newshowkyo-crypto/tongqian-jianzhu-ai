@@ -41,7 +41,7 @@
   - apps/web/gov/agent/admin：Next.js + 一个空首页
   - 验收：`pnpm dev` 6 个 server 全部启动 + 各端口可访问
 
-- [ ] **B3** 配置 Tailwind + shadcn/ui base 到 4 个 Next 应用
+- [x] **B3** 配置 Tailwind + shadcn/ui base 到 4 个 Next 应用
   - 验收：每个 app 的 `tailwind.config.ts` 引入 `packages/ui` 的 token
 
 - [ ] **B4** 编写 prisma seed 骨架（`prisma/seed/index.ts`）
