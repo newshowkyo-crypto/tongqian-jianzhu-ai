@@ -3,7 +3,7 @@
   "mode": "autopilot",
   "_mode_options": "standby（待启动） | autopilot（自治中） | paused（暂停） | done（全部完成）",
   "started_at": "2026-05-17T21:56:17.0002215+08:00",
-  "last_session_at": "2026-05-18T02:21:05.0000000+08:00",
+  "last_session_at": "2026-05-18T02:45:00.0000000+08:00",
   "current_task": "01-H3",
   "_current_task_format": "格式：'{spec_no}-{phase}{order}' 例如 '02-A1a' / '22-H3' / '99-FINAL-1'",
   "phase": "1-infra",
@@ -305,7 +305,7 @@
       "deps": ["01-A4"]
     },
     "01-H3": {
-      "status": "pending",
+      "status": "partial",
       "spec": "01-infra-monorepo",
       "title": "各 package README",
       "deps": ["01-A3"]
