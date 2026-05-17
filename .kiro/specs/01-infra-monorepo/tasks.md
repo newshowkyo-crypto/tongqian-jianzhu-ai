@@ -102,7 +102,7 @@
 
 ## Phase F：备份与监控（4 个）
 
-- [ ] **F1** 编写 `infra/deploy/backup.sh` + cron 配置
+- [x] **F1** 编写 `infra/deploy/backup.sh` + cron 配置
   - 验收：每日凌晨 3:00 跑，OSS 上看到当日备份
 
 - [ ] **F2** 编写 `infra/deploy/restore.sh`

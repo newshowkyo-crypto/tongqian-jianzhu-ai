@@ -1,0 +1,8 @@
+# Install example:
+# crontab infra/deploy/backup.cron
+#
+# Required on VPS:
+# - run from the deploy repository path
+# - configure OSS_TARGET=oss://tongqian-backup/pg when ossutil is installed
+
+0 3 * * * cd /opt/tongqian && /usr/bin/env bash infra/deploy/backup.sh >> ./data/backup/backup.log 2>&1
