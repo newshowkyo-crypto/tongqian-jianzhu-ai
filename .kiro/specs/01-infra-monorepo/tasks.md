@@ -47,7 +47,7 @@
 - [x] **B4** 编写 prisma seed 骨架（`prisma/seed/index.ts`）
   - 验收：`pnpm db:seed` 跑空 seed 不报错
 
-- [ ] **B5** 编写仓库根 `README.md` 的 "本地开发" 章节
+- [x] **B5** 编写仓库根 `README.md` 的 "本地开发" 章节
   - 内容：5 步从 clone 到看到 4 个前端
   - 验收：人/Codex 按照能成功起来
 
