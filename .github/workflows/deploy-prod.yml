@@ -69,6 +69,7 @@ jobs:
 
             echo "$ACR_PASSWORD" | docker login "$ACR_REGISTRY" -u "$ACR_USERNAME" --password-stdin
             export ACR_REGISTRY="$ACR_REGISTRY/$ACR_NAMESPACE"
+            bash infra/deploy/ensure-env.sh
             export TAG="$DEPLOY_TAG"
             export ROLLBACK_TAG="$ROLLBACK_TAG"
             export AUTO_ROLLBACK=1
