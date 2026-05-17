@@ -1,12 +1,12 @@
 {
   "_doc": "Autopilot 进度追踪文件。Codex 每次会话首先读此文件找下一个 task。状态枚举：pending / in_progress / partial / done / blocked",
-  "mode": "standby",
+  "mode": "autopilot",
   "_mode_options": "standby（待启动） | autopilot（自治中） | paused（暂停） | done（全部完成）",
-  "started_at": null,
-  "last_session_at": null,
-  "current_task": null,
+  "started_at": "2026-05-17T21:56:17.0002215+08:00",
+  "last_session_at": "2026-05-17T21:56:17.0002215+08:00",
+  "current_task": "01-A1",
   "_current_task_format": "格式：'{spec_no}-{phase}{order}' 例如 '02-A1a' / '22-H3' / '99-FINAL-1'",
-  "phase": "0-pre-flight",
+  "phase": "1-infra",
   "_phase_options": "0-pre-flight | 1-infra | 2-business-core | 3-killer-apps | 4-knowledge | 5-workspace | 6-horizontal | 7-compliance | 99-final | done",
 
   "milestones": {
@@ -24,15 +24,15 @@
 
 
   "blocked_count": 0,
-  "done_count": 0,
+  "done_count": 3,
   "total_count": 230,
 
   "credentials_check": {
     "_doc": "P0-real = 真凭证必填（启动前必须真实有效）；P1-placeholder = 占位即可，开发期 mock provider，admin 后台可视化替换；P2-auto = Codex 自动生成或 docker-compose 自带。",
     "P0_real": {
-      "ALIYUN_DASHSCOPE_API_KEY": null,
-      "OPENROUTER_API_KEY": null,
-      "DEEPSEEK_API_KEY": null
+      "ALIYUN_DASHSCOPE_API_KEY": "verified",
+      "OPENROUTER_API_KEY": "verified",
+      "DEEPSEEK_API_KEY": "verified"
     },
     "P1_placeholder": {
       "WECHAT_PAY_MCH_ID": "PLACEHOLDER_REPLACE_VIA_ADMIN_PANEL",
@@ -63,9 +63,9 @@
   },
 
   "tasks": {
-    "00-PRE-1": { "status": "pending", "spec": "pre-flight", "title": "检查 P0 凭证", "deps": [] },
-    "00-PRE-2": { "status": "pending", "spec": "pre-flight", "title": "检查 Docker / pnpm / Node 22 已安装", "deps": [] },
-    "00-PRE-3": { "status": "pending", "spec": "pre-flight", "title": "检查 git remote 已配置", "deps": [] },
+    "00-PRE-1": { "status": "done", "spec": "pre-flight", "title": "检查 P0 凭证", "deps": [] },
+    "00-PRE-2": { "status": "done", "spec": "pre-flight", "title": "检查 Docker / pnpm / Node 22 已安装", "deps": [] },
+    "00-PRE-3": { "status": "done", "spec": "pre-flight", "title": "检查 git remote 已配置", "deps": [] },
 
     "01-A1": { "status": "pending", "spec": "01-infra-monorepo", "title": "初始化 pnpm + Turborepo", "deps": ["00-PRE-3"] },
     "01-A2": { "status": "pending", "spec": "01-infra-monorepo", "title": "TypeScript + ESLint + Prettier + Husky + commitlint", "deps": ["01-A1"] },
