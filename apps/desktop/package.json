@@ -3,5 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "description": "Tauri desktop shell for the Tongqian web application.",
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm dlx @tauri-apps/cli@2 dev",
+    "build": "echo \"Desktop bundle workflow is added in 01-G3\"",
+    "lint": "echo \"No lint yet for @tongqian/desktop\"",
+    "typecheck": "echo \"No TypeScript sources yet for @tongqian/desktop\"",
+    "test": "echo \"No tests yet for @tongqian/desktop\"",
+    "clean": "node -e \"require('fs').rmSync('src-tauri/target', { recursive: true, force: true })\"",
+    "tauri": "pnpm dlx @tauri-apps/cli@2"
+  }
 }

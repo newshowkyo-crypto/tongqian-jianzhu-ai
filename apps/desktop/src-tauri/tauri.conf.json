@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Tongqian",
+  "version": "0.1.0",
+  "identifier": "com.tongqian.jianzhu",
+  "build": {
+    "beforeDevCommand": "pnpm --filter @tongqian/web dev",
+    "devUrl": "http://localhost:3000"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Tongqian",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 1024,
+        "minHeight": 720
+      }
+    ]
+  },
+  "bundle": {
+    "active": false,
+    "targets": "all"
+  }
+}

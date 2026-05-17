@@ -118,7 +118,7 @@
 
 ## Phase G：Tauri 桌面端骨架（3 个）
 
-- [ ] **G1** `apps/desktop/` 用 Tauri 2 初始化
+- [x] **G1** `apps/desktop/` 用 Tauri 2 初始化
   - 验收：`pnpm --filter @tongqian/desktop tauri dev` 能起本地预览
 
 - [ ] **G2** 配置 Tauri 复用 apps/web 的 standalone 输出
