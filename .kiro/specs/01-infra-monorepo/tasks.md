@@ -94,7 +94,7 @@
 - [x] **E1** 编写 `infra/deploy/deploy.sh`
 - [x] **E2** 编写 `infra/deploy/canary.sh`（灰度发布权重切换）
 - [x] **E3** 编写 `infra/deploy/rollback.sh`
-- [ ] **E4** 编写 `infra/deploy/health-check.sh`
+- [x] **E4** 编写 `infra/deploy/health-check.sh`
 
 每个验收：在 staging VPS 跑通 + 文档化用法
 
