@@ -58,7 +58,7 @@
 - [x] **C1** 编写 `infra/docker/Dockerfile.api`
   - 验收：`docker build -f infra/docker/Dockerfile.api .` 出镜像 ≤ 150MB
 
-- [ ] **C2** 编写 `infra/docker/Dockerfile.worker`
+- [x] **C2** 编写 `infra/docker/Dockerfile.worker`
   - 同上验收
 
 - [ ] **C3** 编写通用 `infra/docker/Dockerfile.next`（带 APP_NAME build-arg）
