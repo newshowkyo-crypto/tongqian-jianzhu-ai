@@ -49,6 +49,7 @@ prisma/migrations/dev.db
 prisma/migrations/dev.db-journal
 
 # Database dumps
+data/
 *.dump
 *.sql.bak
 

@@ -32,7 +32,7 @@
 
 ## Phase B：本地开发环境（5 个）
 
-- [ ] **B1** 编写 `infra/docker-compose.yml`（PG + Redis + MinIO + Mailhog）
+- [x] **B1** 编写 `infra/docker-compose.yml`（PG + Redis + MinIO + Mailhog）
   - 验收：`pnpm docker:up` 后 4 个服务都 healthy
 
 - [ ] **B2** 编写各 app 的最小 hello-world：
