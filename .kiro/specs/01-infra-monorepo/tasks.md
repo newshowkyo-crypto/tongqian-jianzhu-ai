@@ -16,7 +16,7 @@
   - 文件：根目录 + `.husky/`
   - 验收：`pnpm typecheck` 通过空仓库；`pnpm lint` 通过；提交会触发 hook
 
-- [ ] **A3** 创建 packages 占位目录 + 各自 package.json + tsconfig.json
+- [x] **A3** 创建 packages 占位目录 + 各自 package.json + tsconfig.json
   - 文件：`packages/{types,contracts,permissions,errors,constants,ui,utils,test-fixtures}/`
   - 验收：`pnpm install` 后 workspace 识别全部 8 个 packages
 
