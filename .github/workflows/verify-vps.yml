@@ -1,0 +1,85 @@
+name: Verify VPS Connection
+
+# 仅手动触发（验证 GitHub Secrets + VPS SSH 连通性）
+on:
+  workflow_dispatch:
+
+jobs:
+  verify-vps:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify required secrets
+        run: |
+          echo "Checking secrets presence..."
+          if [ -z "${{ secrets.VPS_HOST }}" ]; then
+            echo "❌ VPS_HOST is empty"
+            exit 1
+          else
+            echo "✅ VPS_HOST is set (length=$(echo -n '${{ secrets.VPS_HOST }}' | wc -c))"
+          fi
+          if [ -z "${{ secrets.VPS_USER }}" ]; then
+            echo "❌ VPS_USER is empty"
+            exit 1
+          else
+            echo "✅ VPS_USER is set: ${{ secrets.VPS_USER }}"
+          fi
+          if [ -z "${{ secrets.VPS_SSH_KEY }}" ]; then
+            echo "❌ VPS_SSH_KEY is empty"
+            exit 1
+          else
+            echo "✅ VPS_SSH_KEY is set (length=$(echo -n '${{ secrets.VPS_SSH_KEY }}' | wc -c))"
+          fi
+          if [ -z "${{ secrets.DEPLOY_PATH }}" ]; then
+            echo "❌ DEPLOY_PATH is empty"
+            exit 1
+          else
+            echo "✅ DEPLOY_PATH is set: ${{ secrets.DEPLOY_PATH }}"
+          fi
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: Add VPS to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+          echo "✅ Host key added"
+
+      - name: Test SSH connection
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+            echo "===== VPS SSH OK ====="
+            echo "Hostname: $(hostname)"
+            echo "Date: $(date)"
+            echo "User: $(whoami)"
+            echo "Pwd: $(pwd)"
+            echo "Deploy path exists: $(test -d ${{ secrets.DEPLOY_PATH }} && echo YES || echo NO)"
+            echo "Docker: $(docker --version 2>&1 | head -1)"
+            echo "Disk: $(df -h / | tail -1)"
+            echo "Memory: $(free -h | head -2 | tail -1)"
+            echo "===== ALL OK ====="
+          EOF
+
+      - name: Test deploy path write permission
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+            cd ${{ secrets.DEPLOY_PATH }}
+            touch .verify-write-test
+            ls -la .verify-write-test
+            rm .verify-write-test
+            echo "✅ Write permission OK"
+          EOF
+
+      - name: Final summary
+        run: |
+          echo "🎉 VPS connection verified successfully!"
+          echo ""
+          echo "Next steps:"
+          echo "  1. Codex can now use GitHub Actions to deploy to your VPS"
+          echo "  2. Delete this workflow if you wish (not strictly required)"
+          echo "  3. Continue with Codex Autopilot development"
