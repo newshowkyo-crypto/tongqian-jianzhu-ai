@@ -8,7 +8,7 @@
 
 ## Phase A：Monorepo 骨架（5 个）
 
-- [ ] **A1** 初始化 pnpm + Turborepo（创建 `package.json` / `pnpm-workspace.yaml` / `turbo.json` / `.npmrc`）
+- [x] **A1** 初始化 pnpm + Turborepo（创建 `package.json` / `pnpm-workspace.yaml` / `turbo.json` / `.npmrc`）
   - 文件：根目录
   - 验收：`pnpm install` 不报错；`pnpm dev` 命令存在（即使无 app）
 

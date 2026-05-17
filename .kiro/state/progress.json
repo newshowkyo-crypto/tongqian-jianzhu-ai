@@ -3,8 +3,8 @@
   "mode": "autopilot",
   "_mode_options": "standby（待启动） | autopilot（自治中） | paused（暂停） | done（全部完成）",
   "started_at": "2026-05-17T21:56:17.0002215+08:00",
-  "last_session_at": "2026-05-17T21:56:17.0002215+08:00",
-  "current_task": "01-A1",
+  "last_session_at": "2026-05-17T22:04:29.0643338+08:00",
+  "current_task": "01-A2",
   "_current_task_format": "格式：'{spec_no}-{phase}{order}' 例如 '02-A1a' / '22-H3' / '99-FINAL-1'",
   "phase": "1-infra",
   "_phase_options": "0-pre-flight | 1-infra | 2-business-core | 3-killer-apps | 4-knowledge | 5-workspace | 6-horizontal | 7-compliance | 99-final | done",
@@ -24,7 +24,7 @@
 
 
   "blocked_count": 0,
-  "done_count": 3,
+  "done_count": 4,
   "total_count": 230,
 
   "credentials_check": {
@@ -67,7 +67,7 @@
     "00-PRE-2": { "status": "done", "spec": "pre-flight", "title": "检查 Docker / pnpm / Node 22 已安装", "deps": [] },
     "00-PRE-3": { "status": "done", "spec": "pre-flight", "title": "检查 git remote 已配置", "deps": [] },
 
-    "01-A1": { "status": "pending", "spec": "01-infra-monorepo", "title": "初始化 pnpm + Turborepo", "deps": ["00-PRE-3"] },
+    "01-A1": { "status": "done", "spec": "01-infra-monorepo", "title": "初始化 pnpm + Turborepo", "deps": ["00-PRE-3"] },
     "01-A2": { "status": "pending", "spec": "01-infra-monorepo", "title": "TypeScript + ESLint + Prettier + Husky + commitlint", "deps": ["01-A1"] },
     "01-A3": { "status": "pending", "spec": "01-infra-monorepo", "title": "packages 占位（8 个）", "deps": ["01-A2"] },
     "01-A4": { "status": "pending", "spec": "01-infra-monorepo", "title": "apps 占位（7 个）", "deps": ["01-A3"] },
