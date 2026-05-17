@@ -92,7 +92,7 @@
 ## Phase E：部署脚本（4 个）
 
 - [x] **E1** 编写 `infra/deploy/deploy.sh`
-- [ ] **E2** 编写 `infra/deploy/canary.sh`（灰度发布权重切换）
+- [x] **E2** 编写 `infra/deploy/canary.sh`（灰度发布权重切换）
 - [ ] **E3** 编写 `infra/deploy/rollback.sh`
 - [ ] **E4** 编写 `infra/deploy/health-check.sh`
 
