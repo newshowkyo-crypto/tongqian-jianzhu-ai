@@ -12,7 +12,7 @@
   - 文件：根目录
   - 验收：`pnpm install` 不报错；`pnpm dev` 命令存在（即使无 app）
 
-- [ ] **A2** 配置 TypeScript（`tsconfig.base.json`）+ ESLint + Prettier + Husky + commitlint
+- [x] **A2** 配置 TypeScript（`tsconfig.base.json`）+ ESLint + Prettier + Husky + commitlint
   - 文件：根目录 + `.husky/`
   - 验收：`pnpm typecheck` 通过空仓库；`pnpm lint` 通过；提交会触发 hook
 
