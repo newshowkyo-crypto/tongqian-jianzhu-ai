@@ -105,7 +105,7 @@
 - [x] **F1** 编写 `infra/deploy/backup.sh` + cron 配置
   - 验收：每日凌晨 3:00 跑，OSS 上看到当日备份
 
-- [ ] **F2** 编写 `infra/deploy/restore.sh`
+- [x] **F2** 编写 `infra/deploy/restore.sh`
   - 验收：从指定备份能恢复到测试库
 
 - [ ] **F3** 部署 Uptime Kuma + 配置 8 个监控端点
