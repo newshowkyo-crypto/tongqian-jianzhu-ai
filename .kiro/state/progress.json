@@ -9,6 +9,20 @@
   "phase": "0-pre-flight",
   "_phase_options": "0-pre-flight | 1-infra | 2-business-core | 3-killer-apps | 4-knowledge | 5-workspace | 6-horizontal | 7-compliance | 99-final | done",
 
+  "milestones": {
+    "_note": "Codex 跑到对应 trigger task 时必须写 .kiro/state/MILESTONE-{name}.md 提醒用户。详见 CODEX-PROMPTS.md 段 1 '里程碑主动提醒' 段。",
+    "M-W1-INFRA-DONE": { "trigger": "01-I2", "status": "pending", "reminders": "ICP 备案 / 律师协议 / 微信凭证整理" },
+    "M-W2-CORE-DONE": { "trigger": "06-H1", "status": "pending", "reminders": "阿里云 OSS/OCR/SLS / 短信签名 / 内测客户名单" },
+    "M-W3-COMMERCE-DONE": { "trigger": "09-A11", "status": "pending", "reminders": "微信支付证书 / 支付宝密钥 / admin 后台访问" },
+    "M-W4-AI-DONE": { "trigger": "10-A9", "status": "pending", "reminders": "VPS 信息 / ACR 开通 / 测试客户案例" },
+    "M-W5-PROMPT-NEEDED": { "trigger": "11-A1", "status": "pending", "reminders": "BLOCKED 等专家提供 30+ Prompt 内容" },
+    "M-W6-OPS-READY": { "trigger": "24-ALL", "status": "pending", "reminders": "团队培训 / 凭证替换 / 智能管家招募" },
+    "M-W7-COMPLIANCE-DONE": { "trigger": "28-ALL", "status": "pending", "reminders": "ICP 催办 / DNS 解析 / 协议定稿" },
+    "M-W8-LAUNCH-READY": { "trigger": "99-FINAL-3", "status": "pending", "reminders": "e2e / 晚宴 / 内容 / 奖励物流" },
+    "M-MONTHLY-CRON": { "trigger": "monthly-cron", "status": "ongoing", "reminders": "BR-901 / BR-903 红线 + 信誉异常 + 关键指标" }
+  },
+
+
   "blocked_count": 0,
   "done_count": 0,
   "total_count": 230,

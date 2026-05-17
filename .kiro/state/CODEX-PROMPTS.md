@@ -15,7 +15,7 @@
 - 项目根：D:\tongqian
 - Git 仓库：https://github.com/newshowkyo-crypto/tongqian-jianzhu-ai
 - 默认分支：main
-- Git 用户：Tongqian Founder <biz@tongqian.xin>
+- Git 用户：Tongqian Founder <biz@tongqian.io>
 - 包管理：pnpm 9 / Node 22 / Docker Desktop
 - 平台：Windows 11，PowerShell
 
@@ -56,6 +56,79 @@
 - 测试 fixtures 体系优先（02-spec R5 在 01-infra 后第 2 个落地）
 - 跑到 M5 prompt 任务时停下，写 BLOCKED.md 等专家提供核心 Prompt 内容
 - 所有占位凭证后台可视化替换（24-admin-console）
+
+【里程碑主动提醒（W1-M3 期间，每到节点必写 BLOCKED.md）】
+SHALL 在以下节点 task 完成时立即写 .kiro/state/MILESTONE-{N}.md 提醒用户：
+
+- **M-W1（01-infra 完成时）**：
+  写 MILESTONE-W1-INFRA-DONE.md：
+  "✅ Monorepo + Docker 本地环境就绪。提醒：
+   1. 阿里云 ICP 备案进度查询（如未提交去提交）
+   2. 智能管家协议律师起草排期（律师 1 万-2 万）
+   3. 微信公众号 / 企业微信凭证整理（待你填到 admin 后台）"
+
+- **M-W2（02-shared-contracts + 06-auth-rbac 完成时）**：
+  写 MILESTONE-W2-CORE-DONE.md：
+  "✅ 鉴权 + 共享契约完成。提醒：
+   1. 检查阿里云 OSS / OCR / SLS 是否已开通（如未开通跑 PREP-CHECKLIST 教程）
+   2. 阿里云短信签名是否已审核通过
+   3. 准备 5-10 家内测客户名单（H1-H4）"
+
+- **M-W3（07/08/09 商业核心完成时）**：
+  写 MILESTONE-W3-COMMERCE-DONE.md：
+  "✅ 订阅 + 点数 + 支付 完成。提醒：
+   1. 微信支付 API 证书 + V3 密钥准备好（pay.weixin.qq.com 下载）
+   2. 支付宝商户私钥 + 公钥准备好
+   3. 配置到 admin.tongqian.xin 后台（W4 后访问）"
+
+- **M-W4（04 AI Gateway + 10 报告中心完成时）**：
+  写 MILESTONE-W4-AI-DONE.md：
+  "✅ AI Gateway 就绪。提醒：
+   1. 提供 VPS 信息让 Codex 配自动部署（CODEX-PROMPTS.md 段 3）
+   2. 阿里云 ACR 镜像仓库开通（控制台搜'容器镜像服务'）
+   3. 准备本地测试客户案例（≥ 5 份脱敏合同 / 招标 / 资质 给 prompt 调试）"
+
+- **M-W5（11-15 五大杀手锏开始时，关键提醒）**：
+  写 MILESTONE-W5-PROMPT-NEEDED.md：
+  "⚠️ 等待专家配合 - 5 大杀手锏 prompt 内容由专家提供：
+   1. P1 合同审查（基础 + 专业）
+   2. P2 标书框架（商务 + 技术）
+   3. P3 资质升级路径
+   4. P4 政策性资金匹配
+   5. P5 早安 AI 简报
+   ...其他 25+ 详见 owner-preparation-checklist.md M 段
+   STATUS: BLOCKED until 专家提供"
+   → 同时把 progress.json 中 11/12/13/14/15 spec 的 prompt 任务标记 partial
+
+- **M-W6（22 智能管家工作台 + 24 admin-console 完成时）**：
+  写 MILESTONE-W6-OPS-READY.md：
+  "✅ 后台可视化管理就绪。提醒：
+   1. 你团队培训客户成功 1 人 + 运维 1 人使用 admin 后台
+   2. 配置真实凭证（微信支付 / 公众号 / 阿里云）替换 PLACEHOLDER
+   3. 准备首批 50 智能管家招募名单"
+
+- **M-W7（23 政府版 + 26 上瘾 + 28 合规 完成时）**：
+  写 MILESTONE-W7-COMPLIANCE-DONE.md：
+  "✅ 政府版 + 合规 + 上瘾全部就绪。提醒：
+   1. ICP 备案如未通过，立即催阿里云
+   2. tongqian.xin DNS 解析配 5 个子域到 VPS
+   3. 用户协议 / 隐私政策 / 智能管家协议 律师定稿"
+
+- **M-W8（27 通知 + 99-FINAL 完成时）**：
+  写 MILESTONE-W8-LAUNCH-READY.md：
+  "🚀 上线准备完成。提醒：
+   1. 全套 e2e 测试跑过 → 内测 5-10 家客户
+   2. M3 内测客户晚宴排期（你团队已有计划）
+   3. 公众号 20 篇预备文章准备完毕？
+   4. 实物奖励物流准备 3 个月囤货？"
+
+- **M-MONTHLY（每月 1 号自动）**：
+  写 MILESTONE-MONTHLY-{YYYY-MM}.md：
+  - 上月 BR-901 + BR-903 红线指标自检
+  - 上月开放问题盘点
+  - 创始人准备清单进度
+  - 智能管家 / 客户 信誉异常告警
+  - 单月退款率 / 流失率 / NPS 等关键指标
 
 【主循环 · 每个 task】
 LOAD（≤ 8 工具调用）
@@ -128,7 +201,7 @@ LOAD（≤ 8 工具调用）
 - VPS OS：<待你提供>
 - VPS 用户：<待你提供>
 - VPS SSH 方式：<密码 / 密钥>
-- 主域名：<待你提供，建议 tongqian.xin 或 tongqian.xin>
+- 主域名：<待你提供，建议 tongqian.cn 或 tongqian.io>
 - 阿里云 ACR：<待开通后提供 registry URL>
 
 【任务】
@@ -228,7 +301,7 @@ git remote set-url origin https://TOKEN@github.com/newshowkyo-crypto/tongqian-ji
 | 阶段 | 周次 | 你做 | Codex 做 |
 |---|---|---|---|
 | **现在** | Day 0 | 粘贴段 1 启动 | 跑 01-A1 ~ 03-G2 基础设施 |
-| **域名** | W1 | 买 tongqian.xin + tongqian.xin / 提交备案 | 继续推进 |
+| **域名** | W1 | 买 tongqian.cn + tongqian.io / 提交备案 | 继续推进 |
 | **W2-W3** | Day 7-21 | 看进度 | 跑 06-09 商业核心 + 04 AI Gateway |
 | **W4** | Day 28 | 提供 VPS 信息 + 粘贴段 3 | 配 VPS 部署链路 |
 | **W5** | Day 35 | 配 GitHub Secrets / VPS 首次部署 | 跑 5 大杀手锏 |
@@ -240,5 +313,5 @@ git remote set-url origin https://TOKEN@github.com/newshowkyo-crypto/tongqian-ji
 ## 一句话总结
 
 **今天**：粘贴段 1，让 Codex 开跑。
-**这周内**：买域名（tongqian.xin 优先备案 + tongqian.xin 备）。
+**这周内**：买域名（tongqian.cn 优先备案 + tongqian.io 备）。
 **4 周后**：把 VPS 信息发我（IP / OS / 用户 / SSH），我帮你拼段 3 让 Codex 配部署。
