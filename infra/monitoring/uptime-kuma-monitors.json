@@ -1,0 +1,67 @@
+{
+  "notes": [
+    "Create these 8 monitors in Uptime Kuma after the first admin account is initialized.",
+    "Container hostnames are resolved inside docker-compose.prod.yml network.",
+    "Public host checks can be swapped in after DNS and TLS are ready."
+  ],
+  "monitors": [
+    {
+      "name": "web frontend",
+      "type": "http",
+      "url": "http://web:3000/",
+      "intervalSeconds": 60,
+      "retryIntervalSeconds": 20
+    },
+    {
+      "name": "gov frontend",
+      "type": "http",
+      "url": "http://gov:3000/",
+      "intervalSeconds": 60,
+      "retryIntervalSeconds": 20
+    },
+    {
+      "name": "agent workspace",
+      "type": "http",
+      "url": "http://agent:3000/",
+      "intervalSeconds": 60,
+      "retryIntervalSeconds": 20
+    },
+    {
+      "name": "admin console",
+      "type": "http",
+      "url": "http://admin:3000/",
+      "intervalSeconds": 60,
+      "retryIntervalSeconds": 20
+    },
+    {
+      "name": "api health",
+      "type": "http",
+      "url": "http://api:4000/health",
+      "intervalSeconds": 30,
+      "retryIntervalSeconds": 10
+    },
+    {
+      "name": "worker health",
+      "type": "http",
+      "url": "http://worker:4100/health",
+      "intervalSeconds": 30,
+      "retryIntervalSeconds": 10
+    },
+    {
+      "name": "postgres tcp",
+      "type": "tcp",
+      "hostname": "postgres",
+      "port": 5432,
+      "intervalSeconds": 60,
+      "retryIntervalSeconds": 20
+    },
+    {
+      "name": "redis tcp",
+      "type": "tcp",
+      "hostname": "redis",
+      "port": 6379,
+      "intervalSeconds": 60,
+      "retryIntervalSeconds": 20
+    }
+  ]
+}

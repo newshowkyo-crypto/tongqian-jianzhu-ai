@@ -162,3 +162,19 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: tqj-prod-uptime-kuma
+    restart: unless-stopped
+    ports:
+      - '${UPTIME_KUMA_PORT:-3010}:3001'
+    volumes:
+      - ./data/uptime-kuma:/app/data
+    depends_on:
+      nginx:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy

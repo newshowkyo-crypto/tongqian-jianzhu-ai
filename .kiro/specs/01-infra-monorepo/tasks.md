@@ -108,7 +108,7 @@
 - [x] **F2** 编写 `infra/deploy/restore.sh`
   - 验收：从指定备份能恢复到测试库
 
-- [ ] **F3** 部署 Uptime Kuma + 配置 8 个监控端点
+- [x] **F3** 部署 Uptime Kuma + 配置 8 个监控端点
   - 验收：8 个端点都能监控
 
 - [ ] **F4** 配置阿里云 SLS 接收 Docker 容器日志
