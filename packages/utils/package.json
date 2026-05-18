@@ -23,6 +23,11 @@
     "clean": "rimraf dist tsconfig.tsbuildinfo"
   },
   "devDependencies": {
+    "@types/node": "^22.10.2",
     "rimraf": "^6.0.1"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "decimal.js": "^10.6.0"
   }
 }
