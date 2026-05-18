@@ -54,7 +54,7 @@
 - [x] **C1** 实现 `roles.ts` + `agent-subtypes.ts` + `position-tags.ts` + `platform-roles.ts`
   - 验收：4 大注册角色 + 4 类智能管家子类型 + 30+ 岗位 + 8 个平台运营子角色全部导出
 
-- [ ] **C2** 实现 `permission-points.ts`（业务权限点常量）
+- [x] **C2** 实现 `permission-points.ts`（业务权限点常量）
   - 验收：起步 ≥ 30 个权限点（合同/订阅/派单/数据导出/提现/申诉/平台运营），`{resource}:{action}` 格式
 
 - [ ] **C3** 实现 `role-permission.ts` + `position-permission.ts` 映射表 + `hasPermission` 工具 + `scope-guard.ts`
