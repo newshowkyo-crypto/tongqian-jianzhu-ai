@@ -16,7 +16,7 @@
   - 文件：`api-response.ts` / `pagination.ts` / `id.ts` / `money.ts` / `audit.ts` / `trace.ts` / `async-task.ts` / `idempotency.ts` + `index.ts`
   - 验收：协议 P-1 至 P-3 / P-8 类型定义齐全；ApiResponse / ApiResponseList 双形态导出
 
-- [ ] **A2a** 在 `packages/types/src/subscription/` 实现 plan / status / change-plan / auto-renewal
+- [x] **A2a** 在 `packages/types/src/subscription/` 实现 plan / status / change-plan / auto-renewal
   - 验收：5 档订阅枚举 + 完整状态机 trial/active/past_due/canceled/expired
 
 - [ ] **A2b** 在 `packages/types/src/credit/` 实现 transaction / lot / expiry

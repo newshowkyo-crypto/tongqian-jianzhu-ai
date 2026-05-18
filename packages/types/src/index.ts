@@ -3,3 +3,7 @@ export * from './auth/role.js';
 export * from './auth/scope.js';
 export * from './auth/tenant.js';
 export * from './common/index.js';
+export * from './subscription/auto-renewal.js';
+export * from './subscription/change-plan.js';
+export * from './subscription/plan.js';
+export * from './subscription/status.js';
