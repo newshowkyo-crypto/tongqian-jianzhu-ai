@@ -1,0 +1,85 @@
+openapi: 3.1.0
+info:
+  title: Tongqian Jianzhu AI API
+  version: 0.1.0
+  description: Shared OpenAPI contract for the Tongqian Jianzhu AI platform.
+  license:
+    name: Proprietary
+    url: https://tongqian.local/license
+servers:
+  - url: /api/v1
+    description: Default API base path
+tags:
+  - name: Health
+    description: Service health endpoints.
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      operationId: getHealth
+      summary: Check API health
+      security: []
+      responses:
+        '200':
+          description: API service is healthy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - data
+        - message
+        - traceId
+      properties:
+        code:
+          type: string
+          example: OK
+        data:
+          type: object
+          additionalProperties: false
+          required:
+            - status
+          properties:
+            status:
+              type: string
+              enum:
+                - ok
+        message:
+          type: string
+          example: success
+        traceId:
+          type: string
+          example: trace_01JZ0000000000000000000000
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - data
+        - message
+        - traceId
+      properties:
+        code:
+          type: string
+          example: BAD_REQUEST
+        data:
+          type: 'null'
+        message:
+          type: string
+          example: Request failed
+        traceId:
+          type: string
+          example: trace_01JZ0000000000000000000000

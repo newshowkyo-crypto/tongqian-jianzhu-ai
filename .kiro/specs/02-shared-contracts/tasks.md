@@ -76,7 +76,7 @@
 
 ## Phase E：contracts 包（3 个）
 
-- [ ] **E1** 创建 `openapi.yaml` 主入口 + 目录结构
+- [x] **E1** 创建 `openapi.yaml` 主入口 + 目录结构
   - 文件：`openapi.yaml` 仅含 `/health` + `paths/` 与 `components/` 目录占位
   - 验收：通过 `redocly lint`
 
