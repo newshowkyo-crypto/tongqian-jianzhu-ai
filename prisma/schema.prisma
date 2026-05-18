@@ -502,6 +502,85 @@ model AgentWithdrawal {
   @@map("agent_withdrawals")
 }
 
+model Report {
+  id              String   @id @default(uuid()) @db.Uuid
+  tenantId        String   @map("tenant_id")
+  userId          String   @map("user_id")
+  sourceModule    String   @map("source_module")
+  sourceTaskId    String   @map("source_task_id")
+  aiTaskType      String   @map("ai_task_type")
+  tier            Int
+  confidence      String
+  nextStep        String   @map("next_step")
+  h5Url           String?  @map("h5_url")
+  pdfUrl          String?  @map("pdf_url")
+  templateVersion Int      @map("template_version")
+  brandMode       String   @map("brand_mode")
+  agentId         String?  @map("agent_id")
+  dataSnapshot    Json     @map("data_snapshot")
+  traceId         String   @map("trace_id")
+  watermark       String
+  deviceLimit     Int      @default(5) @map("device_limit")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  rating ReportRating?
+  radar  ReportDifficultyRadar?
+
+  @@index([tenantId, userId, createdAt])
+  @@index([traceId])
+  @@map("reports")
+}
+
+model ReportRating {
+  id       String   @id @default(uuid()) @db.Uuid
+  reportId String   @unique @map("report_id") @db.Uuid
+  stars    Int
+  feedback String?
+  ratedAt  DateTime @default(now()) @map("rated_at")
+  report   Report   @relation(fields: [reportId], references: [id], onDelete: Restrict)
+
+  @@map("report_ratings")
+}
+
+model ReportTemplate {
+  id           String   @id @default(uuid()) @db.Uuid
+  sourceModule String   @map("source_module")
+  version      Int
+  layoutSchema Json     @map("layout_schema")
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@unique([sourceModule, version])
+  @@index([sourceModule, isActive])
+  @@map("report_templates")
+}
+
+model ReportEscalation {
+  id        String   @id @default(uuid()) @db.Uuid
+  reportId  String   @map("report_id") @db.Uuid
+  type      String
+  status    String
+  ticketId  String?  @map("ticket_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([reportId, type])
+  @@map("report_escalations")
+}
+
+model ReportDifficultyRadar {
+  id               String  @id @default(uuid()) @db.Uuid
+  reportId         String  @unique @map("report_id") @db.Uuid
+  professional     Int
+  timeHours        Int     @map("time_hours")
+  riskScore        Int     @map("risk_score")
+  costScore        Int     @map("cost_score")
+  agentAlternative Json    @map("agent_alternative")
+  renderedSvg      String? @map("rendered_svg")
+  report           Report  @relation(fields: [reportId], references: [id], onDelete: Restrict)
+
+  @@map("report_difficulty_radars")
+}
+
 enum AiTaskStatus {
   queued
   processing

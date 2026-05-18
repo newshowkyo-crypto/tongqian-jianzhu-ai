@@ -16,6 +16,7 @@ export * from './credit/transaction.js';
 export * from './dispatch/index.js';
 export * from './payment/index.js';
 export * from './report/required-elements.js';
+export * from './report-center/index.js';
 export * from './report/status.js';
 export * from './reputation/index.js';
 export * from './subscription/auto-renewal.js';
