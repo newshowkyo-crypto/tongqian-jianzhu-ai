@@ -46,7 +46,7 @@
 - [x] **B2** 实现 `codes.ts`（按 [`design.md` §11.5](../00-project-overview/design.md) 33 个命名空间起步框架）
   - 验收：每命名空间至少 1 个示例错误码 + `as const satisfies Record<string, ErrorCodeDef>`
 
-- [ ] **B3** 实现 `errorMiddleware`（NestJS 异常过滤器）+ `getErrorMessage` 工具
+- [x] **B3** 实现 `errorMiddleware`（NestJS 异常过滤器）+ `getErrorMessage` 工具
   - 验收：能把 BaseError 序列化成 ApiResponse 失败格式 + 单测覆盖
 
 ## Phase C：permissions 包（3 个）

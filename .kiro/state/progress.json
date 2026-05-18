@@ -3,12 +3,11 @@
   "mode": "autopilot",
   "_mode_options": "standby（待启动） | autopilot（自治中） | paused（暂停） | done（全部完成）",
   "started_at": "2026-05-17T21:56:17.0002215+08:00",
-  "last_session_at": "2026-05-18T11:11:29.0488845+08:00",
-  "current_task": "02-B3",
+  "last_session_at": "2026-05-18T03:19:53.229Z",
+  "current_task": "02-C1",
   "_current_task_format": "格式：'{spec_no}-{phase}{order}' 例如 '02-A1a' / '22-H3' / '99-FINAL-1'",
   "phase": "2-business-core",
   "_phase_options": "0-pre-flight | 1-infra | 2-business-core | 3-killer-apps | 4-knowledge | 5-workspace | 6-horizontal | 7-compliance | 99-final | done",
-
   "milestones": {
     "_note": "Codex 跑到对应 trigger task 时必须写 .kiro/state/MILESTONE-{name}.md 提醒用户。详见 CODEX-PROMPTS.md 段 1 '里程碑主动提醒' 段。",
     "M-W1-INFRA-DONE": {
@@ -57,11 +56,9 @@
       "reminders": "BR-901 / BR-903 红线 + 信誉异常 + 关键指标"
     }
   },
-
   "blocked_count": 0,
-  "done_count": 47,
+  "done_count": 48,
   "total_count": 230,
-
   "credentials_check": {
     "_doc": "P0-real = 真凭证必填（启动前必须真实有效）；P1-placeholder = 占位即可，开发期 mock provider，admin 后台可视化替换；P2-auto = Codex 自动生成或 docker-compose 自带。",
     "P0_real": {
@@ -96,9 +93,13 @@
     },
     "_note": "Autopilot 启动只检查 P0_real（3 项 AI Key）。P1_placeholder 全部用占位值跑，启用 mock provider，e2e 自动 skip。admin-console（24-spec）必含『系统配置 → 凭证管理』可视化页面，用户后期填真凭证一键热更新无需改代码。火山方舟已移除（DeepSeek 直连替代）。"
   },
-
   "tasks": {
-    "00-PRE-1": { "status": "done", "spec": "pre-flight", "title": "检查 P0 凭证", "deps": [] },
+    "00-PRE-1": {
+      "status": "done",
+      "spec": "pre-flight",
+      "title": "检查 P0 凭证",
+      "deps": []
+    },
     "00-PRE-2": {
       "status": "done",
       "spec": "pre-flight",
@@ -111,1147 +112,1538 @@
       "title": "检查 git remote 已配置",
       "deps": []
     },
-
     "01-A1": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "初始化 pnpm + Turborepo",
-      "deps": ["00-PRE-3"]
+      "deps": [
+        "00-PRE-3"
+      ]
     },
     "01-A2": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "TypeScript + ESLint + Prettier + Husky + commitlint",
-      "deps": ["01-A1"]
+      "deps": [
+        "01-A1"
+      ]
     },
     "01-A3": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "packages 占位（8 个）",
-      "deps": ["01-A2"]
+      "deps": [
+        "01-A2"
+      ]
     },
     "01-A4": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "apps 占位（7 个）",
-      "deps": ["01-A3"]
+      "deps": [
+        "01-A3"
+      ]
     },
     "01-A5": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "Prisma 骨架",
-      "deps": ["01-A4"]
+      "deps": [
+        "01-A4"
+      ]
     },
     "01-B1": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "docker-compose 本地基础设施",
-      "deps": ["01-A5"]
+      "deps": [
+        "01-A5"
+      ]
     },
     "01-B2": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "各 app hello-world",
-      "deps": ["01-B1"]
+      "deps": [
+        "01-B1"
+      ]
     },
     "01-B3": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "Tailwind + shadcn 接入 4 子前端",
-      "deps": ["01-B2"]
+      "deps": [
+        "01-B2"
+      ]
     },
     "01-B4": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "Prisma seed 骨架",
-      "deps": ["01-B2"]
+      "deps": [
+        "01-B2"
+      ]
     },
     "01-B5": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "README 本地开发章节",
-      "deps": ["01-B2"]
+      "deps": [
+        "01-B2"
+      ]
     },
     "01-C1": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "Dockerfile.api",
-      "deps": ["01-B2"]
+      "deps": [
+        "01-B2"
+      ]
     },
     "01-C2": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "Dockerfile.worker",
-      "deps": ["01-B2"]
+      "deps": [
+        "01-B2"
+      ]
     },
     "01-C3": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "Dockerfile.next",
-      "deps": ["01-B2"]
+      "deps": [
+        "01-B2"
+      ]
     },
     "01-C4": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "Dockerfile.nginx",
-      "deps": ["01-C3"]
+      "deps": [
+        "01-C3"
+      ]
     },
     "01-C5": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "docker-compose.prod.yml",
-      "deps": ["01-C4"]
+      "deps": [
+        "01-C4"
+      ]
     },
     "01-D1": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "ci.yml",
-      "deps": ["01-C5"]
+      "deps": [
+        "01-C5"
+      ]
     },
     "01-D2": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "build-images.yml",
-      "deps": ["01-D1"]
+      "deps": [
+        "01-D1"
+      ]
     },
     "01-D3": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "deploy-staging.yml",
-      "deps": ["01-D2"]
+      "deps": [
+        "01-D2"
+      ]
     },
     "01-D4": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "deploy-prod.yml",
-      "deps": ["01-D3"]
+      "deps": [
+        "01-D3"
+      ]
     },
     "01-E1": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "deploy.sh",
-      "deps": ["01-D4"]
+      "deps": [
+        "01-D4"
+      ]
     },
     "01-E2": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "canary.sh",
-      "deps": ["01-E1"]
+      "deps": [
+        "01-E1"
+      ]
     },
     "01-E3": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "rollback.sh",
-      "deps": ["01-E1"]
+      "deps": [
+        "01-E1"
+      ]
     },
     "01-E4": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "health-check.sh",
-      "deps": ["01-E1"]
+      "deps": [
+        "01-E1"
+      ]
     },
     "01-F1": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "backup.sh",
-      "deps": ["01-C5"]
+      "deps": [
+        "01-C5"
+      ]
     },
     "01-F2": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "restore.sh",
-      "deps": ["01-F1"]
+      "deps": [
+        "01-F1"
+      ]
     },
     "01-F3": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "Uptime Kuma 部署",
-      "deps": ["01-C5"]
+      "deps": [
+        "01-C5"
+      ]
     },
     "01-F4": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "阿里云 SLS 配置",
-      "deps": ["01-C5"]
+      "deps": [
+        "01-C5"
+      ]
     },
     "01-G1": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "apps/desktop Tauri 初始化",
-      "deps": ["01-A4"]
+      "deps": [
+        "01-A4"
+      ]
     },
     "01-G2": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "Tauri 复用 apps/web standalone",
-      "deps": ["01-G1"]
+      "deps": [
+        "01-G1"
+      ]
     },
     "01-G3": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "desktop-release.yml",
-      "deps": ["01-G2"]
+      "deps": [
+        "01-G2"
+      ]
     },
     "01-H1": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "仓库根 README 完善",
-      "deps": ["01-B5"]
+      "deps": [
+        "01-B5"
+      ]
     },
     "01-H2": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "各 app README",
-      "deps": ["01-A4"]
+      "deps": [
+        "01-A4"
+      ]
     },
     "01-H3": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "各 package README",
-      "deps": ["01-A3"]
+      "deps": [
+        "01-A3"
+      ]
     },
     "01-I1": {
       "status": "done",
       "spec": "01-infra-monorepo",
       "title": "CI 流水线总耗时验证",
-      "deps": ["01-D1"]
+      "deps": [
+        "01-D1"
+      ]
     },
     "01-I2": {
       "status": "partial",
       "spec": "01-infra-monorepo",
       "title": "部署时长验证",
-      "deps": ["01-D4"],
+      "deps": [
+        "01-D4"
+      ],
       "next_action": "推迟到 99-FINAL-1。当前阻塞原因：(1) 阿里云 ACR 镜像仓库尚未开通；(2) 一期单 VPS 无独立 staging 环境；(3) Codex 无 GitHub Actions 日志读取权限。所有 deploy workflows 已写好（D1-D4 + E1-E4 已 done），W4 用户开通 ACR 并配 ALIYUN_ACR_* secrets 后由 99-FINAL 阶段一次性跑通。详见 docs/decisions/2026-05-17-adr-auto-defer-deploy-verification.md。",
       "deferred_to": "99-FINAL-1"
     },
-
     "02-A1a": {
       "status": "done",
       "spec": "02-shared-contracts",
       "title": "types/auth 子目录",
-      "deps": ["01-A3"]
+      "deps": [
+        "01-A3"
+      ]
     },
     "02-A1b": {
       "status": "done",
       "spec": "02-shared-contracts",
       "title": "types/common 子目录",
-      "deps": ["01-A3"]
+      "deps": [
+        "01-A3"
+      ]
     },
     "02-A2a": {
       "status": "done",
       "spec": "02-shared-contracts",
       "title": "types/subscription 子目录",
-      "deps": ["02-A1a"]
+      "deps": [
+        "02-A1a"
+      ]
     },
     "02-A2b": {
       "status": "done",
       "spec": "02-shared-contracts",
       "title": "types/credit 子目录",
-      "deps": ["02-A1a"]
+      "deps": [
+        "02-A1a"
+      ]
     },
     "02-A3a": {
       "status": "done",
       "spec": "02-shared-contracts",
       "title": "types/ai-task 子目录",
-      "deps": ["02-A1a"]
+      "deps": [
+        "02-A1a"
+      ]
     },
     "02-A3b": {
       "status": "done",
       "spec": "02-shared-contracts",
       "title": "types/report 子目录",
-      "deps": ["02-A3a"]
+      "deps": [
+        "02-A3a"
+      ]
     },
     "02-A4": {
       "status": "done",
       "spec": "02-shared-contracts",
       "title": "types/dispatch + reputation",
-      "deps": ["02-A1a"]
+      "deps": [
+        "02-A1a"
+      ]
     },
     "02-A5": {
       "status": "done",
       "spec": "02-shared-contracts",
       "title": "types/approval（P-7）",
-      "deps": ["02-A1a"]
+      "deps": [
+        "02-A1a"
+      ]
     },
     "02-B1": {
       "status": "done",
       "spec": "02-shared-contracts",
       "title": "errors BaseError + 8 子类",
-      "deps": ["02-A1a"]
+      "deps": [
+        "02-A1a"
+      ]
     },
     "02-B2": {
       "status": "done",
       "spec": "02-shared-contracts",
       "title": "errors codes.ts 33 命名空间起步",
-      "deps": ["02-B1"]
+      "deps": [
+        "02-B1"
+      ]
     },
     "02-B3": {
-      "status": "pending",
+      "status": "done",
       "spec": "02-shared-contracts",
       "title": "errorMiddleware + getErrorMessage",
-      "deps": ["02-B2"]
+      "deps": [
+        "02-B2"
+      ]
     },
     "02-C1": {
       "status": "pending",
       "spec": "02-shared-contracts",
       "title": "permissions/roles + agent-subtypes + position-tags + platform-roles",
-      "deps": ["02-A1a"]
+      "deps": [
+        "02-A1a"
+      ]
     },
     "02-C2": {
       "status": "pending",
       "spec": "02-shared-contracts",
       "title": "permissions/permission-points",
-      "deps": ["02-C1"]
+      "deps": [
+        "02-C1"
+      ]
     },
     "02-C3": {
       "status": "pending",
       "spec": "02-shared-contracts",
       "title": "role-permission + position-permission + scope-guard + hasPermission",
-      "deps": ["02-C2"]
+      "deps": [
+        "02-C2"
+      ]
     },
     "02-D1a": {
       "status": "pending",
       "spec": "02-shared-contracts",
       "title": "constants 订阅/点数/分润/派单/Tier",
-      "deps": ["02-A2a", "02-A3a"]
+      "deps": [
+        "02-A2a",
+        "02-A3a"
+      ]
     },
     "02-D1b": {
       "status": "pending",
       "spec": "02-shared-contracts",
       "title": "constants 信誉/派单权重/红线/高端服务",
-      "deps": ["02-A4"]
+      "deps": [
+        "02-A4"
+      ]
     },
     "02-D2": {
       "status": "pending",
       "spec": "02-shared-contracts",
       "title": "constants 限流/缓存/货币/杂项",
-      "deps": ["02-A1a"]
+      "deps": [
+        "02-A1a"
+      ]
     },
     "02-E1": {
       "status": "pending",
       "spec": "02-shared-contracts",
       "title": "openapi.yaml 主入口 + 目录",
-      "deps": ["02-A1a"]
+      "deps": [
+        "02-A1a"
+      ]
     },
     "02-E2": {
       "status": "pending",
       "spec": "02-shared-contracts",
       "title": "pnpm gen:api 命令",
-      "deps": ["02-E1"]
+      "deps": [
+        "02-E1"
+      ]
     },
     "02-E3": {
       "status": "pending",
       "spec": "02-shared-contracts",
       "title": "redocly lint + CI",
-      "deps": ["02-E1"]
+      "deps": [
+        "02-E1"
+      ]
     },
     "02-F1": {
       "status": "pending",
       "spec": "02-shared-contracts",
       "title": "utils 日期/金额/字符串/加解密",
-      "deps": ["02-A1a"]
+      "deps": [
+        "02-A1a"
+      ]
     },
     "02-F2": {
       "status": "pending",
       "spec": "02-shared-contracts",
       "title": "ui shadcn 基础",
-      "deps": ["02-A1a"]
+      "deps": [
+        "02-A1a"
+      ]
     },
     "02-G1": {
       "status": "pending",
       "spec": "02-shared-contracts",
       "title": "system-config 起步骨架",
-      "deps": ["02-D1a"]
+      "deps": [
+        "02-D1a"
+      ]
     },
-
     "03-A1": {
       "status": "pending",
       "spec": "03-design-system",
       "title": "tokens 5 文件 + tokens.css",
-      "deps": ["02-F2"]
+      "deps": [
+        "02-F2"
+      ]
     },
     "03-A2": {
       "status": "pending",
       "spec": "03-design-system",
       "title": "tailwind preset + 4 子前端 tailwind.config",
-      "deps": ["03-A1"]
+      "deps": [
+        "03-A1"
+      ]
     },
     "03-A3": {
       "status": "pending",
       "spec": "03-design-system",
       "title": "fonts + globals.css",
-      "deps": ["03-A1"]
+      "deps": [
+        "03-A1"
+      ]
     },
     "03-B1": {
       "status": "pending",
       "spec": "03-design-system",
       "title": "primitives 表单类（12 组件）",
-      "deps": ["03-A2"]
+      "deps": [
+        "03-A2"
+      ]
     },
     "03-B2": {
       "status": "pending",
       "spec": "03-design-system",
       "title": "primitives 布局/反馈类（13 组件）",
-      "deps": ["03-A2"]
+      "deps": [
+        "03-A2"
+      ]
     },
     "03-B3": {
       "status": "pending",
       "spec": "03-design-system",
       "title": "primitives 数据类（9 组件）",
-      "deps": ["03-A2"]
+      "deps": [
+        "03-A2"
+      ]
     },
     "03-C1": {
       "status": "pending",
       "spec": "03-design-system",
       "title": "layout 8 组件",
-      "deps": ["03-B1", "03-B2"]
+      "deps": [
+        "03-B1",
+        "03-B2"
+      ]
     },
     "03-C2": {
       "status": "pending",
       "spec": "03-design-system",
       "title": "forms 3 组件",
-      "deps": ["03-B1"]
+      "deps": [
+        "03-B1"
+      ]
     },
     "03-D1": {
       "status": "pending",
       "spec": "03-design-system",
       "title": "data-display 9 组件（CreditDisplay 强制 BR-405）",
-      "deps": ["03-B3"]
+      "deps": [
+        "03-B3"
+      ]
     },
     "03-E1": {
       "status": "pending",
       "spec": "03-design-system",
       "title": "domain 7 组件",
-      "deps": ["03-D1"]
+      "deps": [
+        "03-D1"
+      ]
     },
     "03-E2": {
       "status": "pending",
       "spec": "03-design-system",
       "title": "report 4 组件",
-      "deps": ["03-E1"]
+      "deps": [
+        "03-E1"
+      ]
     },
     "03-E3": {
       "status": "pending",
       "spec": "03-design-system",
       "title": "5 个 dashboard 骨架",
-      "deps": ["03-E1"]
+      "deps": [
+        "03-E1"
+      ]
     },
     "03-F1": {
       "status": "pending",
       "spec": "03-design-system",
       "title": "icons + 17 功能区映射 + AnimatedNumber",
-      "deps": ["03-A1"]
+      "deps": [
+        "03-A1"
+      ]
     },
     "03-G1": {
       "status": "pending",
       "spec": "03-design-system",
       "title": "Vitest + RTL + axe-core 测试",
-      "deps": ["03-D1"]
+      "deps": [
+        "03-D1"
+      ]
     },
     "03-G2": {
       "status": "pending",
       "spec": "03-design-system",
       "title": "Storybook（P2）",
-      "deps": ["03-D1"]
+      "deps": [
+        "03-D1"
+      ]
     },
-
     "04-A1": {
       "status": "pending",
       "spec": "04-ai-gateway",
       "title": "types/ai-task PromptTemplate + AiRequest + AiResponse",
-      "deps": ["02-A3a"]
+      "deps": [
+        "02-A3a"
+      ]
     },
     "04-A2": {
       "status": "pending",
       "spec": "04-ai-gateway",
       "title": "Prisma 4 表",
-      "deps": ["04-A1"]
+      "deps": [
+        "04-A1"
+      ]
     },
     "04-B1": {
       "status": "pending",
       "spec": "04-ai-gateway",
       "title": "exact-cache + semantic-cache（DashVector 桩）",
-      "deps": ["04-A2"]
+      "deps": [
+        "04-A2"
+      ]
     },
     "04-B2": {
       "status": "pending",
       "spec": "04-ai-gateway",
       "title": "credit pre-charge/commit/refund（idempotent）",
-      "deps": ["04-A2"]
+      "deps": [
+        "04-A2"
+      ]
     },
     "04-C1": {
       "status": "pending",
       "spec": "04-ai-gateway",
       "title": "sanitizer + 6 类检测器（PBT round-trip）",
-      "deps": ["04-A1"]
+      "deps": [
+        "04-A1"
+      ]
     },
     "04-C2": {
       "status": "pending",
       "spec": "04-ai-gateway",
       "title": "ai-export-audit",
-      "deps": ["04-C1"]
+      "deps": [
+        "04-C1"
+      ]
     },
     "04-D1": {
       "status": "pending",
       "spec": "04-ai-gateway",
       "title": "4 Provider 实现",
-      "deps": ["04-A1"]
+      "deps": [
+        "04-A1"
+      ]
     },
     "04-D2": {
       "status": "pending",
       "spec": "04-ai-gateway",
       "title": "provider-router + health-monitor",
-      "deps": ["04-D1"]
+      "deps": [
+        "04-D1"
+      ]
     },
     "04-D3": {
       "status": "pending",
       "spec": "04-ai-gateway",
       "title": "routing.service + default-routing（含 R14 40+ 任务注册）",
-      "deps": ["04-D2"]
+      "deps": [
+        "04-D2"
+      ]
     },
     "04-E1": {
       "status": "pending",
       "spec": "04-ai-gateway",
       "title": "tier-resolver（PBT 单调）",
-      "deps": ["04-A1"]
+      "deps": [
+        "04-A1"
+      ]
     },
     "04-E2": {
       "status": "pending",
       "spec": "04-ai-gateway",
       "title": "output-validator（4 要素 PBT）",
-      "deps": ["04-A1"]
+      "deps": [
+        "04-A1"
+      ]
     },
     "04-E3": {
       "status": "pending",
       "spec": "04-ai-gateway",
       "title": "safety-filter + 红线表述拦截",
-      "deps": ["04-E2"]
+      "deps": [
+        "04-E2"
+      ]
     },
     "04-F1": {
       "status": "pending",
       "spec": "04-ai-gateway",
       "title": "prompt-builder + tier-prompt-injector",
-      "deps": ["04-E1"]
+      "deps": [
+        "04-E1"
+      ]
     },
     "04-G1": {
       "status": "pending",
       "spec": "04-ai-gateway",
       "title": "ai-rate-limit guard",
-      "deps": ["04-A2"]
+      "deps": [
+        "04-A2"
+      ]
     },
     "04-G2": {
       "status": "pending",
       "spec": "04-ai-gateway",
       "title": "orchestrator 9 步主入口",
-      "deps": ["04-B1", "04-B2", "04-C1", "04-D3", "04-E3", "04-F1", "04-G1"]
+      "deps": [
+        "04-B1",
+        "04-B2",
+        "04-C1",
+        "04-D3",
+        "04-E3",
+        "04-F1",
+        "04-G1"
+      ]
     },
     "04-H1": {
       "status": "pending",
       "spec": "04-ai-gateway",
       "title": "cost-meter + 毛利仪表盘 API",
-      "deps": ["04-G2"]
+      "deps": [
+        "04-G2"
+      ]
     },
     "04-H2": {
       "status": "pending",
       "spec": "04-ai-gateway",
       "title": "BullMQ 异步队列 + SSE",
-      "deps": ["04-G2"]
+      "deps": [
+        "04-G2"
+      ]
     },
     "04-I1": {
       "status": "pending",
       "spec": "04-ai-gateway",
       "title": "示例 PromptTemplate",
-      "deps": ["04-G2"]
+      "deps": [
+        "04-G2"
+      ]
     },
-
     "05-A1": {
       "status": "pending",
       "spec": "05-windows-desktop",
       "title": "复用 apps/web standalone",
-      "deps": ["01-G2"]
+      "deps": [
+        "01-G2"
+      ]
     },
     "05-A2": {
       "status": "pending",
       "spec": "05-windows-desktop",
       "title": "tray.rs",
-      "deps": ["05-A1"]
+      "deps": [
+        "05-A1"
+      ]
     },
     "05-A3": {
       "status": "pending",
       "spec": "05-windows-desktop",
       "title": "notification.rs + 27 通道对接",
-      "deps": ["05-A2"]
+      "deps": [
+        "05-A2"
+      ]
     },
     "05-A4": {
       "status": "pending",
       "spec": "05-windows-desktop",
       "title": "file_drop.rs",
-      "deps": ["05-A2"]
+      "deps": [
+        "05-A2"
+      ]
     },
     "05-A5": {
       "status": "pending",
       "spec": "05-windows-desktop",
       "title": "clipboard.rs + AI 助理浮窗",
-      "deps": ["05-A2"]
+      "deps": [
+        "05-A2"
+      ]
     },
     "05-A6": {
       "status": "pending",
       "spec": "05-windows-desktop",
       "title": "credential.rs + 设备指纹",
-      "deps": ["05-A2"]
+      "deps": [
+        "05-A2"
+      ]
     },
     "05-A7": {
       "status": "pending",
       "spec": "05-windows-desktop",
       "title": "UserDevice 表 + 设备管理 API",
-      "deps": ["05-A6"]
+      "deps": [
+        "05-A6"
+      ]
     },
     "05-A8": {
       "status": "pending",
       "spec": "05-windows-desktop",
       "title": "desktop-release minisign 签名",
-      "deps": ["01-G3"]
+      "deps": [
+        "01-G3"
+      ]
     },
-
     "06-A1": {
       "status": "pending",
       "spec": "06-auth-rbac",
       "title": "TenantContext 防线 1",
-      "deps": ["02-A1a"]
+      "deps": [
+        "02-A1a"
+      ]
     },
     "06-A2": {
       "status": "pending",
       "spec": "06-auth-rbac",
       "title": "BaseRepository 防线 2 + scope-guard middleware 防线 3",
-      "deps": ["06-A1"]
+      "deps": [
+        "06-A1"
+      ]
     },
     "06-A3": {
       "status": "pending",
       "spec": "06-auth-rbac",
       "title": "idempotency + trace-id + audit",
-      "deps": ["06-A1"]
+      "deps": [
+        "06-A1"
+      ]
     },
     "06-B1": {
       "status": "pending",
       "spec": "06-auth-rbac",
       "title": "建筑企业注册 + attribution",
-      "deps": ["06-A2"]
+      "deps": [
+        "06-A2"
+      ]
     },
     "06-B2": {
       "status": "pending",
       "spec": "06-auth-rbac",
       "title": "政府 + 中介注册",
-      "deps": ["06-B1"]
+      "deps": [
+        "06-B1"
+      ]
     },
     "06-B3": {
       "status": "pending",
       "spec": "06-auth-rbac",
       "title": "平台运营创建 + 强制 2FA",
-      "deps": ["06-B1"]
+      "deps": [
+        "06-B1"
+      ]
     },
     "06-C1": {
       "status": "pending",
       "spec": "06-auth-rbac",
       "title": "JWT + login + lockout",
-      "deps": ["06-B1"]
+      "deps": [
+        "06-B1"
+      ]
     },
     "06-C2": {
       "status": "pending",
       "spec": "06-auth-rbac",
       "title": "2FA + 设备管理",
-      "deps": ["06-C1"]
+      "deps": [
+        "06-C1"
+      ]
     },
     "06-D1": {
       "status": "pending",
       "spec": "06-auth-rbac",
       "title": "permission.guard + role.guard + 装饰器",
-      "deps": ["06-A1"]
+      "deps": [
+        "06-A1"
+      ]
     },
     "06-D2": {
       "status": "pending",
       "spec": "06-auth-rbac",
       "title": "hasPermission + controllers 标注权限点",
-      "deps": ["06-D1"]
+      "deps": [
+        "06-D1"
+      ]
     },
     "06-E1": {
       "status": "pending",
       "spec": "06-auth-rbac",
       "title": "user/invite + 岗位标签分配",
-      "deps": ["06-B1"]
+      "deps": [
+        "06-B1"
+      ]
     },
     "06-E2": {
       "status": "pending",
       "spec": "06-auth-rbac",
       "title": "user/devices + consents（出境授权）",
-      "deps": ["06-C2"]
+      "deps": [
+        "06-C2"
+      ]
     },
     "06-F1": {
       "status": "pending",
       "spec": "06-auth-rbac",
       "title": "approval-engine + template",
-      "deps": ["06-A2"]
+      "deps": [
+        "06-A2"
+      ]
     },
     "06-F2": {
       "status": "pending",
       "spec": "06-auth-rbac",
       "title": "4 个起步审批模板 seed",
-      "deps": ["06-F1"]
+      "deps": [
+        "06-F1"
+      ]
     },
     "06-G1": {
       "status": "pending",
       "spec": "06-auth-rbac",
       "title": "data-export（BR-104）",
-      "deps": ["06-F1"]
+      "deps": [
+        "06-F1"
+      ]
     },
     "06-H1": {
       "status": "pending",
       "spec": "06-auth-rbac",
       "title": "完整 e2e",
-      "deps": ["06-G1"]
+      "deps": [
+        "06-G1"
+      ]
     },
-
     "07-A1": {
       "status": "pending",
       "spec": "07-subscription-billing",
       "title": "5 表 + migration + seed",
-      "deps": ["06-A2"]
+      "deps": [
+        "06-A2"
+      ]
     },
     "07-A2": {
       "status": "pending",
       "spec": "07-subscription-billing",
       "title": "plan.service",
-      "deps": ["07-A1"]
+      "deps": [
+        "07-A1"
+      ]
     },
     "07-A3": {
       "status": "pending",
       "spec": "07-subscription-billing",
       "title": "subscription.service 状态机 + 升降档 + 复活",
-      "deps": ["07-A2"]
+      "deps": [
+        "07-A2"
+      ]
     },
     "07-A4": {
       "status": "pending",
       "spec": "07-subscription-billing",
       "title": "ladder + discount-rebate（PBT）",
-      "deps": ["07-A3"]
+      "deps": [
+        "07-A3"
+      ]
     },
     "07-A5": {
       "status": "pending",
       "spec": "07-subscription-billing",
       "title": "auto-renewal worker",
-      "deps": ["07-A3"]
+      "deps": [
+        "07-A3"
+      ]
     },
     "07-A6": {
       "status": "pending",
       "spec": "07-subscription-billing",
       "title": "concierge.service",
-      "deps": ["07-A3"]
+      "deps": [
+        "07-A3"
+      ]
     },
     "07-A7": {
       "status": "pending",
       "spec": "07-subscription-billing",
       "title": "invoice.service",
-      "deps": ["07-A3"]
+      "deps": [
+        "07-A3"
+      ]
     },
     "07-A8": {
       "status": "pending",
       "spec": "07-subscription-billing",
       "title": "status-machine PBT",
-      "deps": ["07-A3"]
+      "deps": [
+        "07-A3"
+      ]
     },
     "07-A9": {
       "status": "pending",
       "spec": "07-subscription-billing",
       "title": "Controllers + OpenAPI",
-      "deps": ["07-A8"]
+      "deps": [
+        "07-A8"
+      ]
     },
     "07-A10": {
       "status": "pending",
       "spec": "07-subscription-billing",
       "title": "完整 e2e",
-      "deps": ["07-A9"]
+      "deps": [
+        "07-A9"
+      ]
     },
-
     "08-A1": {
       "status": "pending",
       "spec": "08-credit-system",
       "title": "Prisma + migration",
-      "deps": ["06-A2"]
+      "deps": [
+        "06-A2"
+      ]
     },
     "08-A2": {
       "status": "pending",
       "spec": "08-credit-system",
       "title": "lot + lot-allocator（先到期先扣 PBT）",
-      "deps": ["08-A1"]
+      "deps": [
+        "08-A1"
+      ]
     },
     "08-A3": {
       "status": "pending",
       "spec": "08-credit-system",
       "title": "preCharge/commit/refund 替换 04 桩",
-      "deps": ["08-A2"]
+      "deps": [
+        "08-A2"
+      ]
     },
     "08-A4": {
       "status": "pending",
       "spec": "08-credit-system",
       "title": "topup + 充值套餐 seed",
-      "deps": ["08-A2"]
+      "deps": [
+        "08-A2"
+      ]
     },
     "08-A5": {
       "status": "pending",
       "spec": "08-credit-system",
       "title": "gift 入口",
-      "deps": ["08-A2"]
+      "deps": [
+        "08-A2"
+      ]
     },
     "08-A6": {
       "status": "pending",
       "spec": "08-credit-system",
       "title": "expiry worker",
-      "deps": ["08-A2"]
+      "deps": [
+        "08-A2"
+      ]
     },
     "08-A7": {
       "status": "pending",
       "spec": "08-credit-system",
       "title": "reactivation（BR-406）",
-      "deps": ["08-A4"]
+      "deps": [
+        "08-A4"
+      ]
     },
     "08-A8": {
       "status": "pending",
       "spec": "08-credit-system",
       "title": "API + OpenAPI",
-      "deps": ["08-A7"]
+      "deps": [
+        "08-A7"
+      ]
     },
     "08-A9": {
       "status": "pending",
       "spec": "08-credit-system",
       "title": "e2e + PBT",
-      "deps": ["08-A8"]
+      "deps": [
+        "08-A8"
+      ]
     },
-
     "09-A1": {
       "status": "pending",
       "spec": "09-payment-gateway",
       "title": "Prisma 5 表 + migration",
-      "deps": ["07-A1", "08-A1"]
+      "deps": [
+        "07-A1",
+        "08-A1"
+      ]
     },
     "09-A2": {
       "status": "pending",
       "spec": "09-payment-gateway",
       "title": "wechat provider",
-      "deps": ["09-A1"]
+      "deps": [
+        "09-A1"
+      ]
     },
     "09-A3": {
       "status": "pending",
       "spec": "09-payment-gateway",
       "title": "alipay provider",
-      "deps": ["09-A1"]
+      "deps": [
+        "09-A1"
+      ]
     },
     "09-A4": {
       "status": "pending",
       "spec": "09-payment-gateway",
       "title": "order.service + idempotency-key",
-      "deps": ["09-A2"]
+      "deps": [
+        "09-A2"
+      ]
     },
     "09-A5": {
       "status": "pending",
       "spec": "09-payment-gateway",
       "title": "webhook 签名校验",
-      "deps": ["09-A2"]
+      "deps": [
+        "09-A2"
+      ]
     },
     "09-A6": {
       "status": "pending",
       "spec": "09-payment-gateway",
       "title": "refund + 审批",
-      "deps": ["09-A4", "06-F1"]
+      "deps": [
+        "09-A4",
+        "06-F1"
+      ]
     },
     "09-A7": {
       "status": "pending",
       "spec": "09-payment-gateway",
       "title": "auto-charge 协议支付",
-      "deps": ["09-A2", "07-A5"]
+      "deps": [
+        "09-A2",
+        "07-A5"
+      ]
     },
     "09-A8": {
       "status": "pending",
       "spec": "09-payment-gateway",
       "title": "commission 三件套",
-      "deps": ["09-A4"]
+      "deps": [
+        "09-A4"
+      ]
     },
     "09-A9": {
       "status": "pending",
       "spec": "09-payment-gateway",
       "title": "withdrawal",
-      "deps": ["09-A8"]
+      "deps": [
+        "09-A8"
+      ]
     },
     "09-A10": {
       "status": "pending",
       "spec": "09-payment-gateway",
       "title": "API + OpenAPI",
-      "deps": ["09-A9"]
+      "deps": [
+        "09-A9"
+      ]
     },
     "09-A11": {
       "status": "pending",
       "spec": "09-payment-gateway",
       "title": "e2e + PBT 跨域 5% 守恒",
-      "deps": ["09-A10"]
+      "deps": [
+        "09-A10"
+      ]
     },
-
     "10-A1": {
       "status": "pending",
       "spec": "10-report-center",
       "title": "Prisma + migration + seed",
-      "deps": ["04-A2"]
+      "deps": [
+        "04-A2"
+      ]
     },
     "10-A2": {
       "status": "pending",
       "spec": "10-report-center",
       "title": "h5-renderer",
-      "deps": ["10-A1", "03-E2"]
+      "deps": [
+        "10-A1",
+        "03-E2"
+      ]
     },
     "10-A3": {
       "status": "pending",
       "spec": "10-report-center",
       "title": "pdf-renderer",
-      "deps": ["10-A1", "03-E2"]
+      "deps": [
+        "10-A1",
+        "03-E2"
+      ]
     },
     "10-A4": {
       "status": "pending",
       "spec": "10-report-center",
       "title": "brand-resolver",
-      "deps": ["10-A1"]
+      "deps": [
+        "10-A1"
+      ]
     },
     "10-A5": {
       "status": "pending",
       "spec": "10-report-center",
       "title": "report-builder + OSS",
-      "deps": ["10-A2", "10-A3", "10-A4"]
+      "deps": [
+        "10-A2",
+        "10-A3",
+        "10-A4"
+      ]
     },
     "10-A6": {
       "status": "pending",
       "spec": "10-report-center",
       "title": "template.service",
-      "deps": ["10-A1"]
+      "deps": [
+        "10-A1"
+      ]
     },
     "10-A7": {
       "status": "pending",
       "spec": "10-report-center",
       "title": "rating + escalation",
-      "deps": ["10-A5"]
+      "deps": [
+        "10-A5"
+      ]
     },
     "10-A8": {
       "status": "pending",
       "spec": "10-report-center",
       "title": "API + 通知触发 + e2e",
-      "deps": ["10-A7"]
+      "deps": [
+        "10-A7"
+      ]
     },
     "10-A9": {
       "status": "pending",
       "spec": "10-report-center",
       "title": "PBT 4 要素",
-      "deps": ["10-A5"]
+      "deps": [
+        "10-A5"
+      ]
     },
-
     "11-ALL": {
       "status": "pending",
       "spec": "11-opportunity-radar",
       "title": "9 个 task，详见 tasks.md",
-      "deps": ["04-G2", "10-A8", "20-A9"]
+      "deps": [
+        "04-G2",
+        "10-A8",
+        "20-A9"
+      ]
     },
     "12-ALL": {
       "status": "pending",
       "spec": "12-tender-factory",
       "title": "10 个 task，详见 tasks.md",
-      "deps": ["04-G2", "10-A8", "14-ALL", "20-A9", "21-A8"]
+      "deps": [
+        "04-G2",
+        "10-A8",
+        "14-ALL",
+        "20-A9",
+        "21-A8"
+      ]
     },
     "13-ALL": {
       "status": "pending",
       "spec": "13-risk-review",
       "title": "8 个 task，详见 tasks.md",
-      "deps": ["04-G2", "10-A8", "21-A8"]
+      "deps": [
+        "04-G2",
+        "10-A8",
+        "21-A8"
+      ]
     },
     "14-ALL": {
       "status": "pending",
       "spec": "14-qualification-guard",
       "title": "10 个 task，详见 tasks.md",
-      "deps": ["04-G2", "10-A8", "20-A9", "21-A8"]
+      "deps": [
+        "04-G2",
+        "10-A8",
+        "20-A9",
+        "21-A8"
+      ]
     },
     "15-ALL": {
       "status": "pending",
       "spec": "15-ops-toolkit",
       "title": "8 个 task，详见 tasks.md",
-      "deps": ["04-G2", "10-A8", "20-A9"]
+      "deps": [
+        "04-G2",
+        "10-A8",
+        "20-A9"
+      ]
     },
     "16-ALL": {
       "status": "pending",
       "spec": "16-project-site",
       "title": "8 个 task，详见 tasks.md",
-      "deps": ["04-G2", "10-A8"]
+      "deps": [
+        "04-G2",
+        "10-A8"
+      ]
     },
     "17-ALL": {
       "status": "pending",
       "spec": "17-cost-estimate",
       "title": "6 个 task，详见 tasks.md",
-      "deps": ["04-G2", "10-A8", "20-A9"]
+      "deps": [
+        "04-G2",
+        "10-A8",
+        "20-A9"
+      ]
     },
     "18-ALL": {
       "status": "pending",
       "spec": "18-drawing-recognition",
       "title": "6 个 task，详见 tasks.md",
-      "deps": ["04-G2", "10-A8"]
+      "deps": [
+        "04-G2",
+        "10-A8"
+      ]
     },
     "19-ALL": {
       "status": "pending",
       "spec": "19-cashflow-finance",
       "title": "8 个 task，详见 tasks.md",
-      "deps": ["04-G2", "10-A8"]
+      "deps": [
+        "04-G2",
+        "10-A8"
+      ]
     },
-
     "20-ALL": {
       "status": "pending",
       "spec": "20-knowledge-system",
       "title": "10 个 task，详见 tasks.md",
-      "deps": ["04-G2"]
+      "deps": [
+        "04-G2"
+      ]
     },
     "20-A9": {
       "status": "pending",
       "spec": "20-knowledge-system",
       "title": "RAG 接口可被业务调通（21 / 杀手锏前置）",
-      "deps": ["20-ALL"]
+      "deps": [
+        "20-ALL"
+      ]
     },
     "21-ALL": {
       "status": "pending",
       "spec": "21-rules-engine",
       "title": "8 个 task，详见 tasks.md",
-      "deps": ["20-A9"]
+      "deps": [
+        "20-A9"
+      ]
     },
     "21-A8": {
       "status": "pending",
       "spec": "21-rules-engine",
       "title": "API 可被业务调通",
-      "deps": ["21-ALL"]
+      "deps": [
+        "21-ALL"
+      ]
     },
-
     "22-ALL": {
       "status": "pending",
       "spec": "22-agent-workspace",
       "title": "22 个 task，详见 tasks.md（核心模块）",
-      "deps": ["06-H1", "08-A9", "09-A11", "21-A8"]
+      "deps": [
+        "06-H1",
+        "08-A9",
+        "09-A11",
+        "21-A8"
+      ]
     },
     "22-H3": {
       "status": "pending",
       "spec": "22-agent-workspace",
       "title": "e2e 场景 2/3/4 + Final",
-      "deps": ["22-ALL"]
+      "deps": [
+        "22-ALL"
+      ]
     },
-
     "23-ALL": {
       "status": "pending",
       "spec": "23-gov-soe-workspace",
       "title": "9 个 task，详见 tasks.md",
-      "deps": ["06-H1", "10-A8", "20-A9"]
+      "deps": [
+        "06-H1",
+        "10-A8",
+        "20-A9"
+      ]
     },
     "24-ALL": {
       "status": "pending",
       "spec": "24-admin-console",
       "title": "14 个 task，详见 tasks.md",
-      "deps": ["22-H3"]
+      "deps": [
+        "22-H3"
+      ]
     },
-
     "25-ALL": {
       "status": "pending",
       "spec": "25-ai-chat-hub",
       "title": "8 个 task，详见 tasks.md",
-      "deps": ["04-G2"]
+      "deps": [
+        "04-G2"
+      ]
     },
     "26-ALL": {
       "status": "pending",
       "spec": "26-addiction-system",
       "title": "8 个 task，详见 tasks.md",
-      "deps": ["25-ALL"]
+      "deps": [
+        "25-ALL"
+      ]
     },
     "27-ALL": {
       "status": "pending",
       "spec": "27-notification-center",
       "title": "8 个 task，详见 tasks.md",
-      "deps": ["26-ALL"]
+      "deps": [
+        "26-ALL"
+      ]
     },
-
     "28-ALL": {
       "status": "pending",
       "spec": "28-security-compliance",
       "title": "10 个 task，详见 tasks.md（横向总审）",
-      "deps": ["27-ALL"]
+      "deps": [
+        "27-ALL"
+      ]
     },
-
     "29-A1": {
       "status": "pending",
       "spec": "29-prompt-testing",
       "title": "PromptGoldenTestRun + EmbeddingCache 模型",
-      "deps": ["04-G2"]
+      "deps": [
+        "04-G2"
+      ]
     },
     "29-A2": {
       "status": "pending",
       "spec": "29-prompt-testing",
       "title": "golden-test-runner 引擎",
-      "deps": ["29-A1"]
+      "deps": [
+        "29-A1"
+      ]
     },
     "29-A3": {
       "status": "pending",
       "spec": "29-prompt-testing",
       "title": "similarity-calculator",
-      "deps": ["29-A2"]
+      "deps": [
+        "29-A2"
+      ]
     },
     "29-A4": {
       "status": "pending",
       "spec": "29-prompt-testing",
       "title": "embedding-cache 24h TTL",
-      "deps": ["29-A3"]
+      "deps": [
+        "29-A3"
+      ]
     },
     "29-A5": {
       "status": "pending",
       "spec": "29-prompt-testing",
       "title": "test-report-renderer + diff",
-      "deps": ["29-A2"]
+      "deps": [
+        "29-A2"
+      ]
     },
     "29-A6": {
       "status": "pending",
       "spec": "29-prompt-testing",
       "title": "ci-integration PR comment",
-      "deps": ["29-A5"]
+      "deps": [
+        "29-A5"
+      ]
     },
     "29-A7": {
       "status": "pending",
       "spec": "29-prompt-testing",
       "title": "CLI: pnpm test:prompts",
-      "deps": ["29-A6"]
+      "deps": [
+        "29-A6"
+      ]
     },
     "29-A8": {
       "status": "pending",
       "spec": "29-prompt-testing",
       "title": "5 核心 Prompt 测试集骨架 seed",
-      "deps": ["29-A7"]
+      "deps": [
+        "29-A7"
+      ]
     },
-
     "99-FINAL-1": {
       "status": "pending",
       "spec": "final",
       "title": "Final DoD 全套验证",
-      "deps": ["28-ALL", "29-A8"]
+      "deps": [
+        "28-ALL",
+        "29-A8"
+      ]
     },
     "99-FINAL-2": {
       "status": "pending",
       "spec": "final",
       "title": "生成 final-build-report.md",
-      "deps": ["99-FINAL-1"]
+      "deps": [
+        "99-FINAL-1"
+      ]
     },
     "99-FINAL-3": {
       "status": "pending",
       "spec": "final",
       "title": "输出最终报告 + 等待用户验收",
-      "deps": ["99-FINAL-2"]
+      "deps": [
+        "99-FINAL-2"
+      ]
     }
   },
-
   "session_log": [],
   "_session_log_format": "每次会话结束时 append { session_id, started_at, ended_at, tasks_completed, blocked, commit_shas }",
-
   "blocked_tasks": [],
   "_deferred_tasks": [
     {
@@ -1263,8 +1655,6 @@
     }
   ],
   "_blocked_format": "每个 blocked task：{ task_id, reason, attempts, last_error, suggested_action, requires_user }",
-
   "_implementation_note": "对于 11-ALL / 12-ALL 等 ALL 占位项，Codex 实施时应展开为该 spec 的真实子 task（11-A1 / 11-A2 / ...），按 tasks.md 顺序逐个推进。每完成一个真实子 task 立即更新 progress.json（追加 entry 而非改 ALL 状态）。",
-
   "_v4_note": "2026-05-16 商业宪法 V4 升级后，以下 spec 的 tasks.md 末尾追加了 V4-N 任务段（每段 5-14 个 task）：06-V4-1~8 / 09-V4-1~5 / 10-V4-1~9 / 14-V4-1~9 / 15-V4-1~14 / 16-V4-1~4 / 22-V4-1~10 / 23-V4-1~13 / 24-V4-1~11 / 26-V4-1~13 / 28-V4-1~7。Codex 展开 ALL 占位时必须包含 V4 任务段。详见 docs/decisions/2026-05-16-adr-auto-business-model-v4.md。"
 }
