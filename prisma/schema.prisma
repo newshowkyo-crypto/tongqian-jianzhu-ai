@@ -1019,6 +1019,94 @@ model InspirationCard {
   @@map("inspiration_cards")
 }
 
+model Project {
+  id            String    @id @default(uuid()) @db.Uuid
+  tenantId      String    @map("tenant_id")
+  name          String
+  contractId    String?   @map("contract_id")
+  status        String
+  startAt       DateTime? @map("start_at")
+  expectedEndAt DateTime? @map("expected_end_at")
+  region        String?
+  type          String?
+  pmUserId      String?   @map("pm_user_id")
+  meta          Json?
+
+  @@index([tenantId, status])
+  @@map("projects")
+}
+
+model ConstructionLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  projectId  String   @map("project_id") @db.Uuid
+  logDate    DateTime @map("log_date")
+  photosUrls Json     @map("photos_urls")
+  userInput  String   @map("user_input")
+  aiSummary  String   @map("ai_summary")
+  tags       Json
+  aiTaskId   String   @unique @map("ai_task_id")
+  createdBy  String   @map("created_by")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([projectId, logDate])
+  @@map("construction_logs")
+}
+
+model ContactLetter {
+  id             String   @id @default(uuid()) @db.Uuid
+  projectId      String   @map("project_id") @db.Uuid
+  type           String
+  content        String   @db.Text
+  pdfUrl         String?  @map("pdf_url")
+  status         String
+  approvalFlowId String?  @map("approval_flow_id")
+  aiTaskId       String   @unique @map("ai_task_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@index([projectId, type])
+  @@map("contact_letters")
+}
+
+model ProgressPaymentApp {
+  id                String   @id @default(uuid()) @db.Uuid
+  projectId         String   @map("project_id") @db.Uuid
+  period            String
+  completedValue    Decimal  @map("completed_value") @db.Decimal(15, 2)
+  applicationDocUrl String   @map("application_doc_url")
+  aiTaskId          String   @unique @map("ai_task_id")
+  status            String
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  @@index([projectId, period])
+  @@map("progress_payment_apps")
+}
+
+model MajorHazardPlan {
+  id                String  @id @default(uuid()) @db.Uuid
+  projectId         String  @map("project_id") @db.Uuid
+  hazardType        String  @map("hazard_type")
+  outlineDocUrl     String  @map("outline_doc_url")
+  needsExpertReview Boolean @default(true) @map("needs_expert_review")
+  aiTaskId          String  @unique @map("ai_task_id")
+
+  @@index([projectId])
+  @@map("major_hazard_plans")
+}
+
+model ArchiveChecklist {
+  id            String @id @default(uuid()) @db.Uuid
+  projectId     String @map("project_id") @db.Uuid
+  region        String
+  projectType   String @map("project_type")
+  requiredItems Json   @map("required_items")
+  uploadedItems Json   @map("uploaded_items")
+  missingItems  Json   @map("missing_items")
+  aiTaskId      String @unique @map("ai_task_id")
+
+  @@index([projectId])
+  @@map("archive_checklists")
+}
+
 enum AiTaskStatus {
   queued
   processing
