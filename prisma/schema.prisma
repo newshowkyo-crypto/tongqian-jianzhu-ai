@@ -33,3 +33,101 @@ model SystemConfigHistory {
   @@index([systemConfigId])
   @@map("system_config_history")
 }
+
+model AiTask {
+  id           String       @id @default(uuid()) @db.Uuid
+  taskType     String       @map("task_type")
+  userId       String       @map("user_id")
+  tenantId     String       @map("tenant_id")
+  status       AiTaskStatus @default(queued)
+  tier         Int
+  confidence   String?
+  nextStep     String?      @map("next_step")
+  inputHash    String       @map("input_hash")
+  modelUsed    String?      @map("model_used")
+  providerUsed String?      @map("provider_used")
+  cacheHit     Boolean      @default(false) @map("cache_hit")
+  costCredits  Int?         @map("cost_credits")
+  costRmb      Decimal?     @map("cost_rmb") @db.Decimal(10, 4)
+  durationMs   Int?         @map("duration_ms")
+  traceId      String       @map("trace_id")
+  createdAt    DateTime     @default(now()) @map("created_at")
+  completedAt  DateTime?    @map("completed_at")
+  errorCode    String?      @map("error_code")
+
+  @@index([tenantId, createdAt])
+  @@index([taskType, createdAt])
+  @@index([traceId])
+  @@map("ai_tasks")
+}
+
+model AiCostLog {
+  id              String   @id @default(uuid()) @db.Uuid
+  aiTaskId        String   @unique @map("ai_task_id") @db.Uuid
+  inputTokens     Int      @map("input_tokens")
+  outputTokens    Int      @map("output_tokens")
+  inputCostRmb    Decimal  @map("input_cost_rmb") @db.Decimal(10, 6)
+  outputCostRmb   Decimal  @map("output_cost_rmb") @db.Decimal(10, 6)
+  totalCostRmb    Decimal  @map("total_cost_rmb") @db.Decimal(10, 4)
+  creditsCharged  Int      @map("credits_charged")
+  profitRmb       Decimal  @map("profit_rmb") @db.Decimal(10, 4)
+  cacheHit        Boolean  @default(false) @map("cache_hit")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@map("ai_cost_logs")
+}
+
+model AiProviderHealth {
+  id             String   @id @default(uuid()) @db.Uuid
+  providerName   String   @unique @map("provider_name")
+  status         String
+  errorRate5Min  Decimal  @map("error_rate_5min") @db.Decimal(5, 4)
+  p95LatencyMs   Int?     @map("p95_latency_ms")
+  lastCheckAt    DateTime @map("last_check_at")
+
+  @@map("ai_provider_health")
+}
+
+model AiExportAudit {
+  id           String   @id @default(uuid()) @db.Uuid
+  aiTaskId     String   @map("ai_task_id") @db.Uuid
+  inputHash    String   @map("input_hash")
+  maskedHash   String   @map("masked_hash")
+  providerName String   @map("provider_name")
+  fieldCount   Int      @map("field_count")
+  traceId      String   @map("trace_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@map("ai_export_audit")
+}
+
+model UserDailyCost {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id")
+  day       DateTime @db.Date
+  costRmb   Decimal  @default(0) @map("cost_rmb") @db.Decimal(10, 4)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([userId, day])
+  @@map("user_daily_costs")
+}
+
+model TenantMonthlyCost {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @map("tenant_id")
+  month     DateTime @db.Date
+  costRmb   Decimal  @default(0) @map("cost_rmb") @db.Decimal(10, 4)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([tenantId, month])
+  @@map("tenant_monthly_costs")
+}
+
+enum AiTaskStatus {
+  queued
+  processing
+  completed
+  failed
+}

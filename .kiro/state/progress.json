@@ -3,8 +3,8 @@
   "mode": "autopilot",
   "_mode_options": "standby（待启动） | autopilot（自治中） | paused（暂停） | done（全部完成）",
   "started_at": "2026-05-17T21:56:17.0002215+08:00",
-  "last_session_at": "2026-05-18T07:45:46.873Z",
-  "current_task": "04-A1",
+  "last_session_at": "2026-05-18T07:58:21.258Z",
+  "current_task": "05-A1",
   "_current_task_format": "格式：'{spec_no}-{phase}{order}' 例如 '02-A1a' / '22-H3' / '99-FINAL-1'",
   "phase": "2-business-core",
   "_phase_options": "0-pre-flight | 1-infra | 2-business-core | 3-killer-apps | 4-knowledge | 5-workspace | 6-horizontal | 7-compliance | 99-final | done",
@@ -57,7 +57,7 @@
     }
   },
   "blocked_count": 0,
-  "done_count": 75,
+  "done_count": 93,
   "total_count": 230,
   "credentials_check": {
     "_doc": "P0-real = 真凭证必填（启动前必须真实有效）；P1-placeholder = 占位即可，开发期 mock provider，admin 后台可视化替换；P2-auto = Codex 自动生成或 docker-compose 自带。",
@@ -701,7 +701,7 @@
       ]
     },
     "04-A1": {
-      "status": "pending",
+      "status": "done",
       "spec": "04-ai-gateway",
       "title": "types/ai-task PromptTemplate + AiRequest + AiResponse",
       "deps": [
@@ -709,7 +709,7 @@
       ]
     },
     "04-A2": {
-      "status": "pending",
+      "status": "done",
       "spec": "04-ai-gateway",
       "title": "Prisma 4 表",
       "deps": [
@@ -717,7 +717,7 @@
       ]
     },
     "04-B1": {
-      "status": "pending",
+      "status": "done",
       "spec": "04-ai-gateway",
       "title": "exact-cache + semantic-cache（DashVector 桩）",
       "deps": [
@@ -725,7 +725,7 @@
       ]
     },
     "04-B2": {
-      "status": "pending",
+      "status": "done",
       "spec": "04-ai-gateway",
       "title": "credit pre-charge/commit/refund（idempotent）",
       "deps": [
@@ -733,7 +733,7 @@
       ]
     },
     "04-C1": {
-      "status": "pending",
+      "status": "done",
       "spec": "04-ai-gateway",
       "title": "sanitizer + 6 类检测器（PBT round-trip）",
       "deps": [
@@ -741,7 +741,7 @@
       ]
     },
     "04-C2": {
-      "status": "pending",
+      "status": "done",
       "spec": "04-ai-gateway",
       "title": "ai-export-audit",
       "deps": [
@@ -749,7 +749,7 @@
       ]
     },
     "04-D1": {
-      "status": "pending",
+      "status": "done",
       "spec": "04-ai-gateway",
       "title": "4 Provider 实现",
       "deps": [
@@ -757,7 +757,7 @@
       ]
     },
     "04-D2": {
-      "status": "pending",
+      "status": "done",
       "spec": "04-ai-gateway",
       "title": "provider-router + health-monitor",
       "deps": [
@@ -765,7 +765,7 @@
       ]
     },
     "04-D3": {
-      "status": "pending",
+      "status": "done",
       "spec": "04-ai-gateway",
       "title": "routing.service + default-routing（含 R14 40+ 任务注册）",
       "deps": [
@@ -773,7 +773,7 @@
       ]
     },
     "04-E1": {
-      "status": "pending",
+      "status": "done",
       "spec": "04-ai-gateway",
       "title": "tier-resolver（PBT 单调）",
       "deps": [
@@ -781,7 +781,7 @@
       ]
     },
     "04-E2": {
-      "status": "pending",
+      "status": "done",
       "spec": "04-ai-gateway",
       "title": "output-validator（4 要素 PBT）",
       "deps": [
@@ -789,7 +789,7 @@
       ]
     },
     "04-E3": {
-      "status": "pending",
+      "status": "done",
       "spec": "04-ai-gateway",
       "title": "safety-filter + 红线表述拦截",
       "deps": [
@@ -797,7 +797,7 @@
       ]
     },
     "04-F1": {
-      "status": "pending",
+      "status": "done",
       "spec": "04-ai-gateway",
       "title": "prompt-builder + tier-prompt-injector",
       "deps": [
@@ -805,7 +805,7 @@
       ]
     },
     "04-G1": {
-      "status": "pending",
+      "status": "done",
       "spec": "04-ai-gateway",
       "title": "ai-rate-limit guard",
       "deps": [
@@ -813,7 +813,7 @@
       ]
     },
     "04-G2": {
-      "status": "pending",
+      "status": "done",
       "spec": "04-ai-gateway",
       "title": "orchestrator 9 步主入口",
       "deps": [
@@ -827,7 +827,7 @@
       ]
     },
     "04-H1": {
-      "status": "pending",
+      "status": "done",
       "spec": "04-ai-gateway",
       "title": "cost-meter + 毛利仪表盘 API",
       "deps": [
@@ -835,7 +835,7 @@
       ]
     },
     "04-H2": {
-      "status": "pending",
+      "status": "done",
       "spec": "04-ai-gateway",
       "title": "BullMQ 异步队列 + SSE",
       "deps": [
@@ -843,7 +843,7 @@
       ]
     },
     "04-I1": {
-      "status": "pending",
+      "status": "done",
       "spec": "04-ai-gateway",
       "title": "示例 PromptTemplate",
       "deps": [

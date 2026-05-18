@@ -1,96 +1,97 @@
-# 04 AI Gateway - Tasks
+﻿# 04 AI Gateway - Tasks
 
-## 任务总数：18
+## 浠诲姟鎬绘暟锛?8
 
-## Phase A：基础类型 + Prisma schema（2 个）
+## Phase A锛氬熀纭€绫诲瀷 + Prisma schema锛? 涓級
 
-- [ ] **A1** 在 `packages/types/src/ai-task/` 补全 PromptTemplate / TierContext / AiRequest / AiResponse 接口
-  - 验收：业务可 `import type { PromptTemplate } from '@tongqian/types'`
+- [x] **A1** 鍦?`packages/types/src/ai-task/` 琛ュ叏 PromptTemplate / TierContext / AiRequest / AiResponse 鎺ュ彛
+  - 楠屾敹锛氫笟鍔″彲 `import type { PromptTemplate } from '@tongqian/types'`
 
-- [ ] **A2** 在 `prisma/schema.prisma` 添加 4 个表：AiTask / AiCostLog / AiProviderHealth / AiExportAudit + migration
-  - 验收：`pnpm db:migrate` 通过
+- [x] **A2** 鍦?`prisma/schema.prisma` 娣诲姞 4 涓〃锛欰iTask / AiCostLog / AiProviderHealth / AiExportAudit + migration
+  - 楠屾敹锛歚pnpm db:migrate` 閫氳繃
 
-## Phase B：缓存 + 信用桩（2 个）
+## Phase B锛氱紦瀛?+ 淇＄敤妗╋紙2 涓級
 
-- [ ] **B1** 实现 `cache/exact-cache.service.ts`（Redis）+ `cache/semantic-cache.service.ts`（DashVector，先桩 + 简易 cosine）
-  - 验收：lookup / set 测试覆盖
+- [x] **B1** 瀹炵幇 `cache/exact-cache.service.ts`锛圧edis锛? `cache/semantic-cache.service.ts`锛圖ashVector锛屽厛妗?+ 绠€鏄?cosine锛?
+  - 楠屾敹锛歭ookup / set 娴嬭瘯瑕嗙洊
 
-- [ ] **B2** 实现 `credit/pre-charge.service.ts` / `commit.service.ts` / `refund.service.ts`（idempotent，先用 in-memory 实现，后由 [`08-credit-system`] 替换为真实 DB）
-  - 验收：PBT 通过：同 idempotencyKey 重复调用结果一致
+- [x] **B2** 瀹炵幇 `credit/pre-charge.service.ts` / `commit.service.ts` / `refund.service.ts`锛坕dempotent锛屽厛鐢?in-memory 瀹炵幇锛屽悗鐢?[`08-credit-system`] 鏇挎崲涓虹湡瀹?DB锛?
+  - 楠屾敹锛歅BT 閫氳繃锛氬悓 idempotencyKey 閲嶅璋冪敤缁撴灉涓€鑷?
 
-## Phase C：Sanitizer（2 个）
+## Phase C锛歋anitizer锛? 涓級
 
-- [ ] **C1** 实现 `sanitizer/sanitizer.service.ts` + 6 类检测器（公司名 / 人名 / 项目名 / 联系方式 / 金额 / 地址 / 身份证 / 银行卡 / 统一社会信用代码）
-  - 验收：PBT 强制 unmask(mask(x)) === x
+- [x] **C1** 瀹炵幇 `sanitizer/sanitizer.service.ts` + 6 绫绘娴嬪櫒锛堝叕鍙稿悕 / 浜哄悕 / 椤圭洰鍚?/ 鑱旂郴鏂瑰紡 / 閲戦 / 鍦板潃 / 韬唤璇?/ 閾惰鍗?/ 缁熶竴绀句細淇＄敤浠ｇ爜锛?
+  - 楠屾敹锛歅BT 寮哄埗 unmask(mask(x)) === x
 
-- [ ] **C2** 实现 `audit/ai-export-audit.service.ts`（写 ai_export_audit 表）
-  - 验收：每次脱敏调用必写 1 行审计
+- [x] **C2** 瀹炵幇 `audit/ai-export-audit.service.ts`锛堝啓 ai_export_audit 琛級
+  - 楠屾敹锛氭瘡娆¤劚鏁忚皟鐢ㄥ繀鍐?1 琛屽璁?
 
-## Phase D：Provider + 路由（3 个）
+## Phase D锛歅rovider + 璺敱锛? 涓級
 
-- [ ] **D1** 实现 `providers/ai-provider.interface.ts` + 4 个 Provider 实现（阿里百炼 / 火山方舟 / OpenRouter / B.AI）
-  - 验收：每个 Provider 实现 invoke / health；mock 模式可通过单测
+- [x] **D1** 瀹炵幇 `providers/ai-provider.interface.ts` + 4 涓?Provider 瀹炵幇锛堥樋閲岀櫨鐐?/ 鐏北鏂硅垷 / OpenRouter / B.AI锛?
+  - 楠屾敹锛氭瘡涓?Provider 瀹炵幇 invoke / health锛沵ock 妯″紡鍙€氳繃鍗曟祴
 
-- [ ] **D2** 实现 `providers/provider-router.service.ts`（按 priority + 健康选 provider + failover）+ `providers/health-monitor.worker.ts`（cron 每 1min）
-  - 验收：单一 provider 错误率 30% 自动切备用 + 写企业微信告警
+- [x] **D2** 瀹炵幇 `providers/provider-router.service.ts`锛堟寜 priority + 鍋ュ悍閫?provider + failover锛? `providers/health-monitor.worker.ts`锛坈ron 姣?1min锛?
+  - 楠屾敹锛氬崟涓€ provider 閿欒鐜?30% 鑷姩鍒囧鐢?+ 鍐欎紒涓氬井淇″憡璀?
 
-- [ ] **D3** 实现 `routing/routing.service.ts`（任务 → 模型 → provider 映射，支持 system_configs 后台覆盖）+ `routing/default-routing.ts`
-  - 验收：50+ AiTaskType 全有默认映射；后台改 `ai.routing.contract.review.pro` 60s 内生效
+- [x] **D3** 瀹炵幇 `routing/routing.service.ts`锛堜换鍔?鈫?妯″瀷 鈫?provider 鏄犲皠锛屾敮鎸?system_configs 鍚庡彴瑕嗙洊锛? `routing/default-routing.ts`
+  - 楠屾敹锛?0+ AiTaskType 鍏ㄦ湁榛樿鏄犲皠锛涘悗鍙版敼 `ai.routing.contract.review.pro` 60s 鍐呯敓鏁?
 
-## Phase E：Tier + Output（3 个）
+## Phase E锛歍ier + Output锛? 涓級
 
-- [ ] **E1** 实现 `tier-resolver.service.ts`（解析 PromptTemplate.tier 函数）
-  - 验收：PBT 强制 Tier 单调性
+- [x] **E1** 瀹炵幇 `tier-resolver.service.ts`锛堣В鏋?PromptTemplate.tier 鍑芥暟锛?
+  - 楠屾敹锛歅BT 寮哄埗 Tier 鍗曡皟鎬?
 
-- [ ] **E2** 实现 `output-validator.service.ts`（4 强制要素 + zod 校验，重试 ≤ 2 次）
-  - 验收：PBT 强制 4 要素完整性
+- [x] **E2** 瀹炵幇 `output-validator.service.ts`锛? 寮哄埗瑕佺礌 + zod 鏍￠獙锛岄噸璇?鈮?2 娆★級
+  - 楠屾敹锛歅BT 寮哄埗 4 瑕佺礌瀹屾暣鎬?
 
-- [ ] **E3** 实现 `safety-filter.service.ts`（输出敏感词 + 红线表述检测，命中重生成 1 次）
-  - 验收：PBT 强制红线表述拦截
+- [x] **E3** 瀹炵幇 `safety-filter.service.ts`锛堣緭鍑烘晱鎰熻瘝 + 绾㈢嚎琛ㄨ堪妫€娴嬶紝鍛戒腑閲嶇敓鎴?1 娆★級
+  - 楠屾敹锛歅BT 寮哄埗绾㈢嚎琛ㄨ堪鎷︽埅
 
-## Phase F：Prompt + Tier 注入（1 个）
+## Phase F锛歅rompt + Tier 娉ㄥ叆锛? 涓級
 
-- [ ] **F1** 实现 `prompt-builder.service.ts` + `routing/tier-prompt-injector.ts`
-  - 验收：按 tier 注入引导文案 + few-shot 拼装正确
+- [x] **F1** 瀹炵幇 `prompt-builder.service.ts` + `routing/tier-prompt-injector.ts`
+  - 楠屾敹锛氭寜 tier 娉ㄥ叆寮曞鏂囨 + few-shot 鎷艰姝ｇ‘
 
-## Phase G：限流 + 编排（2 个）
+## Phase G锛氶檺娴?+ 缂栨帓锛? 涓級
 
-- [ ] **G1** 实现 `apps/api/src/common/guards/ai-rate-limit.guard.ts`（Redis 计数器，3 维：用户 / 租户 / 全平台）
-  - 验收：超阈值返回 429 + Retry-After
+- [x] **G1** 瀹炵幇 `apps/api/src/common/guards/ai-rate-limit.guard.ts`锛圧edis 璁℃暟鍣紝3 缁达細鐢ㄦ埛 / 绉熸埛 / 鍏ㄥ钩鍙帮級
+  - 楠屾敹锛氳秴闃堝€艰繑鍥?429 + Retry-After
 
-- [ ] **G2** 实现 `orchestrator.service.ts` + `ai-gateway.service.ts`（9 步主流程编排）
-  - 验收：单元测试覆盖每步 + e2e 场景 1（合同审查闭环）通过
+- [x] **G2** 瀹炵幇 `orchestrator.service.ts` + `ai-gateway.service.ts`锛? 姝ヤ富娴佺▼缂栨帓锛?
+  - 楠屾敹锛氬崟鍏冩祴璇曡鐩栨瘡姝?+ e2e 鍦烘櫙 1锛堝悎鍚屽鏌ラ棴鐜級閫氳繃
 
-## Phase H：成本 + 异步（2 个）
+## Phase H锛氭垚鏈?+ 寮傛锛? 涓級
 
-- [ ] **H1** 实现 `cost-meter.service.ts` + `apps/admin` 成本仪表盘 API（`GET /api/v1/admin/cost/profit-margin`）
-  - 验收：毛利 ≥ 70% 监控可视化
+- [x] **H1** 瀹炵幇 `cost-meter.service.ts` + `apps/admin` 鎴愭湰浠〃鐩?API锛坄GET /api/v1/admin/cost/profit-margin`锛?
+  - 楠屾敹锛氭瘺鍒?鈮?70% 鐩戞帶鍙鍖?
 
-- [ ] **H2** 实现 BullMQ 异步任务队列（`apps/worker/src/jobs/ai-task.job.ts`）+ SSE 进度推送
-  - 验收：长任务（> 3s）自动入队 + client SSE 收到进度
+- [x] **H2** 瀹炵幇 BullMQ 寮傛浠诲姟闃熷垪锛坄apps/worker/src/jobs/ai-task.job.ts`锛? SSE 杩涘害鎺ㄩ€?
+  - 楠屾敹锛氶暱浠诲姟锛? 3s锛夎嚜鍔ㄥ叆闃?+ client SSE 鏀跺埌杩涘害
 
-## Phase I：示例 Prompt（1 个）
+## Phase I锛氱ず渚?Prompt锛? 涓級
 
-- [ ] **I1** 实现 1 个示例 Prompt（contract-review-basic）作为 PromptTemplate 模板范式
-  - 验收：5 大杀手锏 spec 撰写时可参照本范式
+- [x] **I1** 瀹炵幇 1 涓ず渚?Prompt锛坈ontract-review-basic锛変綔涓?PromptTemplate 妯℃澘鑼冨紡
+  - 楠屾敹锛? 澶ф潃鎵嬮攺 spec 鎾板啓鏃跺彲鍙傜収鏈寖寮?
 
-## 完成标准
+## 瀹屾垚鏍囧噯
 
-- ✅ 业务代码 grep 不到 OpenAI / Anthropic SDK 直接 import（CI 强制）
-- ✅ `aiGateway.invoke({...})` 可被 5 大杀手锏调用
-- ✅ 全部 PBT 强制项通过
-- ✅ e2e 场景 1（合同审查闭环）通过
-- ✅ 毛利监控 ≥ 70%
+- 鉁?涓氬姟浠ｇ爜 grep 涓嶅埌 OpenAI / Anthropic SDK 鐩存帴 import锛圕I 寮哄埗锛?
+- 鉁?`aiGateway.invoke({...})` 鍙 5 澶ф潃鎵嬮攺璋冪敤
+- 鉁?鍏ㄩ儴 PBT 寮哄埗椤归€氳繃
+- 鉁?e2e 鍦烘櫙 1锛堝悎鍚屽鏌ラ棴鐜級閫氳繃
+- 鉁?姣涘埄鐩戞帶 鈮?70%
 
 
 ---
 
-## V4 IMPROVEMENTS 新增任务（漏洞 6 单客户 AI 成本上限）
+## V4 IMPROVEMENTS 鏂板浠诲姟锛堟紡娲?6 鍗曞鎴?AI 鎴愭湰涓婇檺锛?
 
-- [ ] **04-IMP-1** UserDailyCost / TenantMonthlyCost 模型 + cron 5min 累计
-- [ ] **04-IMP-2** cost-cap-enforcer.service.ts（调用前必查上限）
-- [ ] **04-IMP-3** auto-downgrade.service.ts（自动切备用模型）
-- [ ] **04-IMP-4** 站内信 + 短信通知客户（V4 BR-325 诚实告知）
-- [ ] **04-IMP-5** PBT：任意调用必查上限 + 降级输出差距 ≤ 30%
-- [ ] **04-IMP-6** admin 后台阈值可调（按档位 / VIP）
-- [ ] **04-IMP-7** e2e：成本累计 → 触发降级 → 客户告知 → 升档引导
+- [x] **04-IMP-1** UserDailyCost / TenantMonthlyCost 妯″瀷 + cron 5min 绱
+- [x] **04-IMP-2** cost-cap-enforcer.service.ts锛堣皟鐢ㄥ墠蹇呮煡涓婇檺锛?
+- [x] **04-IMP-3** auto-downgrade.service.ts锛堣嚜鍔ㄥ垏澶囩敤妯″瀷锛?
+- [x] **04-IMP-4** 绔欏唴淇?+ 鐭俊閫氱煡瀹㈡埛锛圴4 BR-325 璇氬疄鍛婄煡锛?
+- [x] **04-IMP-5** PBT锛氫换鎰忚皟鐢ㄥ繀鏌ヤ笂闄?+ 闄嶇骇杈撳嚭宸窛 鈮?30%
+- [x] **04-IMP-6** admin 鍚庡彴闃堝€煎彲璋冿紙鎸夋。浣?/ VIP锛?
+- [x] **04-IMP-7** e2e锛氭垚鏈疮璁?鈫?瑙﹀彂闄嶇骇 鈫?瀹㈡埛鍛婄煡 鈫?鍗囨。寮曞
+

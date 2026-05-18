@@ -139,6 +139,9 @@ importers:
       '@tongqian/constants':
         specifier: workspace:^
         version: link:../../packages/constants
+      '@tongqian/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
