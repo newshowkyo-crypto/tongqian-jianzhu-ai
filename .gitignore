@@ -43,6 +43,8 @@ pino-pretty.log
 coverage/
 .nyc_output/
 *.lcov
+tests/e2e/html-report/
+tests/e2e/test-results/
 
 # Prisma
 prisma/migrations/dev.db

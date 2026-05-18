@@ -12,11 +12,15 @@ model SystemConfig {
   key           String                @unique
   value         Json
   description   String?
+  category      String                @default("ops")
+  isActive      Boolean               @default(true) @map("is_active")
   isOverridable Boolean               @default(true) @map("is_overridable")
+  updatedBy     String?               @map("updated_by")
   createdAt     DateTime              @default(now()) @map("created_at")
   updatedAt     DateTime              @updatedAt @map("updated_at")
   history       SystemConfigHistory[]
 
+  @@index([category, isActive])
   @@map("system_configs")
 }
 
@@ -160,16 +164,23 @@ model ApprovalStep {
 
 model AuditLog {
   id           String   @id @default(uuid()) @db.Uuid
-  tenantId     String?  @map("tenant_id")
-  userId       String?  @map("user_id")
+  tenantId     String?  @map("tenant_id") @db.Uuid
+  userId       String?  @map("user_id") @db.Uuid
   action       String
+  resource     String?
   resourceType String?  @map("resource_type")
   resourceId   String?  @map("resource_id")
   traceId      String   @map("trace_id")
+  before       Json?
+  after        Json?
+  ip           String?
+  userAgent    String?  @map("user_agent")
   meta         Json?
   createdAt    DateTime @default(now()) @map("created_at")
 
   @@index([tenantId, createdAt])
+  @@index([action, createdAt])
+  @@index([resource, resourceId])
   @@index([traceId])
   @@map("audit_logs")
 }
@@ -1684,22 +1695,7 @@ model PolicyFund {
   @@map("policy_funds")
 }
 
-model SystemConfig {
-  id          String   @id @default(uuid()) @db.Uuid
-  key         String   @unique
-  value       Json
-  description String?
-  category    String
-  isActive    Boolean  @default(true) @map("is_active")
-  updatedBy   String?  @map("updated_by")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  createdAt   DateTime @default(now()) @map("created_at")
-
-  @@index([category, isActive])
-  @@map("system_configs")
-}
-
-model SystemConfigHistory {
+model AdminSystemConfigHistory {
   id             String   @id @default(uuid()) @db.Uuid
   configKey      String   @map("config_key")
   prevValue      Json?    @map("prev_value")
@@ -1950,26 +1946,6 @@ model NotificationPreference {
   desktopEnabled     Boolean @default(true) @map("desktop_enabled")
 
   @@map("notification_preferences")
-}
-
-model AuditLog {
-  id        String   @id @default(uuid()) @db.Uuid
-  traceId   String   @map("trace_id")
-  userId    String?  @map("user_id") @db.Uuid
-  tenantId  String?  @map("tenant_id") @db.Uuid
-  action    String
-  resource  String
-  resourceId String? @map("resource_id")
-  before    Json?
-  after     Json?
-  ip        String?
-  userAgent String?  @map("user_agent")
-  createdAt DateTime @default(now()) @map("created_at")
-
-  @@index([action, createdAt])
-  @@index([resource, resourceId])
-  @@index([traceId])
-  @@map("audit_logs")
 }
 
 model GovAuditLog {

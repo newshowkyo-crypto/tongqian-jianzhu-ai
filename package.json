@@ -12,6 +12,7 @@
     "build": "node scripts/build-workspace.mjs",
     "lint": "turbo run lint && eslint . --ext .js,.cjs,.mjs,.ts,.tsx --no-error-on-unmatched-pattern",
     "typecheck": "turbo run typecheck",
+    "e2e": "playwright test",
     "test": "turbo run test",
     "test:prompts": "node scripts/test-prompts.mjs",
     "clean": "turbo run clean",
@@ -29,6 +30,7 @@
   "devDependencies": {
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
+    "@playwright/test": "^1.60.0",
     "@typescript-eslint/eslint-plugin": "^8.48.0",
     "@typescript-eslint/parser": "^8.48.0",
     "eslint": "^8.57.1",
