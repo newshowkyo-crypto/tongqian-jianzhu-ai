@@ -57,7 +57,7 @@
 - [x] **C2** 实现 `permission-points.ts`（业务权限点常量）
   - 验收：起步 ≥ 30 个权限点（合同/订阅/派单/数据导出/提现/申诉/平台运营），`{resource}:{action}` 格式
 
-- [ ] **C3** 实现 `role-permission.ts` + `position-permission.ts` 映射表 + `hasPermission` 工具 + `scope-guard.ts`
+- [x] **C3** 实现 `role-permission.ts` + `position-permission.ts` 映射表 + `hasPermission` 工具 + `scope-guard.ts`
   - 验收：`hasPermission(roles, positionTags, point)` 单测覆盖
 
 ## Phase D：constants 包（3 个）
