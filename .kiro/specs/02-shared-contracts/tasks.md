@@ -43,7 +43,7 @@
   - 文件：`base-error.ts` / `business-error.ts` / `validation-error.ts` / `auth-error.ts` / `permission-error.ts` / `not-found-error.ts` / `conflict-error.ts` / `rate-limit-error.ts` / `upstream-error.ts`
   - 验收：每个错误类含 code / httpStatus / message / details / traceId 字段
 
-- [ ] **B2** 实现 `codes.ts`（按 [`design.md` §11.5](../00-project-overview/design.md) 33 个命名空间起步框架）
+- [x] **B2** 实现 `codes.ts`（按 [`design.md` §11.5](../00-project-overview/design.md) 33 个命名空间起步框架）
   - 验收：每命名空间至少 1 个示例错误码 + `as const satisfies Record<string, ErrorCodeDef>`
 
 - [ ] **B3** 实现 `errorMiddleware`（NestJS 异常过滤器）+ `getErrorMessage` 工具

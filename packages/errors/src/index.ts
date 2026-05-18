@@ -9,3 +9,4 @@ export {
   UpstreamError,
   ValidationError,
 } from './business-errors.js';
+export { ErrorCodes, type ErrorCode, type ErrorCodeDef, type ErrorCodeKey } from './codes.js';
