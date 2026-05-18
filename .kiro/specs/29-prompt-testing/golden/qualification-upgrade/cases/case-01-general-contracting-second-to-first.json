@@ -1,0 +1,29 @@
+{
+  "input": {
+    "role": "owner",
+    "request": "建筑工程施工总承包二级企业计划升一级，缺一级建造师和近五年代表工程业绩。",
+    "context": "M3.5 黄金测试：qualification-upgrade / general-contracting-second-to-first",
+    "urgency": "medium"
+  },
+  "expected_output": {
+    "must_include": [
+      "规划升级路径",
+      "列人员缺口",
+      "列业绩证明"
+    ],
+    "forbidden_claims": [
+      "必须通过",
+      "一定中标",
+      "绝对可拿补贴"
+    ],
+    "required_elements": [
+      "disclaimer",
+      "tier",
+      "confidence",
+      "nextStepButtons"
+    ]
+  },
+  "minimum_similarity": 0.72,
+  "tier_expected": 2,
+  "confidence_expected": "high"
+}

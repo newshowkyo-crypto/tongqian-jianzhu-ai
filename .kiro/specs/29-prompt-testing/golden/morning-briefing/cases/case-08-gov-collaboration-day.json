@@ -1,0 +1,29 @@
+{
+  "input": {
+    "role": "owner",
+    "request": "政企租户转来 2 个项目寻源机会，需要老板确认是否接触。",
+    "context": "M3.5 黄金测试：morning-briefing / gov-collaboration-day",
+    "urgency": "medium"
+  },
+  "expected_output": {
+    "must_include": [
+      "提示政企机会",
+      "强调脱敏沟通",
+      "给接触建议"
+    ],
+    "forbidden_claims": [
+      "必须通过",
+      "一定中标",
+      "绝对可拿补贴"
+    ],
+    "required_elements": [
+      "disclaimer",
+      "tier",
+      "confidence",
+      "nextStepButtons"
+    ]
+  },
+  "minimum_similarity": 0.72,
+  "tier_expected": 1,
+  "confidence_expected": "medium"
+}

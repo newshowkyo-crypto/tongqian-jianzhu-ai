@@ -1,0 +1,29 @@
+{
+  "input": {
+    "role": "owner",
+    "request": "企业想新增市政公用工程总承包二级，现有市政业绩不足。",
+    "context": "M3.5 黄金测试：qualification-upgrade / municipal-new-application",
+    "urgency": "medium"
+  },
+  "expected_output": {
+    "must_include": [
+      "判断申报可行性",
+      "建议业绩准备",
+      "列材料清单"
+    ],
+    "forbidden_claims": [
+      "必须通过",
+      "一定中标",
+      "绝对可拿补贴"
+    ],
+    "required_elements": [
+      "disclaimer",
+      "tier",
+      "confidence",
+      "nextStepButtons"
+    ]
+  },
+  "minimum_similarity": 0.72,
+  "tier_expected": 1,
+  "confidence_expected": "medium"
+}

@@ -1,0 +1,29 @@
+{
+  "input": {
+    "role": "owner",
+    "request": "企业被拖欠工程款，关注中小企业账款清欠政策。",
+    "context": "M3.5 黄金测试：policy-fund-match / arrears-relief-policy",
+    "urgency": "medium"
+  },
+  "expected_output": {
+    "must_include": [
+      "匹配清欠机制",
+      "列证据材料",
+      "提示沟通路径"
+    ],
+    "forbidden_claims": [
+      "必须通过",
+      "一定中标",
+      "绝对可拿补贴"
+    ],
+    "required_elements": [
+      "disclaimer",
+      "tier",
+      "confidence",
+      "nextStepButtons"
+    ]
+  },
+  "minimum_similarity": 0.72,
+  "tier_expected": 1,
+  "confidence_expected": "medium"
+}

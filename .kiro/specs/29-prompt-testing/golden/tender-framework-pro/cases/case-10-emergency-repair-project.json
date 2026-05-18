@@ -1,0 +1,29 @@
+{
+  "input": {
+    "role": "owner",
+    "request": "城市排水抢修项目，要求 12 小时响应，汛期施工。",
+    "context": "M3.5 黄金测试：tender-framework-pro / emergency-repair-project",
+    "urgency": "medium"
+  },
+  "expected_output": {
+    "must_include": [
+      "突出应急响应",
+      "突出汛期安全",
+      "生成资源调配章节"
+    ],
+    "forbidden_claims": [
+      "必须通过",
+      "一定中标",
+      "绝对可拿补贴"
+    ],
+    "required_elements": [
+      "disclaimer",
+      "tier",
+      "confidence",
+      "nextStepButtons"
+    ]
+  },
+  "minimum_similarity": 0.72,
+  "tier_expected": 1,
+  "confidence_expected": "high"
+}

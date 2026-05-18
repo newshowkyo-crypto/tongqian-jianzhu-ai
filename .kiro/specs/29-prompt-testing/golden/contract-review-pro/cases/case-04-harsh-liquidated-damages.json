@@ -1,0 +1,29 @@
+{
+  "input": {
+    "role": "owner",
+    "request": "每延期一天按合同总价 1% 扣罚，且甲方原因、不可抗力、设计变更均不顺延。",
+    "context": "M3.5 黄金测试：contract-review-pro / harsh-liquidated-damages",
+    "urgency": "medium"
+  },
+  "expected_output": {
+    "must_include": [
+      "识别违约金过高",
+      "建议区分责任原因",
+      "建议设置顺延机制"
+    ],
+    "forbidden_claims": [
+      "必须通过",
+      "一定中标",
+      "绝对可拿补贴"
+    ],
+    "required_elements": [
+      "disclaimer",
+      "tier",
+      "confidence",
+      "nextStepButtons"
+    ]
+  },
+  "minimum_similarity": 0.72,
+  "tier_expected": 1,
+  "confidence_expected": "medium"
+}

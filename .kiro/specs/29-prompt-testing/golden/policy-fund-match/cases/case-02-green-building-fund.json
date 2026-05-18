@@ -1,0 +1,29 @@
+{
+  "input": {
+    "role": "owner",
+    "request": "企业做绿色施工和节能改造，想申报绿色建筑示范补贴。",
+    "context": "M3.5 黄金测试：policy-fund-match / green-building-fund",
+    "urgency": "medium"
+  },
+  "expected_output": {
+    "must_include": [
+      "识别绿色政策方向",
+      "列能耗证明",
+      "给申报路径"
+    ],
+    "forbidden_claims": [
+      "必须通过",
+      "一定中标",
+      "绝对可拿补贴"
+    ],
+    "required_elements": [
+      "disclaimer",
+      "tier",
+      "confidence",
+      "nextStepButtons"
+    ]
+  },
+  "minimum_similarity": 0.72,
+  "tier_expected": 1,
+  "confidence_expected": "medium"
+}

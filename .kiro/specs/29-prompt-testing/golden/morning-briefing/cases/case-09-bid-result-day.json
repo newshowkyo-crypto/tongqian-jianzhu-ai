@@ -1,0 +1,29 @@
+{
+  "input": {
+    "role": "owner",
+    "request": "昨日一个投标未中，评分差距主要在技术方案和类似业绩。",
+    "context": "M3.5 黄金测试：morning-briefing / bid-result-day",
+    "urgency": "medium"
+  },
+  "expected_output": {
+    "must_include": [
+      "复盘投标结果",
+      "给补强动作",
+      "避免挫败营销"
+    ],
+    "forbidden_claims": [
+      "必须通过",
+      "一定中标",
+      "绝对可拿补贴"
+    ],
+    "required_elements": [
+      "disclaimer",
+      "tier",
+      "confidence",
+      "nextStepButtons"
+    ]
+  },
+  "minimum_similarity": 0.72,
+  "tier_expected": 1,
+  "confidence_expected": "high"
+}

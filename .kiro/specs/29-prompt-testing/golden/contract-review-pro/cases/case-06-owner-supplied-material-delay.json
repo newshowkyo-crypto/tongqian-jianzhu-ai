@@ -1,0 +1,29 @@
+{
+  "input": {
+    "role": "owner",
+    "request": "甲供材料延误但合同未写明工期顺延、窝工费用和现场签证责任。",
+    "context": "M3.5 黄金测试：contract-review-pro / owner-supplied-material-delay",
+    "urgency": "medium"
+  },
+  "expected_output": {
+    "must_include": [
+      "识别甲供材延误风险",
+      "建议补窝工索赔路径",
+      "列证据清单"
+    ],
+    "forbidden_claims": [
+      "必须通过",
+      "一定中标",
+      "绝对可拿补贴"
+    ],
+    "required_elements": [
+      "disclaimer",
+      "tier",
+      "confidence",
+      "nextStepButtons"
+    ]
+  },
+  "minimum_similarity": 0.72,
+  "tier_expected": 1,
+  "confidence_expected": "medium"
+}

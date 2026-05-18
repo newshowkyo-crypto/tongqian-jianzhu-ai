@@ -1,0 +1,29 @@
+{
+  "input": {
+    "role": "owner",
+    "request": "智能管家昨日完成窗口跑办，客户待确认验收。",
+    "context": "M3.5 黄金测试：morning-briefing / agent-service-followup",
+    "urgency": "medium"
+  },
+  "expected_output": {
+    "must_include": [
+      "提醒验收确认",
+      "提示分润节点",
+      "建议回访"
+    ],
+    "forbidden_claims": [
+      "必须通过",
+      "一定中标",
+      "绝对可拿补贴"
+    ],
+    "required_elements": [
+      "disclaimer",
+      "tier",
+      "confidence",
+      "nextStepButtons"
+    ]
+  },
+  "minimum_similarity": 0.72,
+  "tier_expected": 1,
+  "confidence_expected": "high"
+}

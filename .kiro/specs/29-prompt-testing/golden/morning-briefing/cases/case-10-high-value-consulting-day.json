@@ -1,0 +1,29 @@
+{
+  "input": {
+    "role": "owner",
+    "request": "系统识别集团重组和 ABS-REITs 咨询机会。",
+    "context": "M3.5 黄金测试：morning-briefing / high-value-consulting-day",
+    "urgency": "medium"
+  },
+  "expected_output": {
+    "must_include": [
+      "提示高端咨询机会",
+      "说明同乾方略价值",
+      "给老板决策按钮"
+    ],
+    "forbidden_claims": [
+      "必须通过",
+      "一定中标",
+      "绝对可拿补贴"
+    ],
+    "required_elements": [
+      "disclaimer",
+      "tier",
+      "confidence",
+      "nextStepButtons"
+    ]
+  },
+  "minimum_similarity": 0.72,
+  "tier_expected": 1,
+  "confidence_expected": "high"
+}

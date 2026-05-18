@@ -1,0 +1,29 @@
+{
+  "input": {
+    "role": "owner",
+    "request": "安全生产许可证 45 天后到期，三类人员证书有 2 人即将过期。",
+    "context": "M3.5 黄金测试：qualification-upgrade / safety-license-expiring",
+    "urgency": "high"
+  },
+  "expected_output": {
+    "must_include": [
+      "识别证照到期",
+      "列续期动作",
+      "提示接单风险"
+    ],
+    "forbidden_claims": [
+      "必须通过",
+      "一定中标",
+      "绝对可拿补贴"
+    ],
+    "required_elements": [
+      "disclaimer",
+      "tier",
+      "confidence",
+      "nextStepButtons"
+    ]
+  },
+  "minimum_similarity": 0.72,
+  "tier_expected": 1,
+  "confidence_expected": "high"
+}

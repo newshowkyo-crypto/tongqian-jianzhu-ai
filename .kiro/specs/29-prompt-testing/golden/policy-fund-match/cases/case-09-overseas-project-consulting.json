@@ -1,0 +1,29 @@
+{
+  "input": {
+    "role": "owner",
+    "request": "企业有出海工程项目，关注境外承包支持政策。",
+    "context": "M3.5 黄金测试：policy-fund-match / overseas-project-consulting",
+    "urgency": "medium"
+  },
+  "expected_output": {
+    "must_include": [
+      "提示出境脱敏",
+      "匹配外经贸政策",
+      "建议专家复核"
+    ],
+    "forbidden_claims": [
+      "必须通过",
+      "一定中标",
+      "绝对可拿补贴"
+    ],
+    "required_elements": [
+      "disclaimer",
+      "tier",
+      "confidence",
+      "nextStepButtons"
+    ]
+  },
+  "minimum_similarity": 0.72,
+  "tier_expected": 1,
+  "confidence_expected": "medium"
+}

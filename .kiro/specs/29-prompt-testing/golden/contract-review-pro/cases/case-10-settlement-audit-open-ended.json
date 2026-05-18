@@ -1,0 +1,29 @@
+{
+  "input": {
+    "role": "owner",
+    "request": "结算以政府审计为准，审计时间不确定，乙方不得因审计延迟主张利息。",
+    "context": "M3.5 黄金测试：contract-review-pro / settlement-audit-open-ended",
+    "urgency": "medium"
+  },
+  "expected_output": {
+    "must_include": [
+      "识别结算开放期限",
+      "建议审计期限和暂付款",
+      "提示利息权利"
+    ],
+    "forbidden_claims": [
+      "必须通过",
+      "一定中标",
+      "绝对可拿补贴"
+    ],
+    "required_elements": [
+      "disclaimer",
+      "tier",
+      "confidence",
+      "nextStepButtons"
+    ]
+  },
+  "minimum_similarity": 0.72,
+  "tier_expected": 1,
+  "confidence_expected": "high"
+}

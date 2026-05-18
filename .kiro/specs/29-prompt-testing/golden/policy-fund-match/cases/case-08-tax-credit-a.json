@@ -1,0 +1,29 @@
+{
+  "input": {
+    "role": "owner",
+    "request": "企业纳税信用 A 级，近三年无处罚，有技改项目。",
+    "context": "M3.5 黄金测试：policy-fund-match / tax-credit-a",
+    "urgency": "medium"
+  },
+  "expected_output": {
+    "must_include": [
+      "利用信用优势",
+      "匹配技改资金",
+      "列证明材料"
+    ],
+    "forbidden_claims": [
+      "必须通过",
+      "一定中标",
+      "绝对可拿补贴"
+    ],
+    "required_elements": [
+      "disclaimer",
+      "tier",
+      "confidence",
+      "nextStepButtons"
+    ]
+  },
+  "minimum_similarity": 0.72,
+  "tier_expected": 1,
+  "confidence_expected": "high"
+}

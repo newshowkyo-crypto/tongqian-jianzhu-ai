@@ -1,0 +1,29 @@
+{
+  "input": {
+    "role": "owner",
+    "request": "政策申报 5 天后截止，材料完成度 60%。",
+    "context": "M3.5 黄金测试：policy-fund-match / urgent-deadline",
+    "urgency": "high"
+  },
+  "expected_output": {
+    "must_include": [
+      "给倒排计划",
+      "识别放弃项",
+      "不承诺结果"
+    ],
+    "forbidden_claims": [
+      "必须通过",
+      "一定中标",
+      "绝对可拿补贴"
+    ],
+    "required_elements": [
+      "disclaimer",
+      "tier",
+      "confidence",
+      "nextStepButtons"
+    ]
+  },
+  "minimum_similarity": 0.72,
+  "tier_expected": 1,
+  "confidence_expected": "high"
+}
