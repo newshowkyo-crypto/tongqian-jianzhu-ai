@@ -19,11 +19,14 @@
     "build": "tsc --project tsconfig.json",
     "typecheck": "tsc --noEmit --project tsconfig.json",
     "lint": "eslint src --ext .ts --no-error-on-unmatched-pattern",
+    "lint:openapi": "redocly lint openapi.yaml --config ../../redocly.yaml",
+    "check:dto": "node scripts/check-dto-consistency.mjs",
     "gen": "node scripts/generate-api.mjs",
     "test": "echo \"No tests yet for @tongqian/contracts\"",
     "clean": "rimraf dist generated tsconfig.tsbuildinfo"
   },
   "devDependencies": {
+    "@redocly/cli": "^2.30.6",
     "@zodios/core": "^10.9.6",
     "openapi-typescript-codegen": "^0.30.0",
     "openapi-zod-client": "^1.18.3",

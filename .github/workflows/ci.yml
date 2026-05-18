@@ -48,6 +48,9 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      - name: OpenAPI contract checks
+        run: pnpm --filter @tongqian/contracts lint:openapi && pnpm --filter @tongqian/contracts check:dto
+
       - name: Lint
         run: pnpm lint
 

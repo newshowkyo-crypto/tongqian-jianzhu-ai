@@ -83,7 +83,7 @@
 - [x] **E2** 实现 `pnpm gen:api` 命令（用 openapi-typescript-codegen + openapi-zod-client）
   - 验收：`pnpm gen:api` 可成功生成 client + zod schemas 到 `generated/`
 
-- [ ] **E3** 添加 redocly lint 配置 + CI 校验 + 与 packages/types DTO 一致性检查
+- [x] **E3** 添加 redocly lint 配置 + CI 校验 + 与 packages/types DTO 一致性检查
   - 验收：CI 在 OpenAPI 与 types 不一致时 fail
 
 ## Phase F：utils + ui 起步（2 个）

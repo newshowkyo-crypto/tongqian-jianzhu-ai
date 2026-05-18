@@ -1,0 +1,12 @@
+extends:
+  - recommended
+
+apis:
+  main:
+    root: packages/contracts/openapi.yaml
+
+rules:
+  no-unused-components: warn
+  operation-operationId: error
+  operation-summary: error
+  security-defined: error
