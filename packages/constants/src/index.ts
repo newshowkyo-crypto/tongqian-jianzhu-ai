@@ -3,8 +3,14 @@ import { seedSystemConfigs as seedCreditPricingConfigs } from './credit-pricing.
 import { seedSystemConfigs as seedDiscountLadderConfigs } from './discount-ladders.js';
 import { seedSystemConfigs as seedDispatchRateConfigs } from './dispatch-rates.js';
 import { seedSystemConfigs as seedDispatchThresholdConfigs } from './dispatch-thresholds.js';
+import { seedSystemConfigs as seedDispatchWeightConfigs } from './dispatch-weights.js';
+import { seedSystemConfigs as seedPremiumServiceConfigs } from './premium-services.js';
+import { seedSystemConfigs as seedRedLineConfigs } from './red-lines.js';
 import { seedSystemConfigs as seedReferralFeeRateConfigs } from './referral-fee-rates.js';
+import { seedSystemConfigs as seedReputationLevelConfigs } from './reputation-levels.js';
+import { seedSystemConfigs as seedReputationRuleConfigs } from './reputation-rules.js';
 import { seedSystemConfigs as seedSubscriptionPlanConfigs } from './subscription-plans.js';
+import { seedSystemConfigs as seedTakeoverTriggerConfigs } from './takeover-triggers.js';
 import { seedSystemConfigs as seedTierThresholdConfigs } from './tier-thresholds.js';
 
 export {
@@ -38,6 +44,30 @@ export {
   seedSystemConfigs as seedReferralFeeRateConfigs,
 } from './referral-fee-rates.js';
 export {
+  DEFAULT_REPUTATION_RULES,
+  seedSystemConfigs as seedReputationRuleConfigs,
+} from './reputation-rules.js';
+export {
+  DEFAULT_REPUTATION_LEVELS,
+  seedSystemConfigs as seedReputationLevelConfigs,
+} from './reputation-levels.js';
+export {
+  DEFAULT_DISPATCH_WEIGHTS,
+  seedSystemConfigs as seedDispatchWeightConfigs,
+} from './dispatch-weights.js';
+export {
+  DEFAULT_RED_LINES,
+  seedSystemConfigs as seedRedLineConfigs,
+} from './red-lines.js';
+export {
+  DEFAULT_TAKEOVER_TRIGGERS,
+  seedSystemConfigs as seedTakeoverTriggerConfigs,
+} from './takeover-triggers.js';
+export {
+  DEFAULT_PREMIUM_SERVICES,
+  seedSystemConfigs as seedPremiumServiceConfigs,
+} from './premium-services.js';
+export {
   DEFAULT_TIER_THRESHOLDS,
   seedSystemConfigs as seedTierThresholdConfigs,
 } from './tier-thresholds.js';
@@ -51,6 +81,12 @@ export function seedSystemConfigs() {
     ...seedDispatchThresholdConfigs(),
     ...seedDispatchRateConfigs(),
     ...seedReferralFeeRateConfigs(),
+    ...seedReputationRuleConfigs(),
+    ...seedReputationLevelConfigs(),
+    ...seedDispatchWeightConfigs(),
+    ...seedRedLineConfigs(),
+    ...seedTakeoverTriggerConfigs(),
+    ...seedPremiumServiceConfigs(),
     ...seedTierThresholdConfigs(),
   ] as const;
 }

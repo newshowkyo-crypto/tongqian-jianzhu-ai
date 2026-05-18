@@ -66,7 +66,7 @@
   - 文件：`subscription-plans.ts` / `discount-ladders.ts` / `credit-pricing.ts` / `commission-rates.ts` / `dispatch-thresholds.ts` / `dispatch-rates.ts` / `referral-fee-rates.ts` / `tier-thresholds.ts`
   - 验收：每文件同时输出 `as const` 默认值 + `seedSystemConfigs()` 函数（按 [`design.md` §5.14](../00-project-overview/design.md) 后台覆盖契约）
 
-- [ ] **D1b** 实现信誉规则 / 派单权重 / 红线 常量（含 `seedSystemConfigs()` 导出）
+- [x] **D1b** 实现信誉规则 / 派单权重 / 红线 常量（含 `seedSystemConfigs()` 导出）
   - 文件：`reputation-rules.ts` / `reputation-levels.ts` / `dispatch-weights.ts` / `red-lines.ts` / `takeover-triggers.ts` / `premium-services.ts`
   - 验收：BR-336 4 维加权 + BR-331/332/333 信誉规则 + BR-901 红线全部可后台覆盖
 
