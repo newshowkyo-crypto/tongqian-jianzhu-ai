@@ -51,7 +51,7 @@
 
 ## Phase C：permissions 包（3 个）
 
-- [ ] **C1** 实现 `roles.ts` + `agent-subtypes.ts` + `position-tags.ts` + `platform-roles.ts`
+- [x] **C1** 实现 `roles.ts` + `agent-subtypes.ts` + `position-tags.ts` + `platform-roles.ts`
   - 验收：4 大注册角色 + 4 类智能管家子类型 + 30+ 岗位 + 8 个平台运营子角色全部导出
 
 - [ ] **C2** 实现 `permission-points.ts`（业务权限点常量）
