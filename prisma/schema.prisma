@@ -934,6 +934,91 @@ model QualificationServiceOrder {
   @@map("qualification_service_orders")
 }
 
+model AssistantQuery {
+  id            String   @id @default(uuid()) @db.Uuid
+  userId        String   @map("user_id")
+  question      String
+  aiTaskId      String   @unique @map("ai_task_id")
+  resultData    Json     @map("result_data")
+  queryTemplate String?  @map("query_template")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([userId, createdAt])
+  @@map("assistant_queries")
+}
+
+model GeneratedDocument {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @map("tenant_id")
+  userId    String   @map("user_id")
+  docType   String   @map("doc_type")
+  content   String   @db.Text
+  pdfUrl    String?  @map("pdf_url")
+  aiTaskId  String   @unique @map("ai_task_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, userId, createdAt])
+  @@map("generated_documents")
+}
+
+model PolicySubscription {
+  id          String  @id @default(uuid()) @db.Uuid
+  tenantId    String  @unique @map("tenant_id")
+  topics      Json
+  level       Json
+  pushEnabled Boolean @default(true) @map("push_enabled")
+
+  @@map("policy_subscriptions")
+}
+
+model PolicyImpactAnalysis {
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @map("tenant_id")
+  policyId      String   @map("policy_id")
+  aiTaskId      String   @unique @map("ai_task_id")
+  impactSummary String   @map("impact_summary")
+  actions       Json
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, createdAt])
+  @@map("policy_impact_analyses")
+}
+
+model AssistantConversationStreak {
+  id            String    @id @default(uuid()) @db.Uuid
+  userId        String    @unique @map("user_id")
+  currentStreak Int       @default(0) @map("current_streak")
+  longestStreak Int       @default(0) @map("longest_streak")
+  lastChatAt    DateTime? @map("last_chat_at")
+  unlockedTags  String[]  @default([]) @map("unlocked_tags")
+  rewardClaims  Json      @map("reward_claims")
+
+  @@index([userId])
+  @@map("assistant_conversation_streaks")
+}
+
+model UserAssistantPersonality {
+  id                 String    @id @default(uuid()) @db.Uuid
+  userId             String    @unique @map("user_id")
+  currentPersonality String    @map("current_personality")
+  switchHistory      Json      @map("switch_history")
+  lastSwitchedAt     DateTime? @map("last_switched_at")
+
+  @@map("user_assistant_personalities")
+}
+
+model InspirationCard {
+  id            String   @id @default(uuid()) @db.Uuid
+  userId        String   @map("user_id")
+  cardContent   Json     @map("card_content")
+  triggerReason String   @map("trigger_reason")
+  pushedAt      DateTime @default(now()) @map("pushed_at")
+  userAction    String?  @map("user_action")
+
+  @@index([userId, pushedAt])
+  @@map("inspiration_cards")
+}
+
 enum AiTaskStatus {
   queued
   processing

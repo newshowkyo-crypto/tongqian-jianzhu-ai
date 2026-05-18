@@ -15,6 +15,7 @@ export * from './credit/lot.js';
 export * from './credit/transaction.js';
 export * from './dispatch/index.js';
 export * from './opportunity/index.js';
+export * from './ops-toolkit/index.js';
 export * from './payment/index.js';
 export * from './qualification/index.js';
 export * from './report/required-elements.js';
