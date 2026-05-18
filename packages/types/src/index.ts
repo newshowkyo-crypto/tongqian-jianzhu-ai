@@ -14,6 +14,7 @@ export * from './credit/expiry.js';
 export * from './credit/lot.js';
 export * from './credit/transaction.js';
 export * from './dispatch/index.js';
+export * from './opportunity/index.js';
 export * from './payment/index.js';
 export * from './report/required-elements.js';
 export * from './report-center/index.js';

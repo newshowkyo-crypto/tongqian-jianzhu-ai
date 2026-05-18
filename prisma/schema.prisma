@@ -581,6 +581,80 @@ model ReportDifficultyRadar {
   @@map("report_difficulty_radars")
 }
 
+model Opportunity {
+  id              String   @id @default(uuid()) @db.Uuid
+  title           String
+  source          String
+  region          String
+  industry        String
+  amountEstimate  Decimal  @map("amount_estimate") @db.Decimal(15, 2)
+  ownerName       String   @map("owner_name")
+  ownerCreditCode String?  @map("owner_credit_code")
+  publishDate     DateTime @map("publish_date")
+  deadline        DateTime?
+  rawUrl          String?  @map("raw_url")
+  rawText         String?  @map("raw_text") @db.Text
+  meta            Json?
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([region, industry, amountEstimate])
+  @@map("opportunities")
+}
+
+model OpportunityPreference {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @unique @map("tenant_id")
+  regions     Json
+  industries  Json
+  amountMin   Decimal? @map("amount_min") @db.Decimal(15, 2)
+  amountMax   Decimal? @map("amount_max") @db.Decimal(15, 2)
+  pushEnabled Boolean  @default(true) @map("push_enabled")
+
+  @@map("opportunity_preferences")
+}
+
+model OpportunityMatch {
+  id            String    @id @default(uuid()) @db.Uuid
+  tenantId      String    @map("tenant_id")
+  opportunityId String    @map("opportunity_id") @db.Uuid
+  matchScore    Int       @map("match_score")
+  pushedAt      DateTime  @default(now()) @map("pushed_at")
+  readAt        DateTime? @map("read_at")
+  bookmarked    Boolean   @default(false)
+
+  @@unique([tenantId, opportunityId])
+  @@index([tenantId, pushedAt])
+  @@map("opportunity_matches")
+}
+
+model InvestabilityReport {
+  id                 String   @id @default(uuid()) @db.Uuid
+  tenantId           String   @map("tenant_id")
+  opportunityId      String   @map("opportunity_id") @db.Uuid
+  score              Int
+  fundingScore       Int      @map("funding_score")
+  qualificationScore Int      @map("qualification_score")
+  relationshipScore  Int      @map("relationship_score")
+  performanceScore   Int      @map("performance_score")
+  aiTaskId           String   @unique @map("ai_task_id")
+  reportId           String?  @map("report_id")
+  createdAt          DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, opportunityId])
+  @@map("investability_reports")
+}
+
+model OwnerVerifyResult {
+  id              String   @id @default(uuid()) @db.Uuid
+  ownerCreditCode String   @unique @map("owner_credit_code")
+  status          String
+  evidence        Json
+  score           Int
+  cachedUntil     DateTime @map("cached_until")
+
+  @@map("owner_verify_results")
+}
+
 enum AiTaskStatus {
   queued
   processing
