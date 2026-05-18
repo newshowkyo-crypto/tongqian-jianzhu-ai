@@ -19,6 +19,7 @@ import { ProjectSiteModule } from './modules/project-site/project-site.module.js
 import { QualificationModule } from './modules/qualification/qualification.module.js';
 import { ReportCenterModule } from './modules/report-center/report-center.module.js';
 import { RiskReviewModule } from './modules/risk-review/risk-review.module.js';
+import { RulesEngineModule } from './modules/rules-engine/rules-engine.module.js';
 import { SubscriptionModule } from './modules/subscription/subscription.module.js';
 import { TenderModule } from './modules/tender/tender.module.js';
 import { UserModule } from './modules/user/user.module.js';
@@ -49,6 +50,7 @@ class HealthController {
     ProjectSiteModule,
     ReportCenterModule,
     RiskReviewModule,
+    RulesEngineModule,
     SubscriptionModule,
     TenderModule,
     UserModule,

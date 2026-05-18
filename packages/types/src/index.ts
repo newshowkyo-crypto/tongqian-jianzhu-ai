@@ -27,6 +27,7 @@ export * from './report/required-elements.js';
 export * from './report-center/index.js';
 export * from './report/status.js';
 export * from './risk-review/index.js';
+export * from './rules-engine/index.js';
 export * from './reputation/index.js';
 export * from './subscription/auto-renewal.js';
 export * from './subscription/change-plan.js';
