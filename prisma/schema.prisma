@@ -1224,6 +1224,61 @@ model QuantityEstimate {
   @@map("quantity_estimates")
 }
 
+model Receivable {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id")
+  debtorName  String   @map("debtor_name")
+  amount      Decimal  @db.Decimal(15, 2)
+  invoiceDate DateTime @map("invoice_date")
+  dueDate     DateTime @map("due_date")
+  status      String
+  ageBucket   String   @map("age_bucket")
+  meta        Json?
+
+  @@index([tenantId, dueDate])
+  @@map("receivables")
+}
+
+model AgingAnalysis {
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @map("tenant_id")
+  totalAmount   Decimal  @map("total_amount") @db.Decimal(15, 2)
+  byBucket      Json     @map("by_bucket")
+  highRiskTotal Decimal  @map("high_risk_total") @db.Decimal(15, 2)
+  aiTaskId      String   @unique @map("ai_task_id")
+  reportId      String?  @map("report_id")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, createdAt])
+  @@map("aging_analyses")
+}
+
+model CashflowForecast {
+  id             String   @id @default(uuid()) @db.Uuid
+  tenantId       String   @map("tenant_id")
+  forecastPeriod String   @map("forecast_period")
+  monthlyData    Json     @map("monthly_data")
+  aiTaskId       String   @unique @map("ai_task_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, createdAt])
+  @@map("cashflow_forecasts")
+}
+
+model FinancingDiagnosis {
+  id               String @id @default(uuid()) @db.Uuid
+  tenantId         String @map("tenant_id")
+  availableTypes   Json   @map("available_types")
+  estimatedAmounts Json   @map("estimated_amounts")
+  preparationSteps Json   @map("preparation_steps")
+  recommendedPath  String @map("recommended_path")
+  aiTaskId         String @unique @map("ai_task_id")
+  reportId         String? @map("report_id")
+
+  @@index([tenantId])
+  @@map("financing_diagnoses")
+}
+
 enum AiTaskStatus {
   queued
   processing
