@@ -1952,6 +1952,133 @@ model NotificationPreference {
   @@map("notification_preferences")
 }
 
+model AuditLog {
+  id        String   @id @default(uuid()) @db.Uuid
+  traceId   String   @map("trace_id")
+  userId    String?  @map("user_id") @db.Uuid
+  tenantId  String?  @map("tenant_id") @db.Uuid
+  action    String
+  resource  String
+  resourceId String? @map("resource_id")
+  before    Json?
+  after     Json?
+  ip        String?
+  userAgent String?  @map("user_agent")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([action, createdAt])
+  @@index([resource, resourceId])
+  @@index([traceId])
+  @@map("audit_logs")
+}
+
+model GovAuditLog {
+  id        String   @id @default(uuid()) @db.Uuid
+  traceId   String   @map("trace_id")
+  userId    String?  @map("user_id") @db.Uuid
+  tenantId  String?  @map("tenant_id") @db.Uuid
+  action    String
+  resource  String
+  before    Json?
+  after     Json?
+  ip        String?
+  userAgent String?  @map("user_agent")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([traceId, createdAt])
+  @@map("gov_audit_logs")
+}
+
+model DeviceFingerprint {
+  id              String   @id @default(uuid()) @db.Uuid
+  fingerprint     String   @unique
+  deviceType      String   @map("device_type")
+  ip              String?
+  userAgent       String?  @map("user_agent")
+  firstSeenAt     DateTime @default(now()) @map("first_seen_at")
+  lastSeenAt      DateTime @map("last_seen_at")
+  associatedUsers Json     @map("associated_users")
+  isBlacklisted   Boolean  @default(false) @map("is_blacklisted")
+
+  @@map("device_fingerprints")
+}
+
+model FraudSignal {
+  id         String    @id @default(uuid()) @db.Uuid
+  type       String
+  level      String
+  subjectId  String    @map("subject_id")
+  evidence   Json
+  status     String
+  createdAt  DateTime  @default(now()) @map("created_at")
+  resolvedAt DateTime? @map("resolved_at")
+
+  @@index([type, level, status])
+  @@map("fraud_signals")
+}
+
+model BlacklistEntry {
+  id      String   @id @default(uuid()) @db.Uuid
+  type    String
+  value   String
+  reason  String
+  addedBy String   @map("added_by")
+  addedAt DateTime @default(now()) @map("added_at")
+
+  @@unique([type, value])
+  @@map("blacklist_entries")
+}
+
+model BackupRun {
+  id        String    @id @default(uuid()) @db.Uuid
+  runType   String    @map("run_type")
+  status    String
+  sizeBytes BigInt?   @map("size_bytes")
+  ossPath   String?   @map("oss_path")
+  startedAt DateTime  @map("started_at")
+  endedAt   DateTime? @map("ended_at")
+  error     String?
+
+  @@index([runType, status, startedAt])
+  @@map("backup_runs")
+}
+
+model EmergencyIncident {
+  id            String    @id @default(uuid()) @db.Uuid
+  type          String
+  severity      String
+  triggeredAt   DateTime  @default(now()) @map("triggered_at")
+  servicePaused Boolean   @map("service_paused")
+  resolvedAt    DateTime? @map("resolved_at")
+  notes         String?
+
+  @@map("emergency_incidents")
+}
+
+model ComplianceSelfCheck {
+  id        String   @id @default(uuid()) @db.Uuid
+  quarter   String
+  items     Json
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([quarter])
+  @@map("compliance_self_checks")
+}
+
+model AIDataSource {
+  id               String    @id @default(uuid()) @db.Uuid
+  sourceName       String    @unique @map("source_name")
+  sourceUrl        String    @map("source_url")
+  sourceType       String    @map("source_type")
+  authorized       Boolean   @default(false)
+  qpsLimit         Int       @default(1) @map("qps_limit")
+  userAgent        String    @map("user_agent")
+  robotsCompliant  Boolean   @default(true) @map("robots_compliant")
+  lastAuditAt      DateTime? @map("last_audit_at")
+
+  @@map("ai_data_sources")
+}
+
 enum AiTaskStatus {
   queued
   processing
