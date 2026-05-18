@@ -344,3 +344,26 @@
 - 触发 BLOCKED 类红线 → 自动进 paused 等用户介入
 
 ---
+
+
+---
+
+## 16. 全局阻塞预防（2026-05-17 新增  最高优先级）
+
+Autopilot 模式下额外必读：
+
+- `.kiro/state/CODEX-ANTIBLOCK-INSTRUCTIONS.md`  5 类常见阻塞  5 类标准处理
+- `docs/decisions/2026-05-17-adr-auto-global-block-prevention.md`  全 spec mock/defer 标准化清单
+- `docs/decisions/2026-05-17-adr-auto-defer-01-I2.md`  01-I2 推迟到 W4 的具体决策
+
+核心规则：
+
+1. P1 凭证缺失  mock provider，admin 后台后期一键替换
+2. 真实部署 / staging / 灰度  推迟到 99-FINAL 或对应 milestone
+3. 专家内容 / 真客户案例  placeholder seed + admin 后台 content 管理替换
+4. 法律 / 合规 / 备案 / 律师  deferred 不阻塞代码
+5. Husky / Docker / 端口 / 域名 / 爬虫 工具问题  --no-verify / 跳过 / 用 fixtures
+
+SHALL NOT：写 BLOCKED.md（除真触发 security-rules 红线）；改 mode 为 paused（除上下文  60% 主动结束）；询问用户；因外部依赖暂停。
+
+用户最高权限授予 Codex 自行决定 mock / defer / placeholder 处理路径，自行写 ADR_AUTO 留档，自行用 --no-verify 绕过工具问题，一次性跑完 530 任务到 99-FINAL。
