@@ -1794,6 +1794,115 @@ model ChatChannelBinding {
   @@map("chat_channel_bindings")
 }
 
+model UserCheckin {
+  id            String   @id @default(uuid()) @db.Uuid
+  userId        String   @map("user_id") @db.Uuid
+  date          DateTime @db.Date
+  rewardCredits Int      @map("reward_credits")
+  streakDays    Int      @map("streak_days")
+
+  @@unique([userId, date])
+  @@index([userId, date])
+  @@map("user_checkins")
+}
+
+model LotteryEvent {
+  id          String   @id @default(uuid()) @db.Uuid
+  scheduledAt DateTime @map("scheduled_at")
+  isActive    Boolean  @default(true) @map("is_active")
+
+  @@index([scheduledAt, isActive])
+  @@map("lottery_events")
+}
+
+model LotteryDraw {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  eventId    String   @map("event_id") @db.Uuid
+  prizeType  String   @map("prize_type")
+  prizeValue String   @map("prize_value")
+  drawnAt    DateTime @default(now()) @map("drawn_at")
+
+  @@unique([userId, eventId])
+  @@map("lottery_draws")
+}
+
+model BuildingLevel {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @unique @map("tenant_id") @db.Uuid
+  level            Int
+  exp              Int      @default(0)
+  unlockedFeatures Json     @map("unlocked_features")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@map("building_levels")
+}
+
+model MonthlyGrowthReport {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  yearMonth   String   @map("year_month")
+  h5Url       String?  @map("h5_url")
+  aiTaskId    String   @unique @map("ai_task_id")
+  metrics     Json
+  generatedAt DateTime @default(now()) @map("generated_at")
+
+  @@unique([tenantId, yearMonth])
+  @@map("monthly_growth_reports")
+}
+
+model UrgencyPushLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  type       String
+  resourceId String   @map("resource_id")
+  pushedAt   DateTime @default(now()) @map("pushed_at")
+
+  @@index([userId, pushedAt])
+  @@map("urgency_push_logs")
+}
+
+model AddictionHook {
+  id             String  @id @default(uuid()) @db.Uuid
+  hookCode       String  @unique @map("hook_code")
+  nameZh         String  @map("name_zh")
+  group          String
+  phase          Int
+  enabled        Boolean @default(true)
+  config         Json
+  outputRedLines Json    @map("output_red_lines")
+
+  @@map("addiction_hooks")
+}
+
+model HookTriggerLog {
+  id          String   @id @default(uuid()) @db.Uuid
+  hookCode    String   @map("hook_code")
+  userId      String   @map("user_id") @db.Uuid
+  triggeredAt DateTime @default(now()) @map("triggered_at")
+  context     Json?
+  outcome     String?
+
+  @@index([userId, hookCode, triggeredAt])
+  @@map("hook_trigger_logs")
+}
+
+model OnboardingProgress {
+  id               String    @id @default(uuid()) @db.Uuid
+  userId           String    @unique @map("user_id") @db.Uuid
+  stepsDone        String[]  @map("steps_done")
+  step1DoneAt      DateTime? @map("step_1_done_at")
+  step2DoneAt      DateTime? @map("step_2_done_at")
+  step3DoneAt      DateTime? @map("step_3_done_at")
+  step4DoneAt      DateTime? @map("step_4_done_at")
+  step5DoneAt      DateTime? @map("step_5_done_at")
+  fullyActivatedAt DateTime? @map("fully_activated_at")
+  rewardClaimedAt  DateTime? @map("reward_claimed_at")
+
+  @@index([userId])
+  @@map("onboarding_progress")
+}
+
 enum AiTaskStatus {
   queued
   processing
