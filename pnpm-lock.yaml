@@ -17,6 +17,9 @@ importers:
       '@playwright/test':
         specifier: ^1.60.0
         version: 1.60.0
+      '@swc/helpers':
+        specifier: 0.5.5
+        version: 0.5.5
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.48.0
         version: 8.59.3(@typescript-eslint/parser@8.59.3(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1)(typescript@5.9.3)
@@ -47,6 +50,9 @@ importers:
       prettier:
         specifier: ^3.4.2
         version: 3.8.3
+      styled-jsx:
+        specifier: 5.1.1
+        version: 5.1.1(react@18.3.1)
       turbo:
         specifier: ^2.3.3
         version: 2.9.14
