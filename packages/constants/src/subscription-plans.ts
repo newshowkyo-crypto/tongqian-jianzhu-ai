@@ -21,7 +21,8 @@ export const DEFAULT_SUBSCRIPTION_PLANS = [
     code: SubscriptionPlanCode.LITE,
     displayName: 'Lite',
     monthlyPriceCny: 39,
-    limits: { monthlyCredits: 500, maxProjects: 3, maxUsers: 3, tierAccess: [1] },
+    yearlyPriceCny: 390,
+    limits: { monthlyCredits: 4000, maxProjects: 3, maxUsers: 3, tierAccess: [1] },
     features: {
       killerAppsTrialOnly: false,
       coBranding: false,
@@ -37,7 +38,8 @@ export const DEFAULT_SUBSCRIPTION_PLANS = [
     code: SubscriptionPlanCode.STANDARD,
     displayName: 'Standard',
     monthlyPriceCny: 199,
-    limits: { monthlyCredits: 2500, maxProjects: 20, maxUsers: 20, tierAccess: [1, 2] },
+    yearlyPriceCny: 1990,
+    limits: { monthlyCredits: 25000, maxProjects: 20, maxUsers: 20, tierAccess: [1, 2] },
     features: {
       killerAppsTrialOnly: false,
       coBranding: false,
@@ -53,7 +55,8 @@ export const DEFAULT_SUBSCRIPTION_PLANS = [
     code: SubscriptionPlanCode.ENTERPRISE,
     displayName: 'Enterprise',
     monthlyPriceCny: 499,
-    limits: { monthlyCredits: 7000, maxProjects: 100, maxUsers: 100, tierAccess: [1, 2, 3] },
+    yearlyPriceCny: 4990,
+    limits: { monthlyCredits: 80000, maxProjects: 100, maxUsers: 100, tierAccess: [1, 2, 3] },
     features: {
       killerAppsTrialOnly: false,
       coBranding: true,
@@ -69,7 +72,8 @@ export const DEFAULT_SUBSCRIPTION_PLANS = [
     code: SubscriptionPlanCode.FLAGSHIP,
     displayName: 'Flagship',
     monthlyPriceCny: 999,
-    limits: { monthlyCredits: 15000, maxProjects: undefined, maxUsers: undefined, tierAccess: [1, 2, 3, 4] },
+    yearlyPriceCny: 9990,
+    limits: { monthlyCredits: 200000, maxProjects: undefined, maxUsers: undefined, tierAccess: [1, 2, 3, 4] },
     features: {
       killerAppsTrialOnly: false,
       coBranding: true,

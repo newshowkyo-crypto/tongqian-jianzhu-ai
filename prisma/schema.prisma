@@ -187,6 +187,86 @@ model IdempotencyRecord {
   @@map("idempotency_records")
 }
 
+model SubscriptionPlan {
+  id              String   @id @default(uuid()) @db.Uuid
+  code            String   @unique
+  name            String
+  monthlyPrice    Decimal  @map("monthly_price") @db.Decimal(10, 2)
+  yearlyPrice     Decimal? @map("yearly_price") @db.Decimal(10, 2)
+  creditsPerMonth Int      @map("credits_per_month")
+  features        Json
+  isActive        Boolean  @default(true) @map("is_active")
+
+  @@map("subscription_plans")
+}
+
+model Subscription {
+  id                 String             @id @default(uuid()) @db.Uuid
+  tenantId           String             @unique @map("tenant_id") @db.Uuid
+  planCode           String             @map("plan_code")
+  status             SubscriptionStatus @default(trial)
+  consecutiveMonths  Int                @default(0) @map("consecutive_months")
+  autoRenew          Boolean            @default(true) @map("auto_renew")
+  currentPeriodStart DateTime           @map("current_period_start")
+  currentPeriodEnd   DateTime           @map("current_period_end")
+  canceledAt         DateTime?          @map("canceled_at")
+  expiredAt          DateTime?          @map("expired_at")
+  pastDueSince       DateTime?          @map("past_due_since")
+  totalPaid          Decimal            @default(0) @map("total_paid") @db.Decimal(12, 2)
+  totalPaidMonths    Int                @default(0) @map("total_paid_months")
+  conciergeUserId    String?            @map("concierge_user_id")
+  meta               Json?
+  createdAt          DateTime           @default(now()) @map("created_at")
+  updatedAt          DateTime           @updatedAt @map("updated_at")
+
+  @@index([status, currentPeriodEnd])
+  @@index([pastDueSince])
+  @@map("subscriptions")
+}
+
+model SubscriptionChange {
+  id             String   @id @default(uuid()) @db.Uuid
+  subscriptionId String   @map("subscription_id") @db.Uuid
+  fromPlan       String   @map("from_plan")
+  toPlan         String   @map("to_plan")
+  type           String
+  effectiveAt    DateTime @map("effective_at")
+  prorateAmount  Decimal? @map("prorate_amount") @db.Decimal(10, 2)
+  initiatedBy    String   @map("initiated_by")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@index([subscriptionId])
+  @@map("subscription_changes")
+}
+
+model RenewalAttempt {
+  id             String   @id @default(uuid()) @db.Uuid
+  subscriptionId String   @map("subscription_id") @db.Uuid
+  attemptNo      Int      @map("attempt_no")
+  result         String
+  paymentId      String?  @map("payment_id")
+  errorCode      String?  @map("error_code")
+  attemptedAt    DateTime @default(now()) @map("attempted_at")
+
+  @@index([subscriptionId, attemptNo])
+  @@map("renewal_attempts")
+}
+
+model Invoice {
+  id             String   @id @default(uuid()) @db.Uuid
+  tenantId       String   @map("tenant_id") @db.Uuid
+  subscriptionId String   @map("subscription_id") @db.Uuid
+  amount         Decimal  @db.Decimal(10, 2)
+  invoiceNo      String   @unique @map("invoice_no")
+  invoiceUrl     String?  @map("invoice_url")
+  emailSentAt    DateTime? @map("email_sent_at")
+  status         String
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, createdAt])
+  @@map("invoices")
+}
+
 model AiTask {
   id           String       @id @default(uuid()) @db.Uuid
   taskType     String       @map("task_type")
@@ -349,4 +429,12 @@ enum ApprovalDecision {
   pending
   approved
   rejected
+}
+
+enum SubscriptionStatus {
+  trial
+  active
+  past_due
+  canceled
+  expired
 }

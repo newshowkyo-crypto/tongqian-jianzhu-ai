@@ -7,6 +7,7 @@ import { ExpressAdapter } from '@nestjs/platform-express';
 import { ApprovalModule } from './modules/approval/approval.module.js';
 import { AuthModule } from './modules/auth/auth.module.js';
 import { DataExportModule } from './modules/data-export/data-export.module.js';
+import { SubscriptionModule } from './modules/subscription/subscription.module.js';
 import { UserModule } from './modules/user/user.module.js';
 
 @Controller()
@@ -19,7 +20,7 @@ class HealthController {
 
 @Module({
   controllers: [HealthController],
-  imports: [ApprovalModule, AuthModule, DataExportModule, UserModule],
+  imports: [ApprovalModule, AuthModule, DataExportModule, SubscriptionModule, UserModule],
 })
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 class AppModule {}
