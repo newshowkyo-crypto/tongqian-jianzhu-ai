@@ -29,7 +29,15 @@
       }
     }
   },
-  "ignorePatterns": ["node_modules/", "dist/", ".next/", ".turbo/", "coverage/", "pnpm-lock.yaml"],
+  "ignorePatterns": [
+    "node_modules/",
+    "dist/",
+    ".next/",
+    ".turbo/",
+    "coverage/",
+    "pnpm-lock.yaml",
+    "**/generated/**"
+  ],
   "rules": {
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/consistent-type-imports": "error",
