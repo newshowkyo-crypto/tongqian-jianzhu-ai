@@ -1,4 +1,17 @@
 export const zhCN = {
+  brand: {
+    name: '同乾方略',
+    agent: '智能管家',
+    workspace: '智能管家工作台',
+  },
+  states: {
+    emptyTitle: '暂无派单',
+    emptyDescription: '当前池子没有符合条件的订单，请稍后刷新。',
+    loading: '数据加载中',
+    errorTitle: '加载失败',
+    errorDescription: '网络或服务暂时不可用，请稍后重试。',
+    retry: '重试',
+  },
   chat: {
     actions: {
       execute: '按方案执行',
@@ -10,5 +23,66 @@ export const zhCN = {
   },
   home: {
     title: '同乾方略 · 智能管家工作台',
+  },
+  dispatch: {
+    title: '派单大厅',
+    description: '基于归属、跨域池、公开抢单和信誉分的派单协同。',
+    tabs: ['全部派单', '我的归属', '跨域池', '公开抢单'],
+    urgent: '紧急',
+    premium: '优质客户',
+    quoteLabel: '报价输入',
+    scoresTitle: '四维匹配分',
+    actions: ['立即接单', '跳过', '转同乾方略'],
+    traffic: {
+      green: '合理',
+      red: '偏高',
+      yellow: '需复核',
+    },
+    orders: [
+      {
+        customer: '湖北宏建工程',
+        due: '2 小时内响应',
+        id: 'DQ-20260518-001',
+        match: ['LV5 +20', '区域 +18', '资质 +16', '满意度 +14'],
+        need: '合同风险现场协助',
+        quote: 4800,
+        urgent: true,
+      },
+      {
+        customer: '西安城投项目部',
+        due: '今日 18:00 前',
+        id: 'DQ-20260518-014',
+        match: ['LV4 +15', '区域 +12', '资质 +18', '满意度 +12'],
+        need: '投标材料窗口跑办',
+        quote: 2600,
+      },
+      {
+        customer: '苏州建安集团',
+        due: '24 小时内',
+        id: 'DQ-20260518-029',
+        match: ['LV3 +10', '区域 +16', '资质 +14', '满意度 +10'],
+        need: '资质升级材料预审',
+        quote: 1200,
+      },
+    ],
+  },
+  reputation: {
+    title: '信誉看板',
+    description: '信誉分影响派单权重、推荐费上限和提现周期。',
+    scoreLabel: '信誉分',
+    level: 'LV4 金牌管家',
+    next: '距 LV5 还差 88 分',
+    referralCap: '推荐费上限',
+    withdrawal: '提现周期',
+    appeal: '申诉入口',
+    eventsTitle: '本月加减分明细',
+    monthlyRecovery: '自然回血 +20 / 月（活跃且无差评）',
+    events: [
+      { date: '5/18', delta: 50, reason: '推荐客户成交 ABS 大单' },
+      { date: '5/16', delta: 10, reason: '客户五星评价' },
+      { date: '5/12', delta: 5, reason: '按时完成窗口跑办' },
+      { date: '5/09', delta: -20, reason: '客户低评分，已提交申诉' },
+      { date: '5/05', delta: 5, reason: '完成资质材料核验' },
+    ],
   },
 } as const;
