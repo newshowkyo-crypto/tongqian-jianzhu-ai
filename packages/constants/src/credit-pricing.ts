@@ -29,9 +29,10 @@ export const CREDIT_EXCHANGE_RATE = {
 } as const;
 
 export const DEFAULT_CREDIT_PACKAGES = [
-  { code: 'small', priceCny: 19, credits: 1500 },
-  { code: 'medium', priceCny: 99, credits: 9000 },
-  { code: 'large', priceCny: 299, credits: 30000 },
+  { code: 'topup_100', priceCny: 100, credits: 10000 },
+  { code: 'topup_500', priceCny: 500, credits: 50500 },
+  { code: 'topup_1000', priceCny: 1000, credits: 102000 },
+  { code: 'topup_5000', priceCny: 5000, credits: 530000 },
 ] as const;
 
 export function seedSystemConfigs() {

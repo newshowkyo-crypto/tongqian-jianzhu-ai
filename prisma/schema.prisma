@@ -267,6 +267,48 @@ model Invoice {
   @@map("invoices")
 }
 
+model CreditAccount {
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String   @unique @map("user_id")
+  tenantId     String   @map("tenant_id")
+  totalBalance Int      @default(0) @map("total_balance")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId])
+  @@map("credit_accounts")
+}
+
+model CreditLot {
+  id              String    @id @default(uuid()) @db.Uuid
+  accountId       String    @map("account_id") @db.Uuid
+  source          String
+  sourceType      String    @map("source_type")
+  initialAmount   Int       @map("initial_amount")
+  remainingAmount Int       @map("remaining_amount")
+  expiresAt       DateTime? @map("expires_at")
+  frozenUntil     DateTime? @map("frozen_until")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  @@index([accountId, expiresAt, remainingAmount])
+  @@map("credit_lots")
+}
+
+model CreditLog {
+  id              String        @id @default(uuid()) @db.Uuid
+  accountId       String        @map("account_id") @db.Uuid
+  type            CreditLogType
+  amount          Int
+  balanceAfter    Int           @map("balance_after")
+  sourceModule    String        @map("source_module")
+  sourceResource  String?       @map("source_resource")
+  idempotencyKey  String?       @unique @map("idempotency_key")
+  traceId         String        @map("trace_id")
+  createdAt       DateTime      @default(now()) @map("created_at")
+
+  @@index([accountId, createdAt])
+  @@map("credit_logs")
+}
+
 model AiTask {
   id           String       @id @default(uuid()) @db.Uuid
   taskType     String       @map("task_type")
@@ -437,4 +479,14 @@ enum SubscriptionStatus {
   past_due
   canceled
   expired
+}
+
+enum CreditLogType {
+  pre_charge
+  pre_charge_release
+  commit
+  refund
+  topup
+  gift
+  expire
 }
