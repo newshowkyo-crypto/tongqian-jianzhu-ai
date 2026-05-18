@@ -22,7 +22,7 @@
 - [x] **A2b** 在 `packages/types/src/credit/` 实现 transaction / lot / expiry
   - 验收：点数有效期分类（订阅/充值/赠送/失败退还）枚举齐全
 
-- [ ] **A3a** 在 `packages/types/src/ai-task/` 实现 task-type / tier / confidence / next-step / cache-strategy / provider / sanitize-mask
+- [x] **A3a** 在 `packages/types/src/ai-task/` 实现 task-type / tier / confidence / next-step / cache-strategy / provider / sanitize-mask
   - 验收：50+ AiTaskType 起步枚举 + Tier 1-4 + 4 强制要素接口
 
 - [ ] **A3b** 在 `packages/types/src/report/` 实现 status / required-elements + zod schema
