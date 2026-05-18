@@ -97,7 +97,7 @@
 
 ## Phase G：system_configs 后台覆盖契约（1 个）
 
-- [ ] **G1** 实现 `apps/api/src/modules/system-config/` 起步骨架（被 [`24-admin-console`] 后续完整化）
+- [x] **G1** 实现 `apps/api/src/modules/system-config/` 起步骨架（被 [`24-admin-console`] 后续完整化）
   - 文件：`system-config.service.ts`（读 + 缓存 + 失败回落 constants）+ `system_configs` / `system_config_history` 数据表 schema
   - 验收：`SystemConfigService.get(key)` 可读取（默认空，回落 constants）+ Prisma migration 生成
 

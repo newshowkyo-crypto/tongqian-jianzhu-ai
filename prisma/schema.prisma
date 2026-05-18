@@ -6,3 +6,30 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model SystemConfig {
+  id            String                @id @default(uuid()) @db.Uuid
+  key           String                @unique
+  value         Json
+  description   String?
+  isOverridable Boolean               @default(true) @map("is_overridable")
+  createdAt     DateTime              @default(now()) @map("created_at")
+  updatedAt     DateTime              @updatedAt @map("updated_at")
+  history       SystemConfigHistory[]
+
+  @@map("system_configs")
+}
+
+model SystemConfigHistory {
+  id             String       @id @default(uuid()) @db.Uuid
+  systemConfigId String       @map("system_config_id") @db.Uuid
+  oldValue       Json?        @map("old_value")
+  newValue       Json         @map("new_value")
+  changedBy      String?      @map("changed_by")
+  reason         String?
+  createdAt      DateTime     @default(now()) @map("created_at")
+  systemConfig   SystemConfig @relation(fields: [systemConfigId], references: [id], onDelete: Restrict)
+
+  @@index([systemConfigId])
+  @@map("system_config_history")
+}
