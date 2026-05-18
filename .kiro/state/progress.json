@@ -3,8 +3,8 @@
   "mode": "autopilot",
   "_mode_options": "standby（待启动） | autopilot（自治中） | paused（暂停） | done（全部完成）",
   "started_at": "2026-05-17T21:56:17.0002215+08:00",
-  "last_session_at": "2026-05-18T07:32:13.752Z",
-  "current_task": "03-C1",
+  "last_session_at": "2026-05-18T07:45:46.873Z",
+  "current_task": "04-A1",
   "_current_task_format": "格式：'{spec_no}-{phase}{order}' 例如 '02-A1a' / '22-H3' / '99-FINAL-1'",
   "phase": "2-business-core",
   "_phase_options": "0-pre-flight | 1-infra | 2-business-core | 3-killer-apps | 4-knowledge | 5-workspace | 6-horizontal | 7-compliance | 99-final | done",
@@ -57,7 +57,7 @@
     }
   },
   "blocked_count": 0,
-  "done_count": 66,
+  "done_count": 75,
   "total_count": 230,
   "credentials_check": {
     "_doc": "P0-real = 真凭证必填（启动前必须真实有效）；P1-placeholder = 占位即可，开发期 mock provider，admin 后台可视化替换；P2-auto = Codex 自动生成或 docker-compose 自带。",
@@ -628,7 +628,7 @@
       ]
     },
     "03-C1": {
-      "status": "pending",
+      "status": "done",
       "spec": "03-design-system",
       "title": "layout 8 组件",
       "deps": [
@@ -637,7 +637,7 @@
       ]
     },
     "03-C2": {
-      "status": "pending",
+      "status": "done",
       "spec": "03-design-system",
       "title": "forms 3 组件",
       "deps": [
@@ -645,7 +645,7 @@
       ]
     },
     "03-D1": {
-      "status": "pending",
+      "status": "done",
       "spec": "03-design-system",
       "title": "data-display 9 组件（CreditDisplay 强制 BR-405）",
       "deps": [
@@ -653,7 +653,7 @@
       ]
     },
     "03-E1": {
-      "status": "pending",
+      "status": "done",
       "spec": "03-design-system",
       "title": "domain 7 组件",
       "deps": [
@@ -661,7 +661,7 @@
       ]
     },
     "03-E2": {
-      "status": "pending",
+      "status": "done",
       "spec": "03-design-system",
       "title": "report 4 组件",
       "deps": [
@@ -669,7 +669,7 @@
       ]
     },
     "03-E3": {
-      "status": "pending",
+      "status": "done",
       "spec": "03-design-system",
       "title": "5 个 dashboard 骨架",
       "deps": [
@@ -677,7 +677,7 @@
       ]
     },
     "03-F1": {
-      "status": "pending",
+      "status": "done",
       "spec": "03-design-system",
       "title": "icons + 17 功能区映射 + AnimatedNumber",
       "deps": [
@@ -685,7 +685,7 @@
       ]
     },
     "03-G1": {
-      "status": "pending",
+      "status": "done",
       "spec": "03-design-system",
       "title": "Vitest + RTL + axe-core 测试",
       "deps": [
@@ -693,7 +693,7 @@
       ]
     },
     "03-G2": {
-      "status": "pending",
+      "status": "done",
       "spec": "03-design-system",
       "title": "Storybook（P2）",
       "deps": [

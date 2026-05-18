@@ -1,6 +1,63 @@
 export { cn } from './utils.js';
 export { designTokens } from './tokens.js';
+export { AnimatedNumber, type AnimatedNumberProps } from './animation/index.js';
+export {
+  ConfidenceIndicator,
+  CreditDisplay,
+  LevelBadge,
+  MoneyDisplay,
+  RelativeTime,
+  RiskBadge,
+  StatCard,
+  TierBadge,
+  TrendCard,
+  type RiskLevel,
+  type StatCardProps,
+  type TrendCardProps,
+} from './data-display/index.js';
+export {
+  FinanceDashboard,
+  DocStaffDashboard,
+  OwnerDashboard,
+  PMDashboard,
+  TenderWriterDashboard,
+  defaultDashboardByPosition,
+  type DashboardProps,
+} from './dashboards/index.js';
+export {
+  AgentRow,
+  DispatchCard,
+  OpportunityCard,
+  QualificationCard,
+  ReportHeader,
+  RiskFinding,
+  ServicePremiumCard,
+  type OpportunityCardProps,
+} from './domain/index.js';
 export { fontCssVariables, fontFamilies } from './fonts/index.js';
+export { FormField, FormSection, FormShell, SubmitButton, type FormFieldProps, type FormSectionProps, type FormShellProps } from './forms/index.js';
+export * from './icons/index.js';
+export { FunctionZoneIcons } from './icons/function-zones.js';
+export {
+  EmptyState,
+  ErrorState,
+  FilterBar,
+  LoadingState,
+  PageContent,
+  PageHeader,
+  PageLayout,
+  SectionCard,
+  type EmptyStateProps,
+  type ErrorStateProps,
+  type FilterBarProps,
+  type LoadingStateProps,
+  type PageContentProps,
+  type PageHeaderProps,
+  type PageLayoutProps,
+  type SectionCardProps,
+} from './layout/page.js';
+export { BrandHeader, DisclaimerFooter, ReportCardH5, ReportFullPdf } from './report/index.js';
+export { uiTestConfig } from './testing.js';
 export {
   Avatar,
   Badge,

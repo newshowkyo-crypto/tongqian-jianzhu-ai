@@ -30,8 +30,11 @@
     "clean": "rimraf dist tsconfig.tsbuildinfo"
   },
   "dependencies": {
+    "@tongqian/types": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "lucide-react": "^0.468.0",
+    "react-countup": "^6.5.3",
     "tailwind-merge": "^2.5.5"
   },
   "peerDependencies": {
