@@ -19,7 +19,7 @@
 - [x] **A2a** 在 `packages/types/src/subscription/` 实现 plan / status / change-plan / auto-renewal
   - 验收：5 档订阅枚举 + 完整状态机 trial/active/past_due/canceled/expired
 
-- [ ] **A2b** 在 `packages/types/src/credit/` 实现 transaction / lot / expiry
+- [x] **A2b** 在 `packages/types/src/credit/` 实现 transaction / lot / expiry
   - 验收：点数有效期分类（订阅/充值/赠送/失败退还）枚举齐全
 
 - [ ] **A3a** 在 `packages/types/src/ai-task/` 实现 task-type / tier / confidence / next-step / cache-strategy / provider / sanitize-mask
