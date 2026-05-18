@@ -13,6 +13,13 @@ export const zhCN = {
     errorDescription: '网络或服务暂时不可用，请稍后重试。',
     retry: '重试',
   },
+  auth: {
+    forbiddenDescription: '当前账号没有访问该页面的权限，请切换角色或联系管理员。',
+    forbiddenTitle: '无权访问',
+    loginAction: '进入工作台',
+    loginDescription: '开发环境会写入模拟登录 Cookie，生产环境接入统一认证。',
+    loginTitle: '登录同乾方略',
+  },
   chat: {
     actions: {
       send: '发送',
@@ -24,6 +31,33 @@ export const zhCN = {
   },
   home: {
     title: '同乾方略 · 建筑企业工作台',
+  },
+  navigation: {
+    current: '当前页面',
+    home: '首页',
+    notifications: '通知',
+    search: '搜索项目、客户、报告、合同',
+    tenants: ['湖北宏建工程有限公司', '西安城投项目部'],
+    theme: '主题',
+    items: [
+      { href: '/dashboard', icon: 'dashboard', label: '工作台' },
+      { href: '/opportunities', icon: 'opportunities', label: '机会雷达' },
+      { href: '/tenders', icon: 'tenders', label: '招标中心' },
+      { href: '/qualifications', icon: 'qualifications', label: '资质护航' },
+      { href: '/contracts', icon: 'contracts', label: '合同审查' },
+      { href: '/cashflow', icon: 'cashflow', label: '财务现金流' },
+      { href: '/projects', icon: 'projects', label: '项目部' },
+      { href: '/reports', icon: 'reports', label: '报告中心' },
+      { href: '/dispatch', icon: 'dispatch', label: '派单大厅' },
+      { href: '/services/premium', icon: 'services', label: '同乾方略服务' },
+      { href: '/billing', icon: 'billing', label: '充值订阅' },
+      { href: '/approvals', icon: 'approvals', label: '审批工作台' },
+      { href: '/documents', icon: 'documents', label: '资料库' },
+      { href: '/workspace', icon: 'workspace', label: '团队协作' },
+      { href: '/finance', icon: 'finance', label: '经营报表' },
+      { href: '/tools', icon: 'tools', label: '工具箱' },
+      { href: '/settings', icon: 'settings', label: '设置' },
+    ],
   },
   dashboard: {
     title: '老板首页',

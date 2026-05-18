@@ -12,6 +12,13 @@ export const zhCN = {
     errorDescription: '网络或服务暂时不可用，请稍后重试。',
     retry: '重试',
   },
+  auth: {
+    forbiddenDescription: '当前账号没有访问该页面的权限，请切换角色或联系平台客服。',
+    forbiddenTitle: '无权访问',
+    loginAction: '进入工作台',
+    loginDescription: '开发环境会写入模拟登录 Cookie，生产环境接入统一认证。',
+    loginTitle: '登录智能管家工作台',
+  },
   chat: {
     actions: {
       execute: '按方案执行',
@@ -23,6 +30,23 @@ export const zhCN = {
   },
   home: {
     title: '同乾方略 · 智能管家工作台',
+  },
+  navigation: {
+    current: '当前页面',
+    home: '派单首页',
+    notifications: '通知',
+    search: '搜索派单、客户、服务记录',
+    tenant: '华中服务区',
+    theme: '主题',
+    tabs: ['全部', '待接单', '执行中', '已完成'],
+    items: [
+      { href: '/dispatch', icon: 'dispatch', label: '派单大厅' },
+      { href: '/reputation', icon: 'reputation', label: '信誉看板' },
+      { href: '/reports', icon: 'reports', label: '服务报告' },
+      { href: '/earnings', icon: 'earnings', label: '分润提现' },
+      { href: '/workspace', icon: 'workspace', label: '客户工作台' },
+      { href: '/settings', icon: 'settings', label: '设置' },
+    ],
   },
   dispatch: {
     title: '派单大厅',

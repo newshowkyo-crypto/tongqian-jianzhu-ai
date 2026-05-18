@@ -10,8 +10,7 @@ export default function Page() {
   ];
 
   return (
-    <main className="min-h-screen bg-neutral-50 px-6 py-8 text-neutral-950">
-      <section className="mx-auto max-w-6xl">
+    <section className="text-neutral-950">
         <div className="mb-8 border-b border-neutral-300 pb-5">
           <p className="text-sm font-semibold text-neutral-600">{zhCN.home.eyebrow}</p>
           <h1 className="mt-2 text-3xl font-semibold tracking-normal">{zhCN.home.title}</h1>
@@ -24,7 +23,6 @@ export default function Page() {
             </article>
           ))}
         </div>
-      </section>
       <aside className="fixed bottom-5 right-5 w-[min(340px,calc(100vw-40px))] rounded-md border border-neutral-300 bg-white p-4 shadow-card">
         <h2 className="text-sm font-semibold text-neutral-950">{zhCN.chat.title}</h2>
         <textarea className="mt-3 h-20 w-full resize-none rounded-md border border-neutral-300 p-3 text-sm outline-none focus:border-primary-500" placeholder={zhCN.chat.input} />
@@ -34,6 +32,6 @@ export default function Page() {
           <button className="rounded-md border border-neutral-300 px-2 py-2 font-medium">{zhCN.chat.actions.consult}</button>
         </div>
       </aside>
-    </main>
+    </section>
   );
 }

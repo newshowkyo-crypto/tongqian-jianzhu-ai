@@ -8,8 +8,7 @@ const credentialRows = [
 
 export default function CredentialsPage() {
   return (
-    <main className="min-h-screen bg-neutral-50 px-6 py-8 text-neutral-950">
-      <section className="mx-auto max-w-6xl">
+    <section className="text-neutral-950">
         <div className="mb-6 border-b border-neutral-300 pb-4">
           <h1 className="text-2xl font-semibold tracking-normal">{zhCN.credentialsPage.title}</h1>
           <p className="mt-2 text-sm text-neutral-600">{zhCN.credentialsPage.warning}</p>
@@ -95,7 +94,6 @@ export default function CredentialsPage() {
             </div>
           ))}
         </section>
-      </section>
-    </main>
+    </section>
   );
 }

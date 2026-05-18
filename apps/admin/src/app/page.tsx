@@ -2,8 +2,7 @@ import { zhCN } from '../i18n/zh-CN';
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-neutral-50 px-6 py-8 text-neutral-950">
-      <section className="mx-auto max-w-7xl">
+    <section className="text-neutral-950">
         <div className="mb-6 flex items-end justify-between border-b border-neutral-300 pb-4">
           <h1 className="text-2xl font-semibold tracking-normal">{zhCN.home.title}</h1>
           <p className="text-sm text-neutral-600">OPC console</p>
@@ -18,7 +17,7 @@ export default function Page() {
         <section className="mt-6 rounded-md border border-neutral-300 bg-white p-5 shadow-card">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold">{zhCN.home.credentials.title}</h2>
-            <button className="rounded-md border border-neutral-400 px-3 py-2 text-sm">新增凭证</button>
+            <button className="rounded-md border border-neutral-400 px-3 py-2 text-sm">{zhCN.home.credentials.new}</button>
           </div>
           <div className="grid grid-cols-4 border-b border-neutral-200 py-2 text-sm font-semibold text-neutral-600">
             <span>Provider</span>
@@ -33,7 +32,6 @@ export default function Page() {
             <span>active</span>
           </div>
         </section>
-      </section>
-    </main>
+    </section>
   );
 }

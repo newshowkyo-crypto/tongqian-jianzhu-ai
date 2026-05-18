@@ -26,4 +26,33 @@ export const zhCN = {
     },
     title: '同乾方略 · 政企工作台',
   },
+  navigation: {
+    current: '当前页面',
+    home: '政企首页',
+    notifications: '通知',
+    search: '搜索政策、项目、资金、报告',
+    tenant: '示范区管委会',
+    theme: '主题',
+    items: [
+      { href: '/', icon: 'policy', label: '政策学习' },
+      { href: '/documents', icon: 'docs', label: '公文矩阵' },
+      { href: '/projects', icon: 'projects', label: '项目寻源' },
+      { href: '/funds', icon: 'funds', label: '资金地图' },
+      { href: '/consulting', icon: 'consult', label: '咨询入口' },
+      { href: '/sourcing', icon: 'sourcing', label: '双向寻源' },
+    ],
+  },
+  states: {
+    errorDescription: '网络或服务暂时不可用，请稍后重试。',
+    errorTitle: '加载失败',
+    loading: '数据加载中',
+    retry: '重试',
+  },
+  auth: {
+    forbiddenDescription: '当前账号没有访问政企工作台的权限，请联系单位管理员。',
+    forbiddenTitle: '无权访问',
+    loginAction: '进入工作台',
+    loginDescription: '开发环境会写入模拟登录 Cookie，生产环境接入统一认证。',
+    loginTitle: '登录政企工作台',
+  },
 } as const;

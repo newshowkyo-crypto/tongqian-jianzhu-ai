@@ -1,4 +1,11 @@
 export const zhCN = {
+  auth: {
+    forbiddenDescription: '当前账号没有平台后台权限，请使用 platform-owner 角色登录。',
+    forbiddenTitle: '无权访问',
+    loginAction: '进入后台',
+    loginDescription: '开发环境会写入模拟登录 Cookie，生产环境接入统一认证。',
+    loginTitle: '登录平台后台',
+  },
   credentialsPage: {
     approval: {
       approver: '审批人：PLATFORM_OWNER',
@@ -39,9 +46,37 @@ export const zhCN = {
     credentials: {
       approval: '审批状态',
       mode: 'mock / real',
+      new: '新增凭证',
       title: '系统配置 · 凭证管理',
     },
     modules: ['业务运营', '规则审核', 'Prompt 管理', '模型路由', '审批工作台', '财务对账', '系统日志'],
     title: '同乾方略 · 平台后台',
+  },
+  navigation: {
+    current: '当前页面',
+    home: '后台首页',
+    notifications: '通知',
+    search: '搜索租户、配置、日志、工单',
+    tenant: '平台运营租户',
+    theme: '主题',
+    items: [
+      { href: '/', icon: 'operations', label: '业务运营' },
+      { href: '/admin/credentials', icon: 'credentials', label: '凭证管理' },
+      { href: '/admin/rules', icon: 'rules', label: '规则审核' },
+      { href: '/admin/prompts', icon: 'prompts', label: 'Prompt 管理' },
+      { href: '/admin/models', icon: 'models', label: '模型路由' },
+      { href: '/admin/billing', icon: 'billing', label: '财务对账' },
+      { href: '/admin/audit', icon: 'audit', label: '系统日志' },
+    ],
+  },
+  permissions: {
+    title: '权限点开关',
+    items: [
+      { enabled: true, key: 'credential:approve', label: '凭证审批' },
+      { enabled: true, key: 'model:route:update', label: '模型路由配置' },
+      { enabled: false, key: 'billing:refund', label: '退款审批' },
+      { enabled: true, key: 'audit:read', label: '审计读取' },
+      { enabled: false, key: 'security:override', label: '安全策略覆写' },
+    ],
   },
 } as const;
