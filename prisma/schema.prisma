@@ -1903,6 +1903,55 @@ model OnboardingProgress {
   @@map("onboarding_progress")
 }
 
+model NotificationTemplate {
+  id                 String  @id @default(uuid()) @db.Uuid
+  scenario           String  @unique
+  inboxTemplate      Json    @map("inbox_template")
+  wechatMpTemplate   Json?   @map("wechat_mp_template")
+  workWechatTemplate Json?   @map("work_wechat_template")
+  smsTemplate        Json?   @map("sms_template")
+  emailTemplate      Json?   @map("email_template")
+  desktopTemplate    Json?   @map("desktop_template")
+  level              String
+  isActive           Boolean @default(true) @map("is_active")
+
+  @@map("notification_templates")
+}
+
+model Notification {
+  id            String    @id @default(uuid()) @db.Uuid
+  userId        String    @map("user_id") @db.Uuid
+  scenario      String
+  channel       String
+  status        String
+  content       Json
+  externalId    String?   @map("external_id")
+  eventHash     String    @map("event_hash")
+  scheduledAt   DateTime? @map("scheduled_at")
+  sentAt        DateTime? @map("sent_at")
+  readAt        DateTime? @map("read_at")
+  failureReason String?   @map("failure_reason")
+  traceId       String    @map("trace_id")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  @@index([userId, scenario, eventHash])
+  @@index([userId, channel, sentAt])
+  @@map("notifications")
+}
+
+model NotificationPreference {
+  id                 String  @id @default(uuid()) @db.Uuid
+  userId             String  @unique @map("user_id") @db.Uuid
+  inboxEnabled       Boolean @default(true) @map("inbox_enabled")
+  wechatMpEnabled    Boolean @default(true) @map("wechat_mp_enabled")
+  workWechatEnabled  Boolean @default(true) @map("work_wechat_enabled")
+  smsEnabled         Boolean @default(true) @map("sms_enabled")
+  emailEnabled       Boolean @default(false) @map("email_enabled")
+  desktopEnabled     Boolean @default(true) @map("desktop_enabled")
+
+  @@map("notification_preferences")
+}
+
 enum AiTaskStatus {
   queued
   processing
