@@ -10,6 +10,7 @@ import { CreditModule } from './modules/credit/credit.module.js';
 import { DataExportModule } from './modules/data-export/data-export.module.js';
 import { OpportunityModule } from './modules/opportunity/opportunity.module.js';
 import { PaymentModule } from './modules/payment/payment.module.js';
+import { QualificationModule } from './modules/qualification/qualification.module.js';
 import { ReportCenterModule } from './modules/report-center/report-center.module.js';
 import { RiskReviewModule } from './modules/risk-review/risk-review.module.js';
 import { SubscriptionModule } from './modules/subscription/subscription.module.js';
@@ -33,6 +34,7 @@ class HealthController {
     DataExportModule,
     OpportunityModule,
     PaymentModule,
+    QualificationModule,
     ReportCenterModule,
     RiskReviewModule,
     SubscriptionModule,

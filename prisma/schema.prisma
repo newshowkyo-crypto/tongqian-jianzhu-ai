@@ -808,6 +808,132 @@ model ClaimStrategy {
   @@map("claim_strategies")
 }
 
+model QualificationCert {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id")
+  category    String
+  subType     String?  @map("sub_type")
+  level       String
+  certNo      String   @map("cert_no")
+  issuedAt    DateTime @map("issued_at")
+  validUntil  DateTime @map("valid_until")
+  issuer      String
+  rawImageUrl String   @map("raw_image_url")
+  status      String
+  meta        Json?
+
+  @@index([tenantId, validUntil])
+  @@map("qualification_certs")
+}
+
+model SafetyLicense {
+  id         String   @id @default(uuid()) @db.Uuid
+  tenantId   String   @unique @map("tenant_id")
+  licenseNo  String   @map("license_no")
+  issuedAt   DateTime @map("issued_at")
+  validUntil DateTime @map("valid_until")
+  status     String
+
+  @@map("safety_licenses")
+}
+
+model KeyPersonnel {
+  id             String   @id @default(uuid()) @db.Uuid
+  tenantId       String   @map("tenant_id")
+  name           String
+  idCardMasked   String   @map("id_card_masked")
+  role           String
+  certType       String   @map("cert_type")
+  certNo         String   @map("cert_no")
+  certValidUntil DateTime @map("cert_valid_until")
+  isAttached     Boolean  @default(false) @map("is_attached")
+
+  @@index([tenantId, role])
+  @@map("key_personnel")
+}
+
+model PerformanceRecord {
+  id                    String   @id @default(uuid()) @db.Uuid
+  tenantId              String   @map("tenant_id")
+  projectName           String   @map("project_name")
+  contractAmount        Decimal  @map("contract_amount") @db.Decimal(15, 2)
+  contractUrl           String?  @map("contract_url")
+  acceptanceUrl         String?  @map("acceptance_url")
+  industry              String
+  startAt               DateTime @map("start_at")
+  endAt                 DateTime? @map("end_at")
+  matchedQualifications Json     @map("matched_qualifications")
+  meta                  Json?
+
+  @@index([tenantId, industry])
+  @@map("performance_records")
+}
+
+model QualificationCheckup {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id")
+  healthScore      Int      @map("health_score")
+  completeness     Int
+  validity         Int
+  upgradePotential Int      @map("upgrade_potential")
+  riskPoints       Json     @map("risk_points")
+  aiTaskId         String   @unique @map("ai_task_id")
+  reportId         String?  @map("report_id")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, createdAt])
+  @@map("qualification_checkups")
+}
+
+model UpgradePathReport {
+  id          String  @id @default(uuid()) @db.Uuid
+  tenantId    String  @map("tenant_id")
+  fromLevel   String  @map("from_level")
+  toLevel     String  @map("to_level")
+  category    String
+  pathSteps   Json    @map("path_steps")
+  gapAnalysis Json    @map("gap_analysis")
+  aiTaskId    String  @unique @map("ai_task_id")
+  reportId    String? @map("report_id")
+
+  @@index([tenantId])
+  @@map("upgrade_path_reports")
+}
+
+model PersonnelComplianceCheck {
+  id              String   @id @default(uuid()) @db.Uuid
+  qualificationId String   @map("qualification_id")
+  personnelId     String   @map("personnel_id")
+  checkType       String   @map("check_type")
+  result          String
+  evidence        Json
+  auditLogId      String?  @map("audit_log_id")
+  triggeredAt     DateTime @default(now()) @map("triggered_at")
+
+  @@index([qualificationId])
+  @@map("personnel_compliance_checks")
+}
+
+model QualificationServiceOrder {
+  id                    String   @id @default(uuid()) @db.Uuid
+  clientId              String   @map("client_id")
+  agentId               String   @map("agent_id")
+  qualificationTarget   String   @map("qualification_target")
+  quotedAmount          Decimal  @map("quoted_amount") @db.Decimal(12, 2)
+  serviceTerms          String   @map("service_terms")
+  servicePeriodDays     Int      @map("service_period_days")
+  failureCompensation   Int      @map("failure_compensation")
+  milestones            Json
+  paymentStatus         String   @map("payment_status")
+  clientAcceptanceAt    DateTime? @map("client_acceptance_at")
+  acceptanceWindowUntil DateTime? @map("acceptance_window_until")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  @@index([clientId, agentId])
+  @@map("qualification_service_orders")
+}
+
 enum AiTaskStatus {
   queued
   processing
