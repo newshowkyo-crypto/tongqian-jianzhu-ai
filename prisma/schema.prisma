@@ -1279,6 +1279,82 @@ model FinancingDiagnosis {
   @@map("financing_diagnoses")
 }
 
+model Policy {
+  id          String    @id @default(uuid()) @db.Uuid
+  title       String
+  level       String
+  topics      Json
+  publishOrg  String    @map("publish_org")
+  publishDate DateTime  @map("publish_date")
+  rawText     String    @map("raw_text") @db.Text
+  aiSummary   String    @map("ai_summary") @db.Text
+  status      String
+  vectorId    String?   @map("vector_id")
+  reviewedBy  String?   @map("reviewed_by")
+  reviewedAt  DateTime? @map("reviewed_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@index([status, publishDate])
+  @@map("policies")
+}
+
+model Performance {
+  id            String  @id @default(uuid()) @db.Uuid
+  sourceUrl     String  @map("source_url")
+  industry      String
+  region        String
+  amount        Decimal @db.Decimal(15, 2)
+  winnerCompany String  @map("winner_company")
+  rawData       Json    @map("raw_data")
+  status        String
+  vectorId      String? @map("vector_id")
+
+  @@index([status, region, industry])
+  @@map("performances")
+}
+
+model ContractClause {
+  id              String  @id @default(uuid()) @db.Uuid
+  type            String
+  riskLevel       String  @map("risk_level")
+  category        String
+  clauseText      String  @map("clause_text") @db.Text
+  standardWording String  @map("standard_wording") @db.Text
+  suggestion      String  @db.Text
+  status          String
+  vectorId        String? @map("vector_id")
+
+  @@index([status, type, riskLevel])
+  @@map("contract_clauses")
+}
+
+model TenderStructure {
+  id              String  @id @default(uuid()) @db.Uuid
+  industry        String
+  projectType     String  @map("project_type")
+  templateOutline Json    @map("template_outline")
+  scoringTemplate Json    @map("scoring_template")
+  status          String
+  vectorId        String? @map("vector_id")
+
+  @@index([status, industry, projectType])
+  @@map("tender_structures")
+}
+
+model CrawlJob {
+  id           String    @id @default(uuid()) @db.Uuid
+  source       String
+  type         String
+  status       String
+  fetchedCount Int       @default(0) @map("fetched_count")
+  error        String?
+  startedAt    DateTime  @map("started_at")
+  endedAt      DateTime? @map("ended_at")
+
+  @@index([source, status])
+  @@map("crawl_jobs")
+}
+
 enum AiTaskStatus {
   queued
   processing
