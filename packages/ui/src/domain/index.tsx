@@ -68,7 +68,7 @@ export function SubscriptionPlanCard({ className, name, price, recommended }: { 
 }
 
 export function AiAssistantBubble({ className, label = 'AI 助理' }: { className?: string; label?: ReactNode }): ReactNode {
-  return <Button className={cn('fixed bottom-6 right-6 min-h-12 rounded-full bg-gradient-to-r from-primary-500 to-primary-700 px-5 shadow-md transition-transform duration-500 hover:scale-105', className)}>{label}</Button>;
+  return <Button className={cn('fixed bottom-6 right-6 min-h-12 rounded-full bg-gradient-to-r from-primary-500 to-primary-700 px-5 shadow-md transition-transform duration-500 [animation:tq-assistant-pulse_2s_ease-in-out_infinite] hover:scale-105', className)}>{label}</Button>;
 }
 
 export function ReputationGauge({ className, level, score }: { className?: string; level: ReputationScore['level']; score: number }): ReactNode {
@@ -80,12 +80,12 @@ export function CheckinCalendar({ className, days = 30 }: { className?: string; 
 }
 
 export function LotteryWheel({ className, label = '抽点奖励' }: { className?: string; label?: ReactNode }): ReactNode {
-  return <div className={cn('grid aspect-square w-40 place-items-center rounded-full border-8 border-primary-100 bg-white text-center text-sm font-semibold text-primary-700 shadow-sm transition-transform duration-700 hover:rotate-45', className)}>{label}</div>;
+  return <div className={cn('grid aspect-square w-40 place-items-center rounded-full border-8 border-primary-100 bg-white text-center text-sm font-semibold text-primary-700 shadow-sm [animation:tq-wheel-decelerate_800ms_cubic-bezier(0.12,0.74,0.24,1)_both]', className)}>{label}</div>;
 }
 
 export function GrowthBuildingLevel({ className, level = 1 }: { className?: string; level?: number }): ReactNode {
   const heights = ['h-8', 'h-11', 'h-14', 'h-16', 'h-20'];
-  return <div className={cn('grid grid-cols-5 items-end gap-2 rounded-md border border-border bg-background p-4', className)}>{heights.map((height, index) => <span key={height} className={cn('rounded-t bg-primary-100 transition-all duration-500', height, index < level ? 'bg-primary-500' : '')} />)}</div>;
+  return <div className={cn('grid grid-cols-5 items-end gap-2 rounded-md border border-border bg-background p-4', className)}>{heights.map((height, index) => <span key={height} className={cn('rounded-t bg-primary-100 transition-all duration-500 [animation:tq-building-unlock_600ms_cubic-bezier(0.2,0.8,0.2,1)_both]', height, index < level ? 'bg-primary-500' : '')} />)}</div>;
 }
 
 export function AiReportH5Card({ className, title }: { className?: string; title: ReactNode }): ReactNode {

@@ -1,6 +1,6 @@
 export { cn } from './utils.js';
 export { designTokens } from './tokens.js';
-export { AnimatedNumber, CoinDrop, LevelUpBadge, PrizeWheel, SuccessConfetti, type AnimatedNumberProps, type CoinDropProps, type LevelUpBadgeProps, type PrizeWheelProps } from './animation/index.js';
+export { AnimatedNumber, AnimationFeedbackLink, BuildingUnlockAnimation, CoinDrop, LevelUpBadge, PrizeWheel, SuccessConfetti, type AnimatedNumberProps, type CoinDropProps, type LevelUpBadgeProps, type PrizeWheelProps } from './animation/index.js';
 export { agentLevelBadgeAssets, emptyStateIllustrationAssets, functionIconAssets, logoAssets, serviceIconAssets, splashAssets } from './assets/index.js';
 export {
   ConfidenceIndicator,
