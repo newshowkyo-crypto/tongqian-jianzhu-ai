@@ -1,4 +1,13 @@
 export const zhCN = {
+  chat: {
+    actions: {
+      consult: '专家小时咨询',
+      execute: '自己执行',
+      tongqian: '申请同乾方略',
+    },
+    input: '仅触发政策、资金、公文和政企咨询相关任务',
+    title: 'AI 全局经营助手',
+  },
   home: {
     eyebrow: '政企独立工作台',
     meta: {

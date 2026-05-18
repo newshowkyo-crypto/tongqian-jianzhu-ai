@@ -9,6 +9,7 @@ import { AgentWorkspaceModule } from './modules/agent-workspace/agent-workspace.
 import { ApprovalModule } from './modules/approval/approval.module.js';
 import { AuthModule } from './modules/auth/auth.module.js';
 import { CashflowFinanceModule } from './modules/cashflow-finance/cashflow-finance.module.js';
+import { ChatHubModule } from './modules/chat-hub/chat-hub.module.js';
 import { CostEstimateModule } from './modules/cost-estimate/cost-estimate.module.js';
 import { CreditModule } from './modules/credit/credit.module.js';
 import { DataExportModule } from './modules/data-export/data-export.module.js';
@@ -43,6 +44,7 @@ class HealthController {
     ApprovalModule,
     AuthModule,
     CashflowFinanceModule,
+    ChatHubModule,
     CostEstimateModule,
     CreditModule,
     DataExportModule,

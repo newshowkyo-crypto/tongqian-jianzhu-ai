@@ -12,6 +12,7 @@ export * from './approval/decision.js';
 export * from './approval/flow.js';
 export * from './approval/step.js';
 export * from './cashflow-finance/index.js';
+export * from './chat-hub/index.js';
 export * from './common/index.js';
 export * from './cost-estimate/index.js';
 export * from './credit/expiry.js';

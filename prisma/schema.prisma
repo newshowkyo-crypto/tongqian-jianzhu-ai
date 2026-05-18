@@ -1741,6 +1741,59 @@ model FeatureFlag {
   @@map("feature_flags")
 }
 
+model Conversation {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  title     String?
+  channel   String
+  status    String   @default("active")
+  lastAt    DateTime @default(now()) @map("last_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, userId, lastAt])
+  @@map("conversations")
+}
+
+model ConversationMessage {
+  id              String   @id @default(uuid()) @db.Uuid
+  conversationId  String   @map("conversation_id") @db.Uuid
+  role            String
+  content         String   @db.Text
+  intent          String?
+  triggeredTaskId String?  @map("triggered_task_id")
+  meta            Json?
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([conversationId, createdAt])
+  @@map("conversation_messages")
+}
+
+model ConversationSummary {
+  id             String   @id @default(uuid()) @db.Uuid
+  conversationId String   @map("conversation_id") @db.Uuid
+  rangeFrom      DateTime @map("range_from")
+  rangeTo        DateTime @map("range_to")
+  summary        String   @db.Text
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@index([conversationId, rangeTo])
+  @@map("conversation_summaries")
+}
+
+model ChatChannelBinding {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  channel    String
+  externalId String   @map("external_id")
+  isActive   Boolean  @default(true) @map("is_active")
+  boundAt    DateTime @default(now()) @map("bound_at")
+
+  @@unique([channel, externalId])
+  @@index([userId, isActive])
+  @@map("chat_channel_bindings")
+}
+
 enum AiTaskStatus {
   queued
   processing
