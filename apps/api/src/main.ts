@@ -4,6 +4,7 @@ import { Controller, Get, Module } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 
+import { AgentWorkspaceModule } from './modules/agent-workspace/agent-workspace.module.js';
 import { ApprovalModule } from './modules/approval/approval.module.js';
 import { AuthModule } from './modules/auth/auth.module.js';
 import { CashflowFinanceModule } from './modules/cashflow-finance/cashflow-finance.module.js';
@@ -36,6 +37,7 @@ class HealthController {
   controllers: [HealthController],
   imports: [
     ApprovalModule,
+    AgentWorkspaceModule,
     AuthModule,
     CashflowFinanceModule,
     CostEstimateModule,

@@ -21,6 +21,7 @@ export enum AgentSubtype {
   AGENT_TENDER = 'AGENT_TENDER',
   AGENT_FINANCE = 'AGENT_FINANCE',
   AGENT_GENERAL = 'AGENT_GENERAL',
+  AGENT_PARTNER = 'AGENT_PARTNER',
 }
 
 export const USER_ROLE_VALUES = Object.values(UserRole);

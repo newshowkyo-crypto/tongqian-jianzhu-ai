@@ -2,6 +2,7 @@ export * from './auth/position-tag.js';
 export * from './auth/role.js';
 export * from './auth/scope.js';
 export * from './auth/tenant.js';
+export * from './agent-workspace/index.js';
 export * from './ai-task/gateway.js';
 export * from './ai-task/output.js';
 export * from './ai-task/task-type.js';

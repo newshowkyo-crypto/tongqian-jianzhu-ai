@@ -1428,6 +1428,194 @@ model RuleVersion {
   @@map("rule_versions")
 }
 
+model AgentProfile {
+  id             String    @id @default(uuid()) @db.Uuid
+  userId         String    @unique @map("user_id")
+  tenantId       String    @unique @map("tenant_id")
+  subtype        String
+  region         String
+  depositAmount  Decimal?  @map("deposit_amount") @db.Decimal(10, 2)
+  promoCode      String    @unique @map("promo_code")
+  activityStatus String    @default("active") @map("activity_status")
+  lastActiveAt   DateTime? @map("last_active_at")
+  trainedAt      DateTime? @map("trained_at")
+  isBlacklisted  Boolean   @default(false) @map("is_blacklisted")
+
+  @@index([subtype, region])
+  @@map("agent_profiles")
+}
+
+model AgentRelation {
+  id       String   @id @default(uuid()) @db.Uuid
+  childId  String   @unique @map("child_id")
+  parentId String   @map("parent_id")
+  level    Int
+  boundAt  DateTime @default(now()) @map("bound_at")
+
+  @@index([parentId])
+  @@map("agent_relations")
+}
+
+model ReputationScore {
+  id               String    @id @default(uuid()) @db.Uuid
+  entityId         String    @map("entity_id")
+  entityType       String    @map("entity_type")
+  score            Int       @default(500)
+  level            String
+  levelLockedUntil DateTime? @map("level_locked_until")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  @@unique([entityId, entityType])
+  @@map("reputation_scores")
+}
+
+model ReputationLog {
+  id          String   @id @default(uuid()) @db.Uuid
+  entityId    String   @map("entity_id")
+  entityType  String   @map("entity_type")
+  delta       Int
+  reason      String
+  resourceId  String?  @map("resource_id")
+  reversible  Boolean  @default(true)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([entityId, entityType, createdAt])
+  @@map("reputation_logs")
+}
+
+model Dispatch {
+  id              String    @id @default(uuid()) @db.Uuid
+  clientTenantId  String    @map("client_tenant_id")
+  sourceModule    String    @map("source_module")
+  type            String
+  amount          Decimal   @db.Decimal(15, 2)
+  class           String
+  pool            String?
+  status          String
+  assignedAgentId String?   @map("assigned_agent_id")
+  selectedAgentId String?   @map("selected_agent_id")
+  takeoverReason  String?   @map("takeover_reason")
+  crossDomainFee  Decimal?  @map("cross_domain_fee") @db.Decimal(15, 2)
+  actualAmount    Decimal?  @map("actual_amount") @db.Decimal(15, 2)
+  bidWindowUntil  DateTime? @map("bid_window_until")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  completedAt     DateTime? @map("completed_at")
+
+  @@index([status, createdAt])
+  @@map("dispatches")
+}
+
+model DispatchQuote {
+  id          String   @id @default(uuid()) @db.Uuid
+  dispatchId  String   @map("dispatch_id")
+  agentId     String   @map("agent_id")
+  price       Decimal  @db.Decimal(15, 2)
+  description String
+  color       String
+  refPriceId  String?  @map("ref_price_id")
+  isSelected  Boolean  @default(false) @map("is_selected")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@unique([dispatchId, agentId])
+  @@map("dispatch_quotes")
+}
+
+model AgentRating {
+  id           String   @id @default(uuid()) @db.Uuid
+  dispatchId   String   @unique @map("dispatch_id")
+  clientUserId String   @map("client_user_id")
+  agentId      String   @map("agent_id")
+  stars        Int
+  comment      String
+  tags         Json
+  isAutoRating Boolean  @default(false) @map("is_auto_rating")
+  ratedAt      DateTime @default(now()) @map("rated_at")
+
+  @@map("agent_ratings")
+}
+
+model ClientRating {
+  id             String   @id @default(uuid()) @db.Uuid
+  dispatchId     String   @unique @map("dispatch_id")
+  agentId        String   @map("agent_id")
+  clientTenantId String   @map("client_tenant_id")
+  level          String
+  tags           Json
+  ratedAt        DateTime @default(now()) @map("rated_at")
+
+  @@map("client_ratings")
+}
+
+model AgentClientSignal {
+  id            String    @id @default(uuid()) @db.Uuid
+  agentId       String    @map("agent_id")
+  clientId      String    @map("client_id")
+  signalType    String    @map("signal_type")
+  urgency       String
+  sourceRef     String?   @map("source_ref")
+  message       String
+  expiresAt     DateTime  @map("expires_at")
+  pushedAt      DateTime  @default(now()) @map("pushed_at")
+  actedAt       DateTime? @map("acted_at")
+  actedAction   String?   @map("acted_action")
+  cooldownUntil DateTime? @map("cooldown_until")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  @@index([agentId, expiresAt])
+  @@index([clientId, signalType])
+  @@map("agent_client_signals")
+}
+
+model PremiumServiceItem {
+  id          String   @id @default(uuid()) @db.Uuid
+  category    String
+  name        String
+  priceLow    Decimal? @map("price_low") @db.Decimal(15, 2)
+  priceHigh   Decimal? @map("price_high") @db.Decimal(15, 2)
+  description String   @db.Text
+  isActive    Boolean  @default(true) @map("is_active")
+
+  @@index([category, isActive])
+  @@map("premium_service_items")
+}
+
+model AgentCaseStudy {
+  id             String    @id @default(uuid()) @db.Uuid
+  agentId        String    @map("agent_id")
+  title          String
+  category       String
+  content        Json
+  status         String
+  aiReviewScore  Decimal?  @map("ai_review_score") @db.Decimal(5, 2)
+  aiReviewLog    Json?     @map("ai_review_log")
+  expertScore    Decimal?  @map("expert_score") @db.Decimal(5, 2)
+  expertReviewAt DateTime? @map("expert_review_at")
+  expertId       String?   @map("expert_id")
+  expertComment  String?   @map("expert_comment")
+  downloadCount  Int       @default(0) @map("download_count")
+  isFeatured     Boolean   @default(false) @map("is_featured")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  @@index([agentId, status])
+  @@index([category, isFeatured])
+  @@map("agent_case_studies")
+}
+
+model AgentConsent {
+  id              String   @id @default(uuid()) @db.Uuid
+  agentId         String   @unique @map("agent_id")
+  protocolVersion String   @map("protocol_version")
+  commitments     Json
+  signedAt        DateTime @map("signed_at")
+  ip              String
+  userAgent       String   @map("user_agent")
+
+  @@index([agentId, protocolVersion])
+  @@map("agent_consents")
+}
+
 enum AiTaskStatus {
   queued
   processing
