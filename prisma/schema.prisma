@@ -419,6 +419,89 @@ model UserDevice {
   @@map("user_devices")
 }
 
+model PaymentOrder {
+  id              String    @id @default(uuid()) @db.Uuid
+  tenantId        String    @map("tenant_id")
+  userId          String    @map("user_id")
+  type            String
+  amount          Decimal   @db.Decimal(10, 2)
+  currency        String    @default("CNY")
+  status          PayStatus @default(pending)
+  channel         String
+  externalOrderNo String?   @unique @map("external_order_no")
+  paidAt          DateTime? @map("paid_at")
+  metadata        Json?
+  idempotencyKey  String    @unique @map("idempotency_key")
+  traceId         String    @map("trace_id")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  @@index([tenantId, userId, status])
+  @@index([traceId])
+  @@map("payment_orders")
+}
+
+model PaymentRefund {
+  id               String     @id @default(uuid()) @db.Uuid
+  orderId          String     @map("order_id") @db.Uuid
+  amount           Decimal    @db.Decimal(10, 2)
+  tier             RefundTier
+  reason           String
+  approvalFlowId   String?    @map("approval_flow_id")
+  status           String
+  externalRefundNo String?    @map("external_refund_no")
+  createdAt        DateTime   @default(now()) @map("created_at")
+  completedAt      DateTime?  @map("completed_at")
+
+  @@index([orderId, status])
+  @@map("payment_refunds")
+}
+
+model AutoChargeContract {
+  id                 String    @id @default(uuid()) @db.Uuid
+  userId             String    @map("user_id")
+  channel            String
+  externalContractId String    @unique @map("external_contract_id")
+  status             String
+  boundAt            DateTime  @default(now()) @map("bound_at")
+  revokedAt          DateTime? @map("revoked_at")
+
+  @@index([userId, status])
+  @@map("auto_charge_contracts")
+}
+
+model AgentCommission {
+  id             String           @id @default(uuid()) @db.Uuid
+  agentId        String           @map("agent_id")
+  clientTenantId String           @map("client_tenant_id")
+  type           String
+  amount         Decimal          @db.Decimal(10, 2)
+  status         CommissionStatus
+  sourceOrderId  String           @map("source_order_id")
+  freezeUntil    DateTime?        @map("freeze_until")
+  settledAt      DateTime?        @map("settled_at")
+  paidAt         DateTime?        @map("paid_at")
+
+  @@index([agentId, status])
+  @@index([sourceOrderId])
+  @@map("agent_commissions")
+}
+
+model AgentWithdrawal {
+  id               String    @id @default(uuid()) @db.Uuid
+  agentId          String    @map("agent_id")
+  amount           Decimal   @db.Decimal(10, 2)
+  bankCardId       String    @map("bank_card_id")
+  approvalFlowId   String?   @map("approval_flow_id")
+  status           String
+  externalPayoutNo String?   @map("external_payout_no")
+  fee              Decimal   @db.Decimal(10, 2)
+  createdAt        DateTime  @default(now()) @map("created_at")
+  paidAt           DateTime? @map("paid_at")
+
+  @@index([agentId, status])
+  @@map("agent_withdrawals")
+}
+
 enum AiTaskStatus {
   queued
   processing
@@ -429,6 +512,29 @@ enum AiTaskStatus {
 enum UserDeviceStatus {
   active
   revoked
+}
+
+enum PayStatus {
+  pending
+  paid
+  failed
+  canceled
+  refunded
+  partial_refunded
+}
+
+enum RefundTier {
+  full
+  half
+  system_failure
+  none
+}
+
+enum CommissionStatus {
+  frozen
+  settlable
+  withdrawable
+  paid
 }
 
 enum TenantType {

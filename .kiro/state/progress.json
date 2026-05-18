@@ -3,8 +3,8 @@
   "mode": "autopilot",
   "_mode_options": "standby（待启动） | autopilot（自治中） | paused（暂停） | done（全部完成）",
   "started_at": "2026-05-17T21:56:17.0002215+08:00",
-  "last_session_at": "2026-05-18T08:40:10.472Z",
-  "current_task": "09-A1",
+  "last_session_at": "2026-05-18T08:48:08.617Z",
+  "current_task": "10-A1",
   "_current_task_format": "格式：'{spec_no}-{phase}{order}' 例如 '02-A1a' / '22-H3' / '99-FINAL-1'",
   "phase": "2-business-core",
   "_phase_options": "0-pre-flight | 1-infra | 2-business-core | 3-killer-apps | 4-knowledge | 5-workspace | 6-horizontal | 7-compliance | 99-final | done",
@@ -22,7 +22,7 @@
     },
     "M-W3-COMMERCE-DONE": {
       "trigger": "09-A11",
-      "status": "pending",
+      "status": "done",
       "reminders": "微信支付证书 / 支付宝密钥 / admin 后台访问"
     },
     "M-W4-AI-DONE": {
@@ -57,7 +57,7 @@
     }
   },
   "blocked_count": 0,
-  "done_count": 136,
+  "done_count": 147,
   "total_count": 230,
   "credentials_check": {
     "_doc": "P0-real = 真凭证必填（启动前必须真实有效）；P1-placeholder = 占位即可，开发期 mock provider，admin 后台可视化替换；P2-auto = Codex 自动生成或 docker-compose 自带。",
@@ -1195,7 +1195,7 @@
       ]
     },
     "09-A1": {
-      "status": "pending",
+      "status": "done",
       "spec": "09-payment-gateway",
       "title": "Prisma 5 表 + migration",
       "deps": [
@@ -1204,7 +1204,7 @@
       ]
     },
     "09-A2": {
-      "status": "pending",
+      "status": "done",
       "spec": "09-payment-gateway",
       "title": "wechat provider",
       "deps": [
@@ -1212,7 +1212,7 @@
       ]
     },
     "09-A3": {
-      "status": "pending",
+      "status": "done",
       "spec": "09-payment-gateway",
       "title": "alipay provider",
       "deps": [
@@ -1220,7 +1220,7 @@
       ]
     },
     "09-A4": {
-      "status": "pending",
+      "status": "done",
       "spec": "09-payment-gateway",
       "title": "order.service + idempotency-key",
       "deps": [
@@ -1228,7 +1228,7 @@
       ]
     },
     "09-A5": {
-      "status": "pending",
+      "status": "done",
       "spec": "09-payment-gateway",
       "title": "webhook 签名校验",
       "deps": [
@@ -1236,7 +1236,7 @@
       ]
     },
     "09-A6": {
-      "status": "pending",
+      "status": "done",
       "spec": "09-payment-gateway",
       "title": "refund + 审批",
       "deps": [
@@ -1245,7 +1245,7 @@
       ]
     },
     "09-A7": {
-      "status": "pending",
+      "status": "done",
       "spec": "09-payment-gateway",
       "title": "auto-charge 协议支付",
       "deps": [
@@ -1254,7 +1254,7 @@
       ]
     },
     "09-A8": {
-      "status": "pending",
+      "status": "done",
       "spec": "09-payment-gateway",
       "title": "commission 三件套",
       "deps": [
@@ -1262,7 +1262,7 @@
       ]
     },
     "09-A9": {
-      "status": "pending",
+      "status": "done",
       "spec": "09-payment-gateway",
       "title": "withdrawal",
       "deps": [
@@ -1270,7 +1270,7 @@
       ]
     },
     "09-A10": {
-      "status": "pending",
+      "status": "done",
       "spec": "09-payment-gateway",
       "title": "API + OpenAPI",
       "deps": [
@@ -1278,7 +1278,7 @@
       ]
     },
     "09-A11": {
-      "status": "pending",
+      "status": "done",
       "spec": "09-payment-gateway",
       "title": "e2e + PBT 跨域 5% 守恒",
       "deps": [
