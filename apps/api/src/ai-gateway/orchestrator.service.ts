@@ -11,6 +11,7 @@ import type { CreditLedgerService } from './credit/credit-ledger.service.js';
 import type { OutputValidatorService } from './output-validator.service.js';
 import type { PromptBuilderService } from './prompt-builder.service.js';
 import { contractReviewBasicPrompt } from './prompts/contract-review-basic.js';
+import { promptTemplateByTaskType } from './prompts/index.js';
 import type { ProviderRouterService } from './providers/provider-router.service.js';
 import type { RoutingService } from './routing/routing.service.js';
 import type { SafetyFilterService } from './safety-filter.service.js';
@@ -34,7 +35,7 @@ export class OrchestratorService {
 
   async invoke<T>(request: AiRequest): Promise<AiResponse<T>> {
     const traceId = randomUUID();
-    const template = contractReviewBasicPrompt.taskType === request.taskType ? contractReviewBasicPrompt : { ...contractReviewBasicPrompt, taskType: request.taskType };
+    const template = promptTemplateByTaskType.get(request.taskType) ?? contractReviewBasicPrompt;
     const route = this.routing.select(request);
     const cacheHit = request.options?.cacheStrategy !== AiCacheStrategy.NONE ? this.cache.lookup<AiResponse<T>>(request.taskType, request.input) : undefined;
     const key = request.options?.idempotencyKey ?? traceId;
