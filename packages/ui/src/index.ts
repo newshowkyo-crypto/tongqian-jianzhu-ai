@@ -1,16 +1,23 @@
 export { cn } from './utils.js';
 export { designTokens } from './tokens.js';
-export { AnimatedNumber, CoinDrop, LevelUpBadge, PrizeWheel, type AnimatedNumberProps, type CoinDropProps, type LevelUpBadgeProps, type PrizeWheelProps } from './animation/index.js';
+export { AnimatedNumber, CoinDrop, LevelUpBadge, PrizeWheel, SuccessConfetti, type AnimatedNumberProps, type CoinDropProps, type LevelUpBadgeProps, type PrizeWheelProps } from './animation/index.js';
 export { agentLevelBadgeAssets, emptyStateIllustrationAssets, functionIconAssets, logoAssets, serviceIconAssets, splashAssets } from './assets/index.js';
 export {
   ConfidenceIndicator,
+  ConfidenceDots,
   CreditDisplay,
+  AgentLevelBadge,
+  CountdownTimer,
   LevelBadge,
+  KpiCard,
   MoneyDisplay,
+  ProgressRing,
   RelativeTime,
   RiskBadge,
   StatCard,
+  StatusBadge,
   TierBadge,
+  TrafficLight,
   TrendCard,
   type RiskLevel,
   type StatCardProps,
@@ -27,16 +34,28 @@ export {
 } from './dashboards/index.js';
 export {
   AgentRow,
+  AiAssistantBubble,
+  AiReportH5Card,
+  CheckinCalendar,
+  ContractRiskItem,
   DispatchCard,
+  DispatchQuoteCard,
+  GrowthBuildingLevel,
+  LotteryWheel,
   OpportunityCard,
   QualificationCard,
   ReportHeader,
+  ReputationGauge,
   RiskFinding,
   ServicePremiumCard,
+  ServiceShelfCard,
+  SubscriptionPlanCard,
+  TenderEligibilityCheck,
+  RiskMonitorCard,
   type OpportunityCardProps,
 } from './domain/index.js';
 export { fontCssVariables, fontFamilies } from './fonts/index.js';
-export { FormField, FormSection, FormShell, SubmitButton, type FormFieldProps, type FormSectionProps, type FormShellProps } from './forms/index.js';
+export { FormErrorMessage, FormField, FormGuard, FormSection, FormShell, SubmitButton, type FormFieldProps, type FormSectionProps, type FormShellProps } from './forms/index.js';
 export * from './icons/index.js';
 export { FunctionZoneIcons } from './icons/function-zones.js';
 export {
@@ -48,6 +67,8 @@ export {
   PageHeader,
   PageLayout,
   SectionCard,
+  Sidebar,
+  TopNav,
   type EmptyStateProps,
   type ErrorStateProps,
   type FilterBarProps,
@@ -56,6 +77,8 @@ export {
   type PageHeaderProps,
   type PageLayoutProps,
   type SectionCardProps,
+  type SidebarProps,
+  type TopNavProps,
 } from './layout/page.js';
 export { BrandHeader, DisclaimerFooter, ReportCardH5, ReportFullPdf } from './report/index.js';
 export { uiTestConfig } from './testing.js';
@@ -119,11 +142,14 @@ export {
   Button,
   Checkbox,
   Combobox,
+  Calendar,
+  Command,
   DatePicker,
   DateRangePicker,
   FileUpload,
   Input,
   Radio,
+  RichTextEditor,
   Select,
   Slider,
   Switch,
@@ -131,11 +157,14 @@ export {
   type ButtonProps,
   type CheckboxProps,
   type ComboboxProps,
+  type CalendarProps,
+  type CommandProps,
   type DatePickerProps,
   type DateRangePickerProps,
   type FileUploadProps,
   type InputProps,
   type RadioProps,
+  type RichTextEditorProps,
   type SelectOption,
   type SelectProps,
   type SliderProps,

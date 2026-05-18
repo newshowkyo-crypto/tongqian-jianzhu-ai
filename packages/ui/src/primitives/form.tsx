@@ -152,6 +152,31 @@ export interface DateRangePickerProps {
   startInputProps?: InputHTMLAttributes<HTMLInputElement>;
 }
 
+export interface CalendarProps extends ComponentPropsWithoutRef<'div'> {
+  days?: Array<{ date: string; disabled?: boolean; selected?: boolean }>;
+}
+
+export function Calendar({ className, days = [], ...props }: CalendarProps): ReactNode {
+  return (
+    <div className={cn('grid grid-cols-7 gap-1 rounded-md border border-border bg-background p-3', className)} {...props}>
+      {days.map((day) => (
+        <button
+          key={day.date}
+          className={cn(
+            'min-h-11 rounded-md text-sm transition-colors hover:bg-primary-50',
+            day.selected && 'bg-primary-500 text-white hover:bg-primary-600',
+            day.disabled && 'cursor-not-allowed text-neutral-300 hover:bg-transparent',
+          )}
+          disabled={day.disabled}
+          type="button"
+        >
+          {new Date(day.date).getDate()}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export function DateRangePicker({
   className,
   endInputProps,
@@ -181,6 +206,49 @@ export const FileUpload = forwardRef<ElementRef<'input'>, FileUploadProps>(
   ),
 );
 FileUpload.displayName = 'FileUpload';
+
+export interface RichTextEditorProps extends ComponentPropsWithoutRef<'textarea'> {
+  toolbar?: ReactNode;
+}
+
+export const RichTextEditor = forwardRef<ElementRef<'textarea'>, RichTextEditorProps>(
+  ({ className, toolbar, ...props }, ref) => (
+    <div className="rounded-md border border-border bg-background">
+      <div className="flex min-h-10 items-center gap-1 border-b border-border px-2 py-1 text-xs text-neutral-500">
+        {toolbar ?? <span>加粗 / 列表 / 引用 / 附件</span>}
+      </div>
+      <textarea ref={ref} className={cn('min-h-40 w-full resize-y bg-transparent p-3 text-sm outline-none', className)} {...props} />
+    </div>
+  ),
+);
+RichTextEditor.displayName = 'RichTextEditor';
+
+export interface CommandProps extends Omit<ComponentPropsWithoutRef<'div'>, 'onSelect'> {
+  inputProps?: ComponentPropsWithoutRef<'input'>;
+  items?: Array<{ description?: ReactNode; label: ReactNode; value: string }>;
+  onSelect?: (value: string) => void;
+}
+
+export function Command({ className, inputProps, items = [], onSelect, ...props }: CommandProps): ReactNode {
+  return (
+    <div className={cn('overflow-hidden rounded-lg border border-border bg-background shadow-md', className)} {...props}>
+      <input className={cn(inputClassName, 'rounded-none border-0 border-b border-border')} placeholder="搜索项目、客户、报告、合同" {...inputProps} />
+      <div className="max-h-80 overflow-auto p-2">
+        {items.map((item) => (
+          <button
+            key={item.value}
+            className="flex min-h-11 w-full flex-col rounded-md px-3 py-2 text-left text-sm transition-colors hover:bg-primary-50"
+            onClick={() => onSelect?.(item.value)}
+            type="button"
+          >
+            <span className="font-medium text-neutral-900">{item.label}</span>
+            {item.description ? <span className="text-xs text-neutral-500">{item.description}</span> : null}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export interface ComboboxProps extends Omit<ComponentPropsWithoutRef<'input'>, 'list'> {
   options: SelectOption[];

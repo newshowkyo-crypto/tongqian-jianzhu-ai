@@ -163,3 +163,58 @@ export function ErrorState({
     </div>
   );
 }
+
+export interface SidebarItem {
+  active?: boolean;
+  href: string;
+  icon?: ReactNode;
+  label: ReactNode;
+}
+
+export interface SidebarProps extends ComponentPropsWithoutRef<'nav'> {
+  items: SidebarItem[];
+  logo?: ReactNode;
+}
+
+export function Sidebar({ className, items, logo, ...props }: SidebarProps): ReactNode {
+  return (
+    <nav className={cn('rounded-lg border border-border bg-background p-3 shadow-sm', className)} {...props}>
+      {logo ? <div className="mb-4 px-2 py-2">{logo}</div> : null}
+      <div className="space-y-1">
+        {items.map((item) => (
+          <a
+            key={item.href}
+            className={cn(
+              'flex min-h-11 items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+              item.active ? 'bg-primary-50 text-primary-700' : 'text-neutral-700 hover:bg-neutral-100',
+            )}
+            href={item.href}
+          >
+            {item.icon ? <span className="text-neutral-500">{item.icon}</span> : null}
+            <span>{item.label}</span>
+          </a>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
+export interface TopNavProps extends ComponentPropsWithoutRef<'header'> {
+  avatar?: ReactNode;
+  notifications?: ReactNode;
+  search?: ReactNode;
+  tenantSwitcher?: ReactNode;
+  themeToggle?: ReactNode;
+}
+
+export function TopNav({ avatar, className, notifications, search, tenantSwitcher, themeToggle, ...props }: TopNavProps): ReactNode {
+  return (
+    <header className={cn('sticky top-0 z-40 flex h-16 items-center gap-3 border-b border-border bg-background/95 px-4 backdrop-blur', className)} {...props}>
+      <div className="min-w-0 flex-1">{search}</div>
+      {tenantSwitcher}
+      {themeToggle}
+      {notifications}
+      {avatar}
+    </header>
+  );
+}

@@ -60,3 +60,13 @@ export function LevelUpBadge({ level, title }: LevelUpBadgeProps): ReactNode {
     </div>
   );
 }
+
+export function SuccessConfetti({ label = '升级成功' }: { label?: string }): ReactNode {
+  return (
+    <div className="relative inline-flex min-h-11 items-center rounded-md border border-accent-500 bg-accent-50 px-4 py-2 text-sm font-semibold text-accent-700">
+      <span className="absolute -top-1 left-4 h-2 w-2 animate-bounce rounded-full bg-accent-500" />
+      <span className="absolute -top-2 right-6 h-2 w-2 animate-bounce rounded-full bg-primary-500 [animation-delay:120ms]" />
+      {label}
+    </div>
+  );
+}

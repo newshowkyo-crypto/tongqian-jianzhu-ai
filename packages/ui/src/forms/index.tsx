@@ -96,3 +96,11 @@ export function SubmitButton({ children, disabled, ...props }: ButtonProps): Rea
     </Button>
   );
 }
+
+export function FormErrorMessage({ children, className, ...props }: ComponentPropsWithoutRef<'p'>): ReactNode {
+  return <p className={cn('text-xs text-danger-600', className)} {...props}>{children}</p>;
+}
+
+export function FormGuard({ className, dirty, message = '您有未保存的修改' }: { className?: string; dirty?: boolean; message?: ReactNode }): ReactNode {
+  return dirty ? <div className={cn('rounded-md border border-warning-100 bg-warning-50 p-3 text-sm text-warning-700', className)}>{message}</div> : null;
+}
