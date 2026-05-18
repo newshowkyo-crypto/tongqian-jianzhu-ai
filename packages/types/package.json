@@ -24,5 +24,8 @@
   },
   "devDependencies": {
     "rimraf": "^6.0.1"
+  },
+  "dependencies": {
+    "zod": "^3.25.76"
   }
 }

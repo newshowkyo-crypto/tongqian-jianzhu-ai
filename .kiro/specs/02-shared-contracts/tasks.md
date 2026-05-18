@@ -25,7 +25,7 @@
 - [x] **A3a** 在 `packages/types/src/ai-task/` 实现 task-type / tier / confidence / next-step / cache-strategy / provider / sanitize-mask
   - 验收：50+ AiTaskType 起步枚举 + Tier 1-4 + 4 强制要素接口
 
-- [ ] **A3b** 在 `packages/types/src/report/` 实现 status / required-elements + zod schema
+- [x] **A3b** 在 `packages/types/src/report/` 实现 status / required-elements + zod schema
   - 验收：BR-322 4 强制要素 zod schema 可校验任意业务输出
 
 - [ ] **A4** 在 `packages/types/src/dispatch/` 与 `packages/types/src/reputation/` 各实现起步类型
