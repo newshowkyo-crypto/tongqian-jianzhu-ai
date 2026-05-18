@@ -12,7 +12,7 @@
   - 文件：`role.ts` / `position-tag.ts` / `tenant.ts` / `scope.ts` + `index.ts`
   - 验收：`pnpm --filter @tongqian/types build` 通过；导出 4 大角色 + 30+ 岗位标签 + 4 层 WHERE Scope 类型
 
-- [ ] **A1b** 在 `packages/types/src/common/` 实现 8 文件
+- [x] **A1b** 在 `packages/types/src/common/` 实现 8 文件
   - 文件：`api-response.ts` / `pagination.ts` / `id.ts` / `money.ts` / `audit.ts` / `trace.ts` / `async-task.ts` / `idempotency.ts` + `index.ts`
   - 验收：协议 P-1 至 P-3 / P-8 类型定义齐全；ApiResponse / ApiResponseList 双形态导出
 
