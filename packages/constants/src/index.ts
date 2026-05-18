@@ -13,6 +13,21 @@ import { seedSystemConfigs as seedSubscriptionPlanConfigs } from './subscription
 import { seedSystemConfigs as seedTakeoverTriggerConfigs } from './takeover-triggers.js';
 import { seedSystemConfigs as seedTierThresholdConfigs } from './tier-thresholds.js';
 
+export { DEFAULT_AI_RATE_LIMITS } from './ai-rate-limits.js';
+export { AGENT_ACTIVITY_THRESHOLDS } from './agent-activity-thresholds.js';
+export { AGENT_REFERRAL_BONUS } from './agent-referral-bonus.js';
+export { DEFAULT_CACHE_TTL_SECONDS } from './cache-ttl.js';
+export { CHECKIN_REWARDS } from './checkin-rewards.js';
+export { COST_FLOOR } from './cost-floor.js';
+export { CURRENCY_DISPLAY } from './currency-display.js';
+export { FISSION_RATES } from './fission-rates.js';
+export { LOTTERY_SCHEDULE } from './lottery-schedule.js';
+export { DEFAULT_RATE_LIMITS } from './rate-limits.js';
+export { REACTIVATION_WINDOW } from './reactivation-window.js';
+export { REFUND_POLICY } from './refund-policy.js';
+export { REFUND_TIERS } from './refund-tiers.js';
+export { URGENCY_LIMITS } from './urgency-limits.js';
+
 export {
   DEFAULT_SUBSCRIPTION_PLANS,
   seedSystemConfigs as seedSubscriptionPlanConfigs,

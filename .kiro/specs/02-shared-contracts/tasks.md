@@ -70,7 +70,7 @@
   - 文件：`reputation-rules.ts` / `reputation-levels.ts` / `dispatch-weights.ts` / `red-lines.ts` / `takeover-triggers.ts` / `premium-services.ts`
   - 验收：BR-336 4 维加权 + BR-331/332/333 信誉规则 + BR-901 红线全部可后台覆盖
 
-- [ ] **D2** 实现限流 / 缓存 / 货币显示 / 杂项常量（不需后台覆盖）
+- [x] **D2** 实现限流 / 缓存 / 货币显示 / 杂项常量（不需后台覆盖）
   - 文件：`rate-limits.ts` / `ai-rate-limits.ts` / `cache-ttl.ts` / `currency-display.ts` / `refund-policy.ts` / `refund-tiers.ts` / `reactivation-window.ts` / `agent-activity-thresholds.ts` / `agent-referral-bonus.ts` / `fission-rates.ts` / `checkin-rewards.ts` / `lottery-schedule.ts` / `urgency-limits.ts` / `cost-floor.ts`
   - 验收：纯 `as const`，与 D1a/b 区分清楚（`README.md` 列表标注哪些可后台覆盖）
 

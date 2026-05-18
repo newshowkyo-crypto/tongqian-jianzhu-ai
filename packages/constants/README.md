@@ -1,22 +1,14 @@
 # @tongqian/constants
 
-共享常量包，集中维护订阅、点数、限流、缓存、Feature Flag、Tier 和平台级配置常量。
+Shared constants for pricing, credits, limits, feature flags, tiers, and platform-level business rules.
 
-## 职责
+## Responsibilities
 
-- 为 API、Worker、前端和后台提供同一份业务常量。
-- 避免在业务代码里重复定义价格、阈值、状态和枚举字符串。
-- 承接后续商业规则中的点数、分润、红线和功能开关默认值。
+- Provide one shared source of business constants for API, worker, frontend, and admin apps.
+- Avoid duplicated prices, thresholds, states, and string literals in business modules.
+- Keep commercial defaults aligned with ADRs, specs, and `docs/business-model.md`.
 
-## 主要文件
-
-| 文件            | 说明                     |
-| --------------- | ------------------------ |
-| `src/index.ts`  | 当前导出入口。           |
-| `package.json`  | 包导出、构建和校验脚本。 |
-| `tsconfig.json` | TypeScript 编译配置。    |
-
-## 命令
+## Commands
 
 ```powershell
 pnpm --filter @tongqian/constants typecheck
@@ -24,8 +16,8 @@ pnpm --filter @tongqian/constants lint
 pnpm --filter @tongqian/constants build
 ```
 
-## 开发约束
+## Override Boundary
 
-- 新增跨模块常量先放到本包，再由业务模块导入。
-- 不把密钥、真实凭证或租户私有配置写成常量。
-- 商业规则常量要与 ADR 和 spec 保持一致。
+System-config overridable: subscription plans, discount ladders, credit pricing, commission rates, dispatch thresholds, dispatch rates, referral fees, premium services, reputation rules, reputation levels, dispatch weights, takeover triggers, red lines, and tier thresholds.
+
+Code-only constants: rate limits, AI rate limits, cache TTLs, currency display, refund policy, refund tiers, reactivation window, agent activity thresholds, agent referral bonus, fission rates, check-in rewards, lottery schedule, urgency limits, and cost floor.
