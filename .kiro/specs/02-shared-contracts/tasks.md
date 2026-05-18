@@ -39,7 +39,7 @@
 
 ## Phase B：errors 包（3 个）
 
-- [ ] **B1** 实现 `BaseError` + 8 类业务错误子类
+- [x] **B1** 实现 `BaseError` + 8 类业务错误子类
   - 文件：`base-error.ts` / `business-error.ts` / `validation-error.ts` / `auth-error.ts` / `permission-error.ts` / `not-found-error.ts` / `conflict-error.ts` / `rate-limit-error.ts` / `upstream-error.ts`
   - 验收：每个错误类含 code / httpStatus / message / details / traceId 字段
 
