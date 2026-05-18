@@ -1,0 +1,8 @@
+{
+  "prompt_name": "morning-briefing",
+  "owner": "expert-placeholder",
+  "min_passing_similarity": 0.7,
+  "case_target": 10,
+  "status": "placeholder_seed",
+  "coverage": ["happy", "boundary", "error", "exception"]
+}

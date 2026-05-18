@@ -3,8 +3,8 @@
   "mode": "autopilot",
   "_mode_options": "standby（待启动） | autopilot（自治中） | paused（暂停） | done（全部完成）",
   "started_at": "2026-05-17T21:56:17.0002215+08:00",
-  "last_session_at": "2026-05-18T11:02:08.926Z",
-  "current_task": "29-A1",
+  "last_session_at": "2026-05-18T11:07:30.630Z",
+  "current_task": "99-FINAL-1",
   "_current_task_format": "格式：'{spec_no}-{phase}{order}' 例如 '02-A1a' / '22-H3' / '99-FINAL-1'",
   "phase": "2-business-core",
   "_phase_options": "0-pre-flight | 1-infra | 2-business-core | 3-killer-apps | 4-knowledge | 5-workspace | 6-horizontal | 7-compliance | 99-final | done",
@@ -57,7 +57,7 @@
     }
   },
   "blocked_count": 0,
-  "done_count": 177,
+  "done_count": 185,
   "total_count": 230,
   "credentials_check": {
     "_doc": "P0-real = 真凭证必填（启动前必须真实有效）；P1-placeholder = 占位即可，开发期 mock provider，admin 后台可视化替换；P2-auto = Codex 自动生成或 docker-compose 自带。",
@@ -1553,7 +1553,7 @@
       ]
     },
     "29-A1": {
-      "status": "pending",
+      "status": "done",
       "spec": "29-prompt-testing",
       "title": "PromptGoldenTestRun + EmbeddingCache 模型",
       "deps": [
@@ -1561,7 +1561,7 @@
       ]
     },
     "29-A2": {
-      "status": "pending",
+      "status": "done",
       "spec": "29-prompt-testing",
       "title": "golden-test-runner 引擎",
       "deps": [
@@ -1569,7 +1569,7 @@
       ]
     },
     "29-A3": {
-      "status": "pending",
+      "status": "done",
       "spec": "29-prompt-testing",
       "title": "similarity-calculator",
       "deps": [
@@ -1577,7 +1577,7 @@
       ]
     },
     "29-A4": {
-      "status": "pending",
+      "status": "done",
       "spec": "29-prompt-testing",
       "title": "embedding-cache 24h TTL",
       "deps": [
@@ -1585,7 +1585,7 @@
       ]
     },
     "29-A5": {
-      "status": "pending",
+      "status": "done",
       "spec": "29-prompt-testing",
       "title": "test-report-renderer + diff",
       "deps": [
@@ -1593,7 +1593,7 @@
       ]
     },
     "29-A6": {
-      "status": "pending",
+      "status": "done",
       "spec": "29-prompt-testing",
       "title": "ci-integration PR comment",
       "deps": [
@@ -1601,7 +1601,7 @@
       ]
     },
     "29-A7": {
-      "status": "pending",
+      "status": "done",
       "spec": "29-prompt-testing",
       "title": "CLI: pnpm test:prompts",
       "deps": [
@@ -1609,7 +1609,7 @@
       ]
     },
     "29-A8": {
-      "status": "pending",
+      "status": "done",
       "spec": "29-prompt-testing",
       "title": "5 核心 Prompt 测试集骨架 seed",
       "deps": [

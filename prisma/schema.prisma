@@ -2079,6 +2079,36 @@ model AIDataSource {
   @@map("ai_data_sources")
 }
 
+model PromptGoldenTestRun {
+  id            String   @id @default(uuid()) @db.Uuid
+  promptName    String   @map("prompt_name")
+  promptVersion String   @map("prompt_version")
+  testRunId     String   @map("test_run_id")
+  totalCases    Int      @map("total_cases")
+  passedCases   Int      @map("passed_cases")
+  failedCases   Int      @map("failed_cases")
+  passRate      Decimal  @map("pass_rate") @db.Decimal(5, 4)
+  passed        Boolean
+  details       Json
+  triggeredAt   DateTime @default(now()) @map("triggered_at")
+
+  @@index([promptName, promptVersion])
+  @@map("prompt_golden_test_runs")
+}
+
+model EmbeddingCache {
+  id        String   @id @default(uuid()) @db.Uuid
+  textHash  String   @unique @map("text_hash")
+  text      String   @db.Text
+  embedding Float[]
+  model     String
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([textHash])
+  @@map("embedding_cache")
+}
+
 enum AiTaskStatus {
   queued
   processing

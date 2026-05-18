@@ -13,6 +13,7 @@
     "lint": "turbo run lint && eslint . --ext .js,.cjs,.mjs,.ts,.tsx --no-error-on-unmatched-pattern",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
+    "test:prompts": "node scripts/test-prompts.mjs",
     "clean": "turbo run clean",
     "db:migrate": "pnpm --dir prisma prisma migrate dev",
     "db:deploy": "pnpm --dir prisma prisma migrate deploy",

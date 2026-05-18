@@ -2,14 +2,14 @@
 
 ## 任务总数：8
 
-- [ ] **29-A1** PromptGoldenTestRun + EmbeddingCache 模型 + migration
-- [ ] **29-A2** golden-test-runner.service.ts 测试执行引擎
-- [ ] **29-A3** similarity-calculator.service.ts 余弦相似度计算
-- [ ] **29-A4** embedding-cache.service.ts 24h TTL 缓存
-- [ ] **29-A5** test-report-renderer.service.ts diff 报告
-- [ ] **29-A6** ci-integration.service.ts PR comment + 阻止合并
-- [ ] **29-A7** CLI: pnpm test:prompts [prompt-name]
-- [ ] **29-A8** seed 5 个核心 Prompt 测试集骨架（专家后期填案例）：
+- [x] **29-A1** PromptGoldenTestRun + EmbeddingCache 模型 + migration
+- [x] **29-A2** golden-test-runner.service.ts 测试执行引擎
+- [x] **29-A3** similarity-calculator.service.ts 余弦相似度计算
+- [x] **29-A4** embedding-cache.service.ts 24h TTL 缓存
+- [x] **29-A5** test-report-renderer.service.ts diff 报告
+- [x] **29-A6** ci-integration.service.ts PR comment + 阻止合并
+- [x] **29-A7** CLI: pnpm test:prompts [prompt-name]
+- [x] **29-A8** seed 5 个核心 Prompt 测试集骨架（专家后期填案例）：
   - contract-review-pro/_meta.json
   - tender-framework-pro/_meta.json
   - qualification-upgrade-pro/_meta.json
