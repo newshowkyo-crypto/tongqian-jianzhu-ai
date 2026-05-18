@@ -91,7 +91,7 @@
 - [x] **F1** 在 `packages/utils/` 实现日期 / 金额 / 字符串 / 加解密 工具函数
   - 验收：date-fns 封装 + Decimal 金额格式化 + AES-256-GCM 工具 + traceId 生成
 
-- [ ] **F2** 在 `packages/ui/` 配置 shadcn/ui 基础（design-token + 几个 primitive）
+- [x] **F2** 在 `packages/ui/` 配置 shadcn/ui 基础（design-token + 几个 primitive）
   - 完整 ui 由 [`03-design-system`] spec 实施，本处仅起骨架
   - 验收：tailwind preset 导出 + 4 个子前端可引用
 
