@@ -1163,6 +1163,67 @@ model MaterialPriceAlert {
   @@map("material_price_alerts")
 }
 
+model Drawing {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id")
+  projectId   String?  @map("project_id")
+  fileUrl     String   @map("file_url")
+  fileFormat  String   @map("file_format")
+  sizeBytes   BigInt   @map("size_bytes")
+  pages       Int?
+  previewUrls Json     @map("preview_urls")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, projectId])
+  @@map("drawings")
+}
+
+model DrawingUnderstanding {
+  id             String @id @default(uuid()) @db.Uuid
+  drawingId      String @unique @map("drawing_id") @db.Uuid
+  drawingType    String @map("drawing_type")
+  keyDimensions  Json   @map("key_dimensions")
+  mainComponents Json   @map("main_components")
+  designParams   Json   @map("design_params")
+  aiTaskId       String @unique @map("ai_task_id")
+
+  @@map("drawing_understandings")
+}
+
+model DrawingError {
+  id          String @id @default(uuid()) @db.Uuid
+  drawingId   String @map("drawing_id") @db.Uuid
+  level       String
+  type        String
+  description String
+  pageNo      Int?   @map("page_no")
+  aiTaskId    String @unique @map("ai_task_id")
+
+  @@index([drawingId, level])
+  @@map("drawing_errors")
+}
+
+model DrawingVersionDiff {
+  id           String @id @default(uuid()) @db.Uuid
+  oldDrawingId String @map("old_drawing_id") @db.Uuid
+  newDrawingId String @map("new_drawing_id") @db.Uuid
+  changes      Json
+  aiTaskId     String @unique @map("ai_task_id")
+
+  @@index([oldDrawingId, newDrawingId])
+  @@map("drawing_version_diffs")
+}
+
+model QuantityEstimate {
+  id         String @id @default(uuid()) @db.Uuid
+  drawingId  String @map("drawing_id") @db.Uuid
+  components Json
+  aiTaskId   String @unique @map("ai_task_id")
+
+  @@index([drawingId])
+  @@map("quantity_estimates")
+}
+
 enum AiTaskStatus {
   queued
   processing
