@@ -34,8 +34,6 @@ run(
 );
 
 for (const app of nextApps) {
-  run('pnpm', ['store', 'prune']);
-  run('pnpm', ['install', '--force']);
   run('pnpm', ['--filter', app, 'build'], {
     env: {
       NEXT_STANDALONE: 'false',
