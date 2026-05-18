@@ -4,7 +4,10 @@ import { Controller, Get, Module } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 
-import { UserDevicesModule } from './modules/user/devices/user-devices.module.js';
+import { ApprovalModule } from './modules/approval/approval.module.js';
+import { AuthModule } from './modules/auth/auth.module.js';
+import { DataExportModule } from './modules/data-export/data-export.module.js';
+import { UserModule } from './modules/user/user.module.js';
 
 @Controller()
 class HealthController {
@@ -16,7 +19,7 @@ class HealthController {
 
 @Module({
   controllers: [HealthController],
-  imports: [UserDevicesModule],
+  imports: [ApprovalModule, AuthModule, DataExportModule, UserModule],
 })
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 class AppModule {}

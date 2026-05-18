@@ -34,6 +34,159 @@ model SystemConfigHistory {
   @@map("system_config_history")
 }
 
+model Tenant {
+  id               String       @id @default(uuid()) @db.Uuid
+  type             TenantType
+  subType          String?      @map("sub_type")
+  name             String
+  socialCreditCode String?      @unique @map("social_credit_code")
+  status           TenantStatus @default(active)
+  meta             Json?
+  createdAt        DateTime     @default(now()) @map("created_at")
+  updatedAt        DateTime     @updatedAt @map("updated_at")
+
+  @@index([type, status])
+  @@map("tenants")
+}
+
+model User {
+  id             String     @id @default(uuid()) @db.Uuid
+  tenantId       String     @map("tenant_id") @db.Uuid
+  phone          String     @unique
+  email          String?
+  passwordHash   String     @map("password_hash")
+  name           String
+  primaryRole    UserRole   @map("primary_role")
+  platformRole   String?    @map("platform_role")
+  positionTags   String[]   @default([]) @map("position_tags")
+  is2faEnabled   Boolean    @default(false) @map("is_2fa_enabled")
+  totpSecret     String?    @map("totp_secret")
+  status         UserStatus @default(active)
+  lastLoginAt    DateTime?  @map("last_login_at")
+  createdAt      DateTime   @default(now()) @map("created_at")
+
+  @@index([tenantId, status])
+  @@map("users")
+}
+
+model RefreshToken {
+  id         String    @id @default(uuid()) @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  tokenHash  String    @unique @map("token_hash")
+  deviceId   String?   @map("device_id") @db.Uuid
+  expiresAt  DateTime  @map("expires_at")
+  revokedAt  DateTime? @map("revoked_at")
+  ip         String?
+  userAgent  String?   @map("user_agent")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  @@index([userId, revokedAt])
+  @@map("refresh_tokens")
+}
+
+model ClientAttribution {
+  id             String   @id @default(uuid()) @db.Uuid
+  clientId       String   @unique @map("client_id") @db.Uuid
+  agentId        String   @map("agent_id") @db.Uuid
+  refCode        String   @map("ref_code")
+  reassignedFrom String?  @map("reassigned_from") @db.Uuid
+  boundAt        DateTime @default(now()) @map("bound_at")
+
+  @@index([agentId])
+  @@map("client_attributions")
+}
+
+model UserConsent {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  type      String
+  version   String
+  ip        String?
+  grantedAt DateTime  @default(now()) @map("granted_at")
+  revokedAt DateTime? @map("revoked_at")
+
+  @@unique([userId, type, version])
+  @@map("user_consents")
+}
+
+model ApprovalTemplate {
+  id          String   @id @default(uuid()) @db.Uuid
+  type        String
+  version     Int
+  stepsSchema Json     @map("steps_schema")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdBy   String   @map("created_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@unique([type, version])
+  @@index([type, isActive])
+  @@map("approval_templates")
+}
+
+model ApprovalFlow {
+  id           String         @id @default(uuid()) @db.Uuid
+  type         String
+  status       ApprovalStatus @default(pending)
+  resourceType String         @map("resource_type")
+  resourceId   String         @map("resource_id")
+  initiatorId  String         @map("initiator_id")
+  tenantId     String?        @map("tenant_id") @db.Uuid
+  templateId   String         @map("template_id") @db.Uuid
+  meta         Json?
+  expiresAt    DateTime?      @map("expires_at")
+  createdAt    DateTime       @default(now()) @map("created_at")
+  closedAt     DateTime?      @map("closed_at")
+
+  @@index([tenantId, status])
+  @@index([type, status])
+  @@map("approval_flows")
+}
+
+model ApprovalStep {
+  id           String           @id @default(uuid()) @db.Uuid
+  flowId       String           @map("flow_id") @db.Uuid
+  stepNo       Int              @map("step_no")
+  approverRole String           @map("approver_role")
+  approverId   String?          @map("approver_id")
+  required     Boolean          @default(true)
+  requires2fa  Boolean          @default(false) @map("requires_2fa")
+  decision     ApprovalDecision @default(pending)
+  reason       String?
+  signedAt     DateTime?        @map("signed_at")
+
+  @@unique([flowId, stepNo])
+  @@map("approval_steps")
+}
+
+model AuditLog {
+  id           String   @id @default(uuid()) @db.Uuid
+  tenantId     String?  @map("tenant_id")
+  userId       String?  @map("user_id")
+  action       String
+  resourceType String?  @map("resource_type")
+  resourceId   String?  @map("resource_id")
+  traceId      String   @map("trace_id")
+  meta         Json?
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, createdAt])
+  @@index([traceId])
+  @@map("audit_logs")
+}
+
+model IdempotencyRecord {
+  key        String   @id
+  method     String
+  path       String
+  statusCode Int      @map("status_code")
+  response   Json
+  expiresAt  DateTime @map("expires_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([expiresAt])
+  @@map("idempotency_records")
+}
+
 model AiTask {
   id           String       @id @default(uuid()) @db.Uuid
   taskType     String       @map("task_type")
@@ -154,4 +307,46 @@ enum AiTaskStatus {
 enum UserDeviceStatus {
   active
   revoked
+}
+
+enum TenantType {
+  BUILDING_COMPANY
+  GOV
+  AGENT
+  PLATFORM
+}
+
+enum TenantStatus {
+  pending_review
+  training
+  active
+  rejected
+  suspended
+}
+
+enum UserRole {
+  BUILDING_COMPANY_USER
+  GOV_USER
+  AGENT
+  PLATFORM
+}
+
+enum UserStatus {
+  active
+  suspended
+  deleted
+}
+
+enum ApprovalStatus {
+  pending
+  in_progress
+  approved
+  rejected
+  expired
+}
+
+enum ApprovalDecision {
+  pending
+  approved
+  rejected
 }

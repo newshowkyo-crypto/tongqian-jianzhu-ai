@@ -12,7 +12,7 @@ interface ApiResponse<T> {
 
 type BindDeviceBody = Omit<BindUserDeviceInput, 'lastIp' | 'tenantId' | 'userId'>;
 
-@Controller('api/v1/user/devices')
+@Controller('api/v1/users/me/devices')
 export class UserDevicesController {
   constructor(@Inject(UserDevicesService) private readonly devices: UserDevicesService) {}
 

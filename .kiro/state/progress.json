@@ -3,8 +3,8 @@
   "mode": "autopilot",
   "_mode_options": "standby（待启动） | autopilot（自治中） | paused（暂停） | done（全部完成）",
   "started_at": "2026-05-17T21:56:17.0002215+08:00",
-  "last_session_at": "2026-05-18T08:08:27.352Z",
-  "current_task": "06-A1",
+  "last_session_at": "2026-05-18T08:23:23.958Z",
+  "current_task": "07-A1",
   "_current_task_format": "格式：'{spec_no}-{phase}{order}' 例如 '02-A1a' / '22-H3' / '99-FINAL-1'",
   "phase": "2-business-core",
   "_phase_options": "0-pre-flight | 1-infra | 2-business-core | 3-killer-apps | 4-knowledge | 5-workspace | 6-horizontal | 7-compliance | 99-final | done",
@@ -17,7 +17,7 @@
     },
     "M-W2-CORE-DONE": {
       "trigger": "06-H1",
-      "status": "pending",
+      "status": "done",
       "reminders": "阿里云 OSS/OCR/SLS / 短信签名 / 内测客户名单"
     },
     "M-W3-COMMERCE-DONE": {
@@ -57,7 +57,7 @@
     }
   },
   "blocked_count": 0,
-  "done_count": 101,
+  "done_count": 117,
   "total_count": 230,
   "credentials_check": {
     "_doc": "P0-real = 真凭证必填（启动前必须真实有效）；P1-placeholder = 占位即可，开发期 mock provider，admin 后台可视化替换；P2-auto = Codex 自动生成或 docker-compose 自带。",
@@ -915,7 +915,7 @@
       ]
     },
     "06-A1": {
-      "status": "pending",
+      "status": "done",
       "spec": "06-auth-rbac",
       "title": "TenantContext 防线 1",
       "deps": [
@@ -923,7 +923,7 @@
       ]
     },
     "06-A2": {
-      "status": "pending",
+      "status": "done",
       "spec": "06-auth-rbac",
       "title": "BaseRepository 防线 2 + scope-guard middleware 防线 3",
       "deps": [
@@ -931,7 +931,7 @@
       ]
     },
     "06-A3": {
-      "status": "pending",
+      "status": "done",
       "spec": "06-auth-rbac",
       "title": "idempotency + trace-id + audit",
       "deps": [
@@ -939,7 +939,7 @@
       ]
     },
     "06-B1": {
-      "status": "pending",
+      "status": "done",
       "spec": "06-auth-rbac",
       "title": "建筑企业注册 + attribution",
       "deps": [
@@ -947,7 +947,7 @@
       ]
     },
     "06-B2": {
-      "status": "pending",
+      "status": "done",
       "spec": "06-auth-rbac",
       "title": "政府 + 中介注册",
       "deps": [
@@ -955,7 +955,7 @@
       ]
     },
     "06-B3": {
-      "status": "pending",
+      "status": "done",
       "spec": "06-auth-rbac",
       "title": "平台运营创建 + 强制 2FA",
       "deps": [
@@ -963,7 +963,7 @@
       ]
     },
     "06-C1": {
-      "status": "pending",
+      "status": "done",
       "spec": "06-auth-rbac",
       "title": "JWT + login + lockout",
       "deps": [
@@ -971,7 +971,7 @@
       ]
     },
     "06-C2": {
-      "status": "pending",
+      "status": "done",
       "spec": "06-auth-rbac",
       "title": "2FA + 设备管理",
       "deps": [
@@ -979,7 +979,7 @@
       ]
     },
     "06-D1": {
-      "status": "pending",
+      "status": "done",
       "spec": "06-auth-rbac",
       "title": "permission.guard + role.guard + 装饰器",
       "deps": [
@@ -987,7 +987,7 @@
       ]
     },
     "06-D2": {
-      "status": "pending",
+      "status": "done",
       "spec": "06-auth-rbac",
       "title": "hasPermission + controllers 标注权限点",
       "deps": [
@@ -995,7 +995,7 @@
       ]
     },
     "06-E1": {
-      "status": "pending",
+      "status": "done",
       "spec": "06-auth-rbac",
       "title": "user/invite + 岗位标签分配",
       "deps": [
@@ -1003,7 +1003,7 @@
       ]
     },
     "06-E2": {
-      "status": "pending",
+      "status": "done",
       "spec": "06-auth-rbac",
       "title": "user/devices + consents（出境授权）",
       "deps": [
@@ -1011,7 +1011,7 @@
       ]
     },
     "06-F1": {
-      "status": "pending",
+      "status": "done",
       "spec": "06-auth-rbac",
       "title": "approval-engine + template",
       "deps": [
@@ -1019,7 +1019,7 @@
       ]
     },
     "06-F2": {
-      "status": "pending",
+      "status": "done",
       "spec": "06-auth-rbac",
       "title": "4 个起步审批模板 seed",
       "deps": [
@@ -1027,7 +1027,7 @@
       ]
     },
     "06-G1": {
-      "status": "pending",
+      "status": "done",
       "spec": "06-auth-rbac",
       "title": "data-export（BR-104）",
       "deps": [
@@ -1035,7 +1035,7 @@
       ]
     },
     "06-H1": {
-      "status": "pending",
+      "status": "done",
       "spec": "06-auth-rbac",
       "title": "完整 e2e",
       "deps": [

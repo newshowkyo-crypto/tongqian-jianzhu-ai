@@ -139,6 +139,9 @@ importers:
       '@tongqian/constants':
         specifier: workspace:^
         version: link:../../packages/constants
+      '@tongqian/permissions':
+        specifier: workspace:*
+        version: link:../../packages/permissions
       '@tongqian/types':
         specifier: workspace:*
         version: link:../../packages/types
