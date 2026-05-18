@@ -8,7 +8,7 @@
 
 ## Phase A：types 包（7 个）
 
-- [ ] **A1a** 在 `packages/types/src/auth/` 实现 4 文件
+- [x] **A1a** 在 `packages/types/src/auth/` 实现 4 文件
   - 文件：`role.ts` / `position-tag.ts` / `tenant.ts` / `scope.ts` + `index.ts`
   - 验收：`pnpm --filter @tongqian/types build` 通过；导出 4 大角色 + 30+ 岗位标签 + 4 层 WHERE Scope 类型
 
@@ -109,7 +109,6 @@
 - ✅ `pnpm gen:api` 可成功生成 client（即使 openapi.yaml 只有 /health 一个 endpoint）
 - ✅ D1a / D1b 所有"必须后台可调"项有对应 `seedSystemConfigs()` 函数
 - ✅ G1 完成后，`SystemConfigService` 可在 [`24-admin-console`] 后续被完整化
-
 
 ---
 
