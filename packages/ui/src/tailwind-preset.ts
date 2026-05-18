@@ -3,6 +3,17 @@ import animate from 'tailwindcss-animate';
 
 import { designTokens } from './tokens.js';
 
+const fontFamily = Object.fromEntries(
+  Object.entries(designTokens.typography.fontFamily).map(([key, value]) => [key, [...value]]),
+) as Record<string, string[]>;
+
+const fontSize = Object.fromEntries(
+  Object.entries(designTokens.typography.fontSize).map(([key, [size, config]]) => [
+    key,
+    [size, { ...config }],
+  ]),
+) as Record<string, [string, { lineHeight: string }]>;
+
 export const tongqianTailwindPreset = {
   darkMode: ['class'],
   theme: {
@@ -20,21 +31,22 @@ export const tongqianTailwindPreset = {
         neutral: designTokens.colors.neutral,
       },
       borderRadius: {
-        md: designTokens.radii.md,
-        lg: designTokens.radii.lg,
+        ...designTokens.radius,
       },
       boxShadow: {
-        card: '0 1px 2px 0 rgb(24 24 27 / 0.06)',
+        ...designTokens.shadows,
       },
       fontFamily: {
-        sans: [
-          'Inter',
-          'PingFang SC',
-          'Microsoft YaHei',
-          'ui-sans-serif',
-          'system-ui',
-          'sans-serif',
-        ],
+        ...fontFamily,
+      },
+      fontSize: {
+        ...fontSize,
+      },
+      fontWeight: {
+        ...designTokens.typography.fontWeight,
+      },
+      spacing: {
+        ...designTokens.spacing,
       },
     },
   },

@@ -7,7 +7,7 @@
 - [x] **A1** 实现 `packages/ui/src/tokens/` 5 文件（colors / typography / spacing / radius / shadows）+ `styles/tokens.css`
   - 验收：值与 [`ui-visual-spec.md` §2/§3/§4](../../steering/ui-visual-spec.md) 完全一致
 
-- [ ] **A2** 实现 `packages/ui/tailwind-preset.ts` + 4 个子前端的 `tailwind.config.ts` 完成 token 引用 + 差异化覆盖
+- [x] **A2** 实现 `packages/ui/tailwind-preset.ts` + 4 个子前端的 `tailwind.config.ts` 完成 token 引用 + 差异化覆盖
   - 验收：4 个 app 都能跑 `pnpm dev` + 视觉一致
 
 - [ ] **A3** 实现 `packages/ui/src/fonts/` + `src/styles/globals.css`（重置 + 字体）
