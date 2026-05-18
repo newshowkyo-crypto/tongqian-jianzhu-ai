@@ -24,3 +24,4 @@ export * from './subscription/auto-renewal.js';
 export * from './subscription/change-plan.js';
 export * from './subscription/plan.js';
 export * from './subscription/status.js';
+export * from './tender/index.js';

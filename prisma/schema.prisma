@@ -655,6 +655,98 @@ model OwnerVerifyResult {
   @@map("owner_verify_results")
 }
 
+model TenderProject {
+  id             String   @id @default(uuid()) @db.Uuid
+  tenantId       String   @map("tenant_id")
+  userId         String   @map("user_id")
+  name           String
+  region         String?
+  industry       String?
+  amountEstimate Decimal? @map("amount_estimate") @db.Decimal(15, 2)
+  sourceFileUrl  String   @map("source_file_url")
+  status         String
+  meta           Json?
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, userId, createdAt])
+  @@map("tender_projects")
+}
+
+model TenderSummary {
+  id             String   @id @default(uuid()) @db.Uuid
+  projectId      String   @unique @map("project_id") @db.Uuid
+  aiTaskId       String   @unique @map("ai_task_id")
+  reportId       String?  @map("report_id")
+  keyPoints      Json     @map("key_points")
+  schedule       Json
+  eligibilityReq Json     @map("eligibility_req")
+  scoringSummary Json     @map("scoring_summary")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@map("tender_summaries")
+}
+
+model TenderEligibility {
+  id           String   @id @default(uuid()) @db.Uuid
+  projectId    String   @map("project_id") @db.Uuid
+  status       String
+  missingItems Json     @map("missing_items")
+  remediation  Json
+  aiTaskId     String   @unique @map("ai_task_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@index([projectId])
+  @@map("tender_eligibilities")
+}
+
+model TenderFramework {
+  id               String   @id @default(uuid()) @db.Uuid
+  projectId        String   @unique @map("project_id") @db.Uuid
+  businessOutline  Json     @map("business_outline")
+  technicalOutline Json     @map("technical_outline")
+  templateCode     String   @map("template_code")
+  aiTaskId         String   @unique @map("ai_task_id")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@map("tender_frameworks")
+}
+
+model TenderSectionDraft {
+  id         String   @id @default(uuid()) @db.Uuid
+  projectId  String   @map("project_id") @db.Uuid
+  sectionKey String   @map("section_key")
+  version    Int
+  content    String   @db.Text
+  aiTaskId   String   @unique @map("ai_task_id")
+  approvedBy String?  @map("approved_by")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([projectId, sectionKey])
+  @@map("tender_section_drafts")
+}
+
+model TenderPackage {
+  id           String   @id @default(uuid()) @db.Uuid
+  projectId    String   @unique @map("project_id") @db.Uuid
+  pdfUrl       String   @map("pdf_url")
+  includedDocs Json     @map("included_docs")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("tender_packages")
+}
+
+model TenderScorePrediction {
+  id             String  @id @default(uuid()) @db.Uuid
+  projectId      String  @map("project_id") @db.Uuid
+  predictedScore Decimal @map("predicted_score") @db.Decimal(5, 2)
+  breakdown      Json
+  improvements   Json
+  aiTaskId       String  @unique @map("ai_task_id")
+
+  @@index([projectId])
+  @@map("tender_score_predictions")
+}
+
 enum AiTaskStatus {
   queued
   processing
