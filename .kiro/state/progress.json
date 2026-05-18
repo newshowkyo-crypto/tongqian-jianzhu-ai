@@ -3,8 +3,8 @@
   "mode": "autopilot",
   "_mode_options": "standby（待启动） | autopilot（自治中） | paused（暂停） | done（全部完成）",
   "started_at": "2026-05-17T21:56:17.0002215+08:00",
-  "last_session_at": "2026-05-18T07:58:21.258Z",
-  "current_task": "05-A1",
+  "last_session_at": "2026-05-18T08:08:27.352Z",
+  "current_task": "06-A1",
   "_current_task_format": "格式：'{spec_no}-{phase}{order}' 例如 '02-A1a' / '22-H3' / '99-FINAL-1'",
   "phase": "2-business-core",
   "_phase_options": "0-pre-flight | 1-infra | 2-business-core | 3-killer-apps | 4-knowledge | 5-workspace | 6-horizontal | 7-compliance | 99-final | done",
@@ -57,7 +57,7 @@
     }
   },
   "blocked_count": 0,
-  "done_count": 93,
+  "done_count": 101,
   "total_count": 230,
   "credentials_check": {
     "_doc": "P0-real = 真凭证必填（启动前必须真实有效）；P1-placeholder = 占位即可，开发期 mock provider，admin 后台可视化替换；P2-auto = Codex 自动生成或 docker-compose 自带。",
@@ -851,7 +851,7 @@
       ]
     },
     "05-A1": {
-      "status": "pending",
+      "status": "done",
       "spec": "05-windows-desktop",
       "title": "复用 apps/web standalone",
       "deps": [
@@ -859,7 +859,7 @@
       ]
     },
     "05-A2": {
-      "status": "pending",
+      "status": "done",
       "spec": "05-windows-desktop",
       "title": "tray.rs",
       "deps": [
@@ -867,7 +867,7 @@
       ]
     },
     "05-A3": {
-      "status": "pending",
+      "status": "done",
       "spec": "05-windows-desktop",
       "title": "notification.rs + 27 通道对接",
       "deps": [
@@ -875,7 +875,7 @@
       ]
     },
     "05-A4": {
-      "status": "pending",
+      "status": "done",
       "spec": "05-windows-desktop",
       "title": "file_drop.rs",
       "deps": [
@@ -883,7 +883,7 @@
       ]
     },
     "05-A5": {
-      "status": "pending",
+      "status": "done",
       "spec": "05-windows-desktop",
       "title": "clipboard.rs + AI 助理浮窗",
       "deps": [
@@ -891,7 +891,7 @@
       ]
     },
     "05-A6": {
-      "status": "pending",
+      "status": "done",
       "spec": "05-windows-desktop",
       "title": "credential.rs + 设备指纹",
       "deps": [
@@ -899,7 +899,7 @@
       ]
     },
     "05-A7": {
-      "status": "pending",
+      "status": "done",
       "spec": "05-windows-desktop",
       "title": "UserDevice 表 + 设备管理 API",
       "deps": [
@@ -907,7 +907,7 @@
       ]
     },
     "05-A8": {
-      "status": "pending",
+      "status": "done",
       "spec": "05-windows-desktop",
       "title": "desktop-release minisign 签名",
       "deps": [

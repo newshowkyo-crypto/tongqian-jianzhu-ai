@@ -42,15 +42,58 @@ jobs:
       - name: Build MSI
         run: pnpm --filter @tongqian/desktop tauri build --bundles msi
 
+      - name: Install minisign
+        run: choco install minisign -y --no-progress
+
+      - name: Sign MSI
+        shell: pwsh
+        env:
+          MINISIGN_PRIVATE_KEY: ${{ secrets.TAURI_UPDATER_PRIVATE_KEY }}
+          MINISIGN_PASSWORD: ${{ secrets.TAURI_UPDATER_PRIVATE_KEY_PASSWORD }}
+        run: |
+          if (-not $env:MINISIGN_PRIVATE_KEY) {
+            Write-Host "TAURI_UPDATER_PRIVATE_KEY is not configured; signing is deferred to 99-FINAL."
+            exit 0
+          }
+          $keyPath = "$env:RUNNER_TEMP\minisign.key"
+          $env:MINISIGN_PRIVATE_KEY | Set-Content -Path $keyPath -NoNewline
+          Get-ChildItem apps/desktop/src-tauri/target/release/bundle/msi/*.msi | ForEach-Object {
+            minisign -S -s $keyPath -m $_.FullName -x "$($_.FullName).minisig" -W
+          }
+
+      - name: Generate updater manifest
+        shell: pwsh
+        run: |
+          $msi = Get-ChildItem apps/desktop/src-tauri/target/release/bundle/msi/*.msi | Select-Object -First 1
+          $signaturePath = "$($msi.FullName).minisig"
+          $signature = if (Test-Path $signaturePath) { Get-Content $signaturePath -Raw } else { "SIGNING_DEFERRED_TO_99_FINAL" }
+          @{
+            version = "${{ github.ref_name }}"
+            notes = "Tongqian desktop release"
+            pub_date = (Get-Date).ToUniversalTime().ToString("o")
+            platforms = @{
+              "windows-x86_64" = @{
+                signature = $signature.Trim()
+                url = "https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/$($msi.Name)"
+              }
+            }
+          } | ConvertTo-Json -Depth 8 | Set-Content apps/desktop/src-tauri/target/release/bundle/msi/latest.json
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: tongqian-desktop-msi
-          path: apps/desktop/src-tauri/target/release/bundle/msi/*.msi
+          path: |
+            apps/desktop/src-tauri/target/release/bundle/msi/*.msi
+            apps/desktop/src-tauri/target/release/bundle/msi/*.minisig
+            apps/desktop/src-tauri/target/release/bundle/msi/latest.json
           if-no-files-found: error
 
       - name: Publish GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: apps/desktop/src-tauri/target/release/bundle/msi/*.msi
+          files: |
+            apps/desktop/src-tauri/target/release/bundle/msi/*.msi
+            apps/desktop/src-tauri/target/release/bundle/msi/*.minisig
+            apps/desktop/src-tauri/target/release/bundle/msi/latest.json

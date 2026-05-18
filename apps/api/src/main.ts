@@ -4,6 +4,8 @@ import { Controller, Get, Module } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 
+import { UserDevicesModule } from './modules/user/devices/user-devices.module.js';
+
 @Controller()
 class HealthController {
   @Get('health')
@@ -14,6 +16,7 @@ class HealthController {
 
 @Module({
   controllers: [HealthController],
+  imports: [UserDevicesModule],
 })
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 class AppModule {}

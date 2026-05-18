@@ -125,9 +125,33 @@ model TenantMonthlyCost {
   @@map("tenant_monthly_costs")
 }
 
+model UserDevice {
+  id            String           @id @default(uuid()) @db.Uuid
+  userId        String           @map("user_id")
+  tenantId      String           @map("tenant_id")
+  deviceType    String           @map("device_type")
+  deviceName    String           @map("device_name")
+  deviceFinger  String           @map("device_finger")
+  lastLoginAt   DateTime         @default(now()) @map("last_login_at")
+  lastIp        String?          @map("last_ip")
+  status        UserDeviceStatus @default(active)
+  revokedAt     DateTime?        @map("revoked_at")
+  createdAt     DateTime         @default(now()) @map("created_at")
+
+  @@unique([userId, deviceFinger])
+  @@index([tenantId, userId, status])
+  @@index([userId, status])
+  @@map("user_devices")
+}
+
 enum AiTaskStatus {
   queued
   processing
   completed
   failed
+}
+
+enum UserDeviceStatus {
+  active
+  revoked
 }

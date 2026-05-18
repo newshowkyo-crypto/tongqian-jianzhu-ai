@@ -10,4 +10,7 @@ rust-version = "1.77"
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
-tauri = { version = "2", features = [] }
+hex = "0.4"
+serde = { version = "1", features = ["derive"] }
+sha2 = "0.10"
+tauri = { version = "2", features = ["tray-icon"] }

@@ -24,5 +24,12 @@
     "active": true,
     "targets": ["msi"],
     "resources": ["../dist/web-standalone/**/*"]
+  },
+  "plugins": {
+    "updater": {
+      "active": true,
+      "endpoints": ["https://tongqian.example.com/desktop/{{target}}/{{current_version}}"],
+      "pubkey": "PLACEHOLDER_REPLACE_VIA_RELEASE_SECRET"
+    }
   }
 }
