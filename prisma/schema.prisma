@@ -1684,6 +1684,63 @@ model PolicyFund {
   @@map("policy_funds")
 }
 
+model SystemConfig {
+  id          String   @id @default(uuid()) @db.Uuid
+  key         String   @unique
+  value       Json
+  description String?
+  category    String
+  isActive    Boolean  @default(true) @map("is_active")
+  updatedBy   String?  @map("updated_by")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([category, isActive])
+  @@map("system_configs")
+}
+
+model SystemConfigHistory {
+  id             String   @id @default(uuid()) @db.Uuid
+  configKey      String   @map("config_key")
+  prevValue      Json?    @map("prev_value")
+  newValue       Json     @map("new_value")
+  changeReason   String?  @map("change_reason")
+  changedBy      String   @map("changed_by")
+  approvalFlowId String?  @map("approval_flow_id")
+  changedAt      DateTime @default(now()) @map("changed_at")
+
+  @@index([configKey, changedAt])
+  @@map("system_config_histories")
+}
+
+model RedLineAlert {
+  id          String    @id @default(uuid()) @db.Uuid
+  redLineKey  String    @map("red_line_key")
+  threshold   Decimal   @db.Decimal(15, 4)
+  actualValue Decimal   @map("actual_value") @db.Decimal(15, 4)
+  status      String
+  triggeredAt DateTime  @default(now()) @map("triggered_at")
+  resolvedAt  DateTime? @map("resolved_at")
+  notes       String?
+
+  @@index([redLineKey, status])
+  @@map("red_line_alerts")
+}
+
+model FeatureFlag {
+  id              String   @id @default(uuid()) @db.Uuid
+  flagKey         String   @unique @map("flag_key")
+  nameZh          String   @map("name_zh")
+  description     String?
+  enabled         Boolean  @default(false)
+  rolloutPct      Int      @default(0) @map("rollout_pct")
+  rolloutStrategy Json     @map("rollout_strategy")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("feature_flags")
+}
+
 enum AiTaskStatus {
   queued
   processing
