@@ -747,6 +747,67 @@ model TenderScorePrediction {
   @@map("tender_score_predictions")
 }
 
+model ContractReview {
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @map("tenant_id")
+  userId        String   @map("user_id")
+  type          String
+  contractUrl   String   @map("contract_url")
+  contractType  String   @map("contract_type")
+  projectAmount Decimal? @map("project_amount") @db.Decimal(15, 2)
+  aiTaskId      String   @unique @map("ai_task_id")
+  reportId      String?  @map("report_id")
+  overallRisk   String   @map("overall_risk")
+  findingCount  Int      @map("finding_count")
+  redCount      Int      @map("red_count")
+  yellowCount   Int      @map("yellow_count")
+  greenCount    Int      @map("green_count")
+  status        String
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, userId, createdAt])
+  @@map("contract_reviews")
+}
+
+model ContractRiskFinding {
+  id              String  @id @default(uuid()) @db.Uuid
+  reviewId        String  @map("review_id") @db.Uuid
+  level           String
+  type            String
+  clauseNo        String? @map("clause_no")
+  clauseText      String  @map("clause_text") @db.Text
+  impact          String
+  suggestion      String
+  standardWording String? @map("standard_wording")
+  ruleId          String? @map("rule_id")
+
+  @@index([reviewId, level])
+  @@map("contract_risk_findings")
+}
+
+model ModificationLetter {
+  id        String   @id @default(uuid()) @db.Uuid
+  reviewId  String   @unique @map("review_id") @db.Uuid
+  aiTaskId  String   @unique @map("ai_task_id")
+  pdfUrl    String?  @map("pdf_url")
+  content   String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("modification_letters")
+}
+
+model ClaimStrategy {
+  id               String   @id @default(uuid()) @db.Uuid
+  contractReviewId String?  @map("contract_review_id") @db.Uuid
+  facts            Json
+  evidenceList     Json     @map("evidence_list")
+  steps            Json
+  aiTaskId         String   @unique @map("ai_task_id")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@map("claim_strategies")
+}
+
 enum AiTaskStatus {
   queued
   processing

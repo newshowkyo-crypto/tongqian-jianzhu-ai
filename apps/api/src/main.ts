@@ -11,6 +11,7 @@ import { DataExportModule } from './modules/data-export/data-export.module.js';
 import { OpportunityModule } from './modules/opportunity/opportunity.module.js';
 import { PaymentModule } from './modules/payment/payment.module.js';
 import { ReportCenterModule } from './modules/report-center/report-center.module.js';
+import { RiskReviewModule } from './modules/risk-review/risk-review.module.js';
 import { SubscriptionModule } from './modules/subscription/subscription.module.js';
 import { TenderModule } from './modules/tender/tender.module.js';
 import { UserModule } from './modules/user/user.module.js';
@@ -25,7 +26,19 @@ class HealthController {
 
 @Module({
   controllers: [HealthController],
-  imports: [ApprovalModule, AuthModule, CreditModule, DataExportModule, OpportunityModule, PaymentModule, ReportCenterModule, SubscriptionModule, TenderModule, UserModule],
+  imports: [
+    ApprovalModule,
+    AuthModule,
+    CreditModule,
+    DataExportModule,
+    OpportunityModule,
+    PaymentModule,
+    ReportCenterModule,
+    RiskReviewModule,
+    SubscriptionModule,
+    TenderModule,
+    UserModule,
+  ],
 })
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 class AppModule {}
