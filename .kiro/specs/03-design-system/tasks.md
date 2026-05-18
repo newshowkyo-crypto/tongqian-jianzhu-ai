@@ -4,7 +4,7 @@
 
 ## Phase A：Tokens + Tailwind preset（3 个）
 
-- [ ] **A1** 实现 `packages/ui/src/tokens/` 5 文件（colors / typography / spacing / radius / shadows）+ `styles/tokens.css`
+- [x] **A1** 实现 `packages/ui/src/tokens/` 5 文件（colors / typography / spacing / radius / shadows）+ `styles/tokens.css`
   - 验收：值与 [`ui-visual-spec.md` §2/§3/§4](../../steering/ui-visual-spec.md) 完全一致
 
 - [ ] **A2** 实现 `packages/ui/tailwind-preset.ts` + 4 个子前端的 `tailwind.config.ts` 完成 token 引用 + 差异化覆盖
