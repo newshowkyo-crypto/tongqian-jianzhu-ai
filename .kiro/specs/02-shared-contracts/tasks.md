@@ -33,7 +33,7 @@
   - reputation：`score.ts` / `level.ts`（LV1-5）/ `event-type.ts`（30+ 事件）
   - 验收：types/dispatch + types/reputation 全部导出
 
-- [ ] **A5** 在 `packages/types/src/approval/` 实现协议 P-7
+- [x] **A5** 在 `packages/types/src/approval/` 实现协议 P-7
   - 文件：`flow.ts` / `step.ts` / `decision.ts`
   - 验收：ApprovalFlow / ApprovalStep / ApprovalRequest / ApprovalDecision 接口齐全
 
