@@ -1,5 +1,6 @@
 export { cn } from './utils.js';
 export { designTokens } from './tokens.js';
+export { fontCssVariables, fontFamilies } from './fonts/index.js';
 export {
   badgeVariants,
   buttonVariants,

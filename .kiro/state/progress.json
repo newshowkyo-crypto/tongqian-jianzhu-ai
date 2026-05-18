@@ -3,8 +3,8 @@
   "mode": "autopilot",
   "_mode_options": "standby（待启动） | autopilot（自治中） | paused（暂停） | done（全部完成）",
   "started_at": "2026-05-17T21:56:17.0002215+08:00",
-  "last_session_at": "2026-05-18T06:44:53.385Z",
-  "current_task": "03-A3",
+  "last_session_at": "2026-05-18T06:53:10.245Z",
+  "current_task": "03-B1",
   "_current_task_format": "格式：'{spec_no}-{phase}{order}' 例如 '02-A1a' / '22-H3' / '99-FINAL-1'",
   "phase": "2-business-core",
   "_phase_options": "0-pre-flight | 1-infra | 2-business-core | 3-killer-apps | 4-knowledge | 5-workspace | 6-horizontal | 7-compliance | 99-final | done",
@@ -57,7 +57,7 @@
     }
   },
   "blocked_count": 0,
-  "done_count": 62,
+  "done_count": 63,
   "total_count": 230,
   "credentials_check": {
     "_doc": "P0-real = 真凭证必填（启动前必须真实有效）；P1-placeholder = 占位即可，开发期 mock provider，admin 后台可视化替换；P2-auto = Codex 自动生成或 docker-compose 自带。",
@@ -596,7 +596,7 @@
       ]
     },
     "03-A3": {
-      "status": "pending",
+      "status": "done",
       "spec": "03-design-system",
       "title": "fonts + globals.css",
       "deps": [
