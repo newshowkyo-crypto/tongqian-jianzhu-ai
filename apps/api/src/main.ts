@@ -6,6 +6,7 @@ import { ExpressAdapter } from '@nestjs/platform-express';
 
 import { ApprovalModule } from './modules/approval/approval.module.js';
 import { AuthModule } from './modules/auth/auth.module.js';
+import { CostEstimateModule } from './modules/cost-estimate/cost-estimate.module.js';
 import { CreditModule } from './modules/credit/credit.module.js';
 import { DataExportModule } from './modules/data-export/data-export.module.js';
 import { OpportunityModule } from './modules/opportunity/opportunity.module.js';
@@ -32,6 +33,7 @@ class HealthController {
   imports: [
     ApprovalModule,
     AuthModule,
+    CostEstimateModule,
     CreditModule,
     DataExportModule,
     OpportunityModule,

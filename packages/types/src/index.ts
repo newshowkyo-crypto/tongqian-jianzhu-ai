@@ -10,6 +10,7 @@ export * from './approval/decision.js';
 export * from './approval/flow.js';
 export * from './approval/step.js';
 export * from './common/index.js';
+export * from './cost-estimate/index.js';
 export * from './credit/expiry.js';
 export * from './credit/lot.js';
 export * from './credit/transaction.js';
