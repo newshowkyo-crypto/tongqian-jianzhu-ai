@@ -28,7 +28,7 @@
 - [x] **A3b** 在 `packages/types/src/report/` 实现 status / required-elements + zod schema
   - 验收：BR-322 4 强制要素 zod schema 可校验任意业务输出
 
-- [ ] **A4** 在 `packages/types/src/dispatch/` 与 `packages/types/src/reputation/` 各实现起步类型
+- [x] **A4** 在 `packages/types/src/dispatch/` 与 `packages/types/src/reputation/` 各实现起步类型
   - dispatch：`need-class.ts`（A/B/C）/ `pool.ts`（owned/cross/public）/ `status.ts` / `quote-color.ts`
   - reputation：`score.ts` / `level.ts`（LV1-5）/ `event-type.ts`（30+ 事件）
   - 验收：types/dispatch + types/reputation 全部导出
