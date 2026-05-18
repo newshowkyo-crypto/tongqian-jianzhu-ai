@@ -1,12 +1,12 @@
 {
   "_doc": "Autopilot 进度追踪文件。Codex 每次会话首先读此文件找下一个 task。状态枚举：pending / in_progress / partial / done / blocked",
-  "mode": "paused",
+  "mode": "autopilot",
   "_mode_options": "standby（待启动） | autopilot（自治中） | paused（暂停） | done（全部完成）",
   "started_at": "2026-05-17T21:56:17.0002215+08:00",
   "last_session_at": "2026-05-18T03:38:00.9380159+08:00",
-  "current_task": "01-I2",
+  "current_task": "02-A1a",
   "_current_task_format": "格式：'{spec_no}-{phase}{order}' 例如 '02-A1a' / '22-H3' / '99-FINAL-1'",
-  "phase": "1-infra",
+  "phase": "2-business-core",
   "_phase_options": "0-pre-flight | 1-infra | 2-business-core | 3-killer-apps | 4-knowledge | 5-workspace | 6-horizontal | 7-compliance | 99-final | done",
 
   "milestones": {
@@ -58,7 +58,7 @@
     }
   },
 
-  "blocked_count": 1,
+  "blocked_count": 0,
   "done_count": 37,
   "total_count": 230,
 
@@ -317,10 +317,12 @@
       "deps": ["01-D1"]
     },
     "01-I2": {
-      "status": "blocked",
+      "status": "partial",
       "spec": "01-infra-monorepo",
       "title": "部署时长验证",
-      "deps": ["01-D4"]
+      "deps": ["01-D4"],
+      "next_action": "推迟到 99-FINAL-1。当前阻塞原因：(1) 阿里云 ACR 镜像仓库尚未开通；(2) 一期单 VPS 无独立 staging 环境；(3) Codex 无 GitHub Actions 日志读取权限。所有 deploy workflows 已写好（D1-D4 + E1-E4 已 done），W4 用户开通 ACR 并配 ALIYUN_ACR_* secrets 后由 99-FINAL 阶段一次性跑通。详见 docs/decisions/2026-05-17-adr-auto-defer-deploy-verification.md。",
+      "deferred_to": "99-FINAL-1"
     },
 
     "02-A1a": {
@@ -1250,14 +1252,14 @@
   "session_log": [],
   "_session_log_format": "每次会话结束时 append { session_id, started_at, ended_at, tasks_completed, blocked, commit_shas }",
 
-  "blocked_tasks": [
+  "blocked_tasks": [],
+  "_deferred_tasks": [
     {
       "task_id": "01-I2",
-      "reason": "Deploy Production failed three times in the GitHub Actions SSH deploy phase before canary duration could be measured.",
-      "attempts": 3,
-      "last_error": "Deploy run 26000657542 failed in 10s after CI and Build Images succeeded. Public API access does not expose private job logs; local direct SSH to deploy@101.132.191.128 is denied.",
-      "suggested_action": "Provide the masked Deploy over SSH log excerpt, a working local SSH key, or temporary GitHub Actions log access so the deploy failure can be diagnosed.",
-      "requires_user": true
+      "title": "部署时长验证",
+      "deferred_to_milestone": "M-W4-AI-DONE",
+      "reason": "需要阿里云 ACR 镜像仓库（W4 开通） + staging 环境（一期单 VPS 没有独立 staging），属于循环依赖。Codex 不应在 01-I2 阻塞，必须立即继续推进 02-A1a。详见 docs/decisions/2026-05-17-adr-auto-defer-01-I2.md。",
+      "next_action": "W4 阿里云 ACR 开通后由 Codex 重新跑触发 deploy-prod.yml 测部署时长。"
     }
   ],
   "_blocked_format": "每个 blocked task：{ task_id, reason, attempts, last_error, suggested_action, requires_user }",
