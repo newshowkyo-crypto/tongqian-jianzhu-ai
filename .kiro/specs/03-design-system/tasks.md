@@ -21,7 +21,7 @@
 - [x] **B2** 包装 shadcn/ui 布局 + 反馈类：Card / Tabs / Accordion / Collapsible / Separator / Dialog / AlertDialog / Sheet / Drawer / Popover / Tooltip / Toast / Alert
   - 验收：同上
 
-- [ ] **B3** 包装 shadcn/ui 数据类：Table / DataTable（TanStack Table）/ Pagination / Badge / Avatar / Progress / Skeleton / Spinner / Breadcrumb
+- [x] **B3** 包装 shadcn/ui 数据类：Table / DataTable（TanStack Table）/ Pagination / Badge / Avatar / Progress / Skeleton / Spinner / Breadcrumb
   - 验收：DataTable 支持排序 / 分页 / 搜索 / 批量
 
 ## Phase C：Layout + Forms（2 个）

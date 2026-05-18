@@ -2,6 +2,28 @@ export { cn } from './utils.js';
 export { designTokens } from './tokens.js';
 export { fontCssVariables, fontFamilies } from './fonts/index.js';
 export {
+  Avatar,
+  Badge,
+  Breadcrumb,
+  DataTable,
+  Pagination,
+  Progress,
+  Skeleton,
+  Spinner,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  type AvatarProps,
+  type BadgeProps,
+  type DataTableColumn,
+  type DataTableProps,
+  type PaginationProps,
+  type ProgressProps,
+} from './primitives/data.js';
+export {
   Accordion,
   AccordionContent,
   AccordionSummary,
