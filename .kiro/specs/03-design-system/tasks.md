@@ -15,7 +15,7 @@
 
 ## Phase B：Primitives（3 个）
 
-- [ ] **B1** 包装 shadcn/ui 表单类组件：Button / Input / Textarea / Select / Checkbox / Radio / Switch / Slider / DatePicker / DateRangePicker / FileUpload / Combobox
+- [x] **B1** 包装 shadcn/ui 表单类组件：Button / Input / Textarea / Select / Checkbox / Radio / Switch / Slider / DatePicker / DateRangePicker / FileUpload / Combobox
   - 验收：每个组件 RTL 测试通过
 
 - [ ] **B2** 包装 shadcn/ui 布局 + 反馈类：Card / Tabs / Accordion / Collapsible / Separator / Dialog / AlertDialog / Sheet / Drawer / Popover / Tooltip / Toast / Alert
