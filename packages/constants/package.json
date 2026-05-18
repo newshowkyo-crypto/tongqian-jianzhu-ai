@@ -22,6 +22,9 @@
     "test": "echo \"No tests yet for @tongqian/constants\"",
     "clean": "rimraf dist tsconfig.tsbuildinfo"
   },
+  "dependencies": {
+    "@tongqian/types": "workspace:*"
+  },
   "devDependencies": {
     "rimraf": "^6.0.1"
   }

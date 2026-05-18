@@ -62,7 +62,7 @@
 
 ## Phase D：constants 包（3 个）
 
-- [ ] **D1a** 实现订阅 / 点数 / 分润 / 派单阈值 / 推荐费 / Tier 常量（含 `seedSystemConfigs()` 导出）
+- [x] **D1a** 实现订阅 / 点数 / 分润 / 派单阈值 / 推荐费 / Tier 常量（含 `seedSystemConfigs()` 导出）
   - 文件：`subscription-plans.ts` / `discount-ladders.ts` / `credit-pricing.ts` / `commission-rates.ts` / `dispatch-thresholds.ts` / `dispatch-rates.ts` / `referral-fee-rates.ts` / `tier-thresholds.ts`
   - 验收：每文件同时输出 `as const` 默认值 + `seedSystemConfigs()` 函数（按 [`design.md` §5.14](../00-project-overview/design.md) 后台覆盖契约）
 
