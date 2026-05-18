@@ -1616,6 +1616,74 @@ model AgentConsent {
   @@map("agent_consents")
 }
 
+model GovProjectSourcing {
+  id                String   @id @default(uuid()) @db.Uuid
+  publisherTenantId String   @map("publisher_tenant_id")
+  title             String
+  description       String   @db.Text
+  region            String
+  industry          String
+  amountEstimate    Decimal? @map("amount_estimate") @db.Decimal(15, 2)
+  maskedSummary     String   @map("masked_summary") @db.Text
+  contactRevealed   Boolean  @default(false) @map("contact_revealed")
+  status            String
+  publishedAt       DateTime @default(now()) @map("published_at")
+
+  @@index([region, industry, status])
+  @@map("gov_project_sourcings")
+}
+
+model GovDocumentDraft {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @map("tenant_id")
+  userId    String   @map("user_id")
+  docType   String   @map("doc_type")
+  content   String   @db.Text
+  aiTaskId  String   @unique @map("ai_task_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, createdAt])
+  @@map("gov_document_drafts")
+}
+
+model GovConsultIntent {
+  id                String   @id @default(uuid()) @db.Uuid
+  tenantId          String   @map("tenant_id")
+  topic             String
+  amountEstimate    Decimal? @map("amount_estimate") @db.Decimal(15, 2)
+  status            String
+  consultingOrderId String?  @map("consulting_order_id")
+  assignedConsultId String?  @map("assigned_consult_id")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, status])
+  @@map("gov_consult_intents")
+}
+
+model PolicyFund {
+  id               String   @id @default(uuid()) @db.Uuid
+  code             String   @unique
+  category         String
+  nameZh           String   @map("name_zh")
+  nameShort        String   @map("name_short")
+  authority        String
+  scope            String[]
+  amountPool       String?  @map("amount_pool")
+  applyWindow      Json?    @map("apply_window")
+  evaluationPoints Json     @map("evaluation_points")
+  docLinks         String[] @map("doc_links")
+  aiSummary        String   @map("ai_summary")
+  status           String
+  province         String?
+  rolloutPct       Int      @default(0) @map("rollout_pct")
+  pinned           Boolean  @default(false)
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@index([category, status])
+  @@map("policy_funds")
+}
+
 enum AiTaskStatus {
   queued
   processing

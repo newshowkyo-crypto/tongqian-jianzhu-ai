@@ -18,6 +18,7 @@ export * from './credit/lot.js';
 export * from './credit/transaction.js';
 export * from './dispatch/index.js';
 export * from './drawing/index.js';
+export * from './gov-soe/index.js';
 export * from './knowledge/index.js';
 export * from './opportunity/index.js';
 export * from './ops-toolkit/index.js';
