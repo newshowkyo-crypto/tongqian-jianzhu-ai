@@ -1,5 +1,4 @@
 import { test } from '@playwright/test';
-import { AiTaskType } from '@tongqian/types';
 
 import { invokeOpenAiCompatible } from './helpers';
 
@@ -11,7 +10,7 @@ test('DashScope real call validates policy fund match schema', async () => {
       model: 'qwen-max',
       providerName: 'dashscope',
     },
-    AiTaskType.GOV_POLICY_IMPACT,
+    'gov.policy_impact',
   );
   test.skip(result.skipped, 'ALIYUN_DASHSCOPE_API_KEY missing or placeholder');
 });

@@ -1,5 +1,4 @@
 import { test } from '@playwright/test';
-import { AiTaskType } from '@tongqian/types';
 
 import { invokeOpenAiCompatible } from './helpers';
 
@@ -8,10 +7,10 @@ test('OpenRouter real call validates contract review pro schema', async () => {
     {
       apiKeyEnv: 'OPENROUTER_API_KEY',
       baseUrl: 'https://openrouter.ai/api/v1',
-      model: 'openai/gpt-4o-mini',
+      model: 'openai/gpt-chat-latest',
       providerName: 'openrouter',
     },
-    AiTaskType.CONTRACT_REVIEW_PRO,
+    'contract.review.pro',
   );
   test.skip(result.skipped, 'OPENROUTER_API_KEY missing or placeholder');
 });

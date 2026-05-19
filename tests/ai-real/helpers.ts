@@ -2,16 +2,22 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import { expect } from '@playwright/test';
-import { AiOutputTier, AiTaskType } from '@tongqian/types';
 
 import { promptTemplateByTaskType } from '../../apps/api/src/ai-gateway/prompts/index';
 import { ConstructionPromptOutputSchema } from '../../apps/api/src/ai-gateway/prompts/shared/output-schemas/construction-output';
+
+export type AiTaskTypeForRealTest =
+  | 'contract.review.pro'
+  | 'gov.policy_impact'
+  | 'qual.upgrade_path'
+  | 'tender.framework';
 
 export interface RealAiProviderConfig {
   apiKeyEnv: string;
   baseUrl: string;
   model: string;
   providerName: string;
+  timeoutMs?: number;
 }
 
 export function loadEnvValue(key: string): string | undefined {
@@ -23,13 +29,13 @@ export function loadEnvValue(key: string): string | undefined {
   return value;
 }
 
-export function getKillerPrompt(taskType: AiTaskType) {
+export function getKillerPrompt(taskType: AiTaskTypeForRealTest) {
   const prompt = promptTemplateByTaskType.get(taskType);
   if (!prompt) throw new Error(`Missing prompt for ${taskType}`);
   return prompt;
 }
 
-export function buildKillerMessages(taskType: AiTaskType) {
+export function buildKillerMessages(taskType: AiTaskTypeForRealTest) {
   const prompt = getKillerPrompt(taskType);
   return [
     { role: 'system' as const, content: prompt.systemPrompt },
@@ -62,28 +68,46 @@ JSON 字段请包含：title, summary, executiveSummary, keyFindings, actionPlan
   ];
 }
 
-export async function invokeOpenAiCompatible(config: RealAiProviderConfig, taskType: AiTaskType) {
+export async function invokeOpenAiCompatible(config: RealAiProviderConfig, taskType: AiTaskTypeForRealTest) {
   const apiKey = loadEnvValue(config.apiKeyEnv);
   if (!apiKey) return { skipped: true as const };
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), config.timeoutMs ?? 90_000);
 
-  const response = await fetch(`${config.baseUrl.replace(/\/$/, '')}/chat/completions`, {
-    body: JSON.stringify({
-      messages: buildKillerMessages(taskType),
-      max_tokens: 1800,
-      model: config.model,
-      response_format: { type: 'json_object' },
-      temperature: 0.2,
-    }),
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-      'HTTP-Referer': 'https://tongqian.local',
-      'X-Title': 'Tongqian M3.5 Real AI Test',
-    },
-    method: 'POST',
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${config.baseUrl.replace(/\/$/, '')}/chat/completions`, {
+      body: JSON.stringify({
+        messages: buildKillerMessages(taskType),
+        max_tokens: 1800,
+        model: config.model,
+        response_format: { type: 'json_object' },
+        temperature: 0.2,
+      }),
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://tongqian.local',
+        'X-Title': 'Tongqian M3.5 Real AI Test',
+      },
+      method: 'POST',
+      signal: controller.signal,
+    });
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      testInfoAnnotation(`${config.providerName} timed out after ${config.timeoutMs ?? 90_000}ms`);
+      return { skipped: true as const };
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
 
   const raw = await response.text();
+  if ([403, 408, 429, 500, 502, 503, 504].includes(response.status)) {
+    testInfoAnnotation(`${config.providerName} temporarily unavailable: ${raw.slice(0, 160)}`);
+    return { skipped: true as const };
+  }
   expect(response.ok, `${config.providerName} failed: ${raw.slice(0, 500)}`).toBeTruthy();
   const payload = JSON.parse(raw) as { choices: Array<{ message: { content: string } }> };
   const content = payload.choices[0]?.message.content;
@@ -91,9 +115,13 @@ export async function invokeOpenAiCompatible(config: RealAiProviderConfig, taskT
   const parsed = JSON.parse(content);
   normalizeRealAiOutput(parsed);
   const validated = ConstructionPromptOutputSchema.parse(parsed);
-  expect([AiOutputTier.TIER_1, AiOutputTier.TIER_2, AiOutputTier.TIER_3, AiOutputTier.TIER_4]).toContain(validated.tier);
+  expect([1, 2, 3, 4]).toContain(validated.tier);
   expect(validated.nextStepButtons.length).toBeGreaterThanOrEqual(3);
   return { data: validated, skipped: false as const };
+}
+
+function testInfoAnnotation(message: string): void {
+  process.stderr.write(`[ai-real:skip] ${message}\n`);
 }
 
 function normalizeRealAiOutput(value: Record<string, unknown>): void {
