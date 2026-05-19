@@ -40,6 +40,7 @@ export class SafetyFilterService {
     const findings = [
       ...blocked.filter((word) => text.includes(word)).map((word) => `absolute-word:${word}`),
       ...sensitivePatterns.filter((pattern) => pattern.test(text)).map((pattern) => `sensitive-pattern:${pattern.source}`),
+      ...this.scanPoliticalSensitivity(text),
     ];
     return {
       blocked: findings.length > 0,
@@ -59,6 +60,53 @@ export class SafetyFilterService {
       .replaceAll('必须', '建议关注')
       .replaceAll('一定', '通常做法')
       .replaceAll('绝对', '参考行业惯例');
+  }
+
+  /**
+   * Builds an operator-readable safety report for admin prompt testing and retry repair.
+   *
+   * @param output Parsed or raw AI output.
+   * @returns Diagnostic categories, redacted payload, and repair hints.
+   */
+  diagnose(output: unknown): { categories: string[]; redactedText: string; repairHints: string[]; severity: 'block' | 'review' | 'pass' } {
+    const result = this.inspect(output);
+    const categories = result.findings.map((finding) => finding.split(':')[0] ?? 'unknown');
+    const severity = result.findings.some((finding) => finding.startsWith('sensitive-pattern') || finding.startsWith('political-high')) ? 'block' : result.blocked ? 'review' : 'pass';
+    return {
+      categories: [...new Set(categories)],
+      redactedText: result.redactedText,
+      repairHints: this.repairHintsFor(result.findings),
+      severity,
+    };
+  }
+
+  /**
+   * Scans redline wording and returns exact matches for analytics without throwing.
+   *
+   * @param text AI output text.
+   * @returns Redline word findings.
+   */
+  scanRedlineWords(text: string): string[] {
+    return blocked.filter((word) => text.includes(word)).map((word) => `absolute-word:${word}`);
+  }
+
+  private scanPoliticalSensitivity(text: string): string[] {
+    const high = ['separatism', 'state-secret', 'violent-mobilization'];
+    const review = ['public-opinion', 'petition', 'mass-incident', 'official-discipline'];
+    return [
+      ...high.filter((word) => text.toLowerCase().includes(word)).map((word) => `political-high:${word}`),
+      ...review.filter((word) => text.toLowerCase().includes(word)).map((word) => `political-review:${word}`),
+    ];
+  }
+
+  private repairHintsFor(findings: string[]): string[] {
+    if (findings.length === 0) return ['output passed safety filter'];
+    return findings.map((finding) => {
+      if (finding.startsWith('absolute-word')) return 'replace absolute wording with suggestion-oriented phrasing';
+      if (finding.startsWith('sensitive-pattern')) return 'redact personal, credential, or secret-like values before returning';
+      if (finding.startsWith('political')) return 'route to domestic model and require human review before release';
+      return 'review output manually';
+    });
   }
 
   private redact(text: string): string {

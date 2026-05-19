@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { BusinessError, ErrorCodes } from '@tongqian/errors';
 
 import { GiftService } from './gift/gift.service.js';
 import { CreditLogService } from './log/credit-log.service.js';
@@ -31,6 +32,26 @@ export class CreditService {
     };
   }
 
+  /**
+   * Builds an account overview for dashboards with balance, warning, and FEFO allocation signals.
+   *
+   * @param userId User id.
+   * @param tenantId Tenant id.
+   * @returns Credit account overview.
+   */
+  overview(userId: string, tenantId: string): { accountId: string; alerts: string[]; balance: unknown; nextExpiryAt?: string; recommendedAllocation: string } {
+    const account = this.lots.account(userId, tenantId);
+    const lots = this.lots.activeLots(account.id);
+    const nextExpiryAt = lots.find((lot) => lot.expiresAt)?.expiresAt;
+    return {
+      accountId: account.id,
+      alerts: this.alerts(userId, tenantId),
+      balance: this.balance(userId, tenantId),
+      nextExpiryAt,
+      recommendedAllocation: nextExpiryAt ? 'FEFO_USE_EXPIRING_LOTS_FIRST' : 'PBT_USE_PAID_BALANCE_FIRST',
+    };
+  }
+
   lotsFor(userId: string, tenantId: string): unknown[] {
     return this.lots.lots(this.lots.account(userId, tenantId).id);
   }
@@ -39,7 +60,25 @@ export class CreditService {
     return this.logs.list(this.lots.account(userId, tenantId).id);
   }
 
+  /**
+   * Returns credit health warnings for low balance, frozen lots, and near expiry batches.
+   *
+   * @param userId User id.
+   * @param tenantId Tenant id.
+   * @returns Warning codes.
+   */
+  alerts(userId: string, tenantId: string): string[] {
+    const account = this.lots.account(userId, tenantId);
+    const lots = this.lots.lots(account.id);
+    const warnings: string[] = [];
+    if (account.totalBalance < 100) warnings.push('credit.low_balance');
+    if (lots.some((lot) => lot.frozenUntil && new Date(lot.frozenUntil) > new Date())) warnings.push('credit.frozen_lot');
+    if (lots.some((lot) => lot.expiresAt && new Date(lot.expiresAt).getTime() - Date.now() < 14 * 24 * 60 * 60_000 && lot.remainingAmount > 0)) warnings.push('credit.expiring_soon');
+    return warnings;
+  }
+
   preCharge(input: Parameters<PreChargeService['preCharge']>[0]): unknown {
+    if (input.amount <= 0) throw this.invalidAmount(input.amount);
     return this.preChargeService.preCharge(input);
   }
 
@@ -52,10 +91,15 @@ export class CreditService {
   }
 
   gift(input: Parameters<GiftService['gift']>[0]): unknown {
+    if (input.amount <= 0) throw this.invalidAmount(input.amount);
     return this.giftService.gift(input);
   }
 
   topup(input: Parameters<TopupService['topup']>[0]): unknown {
     return this.topupService.topup(input);
+  }
+
+  private invalidAmount(amount: number): BusinessError {
+    return new BusinessError({ code: ErrorCodes.CREDIT_INSUFFICIENT.code, details: { amount }, message: 'Credit amount must be positive.' });
   }
 }

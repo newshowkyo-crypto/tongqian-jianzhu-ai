@@ -72,6 +72,38 @@ export class CiIntegrationService {
     };
   }
 
+  /**
+   * Builds a PR comment payload with a short summary and failed-case appendix.
+   *
+   * @param report Golden run report.
+   * @param pullRequestId Pull request id.
+   * @returns PR comment payload.
+   */
+  prCommentPayload(report: GoldenRunReport, pullRequestId: string): { body: string; pullRequestId: string; updateExisting: boolean } {
+    const decision = this.shouldBlockMerge(report);
+    return {
+      body: [`<!-- tongqian-prompt-golden:${report.promptName} -->`, this.renderer.render(report), '', `Merge gate: ${decision.block ? 'blocked' : 'allowed'} (${decision.reason})`].join('\n'),
+      pullRequestId,
+      updateExisting: true,
+    };
+  }
+
+  /**
+   * Builds a merge gate result with required status context.
+   *
+   * @param report Golden run report.
+   * @returns Merge gate context.
+   */
+  mergeGate(report: GoldenRunReport): { context: string; required: boolean; state: 'failure' | 'success'; targetUrl?: string } {
+    const block = this.shouldBlockMerge(report);
+    return {
+      context: `tongqian/prompt-golden/${report.promptName}`,
+      required: true,
+      state: block.block ? 'failure' : 'success',
+      targetUrl: `https://ci.local/prompts/${encodeURIComponent(report.promptName)}`,
+    };
+  }
+
   private validate(report: GoldenRunReport): void {
     if (!report.promptName || report.totalCases < 0 || report.passRate < 0 || report.passRate > 1) {
       throw new BusinessError({ code: ErrorCodes.RULE_EVALUATION_FAILED.code, message: 'Prompt CI report is invalid.' });

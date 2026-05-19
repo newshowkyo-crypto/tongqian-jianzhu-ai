@@ -23,6 +23,9 @@ const DEFAULT_TTL_SECONDS = 86_400;
 @Injectable()
 export class ExactCacheService {
   private readonly cache = new Map<string, ExactCacheEntry>();
+  private hits = 0;
+  private misses = 0;
+  private writes = 0;
 
   /**
    * Builds a deterministic tenant-safe cache key from task type and input hash.
@@ -46,11 +49,16 @@ export class ExactCacheService {
   lookup<T>(taskType: string, input: unknown): T | undefined {
     const key = this.getKey(taskType, input);
     const entry = this.cache.get(key);
-    if (!entry) return undefined;
-    if (entry.expiresAt <= Date.now()) {
-      this.cache.delete(key);
+    if (!entry) {
+      this.misses += 1;
       return undefined;
     }
+    if (entry.expiresAt <= Date.now()) {
+      this.cache.delete(key);
+      this.misses += 1;
+      return undefined;
+    }
+    this.hits += 1;
     return entry.value as T;
   }
 
@@ -79,6 +87,7 @@ export class ExactCacheService {
       taskType,
       value,
     });
+    this.writes += 1;
   }
 
   /**
@@ -95,6 +104,22 @@ export class ExactCacheService {
       cacheKey: this.getKey(taskType, input),
       taskType,
       ttlSeconds: DEFAULT_TTL_SECONDS,
+    };
+  }
+
+  /**
+   * Returns hit-rate telemetry for admin diagnostics without exposing cached payloads.
+   *
+   * @returns Exact cache size, hit rate, and write count.
+   */
+  metrics(): { entries: number; hitRate: number; hits: number; misses: number; writes: number } {
+    const totalReads = this.hits + this.misses;
+    return {
+      entries: this.cache.size,
+      hitRate: totalReads === 0 ? 0 : Number((this.hits / totalReads).toFixed(4)),
+      hits: this.hits,
+      misses: this.misses,
+      writes: this.writes,
     };
   }
 
