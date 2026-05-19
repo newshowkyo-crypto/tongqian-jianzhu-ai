@@ -1,21 +1,118 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { BusinessError, ErrorCodes } from '@tongqian/errors';
 
+import { CreditLogService } from '../log/credit-log.service.js';
 import { LotService } from '../lot/lot.service.js';
+
+export interface ReactivationInput {
+  readonly idempotencyKey?: string;
+  readonly operatorId?: string;
+  readonly reason?: string;
+  readonly tenantId: string;
+  readonly traceId?: string;
+  readonly userId: string;
+}
 
 @Injectable()
 export class CreditReactivationService {
-  constructor(@Inject(LotService) private readonly lots: LotService) {}
+  constructor(
+    @Inject(LotService) private readonly lots: LotService,
+    @Inject(CreditLogService) private readonly logs: CreditLogService,
+  ) {}
 
-  freeze(userId: string, tenantId: string): { frozenUntil: string } {
-    const account = this.lots.account(userId, tenantId);
+  /**
+   * Freezes all lots for dormant accounts under BR-406 reactivation rules.
+   *
+   * @param input Reactivation freeze request.
+   * @returns Freeze window.
+   */
+  freeze(input: ReactivationInput): { frozenUntil: string; frozen: true } {
+    this.validate(input);
+    const account = this.lots.account(input.userId, input.tenantId);
     const frozenUntil = new Date(Date.now() + 30 * 24 * 60 * 60_000).toISOString();
     this.lots.freeze(account.id, frozenUntil);
-    return { frozenUntil };
+    this.logs.write({
+      accountId: account.id,
+      amount: 0,
+      balanceAfter: account.totalBalance,
+      idempotencyKey: input.idempotencyKey ? `${input.idempotencyKey}:freeze` : undefined,
+      sourceModule: 'credit-reactivation',
+      sourceResource: input.reason,
+      traceId: input.traceId ?? crypto.randomUUID(),
+      type: 'expire',
+    });
+    return { frozen: true, frozenUntil };
   }
 
-  reactivate(userId: string, tenantId: string): { reactivated: true } {
-    const account = this.lots.account(userId, tenantId);
+  /**
+   * Reactivates a dormant account after owner confirmation or successful top-up.
+   *
+   * @param input Reactivation request.
+   * @returns Reactivation result.
+   */
+  reactivate(input: ReactivationInput): { balance: number; reactivated: true } {
+    this.validate(input);
+    const account = this.lots.account(input.userId, input.tenantId);
     this.lots.unfreeze(account.id);
-    return { reactivated: true };
+    this.logs.write({
+      accountId: account.id,
+      amount: 0,
+      balanceAfter: account.totalBalance,
+      idempotencyKey: input.idempotencyKey ? `${input.idempotencyKey}:reactivate` : undefined,
+      sourceModule: 'credit-reactivation',
+      sourceResource: input.reason,
+      traceId: input.traceId ?? crypto.randomUUID(),
+      type: 'gift',
+    });
+    return { balance: account.totalBalance, reactivated: true };
+  }
+
+  /**
+   * Evaluates BR-406 dormant-account handling.
+   *
+   * @param lastActiveAt Last user activity timestamp.
+   * @param balance Current credit balance.
+   * @returns BR-406 decision.
+   */
+  evaluateDormancy(lastActiveAt: string, balance: number): { action: 'freeze' | 'keep-active' | 'reactivation-nudge'; dormantDays: number } {
+    const dormantDays = Math.floor((Date.now() - new Date(lastActiveAt).getTime()) / (24 * 60 * 60_000));
+    if (dormantDays >= 180 && balance > 0) return { action: 'freeze', dormantDays };
+    if (dormantDays >= 90) return { action: 'reactivation-nudge', dormantDays };
+    return { action: 'keep-active', dormantDays };
+  }
+
+  /**
+   * Builds a reactivation offer that avoids reducing output quality.
+   *
+   * @param balance Current balance.
+   * @returns Offer details.
+   */
+  reactivationOffer(balance: number): { bonusCredits: number; expiresInDays: number; messageKey: string } {
+    if (balance <= 0) return { bonusCredits: 50, expiresInDays: 7, messageKey: 'credit.reactivation.zeroBalance' };
+    return { bonusCredits: Math.min(Math.ceil(balance * 0.05), 200), expiresInDays: 7, messageKey: 'credit.reactivation.warmReturn' };
+  }
+
+  /**
+   * Returns audit metadata for freeze/reactivation actions.
+   *
+   * @param input Reactivation request.
+   * @param action Action name.
+   * @returns Audit row.
+   */
+  toAudit(input: ReactivationInput, action: 'freeze' | 'reactivate'): Record<string, string | undefined> {
+    return {
+      action: `CREDIT_${action.toUpperCase()}`,
+      operatorId: input.operatorId,
+      reason: input.reason,
+      tenantId: input.tenantId,
+      traceId: input.traceId,
+      userId: input.userId,
+    };
+  }
+
+  private validate(input: ReactivationInput): void {
+    if (!input.tenantId || !input.userId) {
+      throw new BusinessError({ code: ErrorCodes.TENANT_NOT_FOUND.code, message: 'Credit reactivation requires tenant and user scope.' });
+    }
   }
 }
