@@ -46,6 +46,46 @@ export class TierResolverService {
     return 5;
   }
 
+  /**
+   * Returns the next-step hint aligned with BR-321 tier boundaries.
+   *
+   * @param tier AI output tier.
+   * @returns Required next-step hint.
+   */
+  nextStepHint(tier: AiOutputTier): 'apply-human-review' | 'apply-tongqian-consult' | 'mandatory-human-takeover' | 'use-directly' {
+    if (tier === 4) return 'mandatory-human-takeover';
+    if (tier === 3) return 'apply-tongqian-consult';
+    if (tier === 2) return 'apply-human-review';
+    return 'use-directly';
+  }
+
+  /**
+   * Checks tier monotonicity for property-based tests and startup diagnostics.
+   *
+   * @param amounts Ordered project amounts.
+   * @returns True when tier never decreases as amount increases.
+   */
+  isMonotonicForAmounts(amounts: number[]): boolean {
+    let previous: AiOutputTier = 1;
+    for (const amount of amounts) {
+      const tier = this.resolveByBusinessRules({ amount });
+      if (tier < previous) return false;
+      previous = tier;
+    }
+    return true;
+  }
+
+  /**
+   * Produces compact diagnostics for admin Prompt tests.
+   *
+   * @param context Tier context.
+   * @returns Tier, hint, and required button count.
+   */
+  explain(context: TierContext): { buttons: number; hint: string; tier: AiOutputTier } {
+    const tier = this.resolveByBusinessRules(context);
+    return { buttons: this.requiredButtonCount(context.role), hint: this.nextStepHint(tier), tier };
+  }
+
   private assertContext(context: TierContext): void {
     if (context.amount !== undefined && context.amount < 0) {
       throw new BusinessError({

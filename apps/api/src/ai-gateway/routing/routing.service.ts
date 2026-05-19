@@ -53,4 +53,39 @@ export class RoutingService {
     }
     return { ...route, fallbackProvider: AiProviderCode.DEEPSEEK_DIRECT, overseas: false };
   }
+
+  /**
+   * Lists task types whose route appears non-compliant for health checks.
+   *
+   * @returns Non-compliant task route ids.
+   */
+  findNonCompliantRoutes(): string[] {
+    return Object.entries(defaultAiRouting)
+      .filter(([, route]) => route.provider !== AiProviderCode.DEEPSEEK_DIRECT || route.fallbackProvider !== AiProviderCode.DEEPSEEK_DIRECT)
+      .map(([taskType]) => taskType);
+  }
+
+  /**
+   * Resolves failover sequence. M3.7 intentionally retries inside DeepSeek only.
+   *
+   * @param route Base route.
+   * @returns Ordered model/provider attempts.
+   */
+  failoverPlan(route: AiRouteConfig): Array<{ model: string; provider: AiProviderCode }> {
+    const compliant = this.enforceM37DeepSeek(route);
+    return [
+      { model: compliant.primaryModel, provider: AiProviderCode.DEEPSEEK_DIRECT },
+      { model: compliant.fallbackModel, provider: AiProviderCode.DEEPSEEK_DIRECT },
+    ];
+  }
+
+  /**
+   * Confirms whether an admin override may be accepted without restart.
+   *
+   * @param route Candidate route.
+   * @returns True for DeepSeek-only overrides.
+   */
+  canHotSwap(route: AiRouteConfig): boolean {
+    return route.primaryProvider === AiProviderCode.DEEPSEEK_DIRECT && route.fallbackProvider === AiProviderCode.DEEPSEEK_DIRECT && !route.overseas;
+  }
 }
