@@ -7,9 +7,9 @@ import { MockAiProvider } from './mock-provider.js';
 @Injectable()
 export class ProviderRouterService {
   private readonly providers: AiProvider[] = [
-    new MockAiProvider(AiProviderCode.ALIYUN_DASHSCOPE, 1, ['qwen-plus', 'qwen-max', 'qwen-vl-max']),
-    new MockAiProvider(AiProviderCode.DEEPSEEK_DIRECT, 2, ['deepseek-chat']),
-    new MockAiProvider(AiProviderCode.OPENROUTER, 3, ['claude-sonnet-4-6', 'gpt-5']),
+    new MockAiProvider(AiProviderCode.DEEPSEEK_DIRECT, 1, ['deepseek-chat', 'deepseek-reasoner'], isConfigured('DEEPSEEK_API_KEY')),
+    new MockAiProvider(AiProviderCode.ALIYUN_DASHSCOPE, 2, ['qwen-plus', 'qwen-max', 'qwen-vl-max'], false, 'DISABLED_UNTIL_API_KEY_PROVIDED'),
+    new MockAiProvider(AiProviderCode.OPENROUTER, 3, ['claude-sonnet-4-6', 'gpt-5'], false, 'DISABLED_UNTIL_API_KEY_PROVIDED'),
   ];
 
   async invoke<T>(preferred: AiProviderCode | undefined, request: AiProviderInvokeRequest): Promise<AiRawResponse<T> & { provider: AiProviderCode }> {
@@ -26,7 +26,18 @@ export class ProviderRouterService {
     throw new Error('AI.GATEWAY.UNAVAILABLE');
   }
 
-  async healthSnapshot(): Promise<Array<{ healthy: boolean; provider: AiProviderCode }>> {
-    return Promise.all(this.providers.map(async (provider) => ({ healthy: await provider.health(), provider: provider.code })));
+  async healthSnapshot(): Promise<Array<{ disabledReason?: string; healthy: boolean; provider: AiProviderCode }>> {
+    return Promise.all(
+      this.providers.map(async (provider) => ({
+        disabledReason: provider.disabledReason,
+        healthy: await provider.health(),
+        provider: provider.code,
+      })),
+    );
   }
+}
+
+function isConfigured(key: string): boolean {
+  const value = process.env[key];
+  return Boolean(value && !value.includes('PLACEHOLDER') && value !== 'sk-xxx');
 }

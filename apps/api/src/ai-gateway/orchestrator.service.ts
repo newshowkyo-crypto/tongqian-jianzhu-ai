@@ -50,7 +50,7 @@ export class OrchestratorService {
     const messages = this.promptBuilder.build(template, sanitized.masked);
     const response = await this.providers.invoke<T>(request.options?.preferredProvider ?? route.provider, {
       messages,
-      model: this.costCap.shouldDowngrade(0) ? 'qwen-plus' : route.model,
+      model: this.costCap.shouldDowngrade(0) ? 'deepseek-chat' : route.model,
     });
 
     const restored = typeof response.content === 'string' ? this.sanitizer.unmask(response.content, sanitized.replacements) : response.content;

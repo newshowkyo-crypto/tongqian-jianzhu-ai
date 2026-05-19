@@ -1,16 +1,5 @@
 import { test } from '@playwright/test';
 
-import { invokeOpenAiCompatible } from './helpers';
-
-test('OpenRouter real call validates contract review pro schema', async () => {
-  const result = await invokeOpenAiCompatible(
-    {
-      apiKeyEnv: 'OPENROUTER_API_KEY',
-      baseUrl: 'https://openrouter.ai/api/v1',
-      model: 'openai/gpt-chat-latest',
-      providerName: 'openrouter',
-    },
-    'contract.review.pro',
-  );
-  test.skip(result.skipped, 'OPENROUTER_API_KEY missing or placeholder');
+test('OpenRouter real call is skipped until API key is enabled after M3.7', () => {
+  test.skip(true, 'NEEDS_API_KEY: MOCK provider DISABLED_UNTIL_API_KEY_PROVIDED for M3.7 all-DeepSeek routing');
 });

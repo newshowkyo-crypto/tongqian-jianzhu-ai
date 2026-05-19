@@ -7,10 +7,12 @@ export class MockAiProvider implements AiProvider {
     public readonly code: AiProviderCode,
     public readonly priority: number,
     public readonly supportedModels: string[],
+    private readonly configured = true,
+    public readonly disabledReason?: string,
   ) {}
 
   async health(): Promise<boolean> {
-    return true;
+    return this.configured;
   }
 
   async invoke<T = unknown>(request: AiProviderInvokeRequest): Promise<AiRawResponse<T>> {

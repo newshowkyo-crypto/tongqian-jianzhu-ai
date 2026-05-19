@@ -14,6 +14,7 @@ export interface AiProviderInvokeRequest {
 
 export interface AiProvider {
   code: AiProviderCode;
+  disabledReason?: string;
   priority: number;
   supportedModels: string[];
   health(): Promise<boolean>;
