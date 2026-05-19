@@ -2,6 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 const node22Path = 'C:\\Users\\Administrator\\.codex-tools\\node-v22-win-x64';
 const pathPrefix = `${node22Path};${process.env.PATH ?? ''}`;
+const adminPort = process.env.ADMIN_E2E_PORT ?? '3001';
 
 export default defineConfig({
   expect: {
@@ -31,11 +32,11 @@ export default defineConfig({
       url: 'http://127.0.0.1:3000/login',
     },
     {
-      command: 'pnpm --filter @tongqian/admin dev',
+      command: `pnpm --dir apps/admin exec next dev -p ${adminPort}`,
       env: { ...process.env, PATH: pathPrefix },
       reuseExistingServer: true,
       timeout: 120_000,
-      url: 'http://127.0.0.1:3001/login',
+      url: `http://127.0.0.1:${adminPort}/login`,
     },
     {
       command: 'pnpm --filter @tongqian/agent dev',

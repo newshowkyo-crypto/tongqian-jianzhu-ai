@@ -1,0 +1,6 @@
+{"completionTokens":1280,"latencyMs":13722,"model":"deepseek-reasoner","promptTokens":3598,"provider":"deepseek","taskType":"contract.review.pro","totalTokens":4878,"at":"2026-05-19T15:54:14.588Z"}
+{"completionTokens":1152,"latencyMs":12581,"model":"deepseek-reasoner","promptTokens":3596,"provider":"deepseek","taskType":"tender.framework","totalTokens":4748,"at":"2026-05-19T15:54:27.190Z"}
+{"completionTokens":1139,"latencyMs":12391,"model":"deepseek-reasoner","promptTokens":3599,"provider":"deepseek","taskType":"qual.upgrade_path","totalTokens":4738,"at":"2026-05-19T15:54:39.602Z"}
+{"completionTokens":1409,"latencyMs":15718,"model":"deepseek-reasoner","promptTokens":2438,"provider":"deepseek","taskType":"ops.policy_impact","totalTokens":3847,"at":"2026-05-19T15:54:55.339Z"}
+{"completionTokens":1106,"latencyMs":10969,"model":"deepseek-chat","promptTokens":3598,"provider":"deepseek","taskType":"chat.long","totalTokens":4704,"at":"2026-05-19T15:55:06.330Z"}
+{"completionTokens":1628,"latencyMs":18281,"model":"deepseek-reasoner","promptTokens":3596,"provider":"deepseek","taskType":"tender.framework","totalTokens":5224,"at":"2026-05-19T15:55:45.829Z"}

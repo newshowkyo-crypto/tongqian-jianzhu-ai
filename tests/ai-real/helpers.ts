@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { appendFileSync, mkdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import { expect } from '@playwright/test';
@@ -7,8 +7,10 @@ import { promptTemplateByTaskType } from '../../apps/api/src/ai-gateway/prompts/
 import { ConstructionPromptOutputSchema } from '../../apps/api/src/ai-gateway/prompts/shared/output-schemas/construction-output';
 
 export type AiTaskTypeForRealTest =
+  | 'chat.long'
   | 'contract.review.pro'
   | 'gov.policy_impact'
+  | 'ops.policy_impact'
   | 'qual.upgrade_path'
   | 'tender.framework';
 
@@ -73,6 +75,7 @@ export async function invokeOpenAiCompatible(config: RealAiProviderConfig, taskT
   if (!apiKey) return { skipped: true as const };
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), config.timeoutMs ?? 90_000);
+  const startedAt = Date.now();
 
   let response: Response;
   try {
@@ -109,7 +112,7 @@ export async function invokeOpenAiCompatible(config: RealAiProviderConfig, taskT
     return { skipped: true as const };
   }
   expect(response.ok, `${config.providerName} failed: ${raw.slice(0, 500)}`).toBeTruthy();
-  const payload = JSON.parse(raw) as { choices: Array<{ message: { content: string } }> };
+  const payload = JSON.parse(raw) as { choices: Array<{ message: { content: string } }>; usage?: { completion_tokens?: number; prompt_tokens?: number; total_tokens?: number } };
   const content = payload.choices[0]?.message.content;
   expect(content, `${config.providerName} returned empty content`).toBeTruthy();
   const parsed = JSON.parse(content);
@@ -117,11 +120,28 @@ export async function invokeOpenAiCompatible(config: RealAiProviderConfig, taskT
   const validated = ConstructionPromptOutputSchema.parse(parsed);
   expect([1, 2, 3, 4]).toContain(validated.tier);
   expect(validated.nextStepButtons.length).toBeGreaterThanOrEqual(3);
-  return { data: validated, skipped: false as const };
+  const metrics = {
+    completionTokens: payload.usage?.completion_tokens ?? 0,
+    latencyMs: Date.now() - startedAt,
+    model: config.model,
+    promptTokens: payload.usage?.prompt_tokens ?? 0,
+    provider: config.providerName,
+    taskType,
+    totalTokens: payload.usage?.total_tokens ?? 0,
+  };
+  recordRealAiMetrics(metrics);
+  return { data: validated, metrics, skipped: false as const };
 }
 
 function testInfoAnnotation(message: string): void {
   process.stderr.write(`[ai-real:skip] ${message}\n`);
+}
+
+function recordRealAiMetrics(metrics: Record<string, number | string>): void {
+  const dir = resolve('tests/ai-real/results');
+  mkdirSync(dir, { recursive: true });
+  appendFileSync(resolve(dir, 'm3.7-deepseek-real.jsonl'), `${JSON.stringify({ ...metrics, at: new Date().toISOString() })}\n`, 'utf8');
+  process.stderr.write(`[ai-real:metrics] ${JSON.stringify(metrics)}\n`);
 }
 
 function normalizeRealAiOutput(value: Record<string, unknown>): void {

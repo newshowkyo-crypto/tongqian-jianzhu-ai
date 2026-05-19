@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const adminBase = 'http://127.0.0.1:3001';
+const adminBase = process.env.ADMIN_E2E_BASE ?? 'http://127.0.0.1:3001';
 const screenshotPath = 'tests/e2e/screenshots/4-admin-journey.png';
 
 test('admin journey: login credential replacement approval audit', async ({ page }) => {

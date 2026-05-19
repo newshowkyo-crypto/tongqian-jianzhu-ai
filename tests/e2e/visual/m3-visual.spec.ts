@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+const adminBase = process.env.ADMIN_E2E_BASE ?? 'http://127.0.0.1:3001';
+
 const pages = [
   { name: 'web-dashboard', path: 'http://127.0.0.1:3000/dashboard' },
   { name: 'web-h5-contract', path: 'http://127.0.0.1:3000/h5/reports/contract-review' },
@@ -9,8 +11,8 @@ const pages = [
   { name: 'agent-training', path: 'http://127.0.0.1:3002/training' },
   { name: 'gov-policy', path: 'http://127.0.0.1:3003/' },
   { name: 'gov-funds', path: 'http://127.0.0.1:3003/funds' },
-  { name: 'admin-credentials', path: 'http://127.0.0.1:3001/admin/credentials' },
-  { name: 'admin-security', path: 'http://127.0.0.1:3001/admin/security' },
+  { name: 'admin-credentials', path: `${adminBase}/admin/credentials` },
+  { name: 'admin-security', path: `${adminBase}/admin/security` },
 ];
 
 test.describe('M3 visual smoke regression', () => {
