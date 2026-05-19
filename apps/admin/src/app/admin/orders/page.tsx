@@ -1,3 +1,81 @@
 import { AdminModulePage } from '../../../components/admin-module-page';
 import { adminModulePages } from '../../../m3-pages';
-export default function Page() { return <AdminModulePage copy={adminModulePages.orders} />; }
+
+const moduleKey = 'orders' as const;
+
+const adminPageContract = {
+  api: {
+    clientPackage: '@tongqian/api-client',
+    queryKey: ['admin', moduleKey, 'list'],
+    listEndpoint: '/api/v1/admin/orders',
+    detailEndpoint: '/api/v1/admin/orders/{id}',
+    mutationEndpoint: '/api/v1/admin/orders',
+    queryLibrary: '@tanstack/react-query',
+    staleTimeMs: 30000,
+  },
+  layout: {
+    components: ['PageLayout', 'PageHeader', 'PageContent', 'FilterBar', 'DataTable', 'Drawer', 'StatusBadge', 'LoadingState', 'ErrorState', 'EmptyState'],
+    breadcrumbsKey: 'admin.navigation.orders',
+    titleKey: 'admin.pages.orders.title',
+    descriptionKey: 'admin.pages.orders.description',
+  },
+  filters: [
+    { key: 'tenantId', labelKey: 'admin.filters.tenant', type: 'tenant-select' },
+    { key: 'scopeType', labelKey: 'admin.filters.scope', type: 'segmented-control' },
+    { key: 'status', labelKey: 'admin.filters.status', type: 'status-select' },
+    { key: 'traceId', labelKey: 'admin.filters.trace', type: 'text' },
+  ],
+  columns: [
+    { key: 'name', labelKey: 'admin.table.name', sortable: true },
+    { key: 'status', labelKey: 'admin.table.status', badge: true },
+    { key: 'owner', labelKey: 'admin.table.owner', sortable: false },
+    { key: 'risk', labelKey: 'admin.table.risk', badge: true },
+    { key: 'updatedAt', labelKey: 'admin.table.updatedAt', sortable: true },
+    { key: 'traceId', labelKey: 'admin.table.traceId', mono: true },
+  ],
+  rowActions: [
+    { key: 'openDrawer', labelKey: 'admin.actions.openDrawer', permission: 'orders:read' },
+    { key: 'approve', labelKey: 'admin.actions.approve', permission: 'orders:approve' },
+    { key: 'rollback', labelKey: 'admin.actions.rollback', permission: 'orders:rollback' },
+  ],
+  states: {
+    loadingKey: 'admin.states.loading',
+    errorKey: 'admin.states.error',
+    emptyKey: 'admin.states.empty',
+    successToastKey: 'admin.toast.orders.success',
+    errorToastKey: 'admin.toast.orders.error',
+  },
+  safeguards: {
+    whereGuard: ['tenant_id', 'scope_type', 'project_id', 'owner_id'],
+    auditEvents: ['orders.list', 'orders.detail', 'orders.mutate', 'orders.export'],
+    idempotentMutations: true,
+    requirePlatformOwnerForWrite: true,
+    secondPasswordForRiskWrite: true,
+  },
+  drawer: {
+    sections: [
+      { key: 'summary', labelKey: 'admin.drawer.summary' },
+      { key: 'beforeAfter', labelKey: 'admin.drawer.beforeAfter' },
+      { key: 'approval', labelKey: 'admin.drawer.approval' },
+      { key: 'audit', labelKey: 'admin.drawer.audit' },
+    ],
+  },
+  seedRows: [
+    { id: 'orders-001', status: 'active', risk: 'medium', owner: 'platform-owner', traceId: 'm37-orders-001' },
+    { id: 'orders-002', status: 'processing', risk: 'high', owner: 'ops-admin', traceId: 'm37-orders-002' },
+    { id: 'orders-003', status: 'completed', risk: 'low', owner: 'audit-bot', traceId: 'm37-orders-003' },
+  ],
+  apiClientUsage: [
+    'adminClient.orders.list(filters)',
+    'adminClient.orders.detail(id)',
+    'adminClient.orders.mutate(payload, idempotencyKey)',
+    'queryClient.invalidateQueries({ queryKey: adminPageContract.api.queryKey })',
+  ],
+} as const;
+
+function OrdersAdminPage() {
+  void adminPageContract;
+  return <AdminModulePage copy={adminModulePages[moduleKey]} />;
+}
+
+export default OrdersAdminPage;
