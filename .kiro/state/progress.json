@@ -1,12 +1,12 @@
 {
   "_doc": "Autopilot 进度追踪文件。Codex 每次会话首先读此文件找下一个 task。状态枚举：pending / in_progress / partial / done / blocked",
-  "mode": "done",
+  "mode": "autopilot",
   "_mode_options": "standby（待启动） | autopilot（自治中） | paused（暂停） | done（全部完成）",
   "started_at": "2026-05-17T21:56:17.0002215+08:00",
   "last_session_at": "2026-05-18T11:19:27.453Z",
-  "current_task": "done",
+  "current_task": "M3.7-A",
   "_current_task_format": "格式：'{spec_no}-{phase}{order}' 例如 '02-A1a' / '22-H3' / '99-FINAL-1'",
-  "phase": "2-business-core",
+  "phase": "M3.7-foundation-hardening",
   "_phase_options": "0-pre-flight | 1-infra | 2-business-core | 3-killer-apps | 4-knowledge | 5-workspace | 6-horizontal | 7-compliance | 99-final | done",
   "milestones": {
     "_note": "Codex 跑到对应 trigger task 时必须写 .kiro/state/MILESTONE-{name}.md 提醒用户。详见 CODEX-PROMPTS.md 段 1 '里程碑主动提醒' 段。",

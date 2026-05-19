@@ -132,11 +132,47 @@ export const adminModulePages = {
     focus: ['红线不可绕过', '防黑暗模式', '审批保护'],
     title: '规则审核',
   },
+  risk: {
+    action: '下发风控',
+    description: '监控反薅、私下交易、成本异常、客户信誉和智能管家服务质量风险。',
+    focus: ['反薅命中', '私下交易', '成本异常'],
+    title: '风控仪表盘',
+  },
   security: {
     action: '查看告警',
     description: '监控跨租户、敏感数据、API Key、越权和海外模型脱敏风险。',
     focus: ['跨租户拦截', '密钥扫描', '出境脱敏'],
     title: '安全中心',
+  },
+  systemConfig: {
+    action: '热更新配置',
+    description: '管理 system_configs、配置历史、Redis 失效广播和高敏感 key 审批锁。',
+    focus: ['配置热更新', '版本回滚', '审批锁'],
+    title: '系统配置中心',
+  },
+  caseMarket: {
+    action: '审核案例',
+    description: '审核智能管家 UGC 案例，完成 AI 预审、专家复核、上架奖励和抄袭检测。',
+    focus: ['AI 预审', '专家复核', '奖励发放'],
+    title: '案例市场审核',
+  },
+  policyFunds: {
+    action: '立即扫描',
+    description: '维护 30+ 政策资金、待审池、增量扫描、专家审核和 5/25/50/100% 灰度发布。',
+    focus: ['政策扫描', '待审池', '灰度发布'],
+    title: '政策资金管理',
+  },
+  addictionConfig: {
+    action: '调整钩子',
+    description: '管理 16 个上瘾机制开关、阈值、抽点概率、奖励配置和反黑暗模式。',
+    focus: ['16 钩子', '奖励阈值', '可关闭'],
+    title: '上瘾机制配置',
+  },
+  rewardClaims: {
+    action: '清算奖励',
+    description: '处理点数、实物、现金奖励的审批、物流、对公转账和个税代扣。',
+    focus: ['点数入账', '实物物流', '个税代扣'],
+    title: '奖励清算',
   },
   services: {
     action: '配置服务',
