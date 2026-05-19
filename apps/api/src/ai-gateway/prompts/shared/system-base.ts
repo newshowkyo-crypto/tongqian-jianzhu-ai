@@ -30,8 +30,9 @@ export interface ConstructionPromptConfig {
 }
 
 function resolveTier(context: TierContext): AiOutputTier {
-  if (context.hasLegalRisk || context.urgency === 'high' || (context.amount ?? 0) >= 5_000_000) return AiOutputTier.TIER_3;
-  if ((context.amount ?? 0) >= 500_000 || context.confidence === 0) return AiOutputTier.TIER_2;
+  if (context.hasLegalRisk) return AiOutputTier.TIER_4;
+  if ((context.amount ?? 0) >= 50_000_000 || context.urgency === 'high') return AiOutputTier.TIER_3;
+  if ((context.amount ?? 0) >= 10_000_000 || context.confidence === 0) return AiOutputTier.TIER_2;
   return AiOutputTier.TIER_1;
 }
 
@@ -163,7 +164,7 @@ export function createConstructionPrompt(config: ConstructionPromptConfig): Prom
     inputSchema: ConstructionPromptInputSchema,
     needsSanitize: true,
     outputSchema: ConstructionPromptOutputSchema,
-    primaryModel: config.primaryModel ?? (config.governmentOnly ? 'qwen-max' : 'openrouter/anthropic/claude-3.5-sonnet'),
+    primaryModel: config.primaryModel ?? 'deepseek-chat',
     safetyChecks: ['no_pii_leak', 'no_prompt_injection', 'no_absolute_claims', 'no_secret_echo', 'value_density_v4'],
     systemPrompt: buildSystemPrompt(config),
     taskType: config.taskType,
