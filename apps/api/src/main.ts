@@ -5,6 +5,7 @@ import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 
 import { AddictionModule } from './modules/addiction/addiction.module.js';
+import { AdminModule } from './modules/admin/admin.module.js';
 import { AdminOpsModule } from './modules/admin-ops/admin-ops.module.js';
 import { AgentWorkspaceModule } from './modules/agent-workspace/agent-workspace.module.js';
 import { ApprovalModule } from './modules/approval/approval.module.js';
@@ -43,6 +44,7 @@ class HealthController {
   controllers: [HealthController],
   imports: [
     AddictionModule,
+    AdminModule,
     AgentWorkspaceModule,
     AdminOpsModule,
     ApprovalModule,
