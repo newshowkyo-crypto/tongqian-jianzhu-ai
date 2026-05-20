@@ -8,7 +8,7 @@ import { MockAiProvider } from './mock-provider.js';
 export class ProviderRouterService {
   private readonly unhealthyUntil = new Map<AiProviderCode, number>();
   private readonly providers: AiProvider[] = [
-    new MockAiProvider(AiProviderCode.DEEPSEEK_DIRECT, 1, ['deepseek-chat', 'deepseek-reasoner'], isConfigured('DEEPSEEK_API_KEY')),
+    new MockAiProvider(AiProviderCode.DEEPSEEK_DIRECT, 1, ['deepseek-chat', 'deepseek-reasoner'], isDeepSeekAvailable()),
     new MockAiProvider(AiProviderCode.ALIYUN_DASHSCOPE, 2, ['qwen-plus', 'qwen-max', 'qwen-vl-max'], false, 'DISABLED_UNTIL_API_KEY_PROVIDED'),
     new MockAiProvider(AiProviderCode.OPENROUTER, 3, ['claude-sonnet-4-6', 'gpt-5'], false, 'DISABLED_UNTIL_API_KEY_PROVIDED'),
   ];
@@ -84,4 +84,8 @@ export class ProviderRouterService {
 function isConfigured(key: string): boolean {
   const value = process.env[key];
   return Boolean(value && !value.includes('PLACEHOLDER') && value !== 'sk-xxx');
+}
+
+function isDeepSeekAvailable(): boolean {
+  return isConfigured('DEEPSEEK_API_KEY') || process.env.DISABLE_DEEPSEEK_LOCAL_MOCK !== 'true';
 }
