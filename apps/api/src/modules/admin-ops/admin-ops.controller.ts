@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Put } from '@nestjs/common';
 
 import { AdminOpsService } from './admin-ops.service.js';
 
@@ -59,5 +59,30 @@ export class AdminOpsController {
   @Get('review-queues')
   queues(): unknown {
     return { code: 'OK', data: this.admin.reviewQueues(), message: 'Review queues', traceId: crypto.randomUUID() };
+  }
+
+  @Get(':module')
+  moduleList(@Param('module') module: string): unknown {
+    return { code: 'OK', data: this.admin.moduleList(module), message: `Admin ${module} list`, traceId: crypto.randomUUID() };
+  }
+
+  @Get(':module/:id')
+  moduleDetail(@Param('module') module: string, @Param('id') id: string): unknown {
+    return { code: 'OK', data: this.admin.moduleDetail(module, id), message: `Admin ${module} detail`, traceId: crypto.randomUUID() };
+  }
+
+  @Post(':module')
+  moduleCreate(@Param('module') module: string, @Body() body: Record<string, unknown>): unknown {
+    return { code: 'OK', data: this.admin.moduleMutate(module, 'create', body), message: `Admin ${module} created`, traceId: crypto.randomUUID() };
+  }
+
+  @Patch(':module/:id')
+  modulePatch(@Param('module') module: string, @Param('id') id: string, @Body() body: Record<string, unknown>): unknown {
+    return { code: 'OK', data: this.admin.moduleMutate(module, 'patch', { ...body, id }), message: `Admin ${module} patched`, traceId: crypto.randomUUID() };
+  }
+
+  @Delete(':module/:id')
+  moduleDelete(@Param('module') module: string, @Param('id') id: string): unknown {
+    return { code: 'OK', data: this.admin.moduleMutate(module, 'delete', { id }), message: `Admin ${module} deleted`, traceId: crypto.randomUUID() };
   }
 }

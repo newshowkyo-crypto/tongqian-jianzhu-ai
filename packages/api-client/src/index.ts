@@ -26,6 +26,21 @@ export interface AdminModuleSummary {
   workflow: string[];
 }
 
+export interface AdminMutationInput {
+  action: string;
+  endpoint: string;
+  idempotencyKey: string;
+  rowId?: string;
+}
+
+export interface AdminMutationResult {
+  auditEvent: string;
+  idempotencyKey: string;
+  message: string;
+  rowId?: string;
+  traceId: string;
+}
+
 export interface AiChatMessage {
   content: string;
   role: 'assistant' | 'user';
@@ -144,9 +159,25 @@ function createCredentialApi(http: AxiosInstance, mock: boolean) {
 
 function createAdminApi(http: AxiosInstance, mock: boolean) {
   return {
+    async detail(slug: string, id: string): Promise<Record<string, string>> {
+      if (mock) return delay({ id, module: slug, owner: 'platform-owner', status: 'active', traceId: cryptoRandomId() });
+      return unwrap(await http.get(`/admin/${slug}/${id}`));
+    },
     async module(slug: string): Promise<AdminModuleSummary> {
       if (mock) return delay(buildAdminModuleFixture(slug));
-      return unwrap(await http.get(`/admin/modules/${slug}`));
+      return unwrap(await http.get(`/admin/${slug}`));
+    },
+    async mutate(slug: string, input: AdminMutationInput): Promise<AdminMutationResult> {
+      if (mock) {
+        return delay({
+          auditEvent: `admin.${slug}.${input.action}`,
+          idempotencyKey: input.idempotencyKey,
+          message: `${input.action} submitted for ${slug}; audit log and approval queue updated.`,
+          rowId: input.rowId,
+          traceId: cryptoRandomId(),
+        });
+      }
+      return unwrap(await http.post(`/admin/${slug}`, input, { headers: { 'Idempotency-Key': input.idempotencyKey } }));
     },
   };
 }

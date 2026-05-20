@@ -74,6 +74,53 @@ export class AdminOpsService {
     return { agentReview: 4, caseReview: 7, financeApprovals: 3, policyFundPending: 5 };
   }
 
+  moduleList(module: string): Record<string, unknown> {
+    const rows = [1, 2, 3].map((index) => ({
+      id: `${module}-${String(index).padStart(3, '0')}`,
+      name: `${module} operation ${index}`,
+      owner: index === 1 ? 'platform-owner' : 'ops-admin',
+      risk: index === 2 ? 'high' : 'medium',
+      status: index === 3 ? 'completed' : index === 2 ? 'processing' : 'active',
+      traceId: `admin-${module}-${index}`,
+      updatedAt: new Date().toISOString(),
+    }));
+    return {
+      alerts: [
+        { level: 'success', message: `${module} controller fallback ready` },
+        { level: 'warning', message: 'Writes still require approval and audit trails' },
+      ],
+      rows,
+      stats: [
+        { label: 'Rows', trend: 'controller fallback', value: String(rows.length) },
+        { label: 'Pending', trend: 'approval queue', value: '1' },
+        { label: 'Alerts', trend: 'no red-line trigger', value: '0' },
+      ],
+      workflow: ['GET list', 'GET detail', 'POST action', 'PATCH update', 'DELETE mock delete'],
+    };
+  }
+
+  moduleDetail(module: string, id: string): Record<string, unknown> {
+    return {
+      auditTrail: [{ action: 'detail.read', at: new Date().toISOString(), module }],
+      id,
+      module,
+      safeguards: ['tenant_id', 'scope_type', 'project_id', 'owner_id'],
+      status: 'active',
+    };
+  }
+
+  moduleMutate(module: string, action: string, payload: Record<string, unknown>): Record<string, unknown> {
+    return {
+      action,
+      auditEvent: `admin.${module}.${action}`,
+      idempotencyKey: payload.idempotencyKey ?? crypto.randomUUID(),
+      module,
+      payload,
+      queuedApproval: true,
+      status: 'processing',
+    };
+  }
+
   private seed(): void {
     this.systemConfigs.set('credentials.payment.wechat', { category: 'credentials', description: 'admin.credentials.wechatPay', isActive: true, key: 'credentials.payment.wechat', updatedAt: new Date().toISOString(), value: { mode: 'mock' } });
     this.credentials.set('WECHAT_PAY_MCH_ID', { auditCount: 0, key: 'WECHAT_PAY_MCH_ID', mode: 'mock', provider: 'wechat_pay', status: 'active', updatedAt: new Date().toISOString() });

@@ -1,3 +1,5 @@
+'use client';
+
 import { AdminModulePage } from '../../../components/admin-module-page';
 import { adminModulePages } from '../../../m3-pages';
 
@@ -74,8 +76,7 @@ const adminPageContract = {
 } as const;
 
 function ReportsAdminPage() {
-  void adminPageContract;
-  return <AdminModulePage copy={adminModulePages[moduleKey]} />;
+  return <AdminModulePage contract={adminPageContract} copy={adminModulePages[moduleKey]} moduleKey={moduleKey} />;
 }
 
 export default ReportsAdminPage;
