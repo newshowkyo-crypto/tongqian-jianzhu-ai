@@ -34,6 +34,7 @@ import { StorageModule } from './modules/storage/storage.module.js';
 import { SubscriptionModule } from './modules/subscription/subscription.module.js';
 import { TenderModule } from './modules/tender/tender.module.js';
 import { UserModule } from './modules/user/user.module.js';
+import { WebhookModule } from './modules/webhook/webhook.module.js';
 
 @Controller()
 class HealthController {
@@ -76,6 +77,7 @@ class HealthController {
     SubscriptionModule,
     TenderModule,
     UserModule,
+    WebhookModule,
   ],
 })
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
