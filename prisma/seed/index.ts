@@ -65,7 +65,14 @@ async function seedTenantsAndUsers() {
     `;
   }
 
-  return { tenants, users };
+  const phones = users.map((user) => user.phone);
+  const actualUsers = await prisma.$queryRaw<Array<{ id: string; index: number; name: string; phone: string; role: string; tenantId: string }>>`
+    SELECT id::text, tenant_id::text AS "tenantId", phone, name, primary_role::text AS role, 0 AS index
+    FROM users
+    WHERE phone = ANY(${phones}::text[])
+  `;
+
+  return { tenants, users: actualUsers.map((user, index) => ({ ...user, index })) };
 }
 
 async function seedAgents(users: Awaited<ReturnType<typeof seedTenantsAndUsers>>['users']) {
@@ -75,7 +82,7 @@ async function seedAgents(users: Awaited<ReturnType<typeof seedTenantsAndUsers>>
     await prisma.$executeRaw`
       INSERT INTO agent_profiles (id, user_id, tenant_id, subtype, region, promo_code, activity_status, trained_at, is_blacklisted)
       VALUES (${randomUUID()}::uuid, ${user.id}, ${user.tenantId}, 'construction_runner', ${['上海', '江苏', '浙江', '安徽', '山东'][index]}, ${`TQAGENT${index + 1}`}, 'active', ${now}, false)
-      ON CONFLICT (user_id) DO NOTHING
+      ON CONFLICT DO NOTHING
     `;
     await prisma.$executeRaw`
       INSERT INTO reputation_scores (id, entity_id, entity_type, score, level, created_at, updated_at)
