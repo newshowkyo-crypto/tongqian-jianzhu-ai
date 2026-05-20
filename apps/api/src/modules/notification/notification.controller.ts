@@ -32,6 +32,11 @@ export class NotificationController {
     return { code: 'OK', data: this.notifications.stats(), message: 'Notification stats', traceId: crypto.randomUUID() };
   }
 
+  @Get('admin/notifications/outbox')
+  outbox(): unknown {
+    return { code: 'OK', data: this.notifications.outbox(), message: 'Notification outbox', traceId: crypto.randomUUID() };
+  }
+
   @Post('admin/notifications/templates')
   template(@Body() body: { level: NotificationLevel; scenario: string; templates: Partial<Record<NotificationChannel, string>> }): unknown {
     return { code: 'OK', data: this.notifications.upsertTemplate(body), message: 'Notification template saved', traceId: crypto.randomUUID() };

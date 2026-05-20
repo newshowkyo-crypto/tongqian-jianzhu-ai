@@ -1,5 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import type { NotificationChannel, NotificationLevel, NotificationPreferenceView, NotificationSendResult, NotificationTemplateView, NotificationView } from '@tongqian/types';
+
+import { NotificationDispatcherService } from './dispatcher.service.js';
+import { NotificationThrottleService } from './throttle.service.js';
 
 const DEFAULT_TEMPLATES: NotificationTemplateView[] = [
   'subscription_renew',
@@ -37,19 +40,26 @@ export class NotificationService {
   private readonly urgencyDaily = new Map<string, string[]>();
   private readonly scoreOrder = new Set<string>();
 
+  constructor(
+    @Inject(NotificationDispatcherService) private readonly dispatcher: NotificationDispatcherService,
+    @Inject(NotificationThrottleService) private readonly throttle: NotificationThrottleService,
+  ) {}
+
   send(input: { channels?: NotificationChannel[]; eventId: string; payload: Record<string, unknown>; role?: 'GOV_USER' | 'USER'; scenario: string; userId: string }): NotificationSendResult {
     const template = this.templates.get(input.scenario) ?? this.seedTemplate(input.scenario, 'normal');
     const eventHash = this.hash(`${input.userId}:${input.scenario}:${input.eventId}`);
     if (this.sentHashes.has(eventHash)) return { deduped: true, downgraded: false, notifications: [], throttled: false };
-    const throttle = this.checkThrottle(input.userId, input.scenario, input.eventId);
+    const throttle = this.checkThrottle(input.userId, input.scenario, input.eventId, eventHash);
     if (throttle.throttled) return { deduped: false, downgraded: false, notifications: [], throttled: true };
     const preference = this.getPreference(input.userId);
     const channels = this.resolveChannels(template.level, input.channels, preference, input.role);
     const traceId = crypto.randomUUID();
-    const notifications = channels.map((channel) => this.deliver({ channel, eventHash, payload: input.payload, scenario: input.scenario, traceId, userId: input.userId }));
+    const dispatched = this.dispatcher.dispatch({ channels, content: input.payload, eventHash, scenario: input.scenario, traceId, userId: input.userId });
+    const notifications = dispatched.notifications;
     notifications.forEach((item) => this.notifications.set(item.id, item));
     this.sentHashes.add(eventHash);
-    return { deduped: false, downgraded: channels.length < this.fallbackChain(template.level).length, notifications, throttled: false };
+    this.throttle.commit(eventHash);
+    return { deduped: false, downgraded: dispatched.downgraded || channels.length < this.fallbackChain(template.level).length, notifications, throttled: false };
   }
 
   list(userId: string): NotificationView[] {
@@ -111,9 +121,15 @@ export class NotificationService {
       channelCounts: all.reduce<Record<string, number>>((acc, item) => ({ ...acc, [item.channel]: (acc[item.channel] ?? 0) + 1 }), {}),
       readRate: sent === 0 ? 0 : read / sent,
       sent,
+      throttle: this.throttle.stats('mock-user'),
+      transport: this.dispatcher.channelHealth(),
       templates: this.templates.size,
       total: all.length,
     };
+  }
+
+  outbox(): unknown[] {
+    return this.dispatcher.outbox();
   }
 
   private resolveChannels(level: NotificationLevel, requested: NotificationChannel[] | undefined, preference: NotificationPreferenceView, role?: 'GOV_USER' | 'USER'): NotificationChannel[] {
@@ -134,24 +150,9 @@ export class NotificationService {
     return Boolean(preference[key]);
   }
 
-  private deliver(input: { channel: NotificationChannel; eventHash: string; payload: Record<string, unknown>; scenario: string; traceId: string; userId: string }): NotificationView {
-    const now = new Date().toISOString();
-    return {
-      channel: input.channel,
-      content: { mockProvider: input.channel !== 'inbox', ...input.payload },
-      createdAt: now,
-      eventHash: input.eventHash,
-      externalId: `mock-${input.channel}-${crypto.randomUUID()}`,
-      id: crypto.randomUUID(),
-      scenario: input.scenario,
-      sentAt: now,
-      status: 'sent',
-      traceId: input.traceId,
-      userId: input.userId,
-    };
-  }
-
-  private checkThrottle(userId: string, scenario: string, eventId: string): { throttled: boolean } {
+  private checkThrottle(userId: string, scenario: string, eventId: string, eventHash: string): { throttled: boolean } {
+    const global = this.throttle.check({ eventHash, eventId, scenario, userId });
+    if (global.throttled) return { throttled: true };
     const today = new Date().toISOString().slice(0, 10);
     const systemKey = `${userId}:${today}`;
     const system = this.userDaily.get(systemKey) ?? [];
