@@ -1,6 +1,6 @@
 'use client';
 
-import { Award, Bell, FileSearch, Radar, Settings, UserCheck, Wallet } from '@tongqian/ui';
+import { Award, Bell, Command, FileSearch, Radar, Settings, UserCheck, Wallet } from '@tongqian/ui';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
@@ -30,10 +30,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-neutral-50 text-neutral-900">
       <header className="fixed inset-x-0 top-0 z-40 flex h-16 items-center border-b border-neutral-200 bg-white px-4 shadow-sm lg:pl-72">
         <div className="flex w-full items-center gap-3">
-          <label className="flex h-10 min-w-0 flex-1 items-center rounded-md border border-neutral-300 bg-neutral-50 px-3 text-sm text-neutral-500">
-            <span className="mr-2 rounded bg-white px-1.5 py-0.5 text-xs">⌘K</span>
-            <input className="w-full bg-transparent outline-none" placeholder={zhCN.navigation.search} />
-          </label>
+          <Command placeholder={zhCN.navigation.search} />
           <button className="hidden h-10 rounded-md border border-neutral-300 px-3 text-sm text-neutral-700 sm:block" type="button">
             {zhCN.navigation.tenant}
           </button>

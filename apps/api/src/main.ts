@@ -28,6 +28,7 @@ import { QualificationModule } from './modules/qualification/qualification.modul
 import { ReportCenterModule } from './modules/report-center/report-center.module.js';
 import { RiskReviewModule } from './modules/risk-review/risk-review.module.js';
 import { RulesEngineModule } from './modules/rules-engine/rules-engine.module.js';
+import { SearchModule } from './modules/search/search.module.js';
 import { SecurityComplianceModule } from './modules/security-compliance/security-compliance.module.js';
 import { StorageModule } from './modules/storage/storage.module.js';
 import { SubscriptionModule } from './modules/subscription/subscription.module.js';
@@ -70,6 +71,7 @@ class HealthController {
     RiskReviewModule,
     RulesEngineModule,
     SecurityComplianceModule,
+    SearchModule,
     StorageModule,
     SubscriptionModule,
     TenderModule,

@@ -139,11 +139,14 @@ export {
   type TooltipProps,
 } from './primitives/feedback.js';
 export {
+  Command,
+  type CommandProps,
+} from './primitives/Command.js';
+export {
   Button,
   Checkbox,
   Combobox,
   Calendar,
-  Command,
   DatePicker,
   DateRangePicker,
   FileUpload,
@@ -158,7 +161,6 @@ export {
   type CheckboxProps,
   type ComboboxProps,
   type CalendarProps,
-  type CommandProps,
   type DatePickerProps,
   type DateRangePickerProps,
   type FileUploadProps,
