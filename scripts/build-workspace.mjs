@@ -2,6 +2,7 @@ import { spawnSync } from 'node:child_process';
 
 const nonNextFilters = [
   '@tongqian/api',
+  '@tongqian/api-client',
   '@tongqian/worker',
   '@tongqian/constants',
   '@tongqian/contracts',

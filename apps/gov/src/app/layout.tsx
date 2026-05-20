@@ -2,11 +2,12 @@ import type { ReactNode } from 'react';
 
 import '../styles/globals.css';
 import { AppShell } from '../app-shell';
+import { QueryProvider } from '../components/query-provider';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="zh-CN">
-      <body><AppShell>{children}</AppShell></body>
+      <body><QueryProvider><AppShell>{children}</AppShell></QueryProvider></body>
     </html>
   );
 }

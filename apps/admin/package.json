@@ -14,10 +14,14 @@
     "clean": "rimraf .next"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5",
+    "@tongqian/api-client": "workspace:^",
     "@tongqian/ui": "workspace:*",
+    "axios": "^1",
     "next": "^14.2.23",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "zustand": "^4"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
