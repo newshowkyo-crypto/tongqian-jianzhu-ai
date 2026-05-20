@@ -3,6 +3,7 @@ import { AiAudienceRole, AiConfidenceLevel, AiOutputTier, ReportNextStepHint } f
 import type { ClaimStrategyView, ContractReviewView, ContractRiskFindingView, ModificationLetterView, RiskLevel, RiskReviewType, RiskType } from '@tongqian/types';
 
 import { ReportCenterService } from '../report-center/report-center.service.js';
+import { StorageService } from '../storage/storage.service.js';
 
 interface ReviewInput {
   amountCny?: number;
@@ -20,13 +21,24 @@ export class RiskReviewService {
   private readonly letters = new Map<string, ModificationLetterView>();
   private readonly reviews = new Map<string, ContractReviewView>();
 
-  constructor(@Inject(ReportCenterService) private readonly reportCenter: ReportCenterService) {}
+  constructor(
+    @Inject(ReportCenterService) private readonly reportCenter: ReportCenterService,
+    @Inject(StorageService) private readonly storage: StorageService,
+  ) {}
 
   createReview(input: ReviewInput): ContractReviewView {
     if (input.tenantType === 'GOV' && ((input.amountCny ?? 0) >= 10_000_000 || input.contractType.includes('litigation'))) {
       return this.humanTakeoverReview(input, AiOutputTier.TIER_4);
     }
     const tier = this.resolveTier(input.amountCny ?? 0);
+    const contractFile = this.storage.registerExternalFile({
+      fileName: input.contractUrl.split('/').at(-1) || `contract-${crypto.randomUUID()}.pdf`,
+      mimeType: 'application/pdf',
+      purpose: 'contract-review',
+      sizeBytes: 512 * 1024,
+      tenantId: input.tenantId,
+      url: input.contractUrl,
+    });
     const findings = this.detectRisks(input.contractType, tier).slice(0, input.type === 'basic' ? 5 : 12);
     const redCount = findings.filter((item) => item.level === 'red').length;
     const yellowCount = findings.filter((item) => item.level === 'yellow').length;
@@ -56,7 +68,7 @@ export class RiskReviewService {
     const review: ContractReviewView = {
       aiTaskId,
       contractType: input.contractType,
-      contractUrl: input.contractUrl,
+      contractUrl: contractFile.signedUrl,
       createdAt: new Date().toISOString(),
       findingCount: findings.length,
       findings,

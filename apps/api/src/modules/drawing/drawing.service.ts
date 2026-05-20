@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import type {
   DrawingErrorView,
   DrawingFormat,
@@ -8,7 +8,9 @@ import type {
   QuantityEstimateView,
 } from '@tongqian/types';
 
-const MAX_FILE_BYTES = 100 * 1024 * 1024;
+import { StorageService } from '../storage/storage.service.js';
+
+const MAX_FILE_BYTES = 50 * 1024 * 1024;
 const SUPPORTED_FORMATS = new Set<DrawingFormat>(['dwg', 'jpg', 'pdf', 'png']);
 
 @Injectable()
@@ -16,14 +18,24 @@ export class DrawingService {
   private readonly drawings = new Map<string, DrawingView>();
   private readonly understandings = new Map<string, DrawingUnderstandingView>();
 
+  constructor(@Inject(StorageService) private readonly storage: StorageService) {}
+
   upload(input: { fileFormat: string; fileUrl: string; pages?: number; projectId?: string; sizeBytes: number; tenantId: string }): DrawingView {
     const fileFormat = input.fileFormat.toLowerCase() as DrawingFormat;
     if (!SUPPORTED_FORMATS.has(fileFormat)) throw new Error('DRAW.NOT_SUPPORTED_FORMAT');
     if (input.sizeBytes > MAX_FILE_BYTES) throw new Error('DRAW.FILE_TOO_LARGE');
+    const file = this.storage.registerExternalFile({
+      fileName: input.fileUrl.split('/').at(-1) || `drawing-${crypto.randomUUID()}.${fileFormat}`,
+      mimeType: fileFormat === 'pdf' ? 'application/pdf' : fileFormat === 'dwg' ? 'application/acad' : `image/${fileFormat}`,
+      purpose: 'drawing-recognition',
+      sizeBytes: input.sizeBytes,
+      tenantId: input.tenantId,
+      url: input.fileUrl,
+    });
     const drawing: DrawingView = {
       createdAt: new Date().toISOString(),
       fileFormat,
-      fileUrl: input.fileUrl,
+      fileUrl: file.signedUrl,
       id: crypto.randomUUID(),
       pages: input.pages ?? 1,
       previewUrls: this.previewUrls(fileFormat, input.fileUrl, input.pages ?? 1),

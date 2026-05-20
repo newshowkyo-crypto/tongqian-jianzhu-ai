@@ -1,6 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AiAudienceRole, AiConfidenceLevel, AiNextStepAction, AiOutputTier, ReportNextStepHint } from '@tongqian/types';
 import type { GuidanceButtonView, ReportBrandMode, ReportDifficultyRadarView, ReportEscalationType, ReportRole, ReportTemplateView, ReportView } from '@tongqian/types';
+
+import { StorageService } from '../storage/storage.service.js';
 
 interface CreateReportInput {
   agentId?: string;
@@ -31,6 +33,8 @@ export class ReportCenterService {
   private readonly reports = new Map<string, ReportView>();
   private readonly templates = new Map<string, ReportTemplateView>();
   private readonly viewDevices = new Map<string, Set<string>>();
+
+  constructor(@Inject(StorageService) private readonly storage: StorageService) {}
 
   createReport(input: CreateReportInput): ReportView {
     const normalized = this.normalizeOutput(input.dataSnapshot);
@@ -283,8 +287,7 @@ export class ReportCenterService {
   }
 
   private uploadAsset(reportId: string, format: 'h5' | 'pdf', content: string): string {
-    const digest = Buffer.from(content).toString('base64url').slice(0, 16);
-    return `mock://oss/reports/${reportId}.${format}?sig=${digest}&ttl=3600`;
+    return this.storage.storeGeneratedAsset({ content, extension: format, reportId, tenantId: `report-${reportId}` }).signedUrl;
   }
 
   private validateRequiredElements(output: Record<string, unknown>): void {

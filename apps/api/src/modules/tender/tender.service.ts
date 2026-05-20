@@ -10,6 +10,7 @@ import type {
 } from '@tongqian/types';
 
 import { ReportCenterService } from '../report-center/report-center.service.js';
+import { StorageService } from '../storage/storage.service.js';
 
 interface CreateTenderProjectInput {
   amountEstimateCny?: number;
@@ -32,10 +33,20 @@ export class TenderService {
   private readonly sections = new Map<string, TenderSectionDraftView[]>();
   private readonly summaries = new Map<string, TenderSummaryView>();
 
-  constructor(@Inject(ReportCenterService) private readonly reportCenter: ReportCenterService) {}
+  constructor(
+    @Inject(ReportCenterService) private readonly reportCenter: ReportCenterService,
+    @Inject(StorageService) private readonly storage: StorageService,
+  ) {}
 
   createProject(input: CreateTenderProjectInput): TenderProjectView {
     if (input.fileSizeMb > 50) throw new Error('TENDER.FILE.TOO_LARGE');
+    const sourceFile = this.storage.registerExternalFile({
+      fileName: `${input.name}.${input.fileType}`,
+      mimeType: input.fileType === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      purpose: 'tender-parse',
+      sizeBytes: Math.max(1, Math.round(input.fileSizeMb * 1024 * 1024)),
+      tenantId: input.tenantId,
+    });
     const project: TenderProjectView = {
       amountEstimateCny: input.amountEstimateCny,
       createdAt: new Date().toISOString(),
@@ -44,7 +55,7 @@ export class TenderService {
       meta: { fileType: input.fileType, virusScan: 'mock-pass' },
       name: input.name,
       region: input.region,
-      sourceFileUrl: `mock://oss/tender/${crypto.randomUUID()}.${input.fileType}`,
+      sourceFileUrl: sourceFile.signedUrl,
       status: 'uploaded',
       tenantId: input.tenantId,
       userId: input.userId,
@@ -169,11 +180,12 @@ export class TenderService {
 
   packageDocuments(projectId: string, tenantId: string): { createdAt: string; id: string; includedDocs: string[]; pdfUrl: string; projectId: string } {
     this.getProject(projectId, tenantId);
+    const asset = this.storage.storeGeneratedAsset({ content: JSON.stringify({ projectId, type: 'tender-package' }), extension: 'pdf', reportId: `tender-package-${projectId}`, tenantId });
     const pack = {
       createdAt: new Date().toISOString(),
       id: crypto.randomUUID(),
       includedDocs: ['businessLicense', 'qualificationCertificates', 'safetyPermit', 'performances', 'keyStaff'],
-      pdfUrl: `mock://oss/tender-packages/${projectId}.pdf?ttl=3600`,
+      pdfUrl: asset.signedUrl,
       projectId,
     };
     this.packages.set(projectId, pack);
