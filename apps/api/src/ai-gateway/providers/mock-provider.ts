@@ -1,4 +1,4 @@
-import type { AiProviderCode } from '@tongqian/types';
+import { AiAudienceRole, AiNextStepAction, type AiProviderCode } from '@tongqian/types';
 
 import type { AiProvider, AiProviderInvokeRequest, AiRawResponse } from './ai-provider.interface.js';
 
@@ -22,7 +22,13 @@ export class MockAiProvider implements AiProvider {
         dataSourceStatement: 'mock provider',
         disclaimer: 'AI generated content is for reference only.',
         executionDifficultyRadar: { cost: 20, professional: 20, risk: 20, time: 20 },
-        nextStepButtons: [],
+        nextStepButtons: [
+          { action: AiNextStepAction.SELF_EXECUTE, i18nKey: 'ai.actions.selfExecute', role: AiAudienceRole.OWNER },
+          { action: AiNextStepAction.APPLY_AGENT, i18nKey: 'ai.actions.applyAgent', role: AiAudienceRole.OWNER },
+          { action: AiNextStepAction.APPLY_TONGQIAN_CONSULTING, i18nKey: 'ai.actions.applyTongqian', role: AiAudienceRole.OWNER },
+          { action: AiNextStepAction.REQUEST_HUMAN_REVIEW, i18nKey: 'ai.actions.humanReview', role: AiAudienceRole.OWNER },
+          { action: AiNextStepAction.REQUEST_EXPERT_CONSULTING, i18nKey: 'ai.actions.expertConsult', role: AiAudienceRole.OWNER },
+        ],
         nextStepHint: 'use-directly',
         sections: [],
         summary: request.messages.at(-1)?.content ?? '',
