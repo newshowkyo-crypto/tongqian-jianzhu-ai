@@ -35,6 +35,7 @@ export {
 export {
   AgentRow,
   AiAssistantBubble,
+  AiAssistantWidget,
   AiReportH5Card,
   CheckinCalendar,
   ContractRiskItem,
@@ -52,6 +53,9 @@ export {
   SubscriptionPlanCard,
   TenderEligibilityCheck,
   RiskMonitorCard,
+  type AiAssistantWidgetMessage,
+  type AiAssistantWidgetProps,
+  type AiAssistantWidgetReply,
   type OpportunityCardProps,
 } from './domain/index.js';
 export { fontCssVariables, fontFamilies } from './fonts/index.js';

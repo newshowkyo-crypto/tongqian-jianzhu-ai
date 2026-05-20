@@ -54,6 +54,40 @@ export interface AiChatResult {
   traceId: string;
 }
 
+export interface ChatConversation {
+  channel: 'api' | 'desktop' | 'gov' | 'web' | 'wechat' | 'work_wechat';
+  id: string;
+  lastAt: string;
+  status: 'active' | 'archived';
+  title: string;
+}
+
+export interface ChatMessage {
+  content: string;
+  createdAt: string;
+  id: string;
+  intent?: string;
+  role: 'assistant' | 'system' | 'user';
+  triggeredTaskId?: string;
+}
+
+export interface ChatSendResult {
+  assistantMessage: ChatMessage;
+  conversation: ChatConversation;
+  dispatch: {
+    followUpButtons: string[];
+    redirectUrl?: string;
+    replyText: string;
+    triggeredTaskId?: string;
+  };
+  intent: string;
+  memory: {
+    recentMessages: ChatMessage[];
+    summary: string;
+  };
+  userMessage: ChatMessage;
+}
+
 export interface ApiClientOptions {
   baseURL?: string;
   getToken?: () => string | undefined;
@@ -112,6 +146,7 @@ export function createApiClient(options: ApiClientOptions = {}) {
   return {
     admin: createAdminApi(http, mock),
     ai: createAiApi(http, mock),
+    chatHub: createChatHubApi(http, mock),
     credentials: createCredentialApi(http, mock),
     http,
     mock,
@@ -197,7 +232,79 @@ function createAiApi(http: AxiosInstance, mock: boolean) {
           traceId: cryptoRandomId(),
         });
       }
-      return unwrap(await http.post('/ai/chat', { messages, taskType }));
+      const latest = messages.at(-1)?.content ?? '';
+      const response = await unwrap<Record<string, unknown>>(
+        await http.post('/ai/invoke', {
+          input: {
+            conversation: messages,
+            message: latest,
+          },
+          taskType,
+        }),
+      );
+      const data = (response.data && typeof response.data === 'object' ? response.data : response) as Record<string, unknown>;
+      return {
+        buttons: normalizeButtons(response.nextStepButtons ?? data.nextStepButtons),
+        confidence: normalizeConfidence(response.confidence ?? data.confidence),
+        message: {
+          content: normalizeText(data.answer ?? data.summary ?? data.message ?? response.fallbackText ?? latest),
+          role: 'assistant',
+        },
+        tier: normalizeTier(response.tier ?? data.tier),
+        traceId: normalizeText(response.traceId ?? cryptoRandomId()),
+      };
+    },
+  };
+}
+
+function createChatHubApi(http: AxiosInstance, mock: boolean) {
+  let conversation: ChatConversation | undefined;
+  let messages: ChatMessage[] = [];
+  return {
+    async createConversation(title = 'AI conversation', channel: ChatConversation['channel'] = 'web'): Promise<ChatConversation> {
+      if (mock) {
+        conversation = { channel, id: cryptoRandomId(), lastAt: new Date().toISOString(), status: 'active', title };
+        messages = [];
+        return delay(conversation);
+      }
+      return unwrap(await http.post('/chat/conversations', { channel, title }));
+    },
+    async listConversations(): Promise<ChatConversation[]> {
+      if (mock) return delay(conversation ? [conversation] : []);
+      return unwrap(await http.get('/chat/conversations/me'));
+    },
+    async listMessages(conversationId: string): Promise<ChatMessage[]> {
+      if (mock) return delay(conversation?.id === conversationId ? messages : []);
+      return unwrap(await http.get(`/chat/conversations/${conversationId}/messages`));
+    },
+    async sendMessage(conversationId: string, content: string, channel: ChatConversation['channel'] = 'web'): Promise<ChatSendResult> {
+      if (mock) {
+        const now = new Date().toISOString();
+        conversation = conversation ?? { channel, id: conversationId, lastAt: now, status: 'active', title: content.slice(0, 18) || 'AI conversation' };
+        const userMessage: ChatMessage = { content, createdAt: now, id: cryptoRandomId(), intent: 'small_talk', role: 'user' };
+        const assistantMessage: ChatMessage = {
+          content: `已收到：${content}。建议先看现金流影响、合同证据链、审批责任人和本周截止动作。`,
+          createdAt: new Date().toISOString(),
+          id: cryptoRandomId(),
+          intent: 'small_talk',
+          role: 'assistant',
+        };
+        messages = [...messages, userMessage, assistantMessage];
+        conversation = { ...conversation, lastAt: assistantMessage.createdAt };
+        return delay({
+          assistantMessage,
+          conversation,
+          dispatch: {
+            followUpButtons: ['生成行动清单', '查看风险', '人工复核', '申请同乾方略', '继续追问'],
+            redirectUrl: '/chat-hub',
+            replyText: assistantMessage.content,
+          },
+          intent: 'small_talk',
+          memory: { recentMessages: messages.slice(-6), summary: '最近对话围绕经营风险和下一步动作。' },
+          userMessage,
+        });
+      }
+      return unwrap(await http.post(`/chat/conversations/${conversationId}/messages`, { channel, content }));
     },
   };
 }
@@ -238,4 +345,21 @@ function buildAdminModuleFixture(slug: string): AdminModuleSummary {
     ],
     workflow: ['Read list', 'Submit approval', 'Write audit log', 'Hot update or rollback'],
   };
+}
+
+function normalizeButtons(value: unknown): string[] {
+  if (Array.isArray(value)) return value.map((item) => String(item)).slice(0, 5);
+  return ['自己执行', '申请智能管家', '申请同乾方略', '人工复核', '专家咨询'];
+}
+
+function normalizeConfidence(value: unknown): AiChatResult['confidence'] {
+  return value === 'low' || value === 'medium' || value === 'high' ? value : 'medium';
+}
+
+function normalizeText(value: unknown): string {
+  return typeof value === 'string' && value.trim() ? value : 'AI 已完成分析，请结合业务上下文复核后执行。';
+}
+
+function normalizeTier(value: unknown): AiChatResult['tier'] {
+  return value === 1 || value === 2 || value === 3 || value === 4 ? value : 2;
 }

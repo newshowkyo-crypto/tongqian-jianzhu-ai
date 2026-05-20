@@ -15,7 +15,6 @@ import {
   Radar,
   RiskBadge,
   SectionCard,
-  Sparkles,
   StatCard,
   Wallet,
 } from '@tongqian/ui';
@@ -144,15 +143,6 @@ export default function DashboardPage() {
           </ul>
         </SectionCard>
       </PageContent>
-
-      <Button
-        aria-label={copy.assistant}
-        className="fixed bottom-6 right-6 h-14 rounded-full bg-gradient-to-r from-primary-500 to-primary-700 px-5 shadow-md ring-4 ring-primary-100 transition-transform duration-500 hover:scale-105"
-        size="lg"
-      >
-        <Sparkles className="h-5 w-5" />
-        {copy.assistant}
-      </Button>
     </PageLayout>
   );
 }

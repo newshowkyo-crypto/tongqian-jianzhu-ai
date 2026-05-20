@@ -1,6 +1,7 @@
 'use client';
 
-import { Bell, Command, FileSearch, MessageSquare, Settings, Shield, UserCheck, Wallet } from '@tongqian/ui';
+import { apiClient } from '@tongqian/api-client';
+import { AiAssistantWidget, Bell, Command, FileSearch, MessageSquare, Settings, Shield, UserCheck, Wallet, type AiAssistantWidgetMessage } from '@tongqian/ui';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
@@ -26,6 +27,16 @@ export function AppShell({ children }: { children: ReactNode }) {
   }
 
   const current = zhCN.navigation.items.find((item) => pathname === item.href || pathname.startsWith(`${item.href}/`));
+
+  async function sendAssistantMessage(messages: AiAssistantWidgetMessage[]) {
+    const reply = await apiClient.ai.chat(messages, 'admin.prompt_test');
+    return {
+      buttons: reply.buttons.slice(0, 5),
+      confidence: reply.confidence,
+      content: reply.message.content,
+      tier: reply.tier,
+    };
+  }
 
   return (
     <div className="min-h-screen bg-neutral-50 text-neutral-950">
@@ -83,6 +94,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </aside>
         </div>
       </main>
+      <AiAssistantWidget label="AI 助手" onSend={sendAssistantMessage} placeholder="输入后台运营、审批、凭证或模型路由问题" roleLabel="平台运营助手" />
     </div>
   );
 }

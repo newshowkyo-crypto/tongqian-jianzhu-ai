@@ -7,6 +7,13 @@ import { Card, CardContent, CardHeader } from '../primitives/feedback.js';
 import { Button, Input } from '../primitives/form.js';
 import { cn } from '../utils.js';
 
+export {
+  AiAssistantWidget,
+  type AiAssistantWidgetMessage,
+  type AiAssistantWidgetProps,
+  type AiAssistantWidgetReply,
+} from './ai-assistant-widget.js';
+
 export interface OpportunityCardProps {
   className?: string;
   deadline?: ReactNode;

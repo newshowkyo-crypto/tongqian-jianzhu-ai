@@ -1,6 +1,9 @@
 'use client';
 
+import { apiClient } from '@tongqian/api-client';
 import {
+  AiAssistantWidget,
+  type AiAssistantWidgetMessage,
   Award,
   Bell,
   Building2,
@@ -55,6 +58,16 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   const current = zhCN.navigation.items.find((item) => pathname === item.href || pathname.startsWith(`${item.href}/`));
   const tenant = zhCN.navigation.tenants[0];
+
+  async function sendAssistantMessage(messages: AiAssistantWidgetMessage[]) {
+    const reply = await apiClient.ai.chat(messages, 'chat.long');
+    return {
+      buttons: reply.buttons,
+      confidence: reply.confidence,
+      content: reply.message.content,
+      tier: reply.tier,
+    };
+  }
 
   return (
     <div className="min-h-screen bg-neutral-50 text-neutral-900">
@@ -122,6 +135,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           {children}
         </div>
       </main>
+      <AiAssistantWidget fullPageHref="/chat-hub" label={zhCN.chat.title} onSend={sendAssistantMessage} placeholder={zhCN.chat.input} />
     </div>
   );
 }

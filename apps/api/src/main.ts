@@ -4,6 +4,7 @@ import { Controller, Get, Module } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 
+import { AiGatewayModule } from './ai-gateway/ai-gateway.module.js';
 import { AddictionModule } from './modules/addiction/addiction.module.js';
 import { AdminModule } from './modules/admin/admin.module.js';
 import { AdminOpsModule } from './modules/admin-ops/admin-ops.module.js';
@@ -48,6 +49,7 @@ class HealthController {
   controllers: [HealthController],
   imports: [
     AddictionModule,
+    AiGatewayModule,
     AdminModule,
     AgentWorkspaceModule,
     AdminOpsModule,

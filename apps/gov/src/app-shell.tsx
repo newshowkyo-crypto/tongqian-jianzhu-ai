@@ -1,6 +1,7 @@
 'use client';
 
-import { Bell, Building2, Command, FileSearch, Megaphone, MessageSquare, Shield, Wallet } from '@tongqian/ui';
+import { apiClient } from '@tongqian/api-client';
+import { AiAssistantWidget, Bell, Building2, Command, FileSearch, Megaphone, MessageSquare, Shield, Wallet, type AiAssistantWidgetMessage } from '@tongqian/ui';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
@@ -25,6 +26,16 @@ export function AppShell({ children }: { children: ReactNode }) {
   }
 
   const current = zhCN.navigation.items.find((item) => pathname === item.href || pathname.startsWith(`${item.href}/`));
+
+  async function sendAssistantMessage(messages: AiAssistantWidgetMessage[]) {
+    const reply = await apiClient.ai.chat(messages, 'gov.policy_impact');
+    return {
+      buttons: reply.buttons.slice(0, 3),
+      confidence: reply.confidence,
+      content: reply.message.content,
+      tier: reply.tier,
+    };
+  }
 
   return (
     <div className="min-h-screen bg-neutral-50 text-base text-neutral-950">
@@ -69,6 +80,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           {children}
         </div>
       </main>
+      <AiAssistantWidget label={zhCN.chat.title} onSend={sendAssistantMessage} placeholder={zhCN.chat.input} roleLabel="政企助手" />
     </div>
   );
 }

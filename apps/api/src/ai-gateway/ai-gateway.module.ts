@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 
+import { AiGatewayController } from './ai-gateway.controller.js';
 import { AiGatewayService } from './ai-gateway.service.js';
 import { AiExportAuditService } from './audit/ai-export-audit.service.js';
 import { AutoDowngradeService } from './auto-downgrade.service.js';
@@ -17,6 +18,7 @@ import { SafetyFilterService } from './safety-filter.service.js';
 import { SanitizerService } from './sanitizer/sanitizer.service.js';
 
 @Module({
+  controllers: [AiGatewayController],
   exports: [AiGatewayService],
   providers: [
     AiExportAuditService,
