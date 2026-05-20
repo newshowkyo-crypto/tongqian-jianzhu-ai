@@ -17,6 +17,7 @@ import { CreditModule } from './modules/credit/credit.module.js';
 import { DataExportModule } from './modules/data-export/data-export.module.js';
 import { DrawingModule } from './modules/drawing/drawing.module.js';
 import { GovSoeModule } from './modules/gov-soe/gov-soe.module.js';
+import { HealthModule } from './modules/health/health.module.js';
 import { KnowledgeModule } from './modules/knowledge/knowledge.module.js';
 import { NotificationModule } from './modules/notification/notification.module.js';
 import { OpportunityModule } from './modules/opportunity/opportunity.module.js';
@@ -57,6 +58,7 @@ class HealthController {
     DataExportModule,
     DrawingModule,
     GovSoeModule,
+    HealthModule,
     KnowledgeModule,
     NotificationModule,
     OpportunityModule,
