@@ -1,36 +1,36 @@
 import { randomUUID } from 'node:crypto';
 
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AiCacheStrategy, type AiRequest, type AiResponse } from '@tongqian/types';
 
-import type { AiExportAuditService } from './audit/ai-export-audit.service.js';
-import type { ExactCacheService } from './cache/exact-cache.service.js';
-import type { CostCapEnforcerService } from './cost-cap-enforcer.service.js';
-import type { CostMeterService } from './cost-meter.service.js';
-import type { CreditLedgerService } from './credit/credit-ledger.service.js';
-import type { OutputValidatorService } from './output-validator.service.js';
-import type { PromptBuilderService } from './prompt-builder.service.js';
+import { AiExportAuditService as AiExportAuditServiceToken, type AiExportAuditService } from './audit/ai-export-audit.service.js';
+import { ExactCacheService as ExactCacheServiceToken, type ExactCacheService } from './cache/exact-cache.service.js';
+import { CostCapEnforcerService as CostCapEnforcerServiceToken, type CostCapEnforcerService } from './cost-cap-enforcer.service.js';
+import { CostMeterService as CostMeterServiceToken, type CostMeterService } from './cost-meter.service.js';
+import { CreditLedgerService as CreditLedgerServiceToken, type CreditLedgerService } from './credit/credit-ledger.service.js';
+import { OutputValidatorService as OutputValidatorServiceToken, type OutputValidatorService } from './output-validator.service.js';
+import { PromptBuilderService as PromptBuilderServiceToken, type PromptBuilderService } from './prompt-builder.service.js';
 import { contractReviewBasicPrompt } from './prompts/contract-review-basic.js';
 import { promptTemplateByTaskType } from './prompts/index.js';
-import type { ProviderRouterService } from './providers/provider-router.service.js';
-import type { RoutingService } from './routing/routing.service.js';
-import type { SafetyFilterService } from './safety-filter.service.js';
-import type { SanitizerService } from './sanitizer/sanitizer.service.js';
+import { ProviderRouterService as ProviderRouterServiceToken, type ProviderRouterService } from './providers/provider-router.service.js';
+import { RoutingService as RoutingServiceToken, type RoutingService } from './routing/routing.service.js';
+import { SafetyFilterService as SafetyFilterServiceToken, type SafetyFilterService } from './safety-filter.service.js';
+import { SanitizerService as SanitizerServiceToken, type SanitizerService } from './sanitizer/sanitizer.service.js';
 
 @Injectable()
 export class OrchestratorService {
   constructor(
-    private readonly audit: AiExportAuditService,
-    private readonly cache: ExactCacheService,
-    private readonly costCap: CostCapEnforcerService,
-    private readonly costMeter: CostMeterService,
-    private readonly credit: CreditLedgerService,
-    private readonly outputValidator: OutputValidatorService,
-    private readonly promptBuilder: PromptBuilderService,
-    private readonly providers: ProviderRouterService,
-    private readonly routing: RoutingService,
-    private readonly safety: SafetyFilterService,
-    private readonly sanitizer: SanitizerService,
+    @Inject(AiExportAuditServiceToken) private readonly audit: AiExportAuditService,
+    @Inject(ExactCacheServiceToken) private readonly cache: ExactCacheService,
+    @Inject(CostCapEnforcerServiceToken) private readonly costCap: CostCapEnforcerService,
+    @Inject(CostMeterServiceToken) private readonly costMeter: CostMeterService,
+    @Inject(CreditLedgerServiceToken) private readonly credit: CreditLedgerService,
+    @Inject(OutputValidatorServiceToken) private readonly outputValidator: OutputValidatorService,
+    @Inject(PromptBuilderServiceToken) private readonly promptBuilder: PromptBuilderService,
+    @Inject(ProviderRouterServiceToken) private readonly providers: ProviderRouterService,
+    @Inject(RoutingServiceToken) private readonly routing: RoutingService,
+    @Inject(SafetyFilterServiceToken) private readonly safety: SafetyFilterService,
+    @Inject(SanitizerServiceToken) private readonly sanitizer: SanitizerService,
   ) {}
 
   async invoke<T>(request: AiRequest): Promise<AiResponse<T>> {

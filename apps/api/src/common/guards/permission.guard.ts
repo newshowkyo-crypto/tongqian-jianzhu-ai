@@ -1,8 +1,8 @@
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
-import { ForbiddenException, Injectable } from '@nestjs/common';
-import type { Reflector } from '@nestjs/core';
+import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 
-import type { TenantContextService } from '../context/tenant-context.service.js';
+import { TenantContextService as TenantContextServiceToken, type TenantContextService } from '../context/tenant-context.service.js';
 import { REQUIRED_PERMISSION_KEY } from '../decorators/require-permission.decorator.js';
 
 const ROLE_PERMISSION_PREFIXES: Readonly<Record<string, readonly string[]>> = {
@@ -16,8 +16,8 @@ const ROLE_PERMISSION_PREFIXES: Readonly<Record<string, readonly string[]>> = {
 @Injectable()
 export class PermissionGuard implements CanActivate {
   constructor(
-    private readonly reflector: Reflector,
-    private readonly tenantContext: TenantContextService,
+    @Inject(Reflector) private readonly reflector: Reflector,
+    @Inject(TenantContextServiceToken) private readonly tenantContext: TenantContextService,
   ) {}
 
   canActivate(context: ExecutionContext): boolean {

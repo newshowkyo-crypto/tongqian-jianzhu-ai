@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { BusinessError, ErrorCodes } from '@tongqian/errors';
 import type { AiRequest, AiResponse } from '@tongqian/types';
 
-import type { OrchestratorService } from './orchestrator.service.js';
+import { OrchestratorService as OrchestratorServiceToken, type OrchestratorService } from './orchestrator.service.js';
 
 export interface AiGatewayAuditEnvelope {
   readonly action: 'AI_GATEWAY_INVOKE' | 'AI_GATEWAY_VALIDATE' | 'AI_GATEWAY_PREVIEW';
@@ -23,7 +23,7 @@ export interface AiGatewayPreview {
 
 @Injectable()
 export class AiGatewayService {
-  constructor(private readonly orchestrator: OrchestratorService) {}
+  constructor(@Inject(OrchestratorServiceToken) private readonly orchestrator: OrchestratorService) {}
 
   /**
    * Invokes the full AI Gateway chain after validating tenant and idempotency context.
