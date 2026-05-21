@@ -90,6 +90,25 @@ async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, new ExpressAdapter(), {
     logger: ['error', 'warn', 'log'],
   });
+  app.enableCors({
+    allowedHeaders: ['Authorization', 'Content-Type', 'Idempotency-Key', 'x-tenant-id', 'x-trace-id', 'x-user-id'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://localhost:3010',
+      'http://localhost:3011',
+      'http://localhost:3012',
+      'http://localhost:3013',
+      'http://127.0.0.1:3000',
+      'http://127.0.0.1:3001',
+      'http://127.0.0.1:3010',
+      'http://127.0.0.1:3011',
+      'http://127.0.0.1:3012',
+      'http://127.0.0.1:3013',
+    ],
+  });
 
   await app.listen(port, '0.0.0.0');
 }

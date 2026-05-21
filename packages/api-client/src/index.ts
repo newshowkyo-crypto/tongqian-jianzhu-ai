@@ -110,8 +110,8 @@ const credentialFixtures: CredentialRecord[] = [
 export function createApiClient(options: ApiClientOptions = {}) {
   const envMock =
     typeof process !== 'undefined' && process.env.NEXT_PUBLIC_USE_MOCK
-      ? process.env.NEXT_PUBLIC_USE_MOCK !== 'false'
-      : true;
+      ? process.env.NEXT_PUBLIC_USE_MOCK === 'true'
+      : false;
   const mock = options.mock ?? envMock;
   const http = axios.create({
     baseURL: options.baseURL ?? process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://127.0.0.1:4000/api/v1',
@@ -121,6 +121,8 @@ export function createApiClient(options: ApiClientOptions = {}) {
   http.interceptors.request.use((config) => {
     const token = options.getToken?.() ?? readBrowserToken();
     config.headers.set(traceHeader, cryptoRandomId());
+    config.headers.set('x-tenant-id', readBrowserValue('tongqian.tenantId') ?? 'mock-tenant');
+    config.headers.set('x-user-id', readBrowserValue('tongqian.userId') ?? 'mock-user');
     if (token) config.headers.set('Authorization', `Bearer ${token}`);
     return config;
   });
@@ -318,8 +320,12 @@ function delay<T>(value: T): Promise<T> {
 }
 
 function readBrowserToken(): string | undefined {
+  return readBrowserValue('tongqian.jwt');
+}
+
+function readBrowserValue(key: string): string | undefined {
   if (typeof window === 'undefined') return undefined;
-  return window.localStorage.getItem('tongqian.jwt') ?? undefined;
+  return window.localStorage.getItem(key) ?? undefined;
 }
 
 function cryptoRandomId(): string {
