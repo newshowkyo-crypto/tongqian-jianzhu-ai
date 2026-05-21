@@ -73,6 +73,75 @@ model User {
   @@map("users")
 }
 
+model Role {
+  id          String           @id @default(uuid()) @db.Uuid
+  code        String           @unique
+  name        String
+  description String?
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+  permissions RolePermission[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String           @id @default(uuid()) @db.Uuid
+  code        String           @unique
+  name        String
+  description String?
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+  roles       RolePermission[]
+
+  @@map("permissions")
+}
+
+model RolePermission {
+  id           String     @id @default(uuid()) @db.Uuid
+  roleId       String     @map("role_id") @db.Uuid
+  permissionId String     @map("permission_id") @db.Uuid
+  createdAt    DateTime   @default(now()) @map("created_at")
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@index([permissionId])
+  @@map("role_permissions")
+}
+
+model Secret {
+  id            String   @id @default(uuid()) @db.Uuid
+  key           String   @unique
+  provider      String
+  category      String
+  mode          String   @default("mock")
+  encrypted     String   @map("encrypted_value") @db.Text
+  maskedValue   String?  @map("masked_value")
+  healthStatus  String   @default("mock") @map("health_status")
+  schema        Json     @default("{}")
+  kmsLevel      String   @default("dev") @map("kms_level")
+  lastSwitchedAt DateTime? @map("last_switched_at")
+  lastTestedAt  DateTime? @map("last_tested_at")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@index([provider, category])
+  @@map("secrets")
+}
+
+model MetricsSnapshot {
+  id          String   @id @default(uuid()) @db.Uuid
+  metricKey   String   @map("metric_key")
+  metricValue Decimal  @map("metric_value") @db.Decimal(18, 6)
+  unit        String
+  dimensions  Json     @default("{}")
+  capturedAt  DateTime @default(now()) @map("captured_at")
+
+  @@index([metricKey, capturedAt])
+  @@map("metrics_snapshots")
+}
+
 model RefreshToken {
   id        String    @id @default(uuid()) @db.Uuid
   userId    String    @map("user_id") @db.Uuid
@@ -835,6 +904,26 @@ model QualificationCert {
 
   @@index([tenantId, validUntil])
   @@map("qualification_certs")
+}
+
+model QualificationCertificate {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id")
+  category    String
+  subType     String?  @map("sub_type")
+  level       String
+  certNo      String   @unique @map("cert_no")
+  issuedAt    DateTime @map("issued_at")
+  validUntil  DateTime @map("valid_until")
+  issuer      String
+  rawImageUrl String   @map("raw_image_url")
+  status      String
+  meta        Json?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([tenantId, validUntil])
+  @@map("qualification_certificates")
 }
 
 model SafetyLicense {

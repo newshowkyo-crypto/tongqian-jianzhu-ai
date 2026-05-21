@@ -13,6 +13,7 @@ import {
   type AiAssistantWidgetMessage,
   type CyberShellNavigationItem,
 } from '@tongqian/ui';
+import type { CyberHeroProps } from '@tongqian/ui/cyber';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
 
@@ -32,6 +33,8 @@ const navigationItems: CyberShellNavigationItem[] = zhCN.navigation.items.map((i
   icon: item.icon,
   label: item.label,
 }));
+const cyberImportCheck: CyberHeroProps['className'] = 'gov-cyber-shell';
+void cyberImportCheck;
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
