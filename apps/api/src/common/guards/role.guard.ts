@@ -1,14 +1,16 @@
-import type { CanActivate, ExecutionContext} from '@nestjs/common';
-import { ForbiddenException, Injectable } from '@nestjs/common';
-import type { Reflector } from '@nestjs/core';
+import type { CanActivate, ExecutionContext } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 
-import type { TenantContextService } from '../context/tenant-context.service.js';
+import { TenantContextService } from '../context/tenant-context.service.js';
 import { REQUIRED_ROLES_KEY } from '../decorators/roles.decorator.js';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
   constructor(
+    @Inject(Reflector)
     private readonly reflector: Reflector,
+    @Inject(TenantContextService)
     private readonly tenantContext: TenantContextService,
   ) {}
 

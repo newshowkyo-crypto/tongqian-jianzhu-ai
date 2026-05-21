@@ -1,20 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { BusinessError, ErrorCodes } from '@tongqian/errors';
 
-import type { AgentRegistrationService } from './agent-registration.service.js';
-import type { BuildingCompanyRegistrationService } from './building-company-registration.service.js';
-import type { ConflictDetectorService } from './conflict-detector.service.js';
-import type { DomainRouterService } from './domain-router.service.js';
-import type { GovRegistrationService } from './gov-registration.service.js';
+import { AgentRegistrationService } from './agent-registration.service.js';
+import { BuildingCompanyRegistrationService } from './building-company-registration.service.js';
+import { ConflictDetectorService } from './conflict-detector.service.js';
+import { DomainRouterService } from './domain-router.service.js';
+import { GovRegistrationService } from './gov-registration.service.js';
 import type { RegistrationInput, RegistrationResult } from './registration-types.js';
 
 @Injectable()
 export class UnifiedRegistrationService {
   constructor(
+    @Inject(AgentRegistrationService)
     private readonly agentRegistration: AgentRegistrationService,
+    @Inject(BuildingCompanyRegistrationService)
     private readonly buildingRegistration: BuildingCompanyRegistrationService,
+    @Inject(ConflictDetectorService)
     private readonly conflictDetector: ConflictDetectorService,
+    @Inject(DomainRouterService)
     private readonly domainRouter: DomainRouterService,
+    @Inject(GovRegistrationService)
     private readonly govRegistration: GovRegistrationService,
   ) {}
 

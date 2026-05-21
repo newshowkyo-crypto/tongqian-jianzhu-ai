@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { BusinessError, ErrorCodes } from '@tongqian/errors';
 
-import type { ApprovalTemplateService } from './approval-template.service.js';
+import { ApprovalTemplateService } from './approval-template.service.js';
 
 export interface ApprovalFlow {
   auditTrail?: Array<{ action: string; actorId?: string; at: string; note?: string }>;
@@ -18,7 +18,10 @@ export interface ApprovalFlow {
 export class ApprovalEngineService {
   private readonly flows = new Map<string, ApprovalFlow>();
 
-  constructor(private readonly templates: ApprovalTemplateService) {}
+  constructor(
+    @Inject(ApprovalTemplateService)
+    private readonly templates: ApprovalTemplateService,
+  ) {}
 
   createFlow(input: { resourceId: string; resourceType: string; type: string }): ApprovalFlow {
     const template = this.templates.getActive(input.type);

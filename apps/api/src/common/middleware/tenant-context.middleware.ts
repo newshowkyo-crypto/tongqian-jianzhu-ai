@@ -1,7 +1,7 @@
 import type { NestMiddleware } from '@nestjs/common';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
-import type { TenantContextService } from '../context/tenant-context.service.js';
+import { TenantContextService } from '../context/tenant-context.service.js';
 
 interface HeaderRequest {
   headers: Record<string, string | string[] | undefined>;
@@ -12,7 +12,10 @@ type NextFunction = () => void;
 
 @Injectable()
 export class TenantContextMiddleware implements NestMiddleware {
-  constructor(private readonly tenantContext: TenantContextService) {}
+  constructor(
+    @Inject(TenantContextService)
+    private readonly tenantContext: TenantContextService,
+  ) {}
 
   use(request: HeaderRequest, _response: HeaderResponse, next: NextFunction): void {
     const roles = String(request.headers['x-roles'] ?? request.headers['x-role'] ?? 'BUILDING_COMPANY_USER')
