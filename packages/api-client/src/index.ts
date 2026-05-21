@@ -138,8 +138,8 @@ const traceHeader = 'x-trace-id';
 
 const credentialFixtures: CredentialRecord[] = [
   { approval: 'active', key: 'DEEPSEEK_API_KEY', lastPingAt: '2026-05-20 10:00', mode: 'real', provider: 'deepseek', updatedAt: 'DeepSeek active' },
-  { approval: 'disabled', key: 'ALIYUN_DASHSCOPE_API_KEY', mode: 'mock', provider: 'dashscope', updatedAt: 'DISABLED_UNTIL_API_KEY_PROVIDED' },
-  { approval: 'disabled', key: 'OPENROUTER_API_KEY', mode: 'mock', provider: 'openrouter', updatedAt: 'DISABLED_UNTIL_API_KEY_PROVIDED' },
+  { approval: 'active', key: 'ALIYUN_DASHSCOPE_API_KEY', lastPingAt: '2026-05-21 09:00', mode: 'real', provider: 'dashscope', updatedAt: 'M3.12 qwen3-max/qwen3-vl-max active' },
+  { approval: 'disabled', key: 'OPENROUTER_API_KEY', mode: 'mock', provider: 'openrouter', updatedAt: 'DEPRECATED_DO_NOT_USE' },
   { approval: 'pending_approval', key: 'WECHAT_PAY_*', mode: 'mock', provider: 'wechat_pay', updatedAt: 'P1 mock provider' },
   { approval: 'pending_approval', key: 'ALIYUN_OSS_*', mode: 'mock', provider: 'aliyun_oss', updatedAt: 'P1 mock provider' },
 ];
@@ -293,7 +293,7 @@ function createAiApi(http: AxiosInstance, mock: boolean) {
           buttons: ['Self execute', 'Request field support', 'Request Tongqian Strategy', 'Manual review', 'Expert consultation'],
           confidence: 'high',
           message: {
-            content: `DeepSeek mock handled ${messages.length} context messages for ${taskType}. Suggested focus: cash flow, contract evidence chain, approval owner, and next action deadline.`,
+            content: `M3.12 domestic AI mock handled ${messages.length} context messages for ${taskType}. Daily text uses qwen3-max, deep reasoning uses deepseek-reasoner. Suggested focus: cash flow, contract evidence chain, approval owner, and next action deadline.`,
             role: 'assistant',
           },
           tier: 2,
@@ -445,7 +445,7 @@ function adminDashboardFixture(): AdminDashboardData {
       { label: '收入', value: 680 },
       { label: '推荐', value: 312 },
     ],
-    ai: { deepseek: 'active', latencyMs: 1280, mockFallback: true, routeHealth: 'healthy' },
+    ai: { deepseek: 'deepseek-reasoner active', latencyMs: 1280, mockFallback: true, routeHealth: 'dashscope qwen3-max active / openrouter deprecated' },
     metrics: { dau: 1260, mau: 18200, wau: 6420 },
     redLines: [
       { code: 'BR-901', status: 'green', value: 'AI 成本率 7.8%' },

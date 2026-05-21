@@ -1,11 +1,20 @@
 import { expect, test } from '@playwright/test';
 
-import { invokeOpenAiCompatible } from './helpers';
+import { invokeOpenAiCompatible, loadEnvValue } from './helpers';
 
-test('manual failover chain retries within DeepSeek only for M3.7', async () => {
+test('manual failover chain retries within domestic flagship routes for M3.12', async () => {
   const attempts = [
     () => invokeOpenAiCompatible({ apiKeyEnv: 'DEEPSEEK_API_KEY', baseUrl: 'https://api.deepseek.com', model: 'deepseek-reasoner', providerName: 'deepseek' }, 'tender.framework'),
-    () => invokeOpenAiCompatible({ apiKeyEnv: 'DEEPSEEK_API_KEY', baseUrl: 'https://api.deepseek.com', model: 'deepseek-chat', providerName: 'deepseek' }, 'tender.framework'),
+    () =>
+      invokeOpenAiCompatible(
+        {
+          apiKeyEnv: loadEnvValue('ALIYUN_DASHSCOPE_API_KEY') ? 'ALIYUN_DASHSCOPE_API_KEY' : 'DASHSCOPE_API_KEY',
+          baseUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+          model: 'qwen3-max',
+          providerName: 'aliyun-dashscope',
+        },
+        'chat.long',
+      ),
   ];
 
   let passed = false;

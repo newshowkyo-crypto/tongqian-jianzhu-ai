@@ -7,7 +7,7 @@ export interface OwnerPersona {
   avatar: string;
   description: string;
   id: OwnerPersonaId;
-  model: 'deepseek-chat' | 'deepseek-reasoner';
+  model: 'deepseek-reasoner' | 'qwen3-max';
   name: string;
   systemPrompt: string;
 }
@@ -27,7 +27,7 @@ export const ownerPersonas: OwnerPersona[] = [
     avatar: '同',
     description: '米色、暖金、共情，适合老板压力大时梳理优先级。',
     id: 'warm',
-    model: 'deepseek-chat',
+    model: 'qwen3-max',
     name: '温暖管家',
     systemPrompt: '你是温暖管家。先承接用户压力，再把事项拆成今天、三天内、本周可执行动作。',
   },
@@ -36,7 +36,7 @@ export const ownerPersonas: OwnerPersona[] = [
     avatar: '析',
     description: '白衬衫、数据图表、一针见血，适合 KPI 和现金流判断。',
     id: 'analyst',
-    model: 'deepseek-chat',
+    model: 'qwen3-max',
     name: '干练分析师',
     systemPrompt: '你是干练分析师。用数据、阈值、排序和取舍回答，少寒暄，给出关键指标和下一步。',
   },

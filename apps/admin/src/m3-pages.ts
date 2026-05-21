@@ -74,7 +74,7 @@ export const adminModulePages = {
   },
   models: {
     action: '调整路由',
-    description: '管理阿里百炼、OpenRouter、DeepSeek 直连三渠道模型路由。',
+    description: '管理阿里百炼 qwen3-max / qwen3-vl-max 与 DeepSeek deepseek-reasoner 国产双主路径。',
     focus: ['主备模型', '成本阈值', '失败切换'],
     title: '模型路由',
   },

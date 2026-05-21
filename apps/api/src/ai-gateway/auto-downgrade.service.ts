@@ -22,7 +22,7 @@ export interface AutoDowngradeDecision {
     readonly traceId: string;
   };
   readonly downgraded: boolean;
-  readonly model: 'deepseek-chat' | 'deepseek-reasoner';
+  readonly model: 'deepseek-reasoner' | 'qwen3-max';
   readonly reason: string;
   readonly retryable: boolean;
 }
@@ -46,17 +46,17 @@ const ERROR_RATE_DOWNGRADE = 0.2;
 @Injectable()
 export class AutoDowngradeService {
   /**
-   * Selects the M3.7 DeepSeek model for a task before runtime signals are applied.
+   * Selects the M3.12 domestic flagship model for a task before runtime signals are applied.
    *
    * @param taskType AI task type from shared contracts.
-   * @returns DeepSeek V3 chat for common tasks, DeepSeek Reasoner for high-analysis tasks.
+   * @returns DashScope qwen3-max for common tasks, DeepSeek Reasoner for high-analysis tasks.
    */
-  selectBaseModel(taskType: AiTaskType): 'deepseek-chat' | 'deepseek-reasoner' {
-    return REASONER_TASKS.has(taskType) ? 'deepseek-reasoner' : 'deepseek-chat';
+  selectBaseModel(taskType: AiTaskType): 'deepseek-reasoner' | 'qwen3-max' {
+    return REASONER_TASKS.has(taskType) ? 'deepseek-reasoner' : 'qwen3-max';
   }
 
   /**
-   * Applies BR-904 cost and stability downgrade rules while staying inside DeepSeek.
+   * Applies BR-904 cost and stability downgrade rules while staying on domestic providers.
    *
    * @param input Runtime metrics and tenant context.
    * @returns A deterministic downgrade decision with an audit payload.
@@ -68,7 +68,7 @@ export class AutoDowngradeService {
       input.dailyCostRmb >= COST_DOWNGRADE_RMB ||
       input.latencyP95Ms >= LATENCY_DOWNGRADE_MS ||
       input.errorRate >= ERROR_RATE_DOWNGRADE;
-    const model = shouldDowngrade ? 'deepseek-chat' : baseModel;
+    const model = shouldDowngrade && baseModel !== 'deepseek-reasoner' ? 'qwen3-max' : baseModel;
     const reason = this.resolveReason(input, shouldDowngrade);
 
     return {
@@ -92,11 +92,12 @@ export class AutoDowngradeService {
    *
    * @param model Current model.
    * @param downgrade Whether to force the lowest-cost DeepSeek model.
-   * @returns DeepSeek model name.
+   * @returns M3.12 domestic model name.
    */
   chooseModel(model: string, downgrade: boolean): string {
-    if (!model.startsWith('deepseek-')) return downgrade ? 'deepseek-chat' : 'deepseek-chat';
-    return downgrade ? 'deepseek-chat' : model;
+    if (model === 'deepseek-reasoner') return 'deepseek-reasoner';
+    if (model === 'qwen3-max' || model === 'qwen3-vl-max') return model;
+    return downgrade ? 'qwen3-max' : 'qwen3-max';
   }
 
   private assertTenantContext(input: AutoDowngradeInput): void {

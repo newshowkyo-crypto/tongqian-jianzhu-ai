@@ -16,7 +16,10 @@ export class MetricsService {
 
   constructor() {
     this.gauge('tongqian_api_build_info', 1, { version: process.env.APP_VERSION ?? 'm3.9-local' }, 'API build metadata.');
-    this.gauge('tongqian_ai_provider_active', 1, { provider: 'deepseek' }, 'Active AI provider routing flag.');
+    this.gauge('tongqian_ai_provider_active', 1, { model: 'deepseek-reasoner', provider: 'deepseek-direct', route: 'reasoning' }, 'M3.12 domestic flagship AI routing flag.');
+    this.gauge('tongqian_ai_provider_active', 1, { model: 'qwen3-max', provider: 'aliyun-dashscope', route: 'daily-text' }, 'M3.12 domestic flagship AI routing flag.');
+    this.gauge('tongqian_ai_provider_active', 1, { model: 'qwen3-vl-max', provider: 'aliyun-dashscope', route: 'vision' }, 'M3.12 domestic flagship AI routing flag.');
+    this.gauge('tongqian_ai_provider_deprecated', 1, { provider: 'openrouter', reason: 'DEPRECATED_DO_NOT_USE' }, 'Deprecated overseas model routing flag.');
     this.gauge('tongqian_mock_provider_enabled', 1, { provider: 'oss-wechat-pay-alipay-sms-email' }, 'P1 mock provider readiness.');
   }
 

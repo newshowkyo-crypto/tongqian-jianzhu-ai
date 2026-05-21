@@ -140,7 +140,7 @@ function testInfoAnnotation(message: string): void {
 function recordRealAiMetrics(metrics: Record<string, number | string>): void {
   const dir = resolve('tests/ai-real/results');
   mkdirSync(dir, { recursive: true });
-  appendFileSync(resolve(dir, 'm3.7-deepseek-real.jsonl'), `${JSON.stringify({ ...metrics, at: new Date().toISOString() })}\n`, 'utf8');
+  appendFileSync(resolve(dir, 'm3.12-domestic-flagship-real.jsonl'), `${JSON.stringify({ ...metrics, at: new Date().toISOString() })}\n`, 'utf8');
   process.stderr.write(`[ai-real:metrics] ${JSON.stringify(metrics)}\n`);
 }
 

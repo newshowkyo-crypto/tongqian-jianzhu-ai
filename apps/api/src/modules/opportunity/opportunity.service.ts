@@ -13,7 +13,7 @@ import { ReportCenterService } from '../report-center/report-center.service.js';
 
 const INVESTABILITY_PROMPT_TEMPLATE = {
   fallbackText: 'opportunity.investability.fallback',
-  primaryModel: 'qwen-max',
+  primaryModel: 'qwen3-max',
   safetyChecks: ['no_political', 'value_density_v4'],
   taskType: 'OPP_INVESTABILITY',
   userTemplate: '<opportunity>{{opportunity}}</opportunity><company>{{company}}</company>',

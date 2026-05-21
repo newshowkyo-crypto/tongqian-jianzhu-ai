@@ -7,7 +7,6 @@ const p0Cases = [
   { model: 'deepseek-reasoner', taskType: 'tender.framework' as const },
   { model: 'deepseek-reasoner', taskType: 'qual.upgrade_path' as const },
   { model: 'deepseek-reasoner', taskType: 'ops.policy_impact' as const },
-  { model: 'deepseek-chat', taskType: 'chat.long' as const },
 ];
 
 for (const item of p0Cases) {

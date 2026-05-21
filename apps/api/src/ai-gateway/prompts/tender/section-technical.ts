@@ -1,4 +1,4 @@
-import { AiTaskType } from '@tongqian/types';
+﻿import { AiTaskType } from '@tongqian/types';
 
 import { createConstructionPrompt } from '../shared/system-base.js';
 
@@ -12,12 +12,13 @@ const promptAuditPack = "Role: Tongqian construction AI business steward for Chi
 
 export const tenderSectionTechnicalPrompt = createConstructionPrompt({
   costCredits: 800,
-  description: 'tender section technical prompt template with M3.7 construction controls, DeepSeek routing, JSON schema output, and value-density audit.',
-  fallbackModel: 'deepseek-chat',
+  description: 'tender section technical prompt template with M3.7 construction controls, M3.12 domestic flagship routing, JSON schema output, and value-density audit.',
+  fallbackModel: 'qwen3-max',
   governmentOnly: false,
   knowledge: promptAuditPack,
   primaryModel: 'deepseek-reasoner',
   taskType: AiTaskType.TENDER_SECTION_TECHNICAL,
   title: 'tender section technical',
-  version: 'm3.7-deepseek-v1',
+  version: 'm3.12-domestic-v1',
 });
+

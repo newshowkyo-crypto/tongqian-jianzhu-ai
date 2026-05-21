@@ -29,7 +29,7 @@ export class MorningBriefingCron {
     const owners = ['owner-001', 'owner-002'];
     const briefings = owners.map((userId) => ({
       highlights: ['今日机会 4 条', '风险红灯 1 条', '待审批 2 条'],
-      model: 'deepseek-chat',
+      model: 'qwen3-max',
       notification: 'inbox',
       userId,
     }));

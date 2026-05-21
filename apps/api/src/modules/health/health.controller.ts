@@ -13,9 +13,10 @@ export class HealthController {
     this.metrics.increment('tongqian_health_requests_total', { endpoint: '/api/health' });
     return {
       aiProviders: {
-        aliyunDashscope: 'DISABLED_UNTIL_API_KEY_PROVIDED',
-        deepseek: process.env.DEEPSEEK_API_KEY ? 'ready' : 'mock-ready',
-        openrouter: 'DISABLED_UNTIL_API_KEY_PROVIDED',
+        aliyunDashscope: this.dashscopeReady() ? 'ready:qwen3-max/qwen3-vl-max/text-embedding-v3' : 'mock-ready:qwen3-max/qwen3-vl-max',
+        dashvector: this.envReady('DASHVECTOR_API_KEY') ? 'ready' : 'deferred:mock-semantic-cache',
+        deepseekReasoner: process.env.DEEPSEEK_API_KEY ? 'ready:deepseek-reasoner' : 'mock-ready:deepseek-reasoner',
+        openrouter: 'DEPRECATED_DO_NOT_USE',
       },
       db: this.envReady('DATABASE_URL') ? 'ready' : 'mock-ready',
       redis: this.envReady('REDIS_URL') ? 'ready' : 'mock-ready',
@@ -47,5 +48,9 @@ export class HealthController {
   private envReady(key: string): boolean {
     const value = process.env[key];
     return Boolean(value && !value.includes('PLACEHOLDER') && !value.includes('REPLACE'));
+  }
+
+  private dashscopeReady(): boolean {
+    return this.envReady('ALIYUN_DASHSCOPE_API_KEY') || this.envReady('DASHSCOPE_API_KEY');
   }
 }

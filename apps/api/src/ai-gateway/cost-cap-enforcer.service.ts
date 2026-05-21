@@ -57,7 +57,7 @@ export class CostCapEnforcerService {
    * Keeps compatibility with the original boolean downgrade hook.
    *
    * @param projectedDailyCostRmb Projected user daily AI cost in RMB.
-   * @returns True when the request should fall back to `deepseek-chat`.
+   * @returns True when the request should use the configured M3.12 fallback model.
    */
   shouldDowngrade(projectedDailyCostRmb: number): boolean {
     return projectedDailyCostRmb >= USER_DAILY_DOWNGRADE_RMB;

@@ -51,7 +51,7 @@ export class DrawingService {
     const drawing = this.mustGetDrawing(input.drawingId, input.tenantId);
     const view: DrawingUnderstandingView = {
       aiTaskId: `drawing-understand-${crypto.randomUUID()}`,
-      designParams: { concreteGrade: 'C30', model: 'qwen-vl-max.mock', rebarGrade: 'HRB400' },
+      designParams: { concreteGrade: 'C30', model: 'qwen3-vl-max.mock', rebarGrade: 'HRB400' },
       disclaimer: 'drawing.disclaimer.referenceOnly.requiresDesignerConfirmation',
       drawingId: drawing.id,
       drawingType: drawing.fileFormat === 'dwg' ? 'structural_plan' : 'construction_pdf',

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { BusinessError, ErrorCodes } from '@tongqian/errors';
-import { AiProviderCode, type AiRequest, type AiTaskType } from '@tongqian/types';
+import type { AiProviderCode, AiRequest, AiTaskType } from '@tongqian/types';
 
-import { defaultAiRouting, type AiRouteConfig } from './default-routing.js';
+import { defaultAiRouting, isM312DomesticProvider, type AiRouteConfig } from './default-routing.js';
 
 @Injectable()
 export class RoutingService {
@@ -10,7 +10,7 @@ export class RoutingService {
    * Selects the provider/model route for the request.
    *
    * @param request AI request.
-   * @returns DeepSeek-only route for M3.7.
+   * @returns M3.12 China-only flagship route.
    */
   select(request: AiRequest): AiRouteConfig {
     const route = defaultAiRouting[request.taskType as AiTaskType];
@@ -21,7 +21,7 @@ export class RoutingService {
         message: 'AI task type is not registered in routing table.',
       });
     }
-    return this.enforceM37DeepSeek(route);
+    return this.enforceM312Domestic(route);
   }
 
   /**
@@ -38,20 +38,20 @@ export class RoutingService {
   }
 
   /**
-   * Validates that route overrides still comply with M3.7 all-DeepSeek policy.
+   * Validates that route overrides comply with M3.12 domestic flagship policy.
    *
    * @param route Candidate route.
    * @returns The route when compliant.
    */
-  enforceM37DeepSeek(route: AiRouteConfig): AiRouteConfig {
-    if (route.provider !== AiProviderCode.DEEPSEEK_DIRECT || route.primaryProvider !== AiProviderCode.DEEPSEEK_DIRECT) {
+  enforceM312Domestic(route: AiRouteConfig): AiRouteConfig {
+    if (!isM312DomesticProvider(route.provider) || !isM312DomesticProvider(route.primaryProvider) || !isM312DomesticProvider(route.fallbackProvider) || route.overseas) {
       throw new BusinessError({
         code: ErrorCodes.GOV_DOMESTIC_MODEL_REQUIRED.code,
-        details: { provider: route.provider, primaryProvider: route.primaryProvider },
-        message: 'M3.7 routing only allows DeepSeek direct provider.',
+        details: { fallbackProvider: route.fallbackProvider, provider: route.provider, primaryProvider: route.primaryProvider },
+        message: 'M3.12 routing only allows DeepSeek direct and Aliyun DashScope domestic providers.',
       });
     }
-    return { ...route, fallbackProvider: AiProviderCode.DEEPSEEK_DIRECT, overseas: false };
+    return { ...route, overseas: false };
   }
 
   /**
@@ -61,21 +61,21 @@ export class RoutingService {
    */
   findNonCompliantRoutes(): string[] {
     return Object.entries(defaultAiRouting)
-      .filter(([, route]) => route.provider !== AiProviderCode.DEEPSEEK_DIRECT || route.fallbackProvider !== AiProviderCode.DEEPSEEK_DIRECT)
+      .filter(([, route]) => !isM312DomesticProvider(route.provider) || !isM312DomesticProvider(route.fallbackProvider) || route.overseas)
       .map(([taskType]) => taskType);
   }
 
   /**
-   * Resolves failover sequence. M3.7 intentionally retries inside DeepSeek only.
+   * Resolves failover sequence. M3.12 retries inside the same domestic provider and model family.
    *
    * @param route Base route.
    * @returns Ordered model/provider attempts.
    */
   failoverPlan(route: AiRouteConfig): Array<{ model: string; provider: AiProviderCode }> {
-    const compliant = this.enforceM37DeepSeek(route);
+    const compliant = this.enforceM312Domestic(route);
     return [
-      { model: compliant.primaryModel, provider: AiProviderCode.DEEPSEEK_DIRECT },
-      { model: compliant.fallbackModel, provider: AiProviderCode.DEEPSEEK_DIRECT },
+      { model: compliant.primaryModel, provider: compliant.primaryProvider },
+      { model: compliant.fallbackModel, provider: compliant.fallbackProvider },
     ];
   }
 
@@ -86,6 +86,6 @@ export class RoutingService {
    * @returns True for DeepSeek-only overrides.
    */
   canHotSwap(route: AiRouteConfig): boolean {
-    return route.primaryProvider === AiProviderCode.DEEPSEEK_DIRECT && route.fallbackProvider === AiProviderCode.DEEPSEEK_DIRECT && !route.overseas;
+    return isM312DomesticProvider(route.primaryProvider) && isM312DomesticProvider(route.fallbackProvider) && !route.overseas;
   }
 }

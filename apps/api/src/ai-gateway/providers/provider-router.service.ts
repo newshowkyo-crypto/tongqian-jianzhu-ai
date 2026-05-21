@@ -8,9 +8,8 @@ import { MockAiProvider } from './mock-provider.js';
 export class ProviderRouterService {
   private readonly unhealthyUntil = new Map<AiProviderCode, number>();
   private readonly providers: AiProvider[] = [
-    new MockAiProvider(AiProviderCode.DEEPSEEK_DIRECT, 1, ['deepseek-chat', 'deepseek-reasoner'], isDeepSeekAvailable()),
-    new MockAiProvider(AiProviderCode.ALIYUN_DASHSCOPE, 2, ['qwen-plus', 'qwen-max', 'qwen-vl-max'], false, 'DISABLED_UNTIL_API_KEY_PROVIDED'),
-    new MockAiProvider(AiProviderCode.OPENROUTER, 3, ['claude-sonnet-4-6', 'gpt-5'], false, 'DISABLED_UNTIL_API_KEY_PROVIDED'),
+    new MockAiProvider(AiProviderCode.DEEPSEEK_DIRECT, 1, ['deepseek-reasoner'], isDeepSeekAvailable()),
+    new MockAiProvider(AiProviderCode.ALIYUN_DASHSCOPE, 2, ['qwen3-max', 'qwen3-vl-max', 'text-embedding-v3'], isDashScopeAvailable()),
   ];
 
   async invoke<T>(preferred: AiProviderCode | undefined, request: AiProviderInvokeRequest): Promise<AiRawResponse<T> & { provider: AiProviderCode }> {
@@ -32,13 +31,21 @@ export class ProviderRouterService {
   }
 
   async healthSnapshot(): Promise<Array<{ disabledReason?: string; healthy: boolean; provider: AiProviderCode }>> {
-    return Promise.all(
+    const domesticProviders = await Promise.all(
       this.providers.map(async (provider) => ({
         disabledReason: provider.disabledReason,
         healthy: !this.isTemporarilyRemoved(provider.code) && (await provider.health()),
         provider: provider.code,
       })),
     );
+    return [
+      ...domesticProviders,
+      {
+        disabledReason: 'DEPRECATED_DO_NOT_USE: M3.12 removed OpenRouter, Claude and GPT from callable routing.',
+        healthy: false,
+        provider: AiProviderCode.OPENROUTER,
+      },
+    ];
   }
 
   /**
@@ -88,4 +95,8 @@ function isConfigured(key: string): boolean {
 
 function isDeepSeekAvailable(): boolean {
   return isConfigured('DEEPSEEK_API_KEY') || process.env.DISABLE_DEEPSEEK_LOCAL_MOCK !== 'true';
+}
+
+function isDashScopeAvailable(): boolean {
+  return isConfigured('ALIYUN_DASHSCOPE_API_KEY') || isConfigured('DASHSCOPE_API_KEY') || process.env.DISABLE_DASHSCOPE_LOCAL_MOCK !== 'true';
 }
