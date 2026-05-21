@@ -45,7 +45,6 @@ export const zhCN = {
       { href: '/reports', icon: 'reports', label: '服务报告' },
       { href: '/earnings', icon: 'earnings', label: '分润提现' },
       { href: '/workspace', icon: 'workspace', label: '客户工作台' },
-      { href: '/ingest-feedback', icon: 'reports', label: 'Ingest feedback' },
       { href: '/settings', icon: 'settings', label: '设置' },
     ],
   },

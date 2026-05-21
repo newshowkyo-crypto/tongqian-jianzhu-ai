@@ -36,6 +36,7 @@ async function seedTenantsAndUsers() {
       name: '同乾平台运营',
       type: 'PLATFORM',
       role: 'PLATFORM',
+      platformRole: 'PLATFORM_OWNER',
       phone: '13900039999',
     },
   ];
@@ -46,6 +47,7 @@ async function seedTenantsAndUsers() {
     phone: tenant.phone,
     name: `${tenant.name} 用户`,
     role: tenant.role,
+    platformRole: 'platformRole' in tenant ? tenant.platformRole : undefined,
     index,
   }));
 
@@ -59,8 +61,8 @@ async function seedTenantsAndUsers() {
 
   for (const user of users) {
     await prisma.$executeRaw`
-      INSERT INTO users (id, tenant_id, phone, password_hash, name, primary_role, position_tags, status, created_at)
-      VALUES (${user.id}::uuid, ${user.tenantId}::uuid, ${user.phone}, 'dev-seed-password-hash', ${user.name}, ${user.role}::"UserRole", ARRAY[]::TEXT[], 'active'::"UserStatus", ${now})
+      INSERT INTO users (id, tenant_id, phone, password_hash, name, primary_role, platform_role, position_tags, status, created_at)
+      VALUES (${user.id}::uuid, ${user.tenantId}::uuid, ${user.phone}, 'dev-seed-password-hash', ${user.name}, ${user.role}::"UserRole", ${user.platformRole}, ARRAY[]::TEXT[], 'active'::"UserStatus", ${now})
       ON CONFLICT (phone) DO NOTHING
     `;
   }
@@ -155,6 +157,7 @@ async function seedSystemConfigs() {
     ['credentials.storage.oss', { mode: 'mock' }, 'credentials', '对象存储开发期 mock provider'],
     ['ai.provider.deepseek', { mode: 'real', health: 'ready' }, 'ai', 'P0 AI key verified outside seed'],
     ['feature.partner.enabled', false, 'feature_flag', 'M1-M3 关闭 PARTNER'],
+    ['permissions.platform_owner', { permissions: ['admin:ingest:run'], role: 'PLATFORM_OWNER' }, 'permissions', 'PLATFORM_OWNER can run M5 admin ingest jobs'],
   ] as const;
 
   for (const [key, value, category, description] of configs) {

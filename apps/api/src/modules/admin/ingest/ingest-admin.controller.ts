@@ -23,7 +23,7 @@ const JOB_TARGETS: Record<string, string> = {
 
 @Controller('api/v1/admin/ingest')
 @UseGuards(JwtGuard, PermissionGuard)
-@RequirePermission('')
+@RequirePermission('admin:ingest:run')
 export class IngestAdminController {
   @Post(':jobName/run')
   async run(@Param('jobName') jobName: string, @Req() req: AdminRequest): Promise<unknown> {
