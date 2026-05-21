@@ -40,6 +40,7 @@ export const zhCN = {
       { href: '/funds', icon: 'funds', label: '资金地图' },
       { href: '/consulting', icon: 'consult', label: '咨询入口' },
       { href: '/sourcing', icon: 'sourcing', label: '双向寻源' },
+      { href: '/ingest-watch', icon: 'policy', label: 'Ingest watch' },
     ],
   },
   states: {

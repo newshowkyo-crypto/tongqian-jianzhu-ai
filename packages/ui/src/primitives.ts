@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
 export const buttonVariants = cva(
-  'tq-button-motion inline-flex h-9 items-center justify-center gap-2 rounded-md px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50',
+  'tq-button-motion inline-flex h-9 items-center justify-center gap-2 rounded-[var(--radius-button)] px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--cyber-blue)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50',
   {
     defaultVariants: {
       size: 'md',
@@ -14,11 +14,11 @@ export const buttonVariants = cva(
         lg: 'h-10 px-4 text-sm',
       },
       variant: {
-        danger: 'bg-danger-500 text-white hover:bg-danger-700',
-        ghost: 'bg-transparent text-neutral-700 hover:bg-neutral-100',
-        outline: 'border border-border bg-background text-foreground hover:bg-neutral-50',
-        primary: 'bg-primary-600 text-white hover:bg-primary-700',
-        secondary: 'bg-neutral-100 text-neutral-900 hover:bg-neutral-200',
+        danger: 'border border-danger-500/60 bg-danger-500/20 text-white shadow-[0_0_18px_rgba(220,38,38,0.28)] hover:bg-danger-500/30',
+        ghost: 'bg-transparent text-[var(--text-secondary)] hover:bg-white/5 hover:text-white',
+        outline: 'border border-[var(--border-silver)] bg-[rgba(10,29,61,0.48)] text-[var(--text-primary)] hover:border-[var(--border-silver-hover)] hover:bg-[var(--bg-glass-hover)]',
+        primary: 'border border-[var(--accent-rose)] bg-[linear-gradient(135deg,var(--accent-rose),#b8755c)] text-[#0a1d3d] shadow-[var(--shadow-rose-glow)] hover:brightness-110',
+        secondary: 'border border-[var(--cyber-blue)] bg-[rgba(74,142,255,0.16)] text-white shadow-[var(--shadow-cyber-glow)] hover:bg-[rgba(74,142,255,0.24)]',
       },
     },
   },
@@ -27,18 +27,18 @@ export const buttonVariants = cva(
 export type ButtonVariants = VariantProps<typeof buttonVariants>;
 
 export const badgeVariants = cva(
-  'inline-flex h-6 items-center rounded-md px-2 text-xs font-medium',
+  'inline-flex h-6 items-center rounded-md border px-2 text-xs font-medium backdrop-blur',
   {
     defaultVariants: {
       tone: 'neutral',
     },
     variants: {
       tone: {
-        danger: 'bg-danger-50 text-danger-700',
-        info: 'bg-info-50 text-info-700',
-        neutral: 'bg-neutral-100 text-neutral-700',
-        success: 'bg-success-50 text-success-700',
-        warning: 'bg-warning-50 text-warning-700',
+        danger: 'border-danger-500/50 bg-danger-500/15 text-danger-100',
+        info: 'border-[var(--cyber-blue)] bg-[rgba(74,142,255,0.14)] text-[#dceaff]',
+        neutral: 'border-[var(--border-silver)] bg-white/5 text-[var(--text-secondary)]',
+        success: 'border-success-500/50 bg-success-500/15 text-success-100',
+        warning: 'border-[var(--accent-rose)] bg-[rgba(217,152,128,0.16)] text-[var(--accent-rose-light)]',
       },
     },
   },
@@ -47,9 +47,9 @@ export const badgeVariants = cva(
 export type BadgeVariants = VariantProps<typeof badgeVariants>;
 
 export const inputClassName =
-  'tq-input-motion h-9 w-full rounded-md border border-border bg-background px-3 text-sm outline-none transition-colors placeholder:text-neutral-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 disabled:cursor-not-allowed disabled:opacity-50';
+  'tq-input-motion h-9 w-full rounded-[var(--radius-input)] border border-[var(--border-silver)] bg-[rgba(10,29,61,0.56)] px-3 text-sm text-[var(--text-primary)] outline-none transition-colors placeholder:text-[var(--text-tertiary)] focus:border-[var(--cyber-blue)] focus:ring-2 focus:ring-[rgba(74,142,255,0.22)] disabled:cursor-not-allowed disabled:opacity-50';
 
 export const textareaClassName =
-  'tq-input-motion min-h-24 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors placeholder:text-neutral-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 disabled:cursor-not-allowed disabled:opacity-50';
+  'tq-input-motion min-h-24 w-full rounded-[var(--radius-input)] border border-[var(--border-silver)] bg-[rgba(10,29,61,0.56)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none transition-colors placeholder:text-[var(--text-tertiary)] focus:border-[var(--cyber-blue)] focus:ring-2 focus:ring-[rgba(74,142,255,0.22)] disabled:cursor-not-allowed disabled:opacity-50';
 
-export const cardClassName = 'tq-hover-lift tq-click-inset rounded-lg border border-border bg-background shadow-card';
+export const cardClassName = 'tq-hover-lift tq-click-inset tq-cyber-panel';

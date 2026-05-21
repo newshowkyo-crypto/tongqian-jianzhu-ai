@@ -31,22 +31,19 @@ export interface AiAssistantWidgetProps {
 export function AiAssistantWidget({
   className,
   fullPageHref,
-  greeting = '我是同乾 AI 经营助手，可以帮您梳理合同风险、机会判断、资质路径和今日待办。',
-  label = 'AI 助手',
+  greeting = '\u6211\u662f\u540c\u4e7e AI \u7ecf\u8425\u52a9\u624b\uff0c\u53ef\u4ee5\u5e2e\u60a8\u68b3\u7406\u5408\u540c\u98ce\u9669\u3001\u673a\u4f1a\u5224\u65ad\u3001\u8d44\u8d28\u8def\u5f84\u548c\u4eca\u65e5\u5f85\u529e\u3002',
+  label = 'AI \u52a9\u624b',
   onSend,
-  placeholder = '输入您想追问的经营问题',
-  roleLabel = '经营助手',
+  placeholder = '\u8f93\u5165\u60a8\u60f3\u8ffd\u95ee\u7684\u7ecf\u8425\u95ee\u9898',
+  roleLabel = '\u7ecf\u8425\u52a9\u624b',
 }: AiAssistantWidgetProps): ReactNode {
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState('');
   const [error, setError] = useState('');
   const [isSending, setIsSending] = useState(false);
-  const [quickActions, setQuickActions] = useState<string[]>(['今日风险', '合同付款', '机会速读']);
-  const [messages, setMessages] = useState<AiAssistantWidgetMessage[]>([
-    { content: greeting, role: 'assistant' },
-  ]);
+  const [quickActions, setQuickActions] = useState<string[]>(['\u4eca\u65e5\u98ce\u9669', '\u5408\u540c\u4ed8\u6b3e', '\u673a\u4f1a\u901f\u8bfb']);
+  const [messages, setMessages] = useState<AiAssistantWidgetMessage[]>([{ content: greeting, role: 'assistant' }]);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-
   const latestAssistant = useMemo(() => [...messages].reverse().find((item) => item.role === 'assistant'), [messages]);
 
   async function submit(content = draft): Promise<void> {
@@ -62,7 +59,7 @@ export function AiAssistantWidget({
       setQuickActions(reply.buttons?.slice(0, 5) ?? quickActions);
       setMessages([...nextMessages, { content: reply.content, role: 'assistant' }]);
     } catch (sendError) {
-      setError(sendError instanceof Error ? sendError.message : 'AI 服务暂时不可用，请稍后重试。');
+      setError(sendError instanceof Error ? sendError.message : 'AI \u670d\u52a1\u6682\u65f6\u4e0d\u53ef\u7528\uff0c\u8bf7\u7a0d\u540e\u91cd\u8bd5\u3002');
     } finally {
       setIsSending(false);
       requestAnimationFrame(() => inputRef.current?.focus());
@@ -77,46 +74,46 @@ export function AiAssistantWidget({
   return (
     <div className={cn('fixed bottom-6 right-6 z-[70]', className)}>
       {open ? (
-        <section className="mb-3 w-[min(92vw,390px)] overflow-hidden rounded-lg border border-primary-100 bg-white shadow-2xl">
-          <header className="flex items-center justify-between border-b border-neutral-200 bg-primary-900 px-4 py-3 text-white">
+        <section className="tq-cyber-panel mb-3 w-[min(92vw,390px)] overflow-hidden">
+          <header className="flex items-center justify-between border-b border-[var(--border-silver)] bg-[rgba(10,29,61,0.72)] px-4 py-3 text-white">
             <div>
               <p className="text-sm font-semibold">{label}</p>
-              <p className="text-xs text-primary-100">{roleLabel}</p>
+              <p className="text-xs text-[var(--text-secondary)]">{roleLabel}</p>
             </div>
             <div className="flex items-center gap-2">
               {fullPageHref ? (
-                <a className="rounded-md border border-primary-200 px-2 py-1 text-xs text-primary-50 hover:bg-primary-800" href={fullPageHref}>
-                  打开工作台
+                <a className="rounded-md border border-[var(--border-silver)] px-2 py-1 text-xs text-[var(--text-secondary)] hover:border-[var(--accent-rose)] hover:text-white" href={fullPageHref}>
+                  {'\u6253\u5f00\u5de5\u4f5c\u53f0'}
                 </a>
               ) : null}
-              <button aria-label="关闭 AI 助手" className="grid h-8 w-8 place-items-center rounded-md hover:bg-primary-800" onClick={() => setOpen(false)} type="button">
-                ×
+              <button aria-label="\u5173\u95ed AI \u52a9\u624b" className="grid h-8 w-8 place-items-center rounded-md hover:bg-white/10" onClick={() => setOpen(false)} type="button">
+                x
               </button>
             </div>
           </header>
-          <div className="max-h-[52vh] space-y-3 overflow-y-auto bg-neutral-50 p-4">
+          <div className="max-h-[52vh] space-y-3 overflow-y-auto bg-[rgba(10,29,61,0.42)] p-4">
             {messages.map((message, index) => (
               <article
                 key={`${message.role}-${index}-${message.content.slice(0, 8)}`}
                 className={cn(
                   'rounded-lg border px-3 py-2 text-sm leading-6 shadow-sm',
                   message.role === 'user'
-                    ? 'ml-8 border-primary-100 bg-primary-50 text-primary-950'
-                    : 'mr-8 border-neutral-200 bg-white text-neutral-800',
+                    ? 'ml-8 border-[var(--cyber-blue)] bg-[rgba(74,142,255,0.12)] text-white'
+                    : 'mr-8 border-[var(--border-silver)] bg-white/5 text-[var(--text-secondary)]',
                 )}
               >
                 {message.content}
               </article>
             ))}
-            {isSending ? <p className="text-sm text-neutral-500">正在调用 DeepSeek 分析...</p> : null}
-            {error ? <p className="rounded-md border border-danger-100 bg-danger-50 px-3 py-2 text-sm text-danger-700">{error}</p> : null}
+            {isSending ? <p className="text-sm text-[var(--text-secondary)]">{'\u6b63\u5728\u8c03\u7528\u56fd\u4ea7\u6a21\u578b\u5206\u6790'}...</p> : null}
+            {error ? <p className="rounded-md border border-danger-500/40 bg-danger-500/10 px-3 py-2 text-sm text-danger-100">{error}</p> : null}
           </div>
-          <div className="border-t border-neutral-200 bg-white p-3">
+          <div className="border-t border-[var(--border-silver)] bg-[rgba(10,29,61,0.62)] p-3">
             <div className="mb-2 flex flex-wrap gap-2">
               {quickActions.map((action) => (
                 <button
                   key={action}
-                  className="min-h-9 rounded-full border border-neutral-200 px-3 text-xs text-neutral-700 hover:border-primary-300 hover:bg-primary-50"
+                  className="min-h-9 rounded-full border border-[var(--border-silver)] px-3 text-xs text-[var(--text-secondary)] hover:border-[var(--accent-rose)] hover:text-white"
                   disabled={isSending}
                   onClick={() => void submit(action)}
                   type="button"
@@ -126,17 +123,11 @@ export function AiAssistantWidget({
               ))}
             </div>
             <form className="space-y-2" onSubmit={handleSubmit}>
-              <Textarea
-                ref={inputRef}
-                className="min-h-[84px] resize-none"
-                onChange={(event) => setDraft(event.target.value)}
-                placeholder={placeholder}
-                value={draft}
-              />
+              <Textarea ref={inputRef} className="min-h-[84px] resize-none" onChange={(event) => setDraft(event.target.value)} placeholder={placeholder} value={draft} />
               <div className="flex items-center justify-between gap-3">
-                <Badge tone="info">{latestAssistant ? '上下文已载入' : '新会话'}</Badge>
+                <Badge tone="info">{latestAssistant ? '\u4e0a\u4e0b\u6587\u5df2\u8f7d\u5165' : '\u65b0\u4f1a\u8bdd'}</Badge>
                 <Button disabled={!draft.trim() || isSending} type="submit">
-                  {isSending ? '发送中' : '发送'}
+                  {isSending ? '\u53d1\u9001\u4e2d' : '\u53d1\u9001'}
                 </Button>
               </div>
             </form>
@@ -144,8 +135,8 @@ export function AiAssistantWidget({
         </section>
       ) : null}
       <Button
-        aria-label="打开 AI 助手"
-        className="min-h-12 rounded-full bg-gradient-to-r from-primary-500 to-primary-700 px-5 shadow-md ring-4 ring-primary-100 transition-transform duration-500 [animation:tq-assistant-pulse_2s_ease-in-out_infinite] hover:scale-105"
+        aria-label="\u6253\u5f00 AI \u52a9\u624b"
+        className="min-h-12 rounded-full bg-gradient-to-r from-[#0a1d3d] via-[#1e3a6f] to-[#d99880] px-5 shadow-[var(--shadow-cyber-glow)] ring-1 ring-[var(--border-silver-hover)] transition-transform duration-500 [animation:tq-assistant-pulse_2s_ease-in-out_infinite] hover:scale-105"
         onClick={() => setOpen((value) => !value)}
         type="button"
       >
