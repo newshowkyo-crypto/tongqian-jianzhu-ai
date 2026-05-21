@@ -1,7 +1,7 @@
 use serde::Serialize;
 use tauri::{AppHandle, Emitter};
 
-#[derive(Serialize)]
+#[derive(Clone, Serialize)]
 pub struct DesktopNotification {
   pub title: String,
   pub body: String,

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm dlx @tauri-apps/cli@2 dev",
-    "build": "echo \"Desktop bundle workflow is added in 01-G3\"",
+    "build": "pnpm --filter @tongqian/desktop prepare:web && pnpm --filter @tongqian/desktop tauri build --bundles msi",
     "prepare:web": "pnpm --filter @tongqian/web build && node scripts/prepare-web-standalone.mjs",
     "lint": "echo \"No lint yet for @tongqian/desktop\"",
     "typecheck": "echo \"No TypeScript sources yet for @tongqian/desktop\"",

@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
 export const buttonVariants = cva(
-  'inline-flex h-9 items-center justify-center gap-2 rounded-md px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 disabled:pointer-events-none disabled:opacity-50',
+  'tq-button-motion inline-flex h-9 items-center justify-center gap-2 rounded-md px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50',
   {
     defaultVariants: {
       size: 'md',
@@ -47,9 +47,9 @@ export const badgeVariants = cva(
 export type BadgeVariants = VariantProps<typeof badgeVariants>;
 
 export const inputClassName =
-  'h-9 w-full rounded-md border border-border bg-background px-3 text-sm outline-none transition-colors placeholder:text-neutral-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 disabled:cursor-not-allowed disabled:opacity-50';
+  'tq-input-motion h-9 w-full rounded-md border border-border bg-background px-3 text-sm outline-none transition-colors placeholder:text-neutral-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 disabled:cursor-not-allowed disabled:opacity-50';
 
 export const textareaClassName =
-  'min-h-24 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors placeholder:text-neutral-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 disabled:cursor-not-allowed disabled:opacity-50';
+  'tq-input-motion min-h-24 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors placeholder:text-neutral-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 disabled:cursor-not-allowed disabled:opacity-50';
 
-export const cardClassName = 'rounded-lg border border-border bg-background shadow-card';
+export const cardClassName = 'tq-hover-lift tq-click-inset rounded-lg border border-border bg-background shadow-card';

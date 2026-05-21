@@ -17,7 +17,7 @@ export interface StatCardProps extends ComponentPropsWithoutRef<'div'> {
 
 export function StatCard({ children, className, icon, label, trend, value, ...props }: StatCardProps): ReactNode {
   return (
-    <Card className={cn('transition-shadow duration-200 hover:shadow-md', className)} {...props}>
+    <Card className={cn('tq-glass-card transition-shadow duration-200 hover:shadow-md', className)} {...props}>
       <CardContent className="flex items-start justify-between gap-3 pt-4">
         <div className="space-y-1">
           <p className="text-sm text-neutral-500">{label}</p>
@@ -67,7 +67,7 @@ const levelClassName: Record<ReputationLevel, string> = {
   [ReputationLevel.LV1]: 'bg-neutral-100 text-neutral-600',
   [ReputationLevel.LV2]: 'bg-primary-50 text-primary-700',
   [ReputationLevel.LV3]: 'bg-info-50 text-info-700',
-  [ReputationLevel.LV4]: 'border border-accent-500 bg-accent-50 text-accent-700',
+  [ReputationLevel.LV4]: 'border border-[#d99880] bg-[#d99880]/10 text-[#8f4f3f]',
   [ReputationLevel.LV5]: 'bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 shadow-sm',
 };
 
@@ -143,7 +143,8 @@ export function ProgressRing({ className, max = 1000, value }: { className?: str
     <div className={cn('relative grid aspect-square place-items-center text-center tabular-nums', className)}>
       <svg aria-hidden="true" className="absolute inset-0 h-full w-full -rotate-90" viewBox="0 0 42 42">
         <circle cx="21" cy="21" fill="none" r="15.9" stroke="#e4e4e7" strokeWidth="4" />
-        <circle cx="21" cy="21" fill="none" r="15.9" stroke="#1e5fbf" strokeDasharray={dash} strokeLinecap="round" strokeWidth="4" />
+        <circle cx="21" cy="21" fill="none" r="15.9" stroke="url(#tq-ring-gradient)" strokeDasharray={dash} strokeLinecap="round" strokeWidth="4" style={{ animation: 'tq-ring-draw 1.5s cubic-bezier(0.2,0.8,0.2,1) both' }} />
+        <defs><linearGradient id="tq-ring-gradient" x1="0" x2="1" y1="0" y2="1"><stop stopColor="#4a8eff" /><stop offset="1" stopColor="#d99880" /></linearGradient></defs>
       </svg>
       <div className="relative grid h-[72%] w-[72%] place-items-center rounded-full bg-white text-xl font-bold text-neutral-900">{value}</div>
     </div>

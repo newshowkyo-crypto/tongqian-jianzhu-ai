@@ -4,6 +4,13 @@
   color-scheme: light;
   --font-sans: Inter, PingFang SC, Microsoft YaHei, ui-sans-serif, system-ui, sans-serif;
   --font-mono: JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace;
+  --tq-navy-950: #0a1d3d;
+  --tq-navy-900: #142a52;
+  --tq-navy-800: #1e3a6f;
+  --tq-silver-400: #b5bcc8;
+  --tq-silver-200: #d8dde5;
+  --tq-rose: #d99880;
+  --tq-electric: #4a8eff;
 }
 
 .dark {
@@ -39,4 +46,199 @@ a {
 
 ::selection {
   background: hsl(var(--primary) / 0.18);
+}
+
+.tq-product-surface {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(217, 152, 128, 0.22), transparent 28rem),
+    radial-gradient(circle at 88% 8%, rgba(74, 142, 255, 0.18), transparent 30rem),
+    linear-gradient(180deg, #f8fafc 0%, #eef3f9 100%);
+  min-height: 100%;
+  position: relative;
+}
+
+.tq-product-surface::before {
+  background-image:
+    linear-gradient(rgba(10, 29, 61, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10, 29, 61, 0.045) 1px, transparent 1px);
+  background-size: 28px 28px;
+  content: '';
+  inset: 0;
+  mask-image: linear-gradient(to bottom, black 0%, transparent 70%);
+  pointer-events: none;
+  position: fixed;
+  z-index: 0;
+}
+
+.tq-product-surface::after {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
+  content: '';
+  inset: 0;
+  opacity: 0.035;
+  pointer-events: none;
+  position: fixed;
+  z-index: 0;
+}
+
+.tq-glass-card {
+  backdrop-filter: blur(22px);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(248, 250, 252, 0.62));
+  border: 1px solid rgba(181, 188, 200, 0.55);
+  box-shadow: 0 18px 60px rgba(10, 29, 61, 0.10);
+}
+
+.tq-hover-lift {
+  transition:
+    transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.28s ease,
+    border-color 0.28s ease,
+    background 0.28s ease;
+}
+
+.tq-hover-lift:hover {
+  border-color: rgba(217, 152, 128, 0.7);
+  box-shadow: 0 24px 70px rgba(10, 29, 61, 0.16);
+  transform: translateY(-4px);
+}
+
+.tq-click-inset:active {
+  box-shadow: inset 0 1px 0 rgba(10, 29, 61, 0.12);
+  transform: translateY(-1px) scale(0.995);
+}
+
+.tq-button-motion {
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.tq-button-motion:hover:not(:disabled) {
+  box-shadow: 0 12px 26px rgba(10, 29, 61, 0.15);
+  transform: scale(1.02);
+}
+
+.tq-button-motion:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.tq-input-motion {
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.tq-input-motion:focus {
+  box-shadow: 0 0 0 4px rgba(74, 142, 255, 0.14);
+}
+
+.tq-input-error {
+  animation: tq-shake 0.32s ease both;
+  border-color: #ef4444 !important;
+}
+
+.tq-shimmer {
+  background: linear-gradient(90deg, rgba(216, 221, 229, 0.45), rgba(255, 255, 255, 0.9), rgba(216, 221, 229, 0.45));
+  background-size: 220% 100%;
+  animation: tq-shimmer 1.2s ease-in-out infinite;
+}
+
+.tq-pulse-danger {
+  animation: tq-danger-pulse 0.9s ease-in-out 3;
+}
+
+.tq-particles {
+  overflow: hidden;
+  position: relative;
+}
+
+.tq-particles::before,
+.tq-particles::after {
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.9) 0 1px, transparent 2px),
+    radial-gradient(circle, rgba(217, 152, 128, 0.8) 0 1px, transparent 2px);
+  background-position:
+    0 0,
+    18px 22px;
+  background-size: 44px 44px;
+  content: '';
+  inset: -20%;
+  opacity: 0.28;
+  pointer-events: none;
+  position: absolute;
+}
+
+.tq-particles::after {
+  animation: tq-particles-drift 16s linear infinite;
+}
+
+.tq-snap-row {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+.tq-snap-row > * {
+  scroll-snap-align: start;
+}
+
+.tq-h5-shell {
+  background: linear-gradient(180deg, #f8fafc, #eef3f9);
+  min-height: 100dvh;
+  padding-bottom: calc(88px + env(safe-area-inset-bottom));
+  padding-top: calc(62px + env(safe-area-inset-top));
+}
+
+@keyframes tq-shimmer {
+  to {
+    background-position: -220% 0;
+  }
+}
+
+@keyframes tq-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes tq-danger-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+}
+
+@keyframes tq-particles-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(44px, 44px, 0);
+  }
+}
+
+@keyframes tq-ring-draw {
+  from {
+    stroke-dasharray: 0 100;
+  }
+}
+
+@keyframes tq-funnel-fill {
+  from {
+    transform: scaleY(0.08);
+  }
+  to {
+    transform: scaleY(1);
+  }
 }

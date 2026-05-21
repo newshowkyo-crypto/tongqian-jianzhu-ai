@@ -1,34 +1,47 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Tongqian",
+  "productName": "同乾方略 · 建筑 AI 经营管家",
   "version": "0.1.0",
   "identifier": "com.tongqian.jianzhu",
   "build": {
     "beforeDevCommand": "pnpm --filter @tongqian/web dev",
-    "beforeBuildCommand": "pnpm --filter @tongqian/desktop prepare:web",
+    "beforeBuildCommand": "",
     "devUrl": "http://localhost:3000",
     "frontendDist": "../dist/web-static"
   },
   "app": {
     "windows": [
       {
-        "title": "Tongqian",
-        "width": 1280,
-        "height": 800,
+        "title": "同乾方略 · 建筑 AI 经营管家",
+        "width": 1440,
+        "height": 900,
         "minWidth": 1024,
-        "minHeight": 720
+        "minHeight": 768
       }
     ]
   },
   "bundle": {
     "active": true,
+    "icon": [
+      "../../../packages/ui/src/assets/app-icons/app-icon-32.png",
+      "../../../packages/ui/src/assets/app-icons/app-icon-128.png",
+      "../../../packages/ui/src/assets/app-icons/app-icon-256.png",
+      "../../../packages/ui/src/assets/app-icons/app-icon-512.png",
+      "../../../packages/ui/src/assets/app-icons/app-icon-1024.png",
+      "icons/icon.ico"
+    ],
     "targets": ["msi"],
-    "resources": ["../dist/web-standalone/**/*"]
+    "resources": ["../dist/web-standalone/**/*"],
+    "windows": {
+      "wix": {
+        "language": "zh-CN"
+      }
+    }
   },
   "plugins": {
     "updater": {
       "active": true,
-      "endpoints": ["https://tongqian.example.com/desktop/{{target}}/{{current_version}}"],
+      "endpoints": ["https://www.tongqian.xin/desktop/{{target}}/{{current_version}}/latest.json"],
       "pubkey": "PLACEHOLDER_REPLACE_VIA_RELEASE_SECRET"
     }
   }

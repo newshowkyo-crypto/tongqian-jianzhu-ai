@@ -39,8 +39,15 @@ jobs:
       - name: Prepare desktop web artifacts
         run: pnpm --filter @tongqian/desktop prepare:web
 
+      - name: Resolve package version
+        id: version
+        shell: pwsh
+        run: |
+          $version = node -p "require('./apps/desktop/package.json').version"
+          "version=$version" >> $env:GITHUB_OUTPUT
+
       - name: Build MSI
-        run: pnpm --filter @tongqian/desktop tauri build --bundles msi
+        run: pnpm --filter @tongqian/desktop tauri build --bundles msi --config '{"version":"${{ steps.version.outputs.version }}"}'
 
       - name: Install minisign
         run: choco install minisign -y --no-progress
@@ -68,7 +75,7 @@ jobs:
           $signaturePath = "$($msi.FullName).minisig"
           $signature = if (Test-Path $signaturePath) { Get-Content $signaturePath -Raw } else { "SIGNING_DEFERRED_TO_99_FINAL" }
           @{
-            version = "${{ github.ref_name }}"
+            version = "${{ steps.version.outputs.version }}"
             notes = "Tongqian desktop release"
             pub_date = (Get-Date).ToUniversalTime().ToString("o")
             platforms = @{

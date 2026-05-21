@@ -1,7 +1,12 @@
-import type { Config } from 'tailwindcss';
 import animate from 'tailwindcss-animate';
 
 import { designTokens } from './tokens.js';
+
+type TailwindPresetConfig = {
+  darkMode?: string[];
+  plugins?: unknown[];
+  theme?: Record<string, unknown>;
+};
 
 const fontFamily = Object.fromEntries(
   Object.entries(designTokens.typography.fontFamily).map(([key, value]) => [key, [...value]]),
@@ -51,4 +56,4 @@ export const tongqianTailwindPreset = {
     },
   },
   plugins: [animate],
-} satisfies Partial<Config>;
+} satisfies TailwindPresetConfig;

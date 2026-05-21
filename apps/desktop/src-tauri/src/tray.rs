@@ -1,7 +1,7 @@
 use tauri::{
   menu::{Menu, MenuItem},
   tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
-  App, Manager, Runtime,
+  App, Emitter, Manager, Runtime,
 };
 
 pub fn install<R: Runtime>(app: &mut App<R>) -> tauri::Result<()> {

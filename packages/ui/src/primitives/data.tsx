@@ -24,7 +24,7 @@ TableBody.displayName = 'TableBody';
 
 export const TableRow = forwardRef<ElementRef<'tr'>, ComponentPropsWithoutRef<'tr'>>(
   ({ className, ...props }, ref) => (
-    <tr ref={ref} className={cn('border-b border-border transition-colors hover:bg-neutral-50', className)} {...props} />
+    <tr ref={ref} className={cn('border-b border-border transition-all duration-200 hover:bg-gradient-to-r hover:from-white hover:to-[#e8f1ff] data-[state=selected]:border-l-4 data-[state=selected]:border-l-[#d99880]', className)} {...props} />
   ),
 );
 TableRow.displayName = 'TableRow';
@@ -151,7 +151,7 @@ export const Progress = forwardRef<ElementRef<'progress'>, ProgressProps>(
 Progress.displayName = 'Progress';
 
 export const Skeleton = forwardRef<ElementRef<'div'>, ComponentPropsWithoutRef<'div'>>(
-  ({ className, ...props }, ref) => <div ref={ref} className={cn('animate-pulse rounded-md bg-neutral-100', className)} {...props} />,
+  ({ className, ...props }, ref) => <div ref={ref} className={cn('tq-shimmer rounded-md bg-neutral-100', className)} {...props} />,
 );
 Skeleton.displayName = 'Skeleton';
 

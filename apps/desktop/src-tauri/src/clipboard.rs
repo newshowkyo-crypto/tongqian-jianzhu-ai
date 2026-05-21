@@ -1,4 +1,4 @@
-use tauri::{AppHandle, Manager, WebviewUrl, WebviewWindowBuilder};
+use tauri::{AppHandle, Emitter, Manager, WebviewUrl, WebviewWindowBuilder};
 
 #[tauri::command]
 pub fn open_clipboard_assistant(app: AppHandle, selected_text: Option<String>) -> Result<(), String> {

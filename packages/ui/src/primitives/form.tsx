@@ -14,16 +14,21 @@ import {
 } from '../primitives.js';
 import { cn } from '../utils.js';
 
-export type ButtonProps = ComponentPropsWithoutRef<'button'> & ButtonVariants;
+export type ButtonProps = ComponentPropsWithoutRef<'button'> & ButtonVariants & {
+  loading?: boolean;
+};
 
 export const Button = forwardRef<ElementRef<'button'>, ButtonProps>(
-  ({ className, size, type = 'button', variant, ...props }, ref) => (
+  ({ children, className, disabled, loading = false, size, type = 'button', variant, ...props }, ref) => (
     <button
       ref={ref}
       className={cn(buttonVariants({ size, variant }), className)}
+      disabled={disabled || loading}
       type={type}
       {...props}
-    />
+    >
+      {loading ? <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" /> : children}
+    </button>
   ),
 );
 Button.displayName = 'Button';
