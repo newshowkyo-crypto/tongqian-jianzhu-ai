@@ -15,6 +15,7 @@ import { CashflowFinanceModule } from './modules/cashflow-finance/cashflow-finan
 import { ChatHubModule } from './modules/chat-hub/chat-hub.module.js';
 import { CostEstimateModule } from './modules/cost-estimate/cost-estimate.module.js';
 import { CreditModule } from './modules/credit/credit.module.js';
+import { DashboardModule } from './modules/dashboard/dashboard.module.js';
 import { DataExportModule } from './modules/data-export/data-export.module.js';
 import { DrawingModule } from './modules/drawing/drawing.module.js';
 import { GovSoeModule } from './modules/gov-soe/gov-soe.module.js';
@@ -59,6 +60,7 @@ class HealthController {
     ChatHubModule,
     CostEstimateModule,
     CreditModule,
+    DashboardModule,
     DataExportModule,
     DrawingModule,
     GovSoeModule,

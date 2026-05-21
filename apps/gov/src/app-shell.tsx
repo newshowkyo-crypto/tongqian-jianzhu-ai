@@ -1,7 +1,7 @@
 'use client';
 
 import { apiClient } from '@tongqian/api-client';
-import { AiAssistantWidget, Bell, Building2, Command, FileSearch, Megaphone, MessageSquare, Shield, Wallet, type AiAssistantWidgetMessage } from '@tongqian/ui';
+import { AiAssistantBubble, Bell, Building2, Command, FileSearch, Megaphone, MessageSquare, Shield, Wallet, type AiAssistantWidgetMessage } from '@tongqian/ui';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
@@ -80,7 +80,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           {children}
         </div>
       </main>
-      <AiAssistantWidget label={zhCN.chat.title} onSend={sendAssistantMessage} placeholder={zhCN.chat.input} roleLabel="政企助手" />
+      <AiAssistantBubble onSend={sendAssistantMessage} role="gov" />
     </div>
   );
 }

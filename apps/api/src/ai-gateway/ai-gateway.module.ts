@@ -13,6 +13,7 @@ import { OrchestratorService } from './orchestrator.service.js';
 import { OutputValidatorService } from './output-validator.service.js';
 import { PromptBuilderService } from './prompt-builder.service.js';
 import { ProviderRouterService } from './providers/provider-router.service.js';
+import { GovDomesticOnlyGuard } from './routing/gov-domestic-only.guard.js';
 import { RoutingService } from './routing/routing.service.js';
 import { SafetyFilterService } from './safety-filter.service.js';
 import { SanitizerService } from './sanitizer/sanitizer.service.js';
@@ -28,6 +29,7 @@ import { SanitizerService } from './sanitizer/sanitizer.service.js';
     CostMeterService,
     CreditLedgerService,
     ExactCacheService,
+    GovDomesticOnlyGuard,
     OrchestratorService,
     OutputValidatorService,
     PromptBuilderService,

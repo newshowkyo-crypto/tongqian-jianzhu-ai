@@ -3,6 +3,8 @@ import { chatGeneralPrompt } from './chat/general.js';
 import { chatKpiQueryPrompt } from './chat/kpi-query.js';
 import { chatIntentClassifierPrompt } from './chat/intent-classifier.js';
 import { morningBriefingPrompt } from './chat/morning-briefing.js';
+import { stewardAssistantPrompt } from './chat/steward-assistant.js';
+import { govAssistantPrompt } from './chat/gov-assistant.js';
 import { opportunityRadarSummaryPrompt } from './opportunity/radar-summary.js';
 import { opportunityInvestabilityPrompt } from './opportunity/investability.js';
 import { opportunityOwnerVerifyPrompt } from './opportunity/owner-verify.js';
@@ -39,6 +41,7 @@ export const allPromptTemplates = [
   chatKpiQueryPrompt,
   chatIntentClassifierPrompt,
   morningBriefingPrompt,
+  stewardAssistantPrompt,
   opportunityRadarSummaryPrompt,
   opportunityInvestabilityPrompt,
   opportunityOwnerVerifyPrompt,
@@ -65,6 +68,7 @@ export const allPromptTemplates = [
   govDocFiveTypesPrompt,
   policyMatchPrompt,
   policyImpactAnalysisPrompt,
+  govAssistantPrompt,
   safetyInspectionRecordPrompt,
   cashAgingAnalysisPrompt,
   cashflowForecastPrompt,

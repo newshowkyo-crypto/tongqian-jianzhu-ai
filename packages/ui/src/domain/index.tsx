@@ -1,11 +1,15 @@
+'use client';
+
 import type { DispatchOrderRef, ReputationScore, RequiredElements } from '@tongqian/types';
-import { type ReactNode } from 'react';
+import { type FormEvent, type ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { ConfidenceDots, ConfidenceIndicator, LevelBadge, ProgressRing, TierBadge, TrafficLight } from '../data-display/index.js';
 import { Badge, Progress } from '../primitives/data.js';
 import { Card, CardContent, CardHeader } from '../primitives/feedback.js';
 import { Button, Input } from '../primitives/form.js';
 import { cn } from '../utils.js';
+
+import type { AiAssistantWidgetMessage, AiAssistantWidgetReply } from './ai-assistant-widget.js';
 
 export {
   AiAssistantWidget,
@@ -74,8 +78,93 @@ export function SubscriptionPlanCard({ className, name, price, recommended }: { 
   );
 }
 
-export function AiAssistantBubble({ className, label = 'AI 助理' }: { className?: string; label?: ReactNode }): ReactNode {
-  return <Button className={cn('fixed bottom-6 right-6 min-h-12 rounded-full bg-gradient-to-r from-primary-500 to-primary-700 px-5 shadow-md transition-transform duration-500 [animation:tq-assistant-pulse_2s_ease-in-out_infinite] hover:scale-105', className)}>{label}</Button>;
+export type AiAssistantRole = 'admin' | 'gov' | 'owner' | 'steward';
+
+const assistantRoleConfig: Record<AiAssistantRole, { accent: string; fullPageHref: string; greeting: string; icon: string; placeholder: string; title: string }> = {
+  admin: { accent: 'from-neutral-900 to-neutral-700', fullPageHref: '/assistant', greeting: '??????????????????????????????? SOP?', icon: '?', placeholder: '????????', title: '????' },
+  gov: { accent: 'from-red-900 to-primary-900', fullPageHref: '/assistant', greeting: '???????????????? DeepSeek ??????????????', icon: '?', placeholder: '????????????', title: '????' },
+  owner: { accent: 'from-primary-500 to-primary-700', fullPageHref: '/chat-hub', greeting: '??????????????????????????????', icon: '?', placeholder: '??????', title: '????' },
+  steward: { accent: 'from-rose-600 to-amber-600', fullPageHref: '/assistant', greeting: '?????????????????????????????????????', icon: '?', placeholder: '???????????', title: '?????' },
+};
+
+export function AiAssistantBubble({ className, onSend, role = 'owner' }: { className?: string; onSend?: (messages: AiAssistantWidgetMessage[]) => Promise<AiAssistantWidgetReply>; role?: AiAssistantRole }): ReactNode {
+  const config = assistantRoleConfig[role];
+  const storageKey = `tongqian.aiBubble.${role}`;
+  const [open, setOpen] = useState(false);
+  const [draft, setDraft] = useState('');
+  const [unread, setUnread] = useState(1);
+  const [position, setPosition] = useState({ x: 24, y: 24 });
+  const [messages, setMessages] = useState<AiAssistantWidgetMessage[]>([{ content: config.greeting, role: 'assistant' }]);
+  const [sending, setSending] = useState(false);
+  const quickActions = useMemo(() => (role === 'steward' ? ['??????', '???????', '?????'] : role === 'gov' ? ['???????', '??????', '????'] : role === 'admin' ? ['BR-901 ????', '????', '??????'] : ['????', '????', '????']), [role]);
+
+  useEffect(() => {
+    const raw = typeof window !== 'undefined' ? window.localStorage.getItem(storageKey) : null;
+    if (!raw) return;
+    try {
+      setPosition(JSON.parse(raw) as { x: number; y: number });
+    } catch {
+      setPosition({ x: 24, y: 24 });
+    }
+  }, [storageKey]);
+
+  function persist(next: { x: number; y: number }): void {
+    setPosition(next);
+    if (typeof window !== 'undefined') window.localStorage.setItem(storageKey, JSON.stringify(next));
+  }
+
+  async function submit(content = draft): Promise<void> {
+    const trimmed = content.trim();
+    if (!trimmed || sending) return;
+    const next = [...messages, { content: trimmed, role: 'user' } satisfies AiAssistantWidgetMessage];
+    setMessages(next);
+    setDraft('');
+    setSending(true);
+    try {
+      const reply = onSend ? await onSend(next) : { content: `${config.title}????${trimmed}?????????????????????`, confidence: 'medium' as const, tier: 2 as const };
+      setMessages([...next, { content: reply.content, role: 'assistant' }]);
+      setUnread(0);
+    } finally {
+      setSending(false);
+    }
+  }
+
+  function handleSubmit(event: FormEvent): void {
+    event.preventDefault();
+    void submit();
+  }
+
+  return (
+    <div className={cn('fixed z-[80]', className)} style={{ bottom: position.y, right: position.x }}>
+      {open ? (
+        <section className="mb-3 h-[min(520px,calc(100vh-40px))] w-[min(92vw,320px)] overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-2xl sm:w-[320px]">
+          <header className={`flex items-center justify-between bg-gradient-to-r ${config.accent} px-4 py-3 text-white`}>
+            <div><p className="text-sm font-semibold">{config.title}</p><p className="text-xs text-white/75">{role}</p></div>
+            <a className="rounded-md border border-white/30 px-2 py-1 text-xs" href={config.fullPageHref}>??</a>
+          </header>
+          <div className="h-[310px] space-y-3 overflow-y-auto bg-neutral-50 p-3">
+            {messages.map((message, index) => <article key={`${message.role}-${index}`} className={cn('rounded-md border px-3 py-2 text-sm leading-6', message.role === 'user' ? 'ml-6 border-primary-100 bg-primary-50' : 'mr-6 border-neutral-200 bg-white')}>{message.content}</article>)}
+            {sending ? <p className="text-xs text-neutral-500">????...</p> : null}
+          </div>
+          <form className="space-y-2 border-t border-neutral-200 p-3" onSubmit={handleSubmit}>
+            <div className="flex flex-wrap gap-1">{quickActions.map((action) => <button key={action} className="rounded-full border border-neutral-200 px-2 py-1 text-xs" onClick={() => void submit(action)} type="button">{action}</button>)}</div>
+            <textarea className="min-h-16 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm" onChange={(event) => setDraft(event.target.value)} placeholder={config.placeholder} value={draft} />
+            <Button className="w-full" disabled={!draft.trim() || sending} size="sm" type="submit">??</Button>
+          </form>
+        </section>
+      ) : null}
+      <button
+        className={`relative min-h-12 rounded-full bg-gradient-to-r ${config.accent} px-4 text-sm font-semibold text-white shadow-md ring-4 ring-primary-100 transition-transform duration-500 [animation:tq-assistant-pulse_2s_ease-in-out_infinite] hover:scale-105`}
+        draggable
+        onClick={() => { setOpen((value) => !value); setUnread(0); }}
+        onDragEnd={(event) => persist({ x: Math.max(12, window.innerWidth - event.clientX - 24), y: Math.max(12, window.innerHeight - event.clientY - 24) })}
+        type="button"
+      >
+        <span className="mr-2 inline-grid h-7 w-7 place-items-center rounded-full bg-white/20">{config.icon}</span>{config.title}
+        {unread > 0 ? <span className="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-danger-500 px-1 text-xs text-white">{unread}</span> : null}
+      </button>
+    </div>
+  );
 }
 
 export function ReputationGauge({ className, level, score }: { className?: string; level: ReputationScore['level']; score: number }): ReactNode {

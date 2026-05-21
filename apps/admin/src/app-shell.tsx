@@ -1,7 +1,7 @@
 'use client';
 
 import { apiClient } from '@tongqian/api-client';
-import { AiAssistantWidget, Bell, Command, FileSearch, MessageSquare, Settings, Shield, UserCheck, Wallet, type AiAssistantWidgetMessage } from '@tongqian/ui';
+import { AiAssistantBubble, Bell, Command, FileSearch, MessageSquare, Settings, Shield, UserCheck, Wallet, type AiAssistantWidgetMessage } from '@tongqian/ui';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
@@ -94,7 +94,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </aside>
         </div>
       </main>
-      <AiAssistantWidget label="AI 助手" onSend={sendAssistantMessage} placeholder="输入后台运营、审批、凭证或模型路由问题" roleLabel="平台运营助手" />
+      <AiAssistantBubble onSend={sendAssistantMessage} role="admin" />
     </div>
   );
 }

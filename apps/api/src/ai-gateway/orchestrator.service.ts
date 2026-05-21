@@ -13,6 +13,7 @@ import { PromptBuilderService as PromptBuilderServiceToken, type PromptBuilderSe
 import { contractReviewBasicPrompt } from './prompts/contract-review-basic.js';
 import { promptTemplateByTaskType } from './prompts/index.js';
 import { ProviderRouterService as ProviderRouterServiceToken, type ProviderRouterService } from './providers/provider-router.service.js';
+import { GovDomesticOnlyGuard as GovDomesticOnlyGuardToken, type GovDomesticOnlyGuard } from './routing/gov-domestic-only.guard.js';
 import { RoutingService as RoutingServiceToken, type RoutingService } from './routing/routing.service.js';
 import { SafetyFilterService as SafetyFilterServiceToken, type SafetyFilterService } from './safety-filter.service.js';
 import { SanitizerService as SanitizerServiceToken, type SanitizerService } from './sanitizer/sanitizer.service.js';
@@ -28,6 +29,7 @@ export class OrchestratorService {
     @Inject(OutputValidatorServiceToken) private readonly outputValidator: OutputValidatorService,
     @Inject(PromptBuilderServiceToken) private readonly promptBuilder: PromptBuilderService,
     @Inject(ProviderRouterServiceToken) private readonly providers: ProviderRouterService,
+    @Inject(GovDomesticOnlyGuardToken) private readonly govDomesticOnly: GovDomesticOnlyGuard,
     @Inject(RoutingServiceToken) private readonly routing: RoutingService,
     @Inject(SafetyFilterServiceToken) private readonly safety: SafetyFilterService,
     @Inject(SanitizerServiceToken) private readonly sanitizer: SanitizerService,
@@ -36,7 +38,7 @@ export class OrchestratorService {
   async invoke<T>(request: AiRequest): Promise<AiResponse<T>> {
     const traceId = randomUUID();
     const template = promptTemplateByTaskType.get(request.taskType) ?? contractReviewBasicPrompt;
-    const route = this.routing.select(request);
+    const route = this.govDomesticOnly.assertDomestic(request, this.routing.select(request));
     const cacheHit = request.options?.cacheStrategy !== AiCacheStrategy.NONE ? this.cache.lookup<AiResponse<T>>(request.taskType, request.input) : undefined;
     const key = request.options?.idempotencyKey ?? traceId;
 

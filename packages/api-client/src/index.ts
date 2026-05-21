@@ -88,6 +88,43 @@ export interface ChatSendResult {
   userMessage: ChatMessage;
 }
 
+export interface OwnerDashboardData {
+  generatedAt: string;
+  greeting: string;
+  kpis: {
+    approvals: { trend: string; value: number };
+    credits: { trend: string; value: number };
+    opportunities: { trend: string; value: number };
+    riskRed: { trend: string; value: number };
+  };
+  opportunities: Array<{ deadline: string; meta: string; title: string }>;
+  reports: string[];
+  risks: Array<{ detail: string; level: 'green' | 'red' | 'yellow'; title: string }>;
+}
+
+export interface AgentDashboardData {
+  calendar: { days: Array<{ amount: number; day: number; settled: boolean }>; total: number };
+  dispatch: { available: number; urgent: number };
+  level: string;
+  monthCommission: number;
+  nextLevelGap: number;
+  score: number;
+  scoreChanges: Array<{ amount: number; reason: string; type: 'minus' | 'plus' }>;
+}
+
+export interface GovDashboardData {
+  documents: Array<{ due: string; title: string }>;
+  fundMatches: Array<{ amount: string; score: number; title: string }>;
+  subscriptions: Array<{ level: string; title: string }>;
+}
+
+export interface AdminDashboardData {
+  aarrr: Array<{ label: string; value: number }>;
+  ai: { deepseek: string; latencyMs: number; mockFallback: boolean; routeHealth: string };
+  metrics: { dau: number; mau: number; wau: number };
+  redLines: Array<{ code: string; status: 'green' | 'red' | 'yellow'; value: string }>;
+}
+
 export interface ApiClientOptions {
   baseURL?: string;
   getToken?: () => string | undefined;
@@ -150,8 +187,37 @@ export function createApiClient(options: ApiClientOptions = {}) {
     ai: createAiApi(http, mock),
     chatHub: createChatHubApi(http, mock),
     credentials: createCredentialApi(http, mock),
+    dashboard: createDashboardApi(http, mock),
     http,
     mock,
+  };
+}
+
+function createDashboardApi(http: AxiosInstance, mock: boolean) {
+  return {
+    async admin(): Promise<AdminDashboardData> {
+      if (mock) return delay(adminDashboardFixture());
+      return unwrap(await http.get('/dashboard/admin'));
+    },
+    async agent(): Promise<AgentDashboardData> {
+      if (mock) {
+        const reputation = agentDashboardFixture();
+        return delay(reputation);
+      }
+      const [reputation, calendar] = await Promise.all([
+        unwrap<Omit<AgentDashboardData, 'calendar'>>(await http.get('/agent/reputation')),
+        unwrap<AgentDashboardData['calendar']>(await http.get('/commissions/calendar')),
+      ]);
+      return { ...reputation, calendar };
+    },
+    async gov(): Promise<GovDashboardData> {
+      if (mock) return delay(govDashboardFixture());
+      return unwrap(await http.get('/dashboard/gov'));
+    },
+    async owner(): Promise<OwnerDashboardData> {
+      if (mock) return delay(ownerDashboardFixture());
+      return unwrap(await http.get('/dashboard/owner-kpi'));
+    },
   };
 }
 
@@ -308,6 +374,83 @@ function createChatHubApi(http: AxiosInstance, mock: boolean) {
       }
       return unwrap(await http.post(`/chat/conversations/${conversationId}/messages`, { channel, content }));
     },
+  };
+}
+
+function ownerDashboardFixture(): OwnerDashboardData {
+  return {
+    generatedAt: new Date().toISOString(),
+    greeting: '早安，今天建议先看风险红灯，再处理机会窗口。',
+    kpis: {
+      approvals: { trend: '+3', value: 6 },
+      credits: { trend: '-180', value: 8420 },
+      opportunities: { trend: '+12%', value: 18 },
+      riskRed: { trend: '+2', value: 4 },
+    },
+    opportunities: [
+      { deadline: '今日 17:00', meta: '市政道路 / 3200 万 / 资质匹配 86%', title: '武汉东湖高新区道路改造施工总包' },
+      { deadline: '明日 10:30', meta: '学校维修 / 860 万 / 现金流压力低', title: '黄陂区中小学暑期维修项目' },
+      { deadline: '3 天后', meta: '园区厂房 / 5100 万 / 建议联合体', title: '鄂州临空经济区标准厂房二期' },
+    ],
+    reports: ['昨日合同审查发现 2 条付款节点后置风险。', '本周政策资金窗口新增 3 条。', '安全员证书 27 天后到期。'],
+    risks: [
+      { detail: '甲方审计后付款条款未限定审计期限。', level: 'red', title: '付款节点风险' },
+      { detail: '履约证明缺少竣工验收页。', level: 'yellow', title: '标书资格风险' },
+    ],
+  };
+}
+
+function agentDashboardFixture(): AgentDashboardData {
+  return {
+    calendar: {
+      days: Array.from({ length: 30 }, (_, index) => ({ amount: index % 5 === 0 ? 0 : 180 + index * 12, day: index + 1, settled: index < 18 })),
+      total: 28600,
+    },
+    dispatch: { available: 12, urgent: 3 },
+    level: 'LV4',
+    monthCommission: 28600,
+    nextLevelGap: 120,
+    score: 880,
+    scoreChanges: [
+      { amount: 35, reason: '按时提交合同审查线下核验', type: 'plus' },
+      { amount: -8, reason: '报价响应超时一次', type: 'minus' },
+    ],
+  };
+}
+
+function govDashboardFixture(): GovDashboardData {
+  return {
+    documents: [
+      { due: '今日', title: '专项债项目入库请示' },
+      { due: '本周五', title: '建筑业纾困政策解读稿' },
+    ],
+    fundMatches: [
+      { amount: '1.2 亿', score: 91, title: '城市更新专项债储备项目' },
+      { amount: '2800 万', score: 84, title: '绿色建造示范补贴' },
+    ],
+    subscriptions: [
+      { level: '国家', title: '超长期特别国债项目申报窗口' },
+      { level: '省级', title: '建筑业数字化转型试点' },
+      { level: '市级', title: '中小企业稳岗补贴' },
+    ],
+  };
+}
+
+function adminDashboardFixture(): AdminDashboardData {
+  return {
+    aarrr: [
+      { label: '访问', value: 12840 },
+      { label: '激活', value: 3840 },
+      { label: '留存', value: 2260 },
+      { label: '收入', value: 680 },
+      { label: '推荐', value: 312 },
+    ],
+    ai: { deepseek: 'active', latencyMs: 1280, mockFallback: true, routeHealth: 'healthy' },
+    metrics: { dau: 1260, mau: 18200, wau: 6420 },
+    redLines: [
+      { code: 'BR-901', status: 'green', value: 'AI 成本率 7.8%' },
+      { code: 'BR-903', status: 'yellow', value: '退款率 2.1%' },
+    ],
   };
 }
 

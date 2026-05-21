@@ -2,7 +2,7 @@
 
 import { apiClient } from '@tongqian/api-client';
 import {
-  AiAssistantWidget,
+  AiAssistantBubble,
   type AiAssistantWidgetMessage,
   Award,
   Bell,
@@ -135,7 +135,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           {children}
         </div>
       </main>
-      <AiAssistantWidget fullPageHref="/chat-hub" label={zhCN.chat.title} onSend={sendAssistantMessage} placeholder={zhCN.chat.input} />
+      <AiAssistantBubble onSend={sendAssistantMessage} role="owner" />
     </div>
   );
 }
