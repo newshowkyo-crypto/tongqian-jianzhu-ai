@@ -17,6 +17,8 @@ M3.12 domestic flagship routing is implemented.
 - Typecheck passed for `@tongqian/types`, `@tongqian/api`, `@tongqian/api-client`, `@tongqian/web`, `@tongqian/admin`, `@tongqian/worker`.
 - Lint passed for `@tongqian/api`, `@tongqian/api-client`, `@tongqian/web`, `@tongqian/admin`, `@tongqian/worker`.
 - API build passed.
+- Real AI smoke test passed: 8 passed / 1 skipped using DeepSeek `deepseek-reasoner` and Aliyun DashScope `qwen3-max`.
+- Metrics file: `tests/ai-real/results/m3.12-domestic-flagship-real.jsonl`.
 
 ## Files Touched
 

@@ -1,0 +1,6 @@
+{"completionTokens":1394,"latencyMs":12594,"model":"deepseek-reasoner","promptTokens":3598,"provider":"deepseek","taskType":"contract.review.pro","totalTokens":4992,"at":"2026-05-21T02:39:41.725Z"}
+{"completionTokens":1482,"latencyMs":13332,"model":"deepseek-reasoner","promptTokens":3596,"provider":"deepseek","taskType":"tender.framework","totalTokens":5078,"at":"2026-05-21T02:39:42.450Z"}
+{"completionTokens":1632,"latencyMs":15474,"model":"deepseek-reasoner","promptTokens":3596,"provider":"deepseek","taskType":"tender.framework","totalTokens":5228,"at":"2026-05-21T02:39:57.222Z"}
+{"completionTokens":1046,"latencyMs":32044,"model":"qwen3-max","promptTokens":3687,"provider":"aliyun-dashscope","taskType":"chat.long","totalTokens":4733,"at":"2026-05-21T02:40:01.166Z"}
+{"completionTokens":1667,"latencyMs":15780,"model":"deepseek-reasoner","promptTokens":3599,"provider":"deepseek","taskType":"qual.upgrade_path","totalTokens":5266,"at":"2026-05-21T02:40:13.022Z"}
+{"completionTokens":1529,"latencyMs":13282,"model":"deepseek-reasoner","promptTokens":2438,"provider":"deepseek","taskType":"ops.policy_impact","totalTokens":3967,"at":"2026-05-21T02:40:26.326Z"}
