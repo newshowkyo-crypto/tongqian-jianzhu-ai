@@ -54,7 +54,21 @@ if (-not (Test-Path BLOCKED.md)) { Pass "root has no BLOCKED.md" } else { Fail "
 $m5 = powershell -ExecutionPolicy Bypass -File scripts/verify-m5.ps1
 if (($m5 -join "`n") -match "SUMMARY: PASS=12 FAIL=0") { Pass "verify-m5 remains 12/12 PASS" } else { Fail "verify-m5 output" ($m5 -join "`n") }
 
-$shots = @(Get-ChildItem tests/e2e/screenshots/m6/*.png -ErrorAction SilentlyContinue | Where-Object { $_.Length -ge 51200 })
-if ($shots.Count -ge 12) { Pass "m6 screenshots >= 12 and each >= 50KB" } else { Fail "m6 screenshots" $shots.Count }
+$shots = @(Get-ChildItem tests/e2e/screenshots/m6/*.png -ErrorAction SilentlyContinue)
+$badShots = @()
+foreach ($shot in $shots) {
+  $bytes = [System.IO.File]::ReadAllBytes($shot.FullName)
+  $isPng = $bytes.Length -gt 8 -and $bytes[0] -eq 0x89 -and $bytes[1] -eq 0x50 -and $bytes[2] -eq 0x4E -and $bytes[3] -eq 0x47
+  $latin = [System.Text.Encoding]::GetEncoding('ISO-8859-1').GetString($bytes)
+  $idatCount = ([regex]::Matches($latin, 'IDAT')).Count
+  if (-not $isPng -or $shot.Length -lt 204800 -or $idatCount -lt 5) {
+    $badShots += "$($shot.Name): size=$($shot.Length) idat=$idatCount png=$isPng"
+  }
+}
+if ($shots.Count -ge 12 -and $badShots.Count -eq 0) {
+  Pass "m6 screenshots >= 12, each >= 200KB and IDAT >= 5 (real Playwright capture)"
+} else {
+  Fail "m6 screenshots strict real-capture check" "count=$($shots.Count); bad=$($badShots -join '; ')"
+}
 
 Write-Output "PASS $pass/18"

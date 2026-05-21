@@ -23,7 +23,7 @@ PASS [14] 20 jobs have audit_logs or ingest_runs records
 PASS [15] secrets table >= 20 encrypted rows
 PASS [16] root has no BLOCKED.md
 PASS [17] verify-m5 remains 12/12 PASS
-PASS [18] m6 screenshots >= 12 and each >= 50KB
+PASS [18] m6 screenshots >= 12, each >= 200KB and IDAT >= 5 (real Playwright capture)
 PASS 18/18
 ```
 
@@ -48,18 +48,18 @@ SUMMARY: PASS=12 FAIL=0
 ## Screenshot List
 
 ```text
-m6-admin-ai-monitor.png              186666
-m6-admin-credentials-edit-drawer.png 194255
-m6-admin-credentials-overview.png    194370
-m6-admin-health.png                  185901
-m6-admin-jobs.png                    185343
-m6-admin-notifications.png           189086
-m6-admin-observability.png           191117
-m6-admin-overview-with-metrics.png   194006
-m6-agent-dispatch-with-data.png      194122
-m6-cyber-component-storybook.png     193998
-m6-gov-dashboard-with-data.png       193497
-m6-web-dashboard-with-data.png       192589
+m6-admin-ai-monitor.png               6665941
+m6-admin-credentials-edit-drawer.png  9288119
+m6-admin-credentials-overview.png     9640641
+m6-admin-health.png                   6557170
+m6-admin-jobs.png                     7595969
+m6-admin-notifications.png            6733115
+m6-admin-observability.png            6476277
+m6-admin-overview-with-metrics.png    6478077
+m6-agent-dispatch-with-data.png       8839984
+m6-cyber-component-storybook.png     10267893
+m6-gov-dashboard-with-data.png        6074912
+m6-web-dashboard-with-data.png        7340302
 ```
 
 Path: `tests/e2e/screenshots/m6/`
@@ -94,7 +94,14 @@ Block 4: Completed. Demo seed rows meet all M6 thresholds for tenants, opportuni
 
 Block 5: Completed. `scripts/run-all-jobs-once.mjs` wrote 10 cron audit records and 10 collector ingest records.
 
-Block 6: Completed. `scripts/verify-m6.ps1` passes 18/18, `scripts/verify-m5.ps1` remains 12/12 PASS, and 12 screenshots were generated over 50KB each.
+Block 6: Completed. `scripts/verify-m6.ps1` passes 18/18, `scripts/verify-m5.ps1` remains 12/12 PASS, and 12 screenshots pass the >= 200KB plus IDAT >= 5 real-capture check.
+
+## Real Screenshot Re-capture (2026-05-21)
+
+- Removed 12 synthetic placeholder PNGs in commit `1e181bf` (`chore(m6): remove fake synthetic screenshots before real capture`).
+- Captured 12 real Playwright screenshots via `.kiro/state/m6-screenshots.cjs`.
+- Tightened `scripts/verify-m6.ps1` [18]: each PNG must be >= 200KB and contain IDAT >= 5.
+- All 18/18 PASS under the new criteria.
 
 ## Still Mock
 
