@@ -12,6 +12,12 @@ import { AiCostMonitorCron } from './jobs/ai-cost-monitor.cron.js';
 import { AuditArchiveCron } from './jobs/audit-archive.cron.js';
 import { BackupCron } from './jobs/backup.cron.js';
 import { CreditExpiryCron } from './jobs/credit-expiry.cron.js';
+import { DocTemplateScraperCron } from './jobs/data-collection/doc-template-scraper.cron.js';
+import { IndustryNewsScraperCron } from './jobs/data-collection/industry-news-scraper.cron.js';
+import { LegalRegulationScraperCron } from './jobs/data-collection/legal-regulation-scraper.cron.js';
+import { MohurdStandardsScraperCron } from './jobs/data-collection/mohurd-standards-scraper.cron.js';
+import { PolicyFundScraperCron } from './jobs/data-collection/policy-fund-scraper.cron.js';
+import { TenderAnnouncementScraperCron } from './jobs/data-collection/tender-announcement-scraper.cron.js';
 import { MonthlyReportCron } from './jobs/monthly-report.cron.js';
 import { MorningBriefingCron } from './jobs/morning-briefing.cron.js';
 import { OpportunityRadarScanCron } from './jobs/opportunity-radar-scan.cron.js';
@@ -29,6 +35,12 @@ const cronJobs = [
   new AiCostMonitorCron(),
   new AgentReputationDecayCron(),
   new OpportunityRadarScanCron(),
+  new LegalRegulationScraperCron(),
+  new TenderAnnouncementScraperCron(),
+  new PolicyFundScraperCron(),
+  new IndustryNewsScraperCron(),
+  new DocTemplateScraperCron(),
+  new MohurdStandardsScraperCron(),
 ];
 
 @Module({})

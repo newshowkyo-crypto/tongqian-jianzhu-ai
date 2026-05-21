@@ -16,8 +16,10 @@ import { ChatHubModule } from './modules/chat-hub/chat-hub.module.js';
 import { CostEstimateModule } from './modules/cost-estimate/cost-estimate.module.js';
 import { CreditModule } from './modules/credit/credit.module.js';
 import { DashboardModule } from './modules/dashboard/dashboard.module.js';
+import { DataCurationModule } from './modules/data-curation/data-curation.module.js';
 import { DataExportModule } from './modules/data-export/data-export.module.js';
 import { DrawingModule } from './modules/drawing/drawing.module.js';
+import { ExternalApiModule } from './modules/external-api/external-api.module.js';
 import { GovSoeModule } from './modules/gov-soe/gov-soe.module.js';
 import { HealthModule } from './modules/health/health.module.js';
 import { KnowledgeModule } from './modules/knowledge/knowledge.module.js';
@@ -61,8 +63,10 @@ class HealthController {
     CostEstimateModule,
     CreditModule,
     DashboardModule,
+    DataCurationModule,
     DataExportModule,
     DrawingModule,
+    ExternalApiModule,
     GovSoeModule,
     HealthModule,
     KnowledgeModule,

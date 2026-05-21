@@ -9,6 +9,7 @@ import { SemanticCacheService } from './cache/semantic-cache.service.js';
 import { CostCapEnforcerService } from './cost-cap-enforcer.service.js';
 import { CostMeterService } from './cost-meter.service.js';
 import { CreditLedgerService } from './credit/credit-ledger.service.js';
+import { FewShotInjectorService } from './few-shot-injector.service.js';
 import { OrchestratorService } from './orchestrator.service.js';
 import { OutputValidatorService } from './output-validator.service.js';
 import { PromptBuilderService } from './prompt-builder.service.js';
@@ -29,6 +30,7 @@ import { SanitizerService } from './sanitizer/sanitizer.service.js';
     CostMeterService,
     CreditLedgerService,
     ExactCacheService,
+    FewShotInjectorService,
     GovDomesticOnlyGuard,
     OrchestratorService,
     OutputValidatorService,
