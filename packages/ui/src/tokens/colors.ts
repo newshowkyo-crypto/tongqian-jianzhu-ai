@@ -18,6 +18,18 @@ export const colors = {
     500: '#0284c7',
     700: '#075985',
   },
+  material: {
+    onSurface: '#191b22',
+    onSurfaceVariant: '#424752',
+    outline: '#737784',
+    outlineVariant: '#c2c6d4',
+    primary: '#00479b',
+    primaryContainer: '#1e5fbf',
+    secondary: '#86513d',
+    secondaryContainer: '#ffb9a0',
+    surfaceContainer: '#ededf6',
+    surfaceLow: '#f3f3fc',
+  },
   neutral: {
     50: '#fafafa',
     100: '#f4f4f5',

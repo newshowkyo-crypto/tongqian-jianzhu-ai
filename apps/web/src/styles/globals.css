@@ -11,6 +11,14 @@
   --border-silver: #e2e7f0;
   --accent: #1e5fbf;
   --accent-rose: #d99880;
+  --primary: #00479b;
+  --primary-container: #1e5fbf;
+  --secondary: #86513d;
+  --on-surface: #191b22;
+  --on-surface-variant: #424752;
+  --outline: #737784;
+  --outline-variant: #c2c6d4;
+  --surface-container-low: #f3f3fc;
 }
 
 [data-theme='dark'] {
