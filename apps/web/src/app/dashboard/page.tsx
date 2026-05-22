@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@tongqian/api-client';
-import { AlertTriangle, AnimatedNumber, Bell, Button, CreditDisplay, EmptyState, ErrorState, LoadingState, OpportunityCard, PageContent, PageLayout, Radar, RiskBadge, SectionCard, StatCard, Wallet } from '@tongqian/ui';
+import { AlertTriangle, Bell, Button, CreditDisplay, EmptyState, ErrorState, LoadingState, OpportunityCard, PageContent, PageLayout, Radar, RiskBadge, SectionCard, StatCard, Wallet } from '@tongqian/ui';
 
 const reportCards = ['合同付款节点风险复核', '政策资金窗口 3 条', '资质证书到期提醒'];
 
@@ -36,9 +36,9 @@ export default function DashboardPage() {
         {data ? (
           <>
             <section className="grid gap-4 md:grid-cols-4">
-              <StatCard icon={<Radar />} label="今日机会" trend={<span className="text-success-700">{data.kpis.opportunities.trend}</span>} value={<AnimatedNumber end={data.kpis.opportunities.value} />} />
-              <StatCard className="tq-pulse-danger" icon={<AlertTriangle />} label="风险红灯" trend={<span className="text-danger-700">{data.kpis.riskRed.trend}</span>} value={<AnimatedNumber end={data.kpis.riskRed.value} />} />
-              <StatCard icon={<Bell />} label="待办审批" trend={<span>{data.kpis.approvals.trend}</span>} value={<AnimatedNumber end={data.kpis.approvals.value} />} />
+              <StatCard icon={<Radar />} label="今日机会" trend={<span className="text-success-700">{data.kpis.opportunities.trend}</span>} value={data.kpis.opportunities.value} />
+              <StatCard className="tq-pulse-danger" icon={<AlertTriangle />} label="风险红灯" trend={<span className="text-danger-700">{data.kpis.riskRed.trend}</span>} value={data.kpis.riskRed.value} />
+              <StatCard icon={<Bell />} label="待办审批" trend={<span>{data.kpis.approvals.trend}</span>} value={data.kpis.approvals.value} />
               <StatCard icon={<Wallet />} label="点数余额" trend={<span>{data.kpis.credits.trend}</span>} value={<CreditDisplay credits={data.kpis.credits.value} />} />
             </section>
 

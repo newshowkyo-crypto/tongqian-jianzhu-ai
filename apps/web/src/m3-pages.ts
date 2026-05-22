@@ -1,12 +1,37 @@
+export interface WebModuleKpi {
+  label: string;
+  trend: string;
+  value: string;
+}
+
+export interface WebModuleRow {
+  amount: string;
+  deadline: string;
+  match: string;
+  project: string;
+  region: string;
+  status: string;
+}
+
+export interface WebModuleAction {
+  label: string;
+  taskType: string;
+}
+
 export interface WebModulePageCopy {
   action: string;
   description: string;
   empty: string;
   metric: string;
+  seedActions: WebModuleAction[];
+  seedKpis: WebModuleKpi[];
+  seedRows: WebModuleRow[];
   title: string;
 }
 
-export const webModulePages = {
+type BaseCopy = Omit<WebModulePageCopy, 'seedActions' | 'seedKpis' | 'seedRows'>;
+
+const basePages = {
   approvals: { action: '新建审批', description: '集中处理合同、报价、退款与凭证相关审批。', empty: '暂无待处理审批。', metric: '待办审批', title: '审批工作台' },
   approvalFlows: { action: '查看流程', description: '跟踪审批节点、签署记录与超时提醒。', empty: '暂无审批流程。', metric: '流转中', title: '审批流程' },
   cashflow: { action: '生成预测', description: '查看应收、应付、现金缺口与资金预警。', empty: '暂无现金流数据。', metric: '现金缺口', title: '财务现金流' },
@@ -29,7 +54,7 @@ export const webModulePages = {
   projectSite: { action: '新增日志', description: '施工日志、重大隐患、进度和现场签证管理。', empty: '暂无现场记录。', metric: '现场风险', title: '项目现场' },
   qualifications: { action: '发起体检', description: '资质证书、人员证书、安全许可和升级路径。', empty: '暂无资质。', metric: '临期证书', title: '资质护航' },
   qualificationCerts: { action: '新增证书', description: '统一管理企业资质、人员证书和安全许可证。', empty: '暂无证书。', metric: '有效证书', title: '证书台账' },
-  qualificationCheckups: { action: '开始体检', description: '按资质等级自动检查缺口、临期和升级条件。', empty: '暂无体检记录。', metric: '合规分', title: '资质体检' },
+  qualificationCheckups: { action: '开始体检', description: '按资质等级自动检查缺口、临期和升级条件。', empty: '暂无体检记录。', metric: '合规项', title: '资质体检' },
   reports: { action: '生成报告', description: 'AI 报告中心，汇总合同、投标、资质和经营报告。', empty: '暂无报告。', metric: '本周报告', title: '报告中心' },
   reportHistory: { action: '筛选历史', description: '按项目、客户、风险等级和生成时间检索报告。', empty: '暂无历史报告。', metric: '已归档', title: '报告历史' },
   reportTemplates: { action: '新建模板', description: '管理 H5、PDF 和联合品牌报告模板。', empty: '暂无模板。', metric: '启用模板', title: '报告模板' },
@@ -44,5 +69,41 @@ export const webModulePages = {
   toolsLegal: { action: '法律咨询', description: '合同咨询、修改函、索赔策略和月度风险复盘。', empty: '暂无法务工具记录。', metric: '咨询次数', title: '法务工具' },
   workspace: { action: '邀请成员', description: '团队协作、任务分配和跨岗位上下文同步。', empty: '暂无协作任务。', metric: '团队任务', title: '团队协作' },
   workspaceTeam: { action: '新增成员', description: '维护老板、标书员、财务和项目经理角色。', empty: '暂无成员。', metric: '成员数', title: '团队成员' },
-} as const;
+} satisfies Record<string, BaseCopy>;
 
+const rowTemplates = [
+  ['武汉地铁 12 号线配套工程', '3.2 亿', '2026-06-15', '湖北 武汉', '87%', '可推进'],
+  ['西安城投综合管廊维护', '8500 万', '2026-06-10', '陕西 西安', '79%', '待复核'],
+  ['广州番禺旧改一期', '1.8 亿', '2026-06-22', '广东 广州', '73%', '资料补齐'],
+  ['合肥高新区学校改造', '4200 万', '2026-06-18', '安徽 合肥', '82%', '可投标'],
+  ['成都天府新区园区道路', '9600 万', '2026-06-25', '四川 成都', '76%', '需审批'],
+] as const;
+
+function withSeeds(key: string, copy: BaseCopy): WebModulePageCopy {
+  return {
+    ...copy,
+    seedActions: [
+      { label: `${copy.action}并生成行动清单`, taskType: `${key}.action_plan` },
+      { label: '让 AI 复核风险和证据链', taskType: `${key}.risk_review` },
+      { label: '申请智能管家线下协助', taskType: `${key}.steward_handoff` },
+    ],
+    seedKpis: [
+      { label: copy.metric, trend: '+12.3%', value: '18' },
+      { label: '高优先级', trend: '本周新增 4 项', value: '7' },
+      { label: 'AI 已处理', trend: '平均 42 秒', value: '26' },
+      { label: '待人工确认', trend: '红灯 2 项', value: '3' },
+    ],
+    seedRows: rowTemplates.map(([project, amount, deadline, region, match, status], index) => ({
+      amount,
+      deadline,
+      match,
+      project: `${copy.title} / ${project}`,
+      region,
+      status: index === 0 ? '重点跟进' : status,
+    })),
+  };
+}
+
+export const webModulePages = Object.fromEntries(
+  Object.entries(basePages).map(([key, copy]) => [key, withSeeds(key, copy)]),
+) as { [K in keyof typeof basePages]: WebModulePageCopy };

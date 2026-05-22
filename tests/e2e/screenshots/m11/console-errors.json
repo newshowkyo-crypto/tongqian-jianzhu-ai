@@ -1,0 +1,22 @@
+[
+  {
+    "app": "web",
+    "count": 0,
+    "errors": []
+  },
+  {
+    "app": "admin",
+    "count": 0,
+    "errors": []
+  },
+  {
+    "app": "agent",
+    "count": 0,
+    "errors": []
+  },
+  {
+    "app": "gov",
+    "count": 0,
+    "errors": []
+  }
+]
