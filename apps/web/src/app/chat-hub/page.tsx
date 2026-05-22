@@ -129,13 +129,13 @@ export default function ChatHubPage() {
               <Badge tone="success">4 强制要素</Badge>
               <Badge tone="neutral">Enter 发送 / Shift+Enter 换行</Badge>
             </div>
-            <div className="min-h-[460px] space-y-3 rounded-lg border border-neutral-200 bg-neutral-50 p-4">
+            <div className="min-h-[460px] space-y-4 rounded-lg border border-neutral-200 bg-neutral-50 p-4">
               {messagesQuery.isLoading ? <LoadingState label="正在载入消息" /> : null}
               {messagesQuery.isError ? <ErrorState actionLabel="重试" description="消息暂时不可用。" title="载入失败" /> : null}
               {localMessages.map((message) => <MessageBubble key={message.id} message={message} />)}
               {sendMutation.isPending ? <p className="text-sm text-neutral-500">DeepSeek 正在按「{persona.name}」口径组织回答...</p> : null}
             </div>
-            <div className="mt-4 space-y-3">
+            <div className="mt-4 space-y-4">
               <div className="flex flex-wrap gap-2">
                 {quickPrompts.map((prompt) => <Button key={prompt} onClick={() => submit(prompt)} size="sm" variant="outline">{prompt}</Button>)}
               </div>
@@ -151,7 +151,7 @@ export default function ChatHubPage() {
                 placeholder="输入经营问题，Enter 发送，Shift+Enter 换行"
                 value={draft}
               />
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center justify-between gap-4">
                 <FileUploadButton onPicked={(summary) => setDraft((current) => `${current}\n${summary}`.trim())} />
                 <Button disabled={!draft.trim() || sendMutation.isPending} onClick={() => submit()}>
                   {sendMutation.isPending ? '发送中' : '发送'}

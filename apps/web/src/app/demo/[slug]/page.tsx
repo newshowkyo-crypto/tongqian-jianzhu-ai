@@ -37,20 +37,20 @@ export default function DemoPage({ params }: { params: { slug: string } }) {
   return (
     <main className="tq-product-surface min-h-screen px-6 py-8">
       <section className="relative z-[1] mx-auto max-w-6xl space-y-6">
-        <div className="tq-particles rounded-[32px] bg-[linear-gradient(135deg,#0a1d3d,#142a52)] p-8 text-white shadow-2xl">
-          <p className="text-sm text-[#b5bcc8]">同乾方略 · 内测客户演示</p>
-          <h1 className="mt-3 text-5xl font-semibold tracking-normal">{demo.title}</h1>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-[#d8dde5]">{demo.subtitle}</p>
-          <Button className="mt-8 min-h-12 bg-[#d99880] text-[#0a1d3d] hover:bg-[#d99880]" size="lg">进入演示</Button>
+        <div className="tq-particles rounded-xl bg-[var(--gradient-navy-hero)] p-8 text-white shadow-md">
+          <p className="text-sm text-silver-main">同乾方略 · 内测客户演示</p>
+          <h1 className="mt-3 text-3xl font-semibold tracking-normal">{demo.title}</h1>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-silver-light">{demo.subtitle}</p>
+          <Button className="mt-8 min-h-12 bg-rose-main text-navy-deepest hover:bg-rose-main" size="lg">进入演示</Button>
         </div>
 
         <div className="grid gap-4 lg:grid-cols-5">
-          {demo.steps.map((step, index) => <article key={step} className="tq-glass-card rounded-2xl p-5"><span className="text-xs font-semibold text-[#d99880]">STEP {index + 1}</span><h2 className="mt-2 font-semibold text-[#0a1d3d]">{step}</h2><Progress className="mt-5" value={(index + 1) * 20} /></article>)}
+          {demo.steps.map((step, index) => <article key={step} className="tq-glass-card rounded-xl p-6"><span className="text-xs font-semibold text-rose-main">STEP {index + 1}</span><h2 className="mt-2 font-semibold text-navy-deepest">{step}</h2><Progress className="mt-5" value={(index + 1) * 20} /></article>)}
         </div>
 
         <section className="grid gap-4 lg:grid-cols-[1.2fr_.8fr]">
-          <div className="tq-glass-card rounded-3xl p-6"><p className="text-sm text-neutral-500">AI 审查动画</p><div className="mt-5 h-56 rounded-2xl bg-[linear-gradient(90deg,rgba(10,29,61,.08),rgba(74,142,255,.18),rgba(217,152,128,.22))] tq-shimmer" /></div>
-          <div className="tq-glass-card rounded-3xl p-6"><p className="text-sm text-neutral-500">演示结果</p><h3 className="mt-3 text-2xl font-semibold text-[#0a1d3d]">已生成风险报告、行动清单和 CTA</h3><Button className="mt-6 w-full">立即试用</Button></div>
+          <div className="tq-glass-card rounded-xl p-6"><p className="text-sm text-neutral-500">AI 审查动画</p><div className="mt-5 h-56 rounded-xl bg-[linear-gradient(90deg,rgba(10,29,61,.08),rgba(74,142,255,.18),rgba(217,152,128,.22))] tq-shimmer" /></div>
+          <div className="tq-glass-card rounded-xl p-6"><p className="text-sm text-neutral-500">演示结果</p><h3 className="mt-3 text-2xl font-semibold text-navy-deepest">已生成风险报告、行动清单和 CTA</h3><Button className="mt-6 w-full">立即试用</Button></div>
         </section>
       </section>
     </main>

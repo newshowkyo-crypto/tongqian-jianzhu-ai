@@ -24,7 +24,7 @@ export function MessageBubble({ message }: { message: UiMessage }) {
       >
         <p className="whitespace-pre-wrap">{message.content}</p>
         {!isUser ? (
-          <div className="mt-3 space-y-3 border-t border-neutral-100 pt-3">
+          <div className="mt-3 space-y-4 border-t border-neutral-100 pt-3">
             <div className="flex flex-wrap items-center gap-2">
               <Badge tone="neutral">AI 内容仅供经营决策参考</Badge>
               <TierBadge tier={message.tier ?? 2} />

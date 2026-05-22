@@ -23,7 +23,7 @@ export function GovModulePage({ copy }: { copy: GovModulePageCopy }) {
   return (
     <PageLayout>
       <PageHeader actions={<Button className="min-h-11">{copy.action}</Button>} description={copy.description} title={copy.title} />
-      <PageContent className="space-y-6 text-[15px]">
+      <PageContent className="space-y-6 text-base">
         {isLoading ? <LoadingState label={zhCN.states.loading} /> : null}
         {isError ? <ErrorState actionLabel={zhCN.states.retry} description={zhCN.states.errorDescription} title={zhCN.states.errorTitle} /> : null}
         {isEmpty ? <EmptyState description={copy.emptyDescription} title="暂无数据" /> : null}
@@ -35,7 +35,7 @@ export function GovModulePage({ copy }: { copy: GovModulePageCopy }) {
         </div>
 
         <SectionCard className="border-neutral-300" title="工作提示">
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-3">
             {copy.notices.map((item) => (
               <div key={item} className="rounded-md border border-neutral-300 bg-neutral-50 p-4 font-medium text-neutral-800">
                 {item}
@@ -45,7 +45,7 @@ export function GovModulePage({ copy }: { copy: GovModulePageCopy }) {
         </SectionCard>
 
         <SectionCard className="border-neutral-300" title="近期记录">
-          <div className="space-y-3">
+          <div className="space-y-4">
             {copy.records.map((item) => (
               <article key={item.title} className="flex min-h-16 flex-col gap-2 rounded-md border border-neutral-300 bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
                 <div>

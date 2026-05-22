@@ -18,7 +18,7 @@ export function ConversationSidebar({
 }) {
   return (
     <aside className="rounded-lg border border-neutral-200 bg-white p-4 shadow-card">
-      <div className="mb-3 flex items-center justify-between gap-3">
+      <div className="mb-3 flex items-center justify-between gap-4">
         <h2 className="text-base font-semibold text-neutral-950">最近 30 条</h2>
         <Button onClick={onCreate} size="sm" variant="outline">
           新建

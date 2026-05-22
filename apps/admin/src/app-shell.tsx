@@ -41,9 +41,9 @@ function PermissionsPanel(): ReactNode {
   return (
     <aside className="hidden rounded-lg border border-[var(--border-silver)] bg-[var(--bg-glass)] p-4 shadow-card xl:block">
       <h2 className="text-base font-semibold text-white">{zhCN.permissions.title}</h2>
-      <div className="mt-4 space-y-3">
+      <div className="mt-4 space-y-4">
         {zhCN.permissions.items.map((item) => (
-          <label key={item.key} className="flex items-center justify-between gap-3 rounded-md border border-[var(--border-silver)] px-3 py-2 text-sm">
+          <label key={item.key} className="flex items-center justify-between gap-4 rounded-md border border-[var(--border-silver)] px-3 py-2 text-sm">
             <span>{item.label}</span>
             <input
               aria-label={item.label}

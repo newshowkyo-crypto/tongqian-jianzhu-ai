@@ -21,7 +21,7 @@ export default function AdminAssistantPage() {
       <PageHeader description="技术型产品经理口径，面向 OPC 平台运营。" title="运营顾问" />
       <PageContent className="grid gap-4 lg:grid-cols-[1fr_320px]">
         <SectionCard title="后台运营对话">
-          <div className="min-h-[460px] space-y-3 rounded-lg bg-neutral-50 p-4">{messages.map((message, index) => <article key={index} className={`max-w-[84%] rounded-md border px-4 py-3 text-sm leading-6 ${message.role === 'user' ? 'ml-auto bg-white' : 'bg-white'}`}>{message.content}</article>)}</div>
+          <div className="min-h-[460px] space-y-4 rounded-lg bg-neutral-50 p-4">{messages.map((message, index) => <article key={index} className={`max-w-[84%] rounded-md border px-4 py-3 text-sm leading-6 ${message.role === 'user' ? 'ml-auto bg-white' : 'bg-white'}`}>{message.content}</article>)}</div>
           <Textarea className="mt-3 min-h-28" onChange={(event) => setDraft(event.target.value)} placeholder="问：BR-901 红线告警如何处理？" value={draft} />
           <Button className="mt-3" disabled={!draft.trim() || mutation.isPending} onClick={() => submit()}>发送</Button>
         </SectionCard>

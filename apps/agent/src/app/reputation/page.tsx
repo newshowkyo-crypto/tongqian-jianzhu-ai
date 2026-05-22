@@ -42,7 +42,7 @@ export default function ReputationPage() {
                     cy="100"
                     fill="none"
                     r="82"
-                    stroke="#d4953a"
+                    stroke="#d99880"
                     strokeDasharray={circumference}
                     strokeDashoffset={circumference - progress}
                     strokeLinecap="round"
@@ -73,13 +73,13 @@ export default function ReputationPage() {
                   <p className="mt-2 text-2xl font-bold tabular-nums text-primary-700">T+3</p>
                 </div>
               </div>
-              <p className="rounded-md border border-success-100 bg-success-50 p-3 text-sm text-success-700">{copy.monthlyRecovery}</p>
+              <p className="rounded-md border border-success-100 bg-success-50 p-4 text-sm text-success-700">{copy.monthlyRecovery}</p>
             </div>
           </SectionCard>
         </section>
 
         <SectionCard actions={<Button variant="outline">{copy.appeal}</Button>} title={copy.eventsTitle}>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {copy.events.map((event) => (
               <article
                 key={`${event.date}-${event.reason}`}

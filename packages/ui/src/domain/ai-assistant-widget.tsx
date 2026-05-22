@@ -136,7 +136,7 @@ export function AiAssistantWidget({
       ) : null}
       <Button
         aria-label="\u6253\u5f00 AI \u52a9\u624b"
-        className="min-h-12 rounded-full bg-gradient-to-r from-[#0a1d3d] via-[#1e3a6f] to-[#d99880] px-5 shadow-[var(--shadow-cyber-glow)] ring-1 ring-[var(--border-silver-hover)] transition-transform duration-500 [animation:tq-assistant-pulse_2s_ease-in-out_infinite] hover:scale-105"
+        className="min-h-12 rounded-full bg-gradient-to-r from-navy-deepest via-navy-mid to-rose-main px-5 shadow-[var(--shadow-cyber-glow)] ring-1 ring-[var(--border-silver-hover)] transition-transform duration-500 [animation:tq-assistant-pulse_2s_ease-in-out_infinite] hover:scale-105"
         onClick={() => setOpen((value) => !value)}
         type="button"
       >

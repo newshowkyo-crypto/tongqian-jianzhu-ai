@@ -29,6 +29,13 @@ export const tongqianTailwindPreset = {
         foreground: 'hsl(var(--foreground))',
         primary: designTokens.colors.primary,
         accent: designTokens.colors.accent,
+        navy: designTokens.colors.navy,
+        silver: designTokens.colors.silver,
+        rose: designTokens.colors.rose,
+        cyber: designTokens.colors.cyber,
+        card: {
+          bg: designTokens.colors.cardBg,
+        },
         success: designTokens.colors.success,
         warning: designTokens.colors.warning,
         danger: designTokens.colors.danger,

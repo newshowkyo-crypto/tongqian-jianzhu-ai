@@ -38,7 +38,7 @@ export default function BillingPage() {
                 <CreditDisplay credits={12860} />
               </p>
             </div>
-            <div className="rounded-md bg-primary-50 p-3 text-primary-700">
+            <div className="rounded-md bg-primary-50 p-4 text-primary-700">
               <Wallet className="h-6 w-6" />
             </div>
           </div>
@@ -71,7 +71,7 @@ export default function BillingPage() {
 
         <section className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
           <SectionCard title={copy.rechargeTitle}>
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-2">
               {copy.packs.map((pack) => (
                 <button
                   key={pack.credits}

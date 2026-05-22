@@ -80,7 +80,7 @@ export default function DispatchPage() {
               >
                 <div className="grid gap-4 lg:grid-cols-[1fr_260px]">
                   <div className="space-y-4">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-4">
                       <Avatar fallback={order.customer.slice(0, 1)} />
                       <div>
                         <p className="text-sm font-semibold text-neutral-900">{order.customer}</p>
@@ -91,14 +91,14 @@ export default function DispatchPage() {
 
                     <div className="grid gap-2 sm:grid-cols-4">
                       {order.match.map((score) => (
-                        <div key={score} className="rounded-md border border-primary-100 bg-primary-50 p-3 text-sm font-medium text-primary-700">
+                        <div key={score} className="rounded-md border border-primary-100 bg-primary-50 p-4 text-sm font-medium text-primary-700">
                           {score}
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     <label className="space-y-2 text-sm font-medium text-neutral-700">
                       <span>{copy.quoteLabel}</span>
                       <Input

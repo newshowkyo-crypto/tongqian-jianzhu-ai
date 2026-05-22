@@ -67,7 +67,7 @@ const levelClassName: Record<ReputationLevel, string> = {
   [ReputationLevel.LV1]: 'bg-neutral-100 text-neutral-600',
   [ReputationLevel.LV2]: 'bg-primary-50 text-primary-700',
   [ReputationLevel.LV3]: 'bg-info-50 text-info-700',
-  [ReputationLevel.LV4]: 'border border-[#d99880] bg-[#d99880]/10 text-[#8f4f3f]',
+  [ReputationLevel.LV4]: 'border border-rose-main bg-rose-main/10 text-rose-deep',
   [ReputationLevel.LV5]: 'bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 shadow-sm',
 };
 

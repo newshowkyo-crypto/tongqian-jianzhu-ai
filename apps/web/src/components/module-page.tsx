@@ -53,7 +53,7 @@ export function ModulePage({ copy }: { copy: WebModulePageCopy }) {
             <DataTable columns={columns} data={[...rows]} empty={<EmptyState title={copy.empty} />} />
           </SectionCard>
           <SectionCard title="经营提醒">
-            <div className="space-y-3">
+            <div className="space-y-4">
               <RiskMonitorCard level="yellow" />
               <Alert tone="info">系统已为您保留移动端、公众号和 PDF 报告入口。</Alert>
             </div>

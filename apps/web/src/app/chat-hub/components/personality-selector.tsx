@@ -53,13 +53,13 @@ export const ownerPersonas: OwnerPersona[] = [
 
 export function PersonalitySelector({ onChange, value }: { onChange: (persona: OwnerPersona) => void; value: OwnerPersonaId }) {
   return (
-    <div className="grid gap-3 md:grid-cols-4">
+    <div className="grid gap-4 md:grid-cols-4">
       {ownerPersonas.map((persona) => {
         const active = persona.id === value;
         return (
           <button
             key={persona.id}
-            className={`min-h-[116px] rounded-lg border p-3 text-left transition-all ${
+            className={`min-h-[116px] rounded-lg border p-4 text-left transition-all ${
               active ? 'border-primary-500 bg-primary-50 shadow-card' : 'border-neutral-200 bg-white hover:border-primary-200'
             }`}
             onClick={() => onChange(persona)}

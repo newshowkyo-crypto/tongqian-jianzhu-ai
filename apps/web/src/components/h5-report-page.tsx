@@ -23,12 +23,12 @@ export function H5ReportPage({ copy }: { copy: H5ReportCopy }) {
         </section>
 
         <section className="space-y-4 px-5 py-5">
-          <div className="flex items-center justify-between rounded-md border border-neutral-200 p-3">
+          <div className="flex items-center justify-between rounded-md border border-neutral-200 p-4">
             <span className="text-sm font-medium text-neutral-700">AI 信心度</span>
             <ConfidenceDots score={confidenceScore} />
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             {copy.findings.map((finding) => (
               <p key={finding} className="border-l-4 border-l-warning-500 bg-neutral-50 px-3 py-2 text-sm leading-6 text-neutral-700">
                 {finding}

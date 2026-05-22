@@ -65,21 +65,21 @@ export function IngestWorkbench({ kind }: { kind: IngestPageKind }) {
         title={meta.title}
         actions={<Button disabled={runJob.isPending} onClick={() => runJob.mutate()}>{runJob.isPending ? '运行中' : '立即采集'}</Button>}
       />
-      <PageContent className="space-y-5">
+      <PageContent className="space-y-6">
         {stats.isLoading || runs.isLoading ? <LoadingState label="正在加载采集监控" /> : null}
         {stats.isError || runs.isError ? <ErrorState description="后端采集接口报错，请稍后重试或在「健康监控」查看后端状态" title="采集服务暂不可用" onRetry={() => void Promise.all([stats.refetch(), runs.refetch()])} /> : null}
-        <div className="grid gap-3 md:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-4">
           {visibleCounts.map((item) => <StatCard key={item.table_name} label={item.table_name} value={String(item.count)} trend="数据库行数" />)}
         </div>
         <SectionCard title="采集器入口" description="运行按钮会把采集器写入 Prisma 目标表，并记录一条审计。">
-          <div className="grid gap-3 md:grid-cols-[1fr_auto]">
+          <div className="grid gap-4 md:grid-cols-[1fr_auto]">
             <Input readOnly value={meta.job} />
             <Button disabled={runJob.isPending} onClick={() => runJob.mutate()} variant="outline">立即采集</Button>
           </div>
         </SectionCard>
         {kind === 'court' ? (
           <SectionCard title="裁判文书 CSV 上传" description="CSV 上传接口会写入 court_judgments 和 ingest_runs。">
-            <div className="flex flex-wrap items-end gap-3">
+            <div className="flex flex-wrap items-end gap-4">
               <Input accept=".csv,text/csv" onChange={(event) => setFile(event.target.files?.[0])} type="file" />
               <Button disabled={courtUpload.isPending} onClick={() => courtUpload.mutate()}>上传 CSV</Button>
             </div>
@@ -87,7 +87,7 @@ export function IngestWorkbench({ kind }: { kind: IngestPageKind }) {
         ) : null}
         {kind === 'ocr' ? (
           <SectionCard title="OCR 文件提交" description="OCR 提交接口会写入 ocr_tasks、ocr_results 和 ingest_runs。">
-            <div className="flex flex-wrap items-end gap-3">
+            <div className="flex flex-wrap items-end gap-4">
               <Input accept=".pdf,.png,.jpg,.jpeg" onChange={(event) => setFile(event.target.files?.[0])} type="file" />
               <Button disabled={ocrSubmit.isPending} onClick={() => ocrSubmit.mutate()}>提交 OCR</Button>
             </div>
@@ -95,7 +95,7 @@ export function IngestWorkbench({ kind }: { kind: IngestPageKind }) {
         ) : null}
         {kind === 'tianyancha' ? (
           <SectionCard title="关键词搜索" description="关键词搜索会写入 company_profiles 和 ingest_runs。">
-            <div className="grid gap-3 md:grid-cols-[1fr_auto]">
+            <div className="grid gap-4 md:grid-cols-[1fr_auto]">
               <Input onChange={(event) => setKeyword(event.target.value)} value={keyword} />
               <Button disabled={tycSearch.isPending} onClick={() => tycSearch.mutate()}>搜索</Button>
             </div>
