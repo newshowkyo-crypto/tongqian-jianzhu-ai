@@ -89,6 +89,7 @@ export {
   type CyberShellNavigationItem,
   type CyberShellProps,
 } from './layout/page.js';
+export { StitchLoginShell } from './layout/stitch-login.js';
 export {
   CyberAiOrb,
   CyberAiOrbPanel,
