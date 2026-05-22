@@ -1534,7 +1534,8 @@ model AgentProfile {
   tenantId       String    @unique @map("tenant_id")
   subtype        String
   region         String
-  depositAmount  Decimal?  @map("deposit_amount") @db.Decimal(10, 2)
+  /// deprecated 2026-05-16, kept nullable for legacy records
+  depositAmount  Decimal?  @default(null) @map("deposit_amount") @db.Decimal(10, 2)
   promoCode      String    @unique @map("promo_code")
   activityStatus String    @default("active") @map("activity_status")
   lastActiveAt   DateTime? @map("last_active_at")

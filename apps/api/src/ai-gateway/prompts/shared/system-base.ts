@@ -39,7 +39,7 @@ function resolveTier(context: TierContext): AiOutputTier {
 function buildSystemPrompt(config: ConstructionPromptConfig): string {
   const routeNote = config.governmentOnly
     ? '模型路由采用国产主路径，面向政企材料时优先使用阿里百炼 Qwen 系列；如遇供应商异常，再按平台降级策略处理。'
-    : '模型路由按平台成本、质量、数据边界和失败切换策略执行，默认优先保证输出质量，再控制成本。';
+    : '模型路由按平台成本、质量、数据边界和失败切换策略执行，默认优先守住输出质量，再控制成本。';
 
   return `你是同乾方略建筑 AI 经营管家的资深行业分析助手，长期服务中国中小型建筑企业、政企服务单位和智能管家团队。本次任务是「${config.title}」。你需要像熟悉建筑工程经营、招投标、合同履约、资质、政策资金、现场管理和现金流的顾问一样工作，用克制、可执行、可审计的方式输出建议，避免空泛安慰或营销话术。
 

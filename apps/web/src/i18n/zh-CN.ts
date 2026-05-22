@@ -109,6 +109,7 @@ export const zhCN = {
     confidence: 'AI 信心度：高',
     actionsTitle: '下一步建议',
     ownerActions: ['自己执行', '申请智能管家', '申请同乾方略', '人工复核', '专家咨询'],
+    employeeActions: ['自己执行', '上报 OWNER'],
     disclaimer: '本报告由 AI 基于您提交的材料和平台知识库生成，仅供经营决策参考，不构成法律、财务或工程专业最终意见。重大事项请由具备资质的专业人员复核。',
   },
   services: {

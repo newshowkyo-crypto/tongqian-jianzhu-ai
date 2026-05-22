@@ -3,6 +3,7 @@ export const zhCN = {
     actions: {
       consult: '专家小时咨询',
       execute: '自己执行',
+      govActions: ['自己执行', '申请同乾方略', '专家小时咨询'],
       tongqian: '申请同乾方略',
     },
     input: '仅触发政策、资金、公文和政企咨询相关任务',
