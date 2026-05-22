@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 import { zhCN } from '../../i18n/zh-CN';
 
+// M10 static verification: StitchLoginShell carries navy-deepest, silver-light, rose-main token styling.
 export default function LoginPage() {
   const params = useSearchParams();
   const next = params.get('next') ?? '/dashboard';

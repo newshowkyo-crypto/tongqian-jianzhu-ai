@@ -98,7 +98,12 @@ async function callDeepSeekTrace() {
   sizes.push(await saveCheckedShot(nav, 'm12-light-theme-opportunities.png'));
   sizes.push(await saveCheckedShot(nav, 'm12-nav-grouped-by-journey.png'));
 
-  await nav.getByText('点击运行 AI 任务', { exact: false }).first().click({ timeout: 15000 });
+  const m13AiButton = nav.getByTestId('m13-ai-primary');
+  if (await m13AiButton.count()) {
+    await m13AiButton.click({ timeout: 15000 });
+  } else {
+    await nav.getByText('点击运行 AI 任务', { exact: false }).first().click({ timeout: 15000 });
+  }
   await nav.getByText('traceId', { exact: false }).waitFor({ timeout: 120000 });
   sizes.push(await saveCheckedShot(nav, 'm12-ai-action-button-deepseek.png'));
   await navContext.close();

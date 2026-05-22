@@ -1,5 +1,6 @@
 import { type ReactNode } from 'react';
 
+import { Shield } from '../icons/index.js';
 import { Button } from '../primitives/form.js';
 
 export function StitchLoginShell({
@@ -43,7 +44,7 @@ export function StitchLoginShell({
         <div className="flex flex-col justify-center p-8">
           <div className="space-y-6 rounded-lg border border-[var(--outline-variant)] bg-[var(--surface)] p-6 shadow-sm">
             <div>
-              <p className="text-sm font-semibold text-[var(--primary)]">安全登录</p>
+              <p className="flex items-center gap-2 text-sm font-semibold text-[var(--primary)]"><Shield className="h-4 w-4" />安全登录</p>
               <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">开发环境使用一键进入，生产环境接入统一认证与二次校验。</p>
             </div>
             <Button className="min-h-11 w-full bg-[var(--accent-rose)] text-[var(--text-primary)] hover:bg-rose-deep" disabled={pending} onClick={onLogin}>

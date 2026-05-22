@@ -67,14 +67,14 @@ export default function DashboardPage() {
               title="今日推荐路径：从“机会雷达”开始"
             >
               <div className="grid gap-4 md:grid-cols-5">
-                {journeySteps.map((step, order) => (
+                {journeySteps.map((step, index) => (
                   <Link
                     key={step.href}
                     className="group rounded-lg border border-[var(--outline-variant)] bg-[var(--surface-container-low)] p-4 text-sm text-[var(--text-primary)] transition hover:border-[var(--primary-container)] hover:shadow-sm"
                     href={step.href}
                   >
                     <span className="flex items-center justify-between text-xs font-semibold text-[var(--primary)]">
-                      第 {order + 1} 步 <Megaphone className="h-4 w-4 transition group-hover:translate-x-1" />
+                      第 {index + 1} 步 <Megaphone className="h-4 w-4 transition group-hover:translate-x-1" />
                     </span>
                     <strong className="mt-4 block text-base font-semibold">{step.label}</strong>
                     <span className="mt-2 block leading-5 text-[var(--text-secondary)]">{step.text}</span>

@@ -149,8 +149,8 @@ export default function OpportunitiesPage() {
                   <p><span className="text-[var(--text-secondary)]">匹配：</span><strong>{selected.match} 分</strong></p>
                 </div>
                 <div className="grid gap-4">
-                  {aiActions.map((label) => (
-                    <Button key={label} disabled={!!running} onClick={() => runAi(label)} variant={label === aiActions[0] ? 'primary' : 'outline'}>
+                  {aiActions.map((label, index) => (
+                    <Button key={label} data-testid={index === 0 ? 'm13-ai-primary' : undefined} disabled={!!running} onClick={() => runAi(label)} variant={label === aiActions[0] ? 'primary' : 'outline'}>
                       {running === label ? <><Spinner className="mr-2" />DeepSeek 生成中</> : label}
                     </Button>
                   ))}
