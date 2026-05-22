@@ -1,7 +1,7 @@
 'use client';
 
-import { useMemo, useState } from 'react';
 import { Badge, Button, CyberCard, CyberDataGrid, EmptyState, FilterBar, Input, PageContent, PageHeader, PageLayout, StatCard } from '@tongqian/ui';
+import { useMemo, useState } from 'react';
 
 type Row = { action: string; owner: string; score: number; source: string; status: string; title: string; updatedAt: string };
 
@@ -30,7 +30,7 @@ const rows: Row[] = Array.from({ length: 9 }, (_, index) => ({
 export function DataCenterZhPage({ slug }: { slug: string }) {
   const [keyword, setKeyword] = useState('');
   const [status, setStatus] = useState('全部');
-  const page = pageCopy[slug] ?? pageCopy.dashboard!;
+  const page = pageCopy[slug] ?? { desc: '数据中心资料采集、审核、精选和归档统一工作台。', title: '数据中心总览' };
   const filtered = useMemo(() => rows.filter((row) => (status === '全部' || row.status === status) && (keyword.length === 0 || JSON.stringify(row).includes(keyword))), [keyword, status]);
   return (
     <PageLayout>
