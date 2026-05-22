@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { ReportCenterModule } from '../report-center/report-center.module.js';
+import { RuleCurationModule } from '../rule-curation/rule-curation.module.js';
 import { StorageModule } from '../storage/storage.module.js';
 
 import { RiskReviewController } from './risk-review.controller.js';
@@ -9,7 +10,7 @@ import { RiskReviewService } from './risk-review.service.js';
 @Module({
   controllers: [RiskReviewController],
   exports: [RiskReviewService],
-  imports: [ReportCenterModule, StorageModule],
+  imports: [ReportCenterModule, RuleCurationModule, StorageModule],
   providers: [RiskReviewService],
 })
 // Nest modules are marker classes discovered through decorators.

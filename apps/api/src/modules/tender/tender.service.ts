@@ -10,6 +10,7 @@ import type {
 } from '@tongqian/types';
 
 import { ReportCenterService } from '../report-center/report-center.service.js';
+import { RulesService } from '../rule-curation/rules.service.js';
 import { StorageService } from '../storage/storage.service.js';
 
 interface CreateTenderProjectInput {
@@ -35,6 +36,7 @@ export class TenderService {
 
   constructor(
     @Inject(ReportCenterService) private readonly reportCenter: ReportCenterService,
+    @Inject(RulesService) private readonly rules: RulesService,
     @Inject(StorageService) private readonly storage: StorageService,
   ) {}
 
@@ -72,6 +74,7 @@ export class TenderService {
 
   summarize(projectId: string, tenantId: string): TenderSummaryView {
     const project = this.getProject(projectId, tenantId);
+    const matchedRules = this.rules.matchTender(`${project.industry ?? 'construction'} ${project.name}`);
     const keyPoints = Array.from({ length: 10 }, (_, index) => `tender.summary.keyPoint.${index + 1}`);
     const aiTaskId = `tender-summary-${crypto.randomUUID()}`;
     const report = this.reportCenter.createReport({
@@ -81,6 +84,7 @@ export class TenderService {
         dataSourceStatement: 'tender.datasource.uploaded-file',
         disclaimer: 'report.disclaimer.ai-reference',
         keyPoints,
+        matchedRules,
         nextStepHint: ReportNextStepHint.USE_DIRECTLY,
         sections: [{ content: keyPoints, id: 'summary', title: 'tender.sections.summary' }],
         summary: 'tender.summary.placeholder',
@@ -136,6 +140,7 @@ export class TenderService {
   generateFramework(projectId: string, tenantId: string, templateCode: TenderFrameworkView['templateCode'] = 'building'): TenderFrameworkView {
     const project = this.getProject(projectId, tenantId);
     const tier = this.resolveTier(project.amountEstimateCny ?? 0);
+    this.rules.matchTender(`${project.industry ?? templateCode} ${project.name}`);
     const businessOutline = [
       { keyPoints: ['companyProfile', 'qualification', 'performance'], title: 'tender.framework.business.basic', words: 1800 },
       { keyPoints: ['commitment', 'serviceScope'], title: 'tender.framework.business.commitment', words: 1200 },

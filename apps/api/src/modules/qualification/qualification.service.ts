@@ -9,6 +9,7 @@ import type {
 } from '@tongqian/types';
 
 import { ReportCenterService } from '../report-center/report-center.service.js';
+import { RulesService } from '../rule-curation/rules.service.js';
 
 @Injectable()
 export class QualificationService {
@@ -18,7 +19,10 @@ export class QualificationService {
   private readonly performances = new Map<string, Record<string, unknown>>();
   private readonly upgradeReports = new Map<string, UpgradePathReportView>();
 
-  constructor(@Inject(ReportCenterService) private readonly reportCenter: ReportCenterService) {}
+  constructor(
+    @Inject(ReportCenterService) private readonly reportCenter: ReportCenterService,
+    @Inject(RulesService) private readonly rules: RulesService,
+  ) {}
 
   uploadCert(input: { category: string; level: string; rawImageUrl: string; subType?: string; tenantId: string }): QualificationCertView {
     const cert: QualificationCertView = {
@@ -66,6 +70,7 @@ export class QualificationService {
 
   checkup(tenantId: string, userId = 'mock-user'): QualificationCheckupView {
     const certs = this.archive(tenantId).certs;
+    const matchedRules = this.rules.matchQualification(certs.map((cert) => `${cert.category}:${cert.level}`).join('|') || 'qualification.checkup');
     const riskPoints = this.expiringItems(tenantId, 90).map((item) => `qualification.risk.expiring:${item.certNo}`);
     const completeness = Math.min(100, 40 + certs.length * 20);
     const validity = Math.max(40, 100 - riskPoints.length * 15);
@@ -80,6 +85,7 @@ export class QualificationService {
         disclaimer: 'report.disclaimer.ai-reference',
         nextStepHint: ReportNextStepHint.APPLY_HUMAN_REVIEW,
         riskPoints,
+        matchedRules,
         sections: [{ content: { completeness, healthScore, upgradePotential, validity }, id: 'scores', title: 'qualification.sections.checkup' }],
         summary: 'qualification.checkup.summary',
         tier: AiOutputTier.TIER_2,
@@ -110,6 +116,7 @@ export class QualificationService {
 
   upgradePath(input: { category: string; fromLevel: string; tenantId: string; toLevel: string; userId?: string }): UpgradePathReportView {
     const tier = this.upgradeTier(input.fromLevel, input.toLevel);
+    const matchedRules = this.rules.matchQualification(`${input.category}:${input.fromLevel}->${input.toLevel}`);
     const aiTaskId = `qualification-upgrade-${crypto.randomUUID()}`;
     const pathSteps = tier === 3 ? ['qualification.upgrade.organizeOnly', 'qualification.upgrade.consultingSuggested'] : ['performanceGap', 'personnelGap', 'equipmentGap', 'applicationPack'];
     const report = this.reportCenter.createReport({
@@ -120,6 +127,7 @@ export class QualificationService {
         disclaimer: 'report.disclaimer.ai-reference',
         nextStepHint: tier === 3 ? ReportNextStepHint.APPLY_TONGQIAN_CONSULT : ReportNextStepHint.APPLY_HUMAN_REVIEW,
         sections: [{ content: pathSteps, id: 'path', title: 'qualification.sections.upgradePath' }],
+        matchedRules,
         summary: 'qualification.upgrade.summary',
         tier,
         title: 'qualification.upgrade.title',

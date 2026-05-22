@@ -368,6 +368,23 @@ async function seedM5IngestTables() {
   `;
 }
 
+async function seedM8BusinessFuel() {
+  const now = new Date();
+  await prisma.$executeRaw`
+    INSERT INTO rule_candidates (id, source_name, source_table, type, rule_struct, confidence, source_text, reasoning, status, created_at, updated_at)
+    VALUES (${randomUUID()}::uuid, 'seed-m8-rule-candidate', 'regulations', 'contract', ${JSON.stringify({ clause: 'payment', level: 'yellow', ruleId: 'M8-CONTRACT-001' })}::jsonb, 0.9100, 'GF-2017 付款节点、验收条件、逾期责任条款。', '专家种子规则候选，用于 M8 审核流。', 'pending', ${now}, ${now})
+    ON CONFLICT (source_name) DO UPDATE SET rule_struct = EXCLUDED.rule_struct, updated_at = EXCLUDED.updated_at
+  `;
+  await prisma.$executeRaw`
+    INSERT INTO rule_versions (id, rule_table, rule_id, version, snapshot, changed_by, change_reason, gray_percent, created_at)
+    VALUES (${randomUUID()}::uuid, 'contract_rules', 'M8-CONTRACT-001', 1, ${JSON.stringify({ clause: 'payment', level: 'yellow' })}::jsonb, 'platform-owner', 'M8 business fuel seed', 50, ${now})
+  `;
+  await prisma.$executeRaw`
+    INSERT INTO prompt_quality_reports (id, report_month, task_type, pass_rate, case_count, failed_signals, created_at)
+    VALUES (${randomUUID()}::uuid, '2026-05', 'contract.review.basic', 86.50, 12, ${JSON.stringify(['引用资料不足'])}::jsonb, ${now})
+  `;
+}
+
 async function main(): Promise<void> {
   const seeded = await seedTenantsAndUsers();
   await seedAgents(seeded.users);
@@ -378,6 +395,7 @@ async function main(): Promise<void> {
   await seedM6CredentialsAndMetrics();
   await seedM6DemoRows(seeded.users);
   await seedM5IngestTables();
+  await seedM8BusinessFuel();
   console.log('Prisma seed completed: core fixtures plus M5/M6 finish tables.');
 }
 

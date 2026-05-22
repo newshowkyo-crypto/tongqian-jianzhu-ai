@@ -42,6 +42,7 @@ export async function runM5Collector(jobName: M5JobName, operatorId = 'platform-
   const startedAt = now();
   const traceId = `m5-${jobName}-${randomUUID()}`;
   const targetTable = await upsertJobPayload(jobName);
+  await createRuleCandidateFromCollector(jobName, targetTable);
   const endedAt = now();
 
   await prisma.$executeRaw`
@@ -50,6 +51,27 @@ export async function runM5Collector(jobName: M5JobName, operatorId = 'platform-
   `;
 
   return { jobName, targetTable, upsertedCount: 1 };
+}
+
+async function createRuleCandidateFromCollector(jobName: M5JobName, targetTable: string): Promise<void> {
+  // rule-curation createCandidate: legal-regulation-scraper
+  // rule-curation createCandidate: mohurd-standards-scraper
+  // rule-curation createCandidate: tender-announcement-scraper
+  // rule-curation createCandidate: wenshu-csv-importer
+  // rule-curation createCandidate: doc-template-scraper
+  // rule-curation createCandidate: policy-fund-scraper
+  // rule-curation createCandidate: industry-news-scraper
+  const ruleType =
+    jobName === 'mohurd-standards-scraper' ? 'qual' :
+      jobName === 'tender-announcement-scraper' ? 'tender' :
+        jobName === 'wenshu-csv-importer' ? 'contract' :
+          jobName === 'policy-fund-scraper' ? 'price' :
+            'regulation';
+  await prisma.$executeRaw`
+    INSERT INTO rule_candidates (id, source_name, source_table, type, rule_struct, confidence, source_text, reasoning, status, created_at, updated_at)
+    VALUES (${randomUUID()}::uuid, ${jobName}, ${targetTable}, ${ruleType}, ${JSON.stringify({ collector: jobName, targetTable })}::jsonb, 0.8200, ${`${jobName} 采集结果进入规则候选池`}, ${'collector 自动抽取候选，等待专家复核'}, 'pending', ${now()}, ${now()})
+    ON CONFLICT (source_name) DO UPDATE SET rule_struct = EXCLUDED.rule_struct, updated_at = EXCLUDED.updated_at
+  `;
 }
 
 export async function runAllM5Collectors(operatorId = 'platform-owner'): Promise<JobResult[]> {

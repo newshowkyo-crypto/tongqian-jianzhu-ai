@@ -23,14 +23,17 @@ import { ExternalApiModule } from './modules/external-api/external-api.module.js
 import { GovSoeModule } from './modules/gov-soe/gov-soe.module.js';
 import { HealthModule } from './modules/health/health.module.js';
 import { KnowledgeModule } from './modules/knowledge/knowledge.module.js';
+import { KnowledgeCurationModule } from './modules/knowledge-curation/knowledge-curation.module.js';
 import { NotificationModule } from './modules/notification/notification.module.js';
 import { OpportunityModule } from './modules/opportunity/opportunity.module.js';
 import { OpsToolkitModule } from './modules/ops-toolkit/ops-toolkit.module.js';
 import { PaymentModule } from './modules/payment/payment.module.js';
+import { PromptTestingCurationModule } from './modules/prompt-testing-curation/prompt-testing-curation.module.js';
 import { ProjectSiteModule } from './modules/project-site/project-site.module.js';
 import { QualificationModule } from './modules/qualification/qualification.module.js';
 import { ReportCenterModule } from './modules/report-center/report-center.module.js';
 import { RiskReviewModule } from './modules/risk-review/risk-review.module.js';
+import { RuleCurationModule } from './modules/rule-curation/rule-curation.module.js';
 import { RulesEngineModule } from './modules/rules-engine/rules-engine.module.js';
 import { SearchModule } from './modules/search/search.module.js';
 import { SecurityComplianceModule } from './modules/security-compliance/security-compliance.module.js';
@@ -70,14 +73,17 @@ class HealthController {
     GovSoeModule,
     HealthModule,
     KnowledgeModule,
+    KnowledgeCurationModule,
     NotificationModule,
     OpportunityModule,
     OpsToolkitModule,
     PaymentModule,
+    PromptTestingCurationModule,
     QualificationModule,
     ProjectSiteModule,
     ReportCenterModule,
     RiskReviewModule,
+    RuleCurationModule,
     RulesEngineModule,
     SecurityComplianceModule,
     SearchModule,

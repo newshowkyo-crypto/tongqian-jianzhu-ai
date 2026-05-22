@@ -3,6 +3,7 @@ import { AiAudienceRole, AiConfidenceLevel, AiOutputTier, ReportNextStepHint } f
 import type { ClaimStrategyView, ContractReviewView, ContractRiskFindingView, ModificationLetterView, RiskLevel, RiskReviewType, RiskType } from '@tongqian/types';
 
 import { ReportCenterService } from '../report-center/report-center.service.js';
+import { RulesService } from '../rule-curation/rules.service.js';
 import { StorageService } from '../storage/storage.service.js';
 
 interface ReviewInput {
@@ -23,6 +24,7 @@ export class RiskReviewService {
 
   constructor(
     @Inject(ReportCenterService) private readonly reportCenter: ReportCenterService,
+    @Inject(RulesService) private readonly rules: RulesService,
     @Inject(StorageService) private readonly storage: StorageService,
   ) {}
 
@@ -39,7 +41,8 @@ export class RiskReviewService {
       tenantId: input.tenantId,
       url: input.contractUrl,
     });
-    const findings = this.detectRisks(input.contractType, tier).slice(0, input.type === 'basic' ? 5 : 12);
+    const matchedRules = this.rules.matchContract(input.contractType);
+    const findings = this.detectRisks(input.contractType, tier, matchedRules.map((rule) => rule.id)).slice(0, input.type === 'basic' ? 5 : 12);
     const redCount = findings.filter((item) => item.level === 'red').length;
     const yellowCount = findings.filter((item) => item.level === 'yellow').length;
     const greenCount = findings.filter((item) => item.level === 'green').length;
@@ -52,6 +55,7 @@ export class RiskReviewService {
         dataSourceStatement: 'risk-review.datasource.rules-placeholder',
         disclaimer: 'risk-review.disclaimer.not-legal-opinion',
         findings,
+        matchedRules,
         nextStepHint: tier === AiOutputTier.TIER_3 ? ReportNextStepHint.APPLY_TONGQIAN_CONSULT : ReportNextStepHint.USE_DIRECTLY,
         sections: [{ content: findings, id: 'findings', title: 'risk.sections.findings' }],
         summary: `risk.summary.${overallRisk}`,
@@ -171,7 +175,7 @@ export class RiskReviewService {
     }[plan];
   }
 
-  private detectRisks(contractType: string, tier: AiOutputTier): ContractRiskFindingView[] {
+  private detectRisks(contractType: string, tier: AiOutputTier, matchedRuleIds: string[]): ContractRiskFindingView[] {
     const riskTypes: RiskType[] = [
       'unlimited_liability',
       'excessive_delay_penalty',
@@ -186,7 +190,7 @@ export class RiskReviewService {
       id: crypto.randomUUID(),
       impact: `risk.impact.${type}`,
       level: this.levelFor(index, tier),
-      ruleId: `RULE-${type}`,
+      ruleId: matchedRuleIds[index % Math.max(1, matchedRuleIds.length)] ?? `RULE-${type}`,
       standardWording: `risk.standard.${type}`,
       suggestion: `risk.suggestion.${type}`,
       type,
