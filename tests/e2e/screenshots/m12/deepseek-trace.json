@@ -1,0 +1,128 @@
+{
+  "code": "OK",
+  "data": {
+    "disclaimer": "AI输出仅供经营决策参考，重大事项建议结合原件和人工复核。",
+    "tier": 2,
+    "confidence": "low",
+    "dataSourceStatement": "基于用户提供的有限信息（仅消息文本）和平台建筑行业规则库生成，资料完整性不足。",
+    "traceId": "23d1ec67-9c06-4296-a656-98807b17cbb5",
+    "nextStepHint": "apply-human-review",
+    "nextStepButtons": [
+      {
+        "action": "self_execute",
+        "i18nKey": "ai.next.owner.executeSelf",
+        "role": "owner"
+      },
+      {
+        "action": "apply_agent",
+        "i18nKey": "ai.next.owner.applyAgent",
+        "role": "owner"
+      },
+      {
+        "action": "request_human_review",
+        "i18nKey": "ai.next.owner.humanReview",
+        "role": "owner"
+      }
+    ],
+    "executionDifficultyRadar": {
+      "professional": 68,
+      "time": 56,
+      "risk": 72,
+      "cost": 45
+    },
+    "sections": [
+      {
+        "title": "关键发现",
+        "content": "未识别到有效合同条款，无法输出付款风险提示。"
+      },
+      {
+        "title": "行动计划",
+        "content": "1. 补充合同扫描件或关键条款文本；2. 提供项目金额、付款节点、质保金约定等；3. 说明当前验收阶段和争议点。"
+      },
+      {
+        "title": "证据缺口",
+        "content": "缺少合同文本、项目基本信息、验收标准等关键材料。"
+      },
+      {
+        "title": "价值密度自检",
+        "content": {
+          "creditCostWorthIt": "yes",
+          "dryContentOver70Percent": "yes",
+          "freeHookValueEnough": "yes",
+          "outsideAlternativeCostOver10x": "yes",
+          "platformDataNecessary": "yes",
+          "userFeelsWorthIt": "yes"
+        }
+      }
+    ],
+    "summary": "当前资料仅包含一条指令，无法完成合同审查分析。建议补充合同文本、项目背景等信息。",
+    "title": "合同付款风险速读",
+    "cacheHit": false,
+    "cost": {
+      "credits": 360,
+      "rmb": 3.6
+    },
+    "data": {
+      "disclaimer": "AI输出仅供经营决策参考，重大事项建议结合原件和人工复核。",
+      "tier": 2,
+      "confidence": "low",
+      "dataSourceStatement": "基于用户提供的有限信息（仅消息文本）和平台建筑行业规则库生成，资料完整性不足。",
+      "traceId": "contract-review-basic-001",
+      "nextStepHint": "apply-human-review",
+      "nextStepButtons": [
+        {
+          "action": "self_execute",
+          "i18nKey": "ai.next.owner.executeSelf",
+          "role": "owner"
+        },
+        {
+          "action": "apply_agent",
+          "i18nKey": "ai.next.owner.applyAgent",
+          "role": "owner"
+        },
+        {
+          "action": "request_human_review",
+          "i18nKey": "ai.next.owner.humanReview",
+          "role": "owner"
+        }
+      ],
+      "executionDifficultyRadar": {
+        "professional": 68,
+        "time": 56,
+        "risk": 72,
+        "cost": 45
+      },
+      "sections": [
+        {
+          "title": "关键发现",
+          "content": "未识别到有效合同条款，无法输出付款风险提示。"
+        },
+        {
+          "title": "行动计划",
+          "content": "1. 补充合同扫描件或关键条款文本；2. 提供项目金额、付款节点、质保金约定等；3. 说明当前验收阶段和争议点。"
+        },
+        {
+          "title": "证据缺口",
+          "content": "缺少合同文本、项目基本信息、验收标准等关键材料。"
+        },
+        {
+          "title": "价值密度自检",
+          "content": {
+            "creditCostWorthIt": "yes",
+            "dryContentOver70Percent": "yes",
+            "freeHookValueEnough": "yes",
+            "outsideAlternativeCostOver10x": "yes",
+            "platformDataNecessary": "yes",
+            "userFeelsWorthIt": "yes"
+          }
+        }
+      ],
+      "summary": "当前资料仅包含一条指令，无法完成合同审查分析。建议补充合同文本、项目背景等信息。",
+      "title": "合同付款风险速读"
+    },
+    "modelUsed": "deepseek-reasoner",
+    "providerUsed": "deepseek_direct"
+  },
+  "message": "AI invocation completed",
+  "traceId": "fb12437c-adf9-4c81-93d0-e7fa6bb9777a"
+}

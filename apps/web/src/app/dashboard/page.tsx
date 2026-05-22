@@ -3,8 +3,16 @@
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@tongqian/api-client';
 import { AlertTriangle, Bell, Button, CreditDisplay, EmptyState, ErrorState, LoadingState, OpportunityCard, PageContent, PageLayout, Radar, RiskBadge, SectionCard, StatCard, Wallet } from '@tongqian/ui';
+import Link from 'next/link';
 
 const reportCards = ['合同付款节点风险复核', '政策资金窗口 3 条', '资质证书到期提醒'];
+const journeySteps = [
+  { href: '/opportunities', text: '看 18 条今日机会，匹配 80 分以上优先跟进' },
+  { href: '/tenders', text: '选定 3 个机会，进入招标中心做资格自查' },
+  { href: '/contracts', text: '资格通过后，上传合同草稿做付款与违约风险审查' },
+  { href: '/dispatch', text: '红灯风险解决不了，进入派单大厅找智能管家线下跑腿' },
+  { href: '/reports', text: '完成后在报告中心生成本周经营复盘' },
+];
 
 export default function DashboardPage() {
   const query = useQuery({ queryFn: () => apiClient.dashboard.owner(), queryKey: ['dashboard', 'owner-kpi'] });
@@ -14,17 +22,17 @@ export default function DashboardPage() {
   return (
     <PageLayout className="tq-product-surface">
       <PageContent className="relative z-[1] space-y-6">
-        <section className="tq-particles overflow-hidden rounded-xl bg-[var(--gradient-navy-hero)] p-6 text-white shadow-md">
+        <section className="overflow-hidden rounded-xl border border-[var(--border-silver)] bg-[var(--surface)] p-6 text-[var(--text-primary)] shadow-md">
           <div className="relative z-[1] flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <p className="text-sm text-silver-light">同乾方略 · 建筑 AI 经营管家</p>
+              <p className="text-sm text-[var(--text-secondary)]">同乾方略 · 建筑 AI 经营管家</p>
               <h1 className="mt-3 text-3xl font-semibold tracking-normal md:text-3xl">早安，今日先看机会、风险和现金流</h1>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-silver-light">{data?.greeting ?? '正在整理今日经营简报，AI 会把机会、风险、审批和点数余额压缩到一个首屏。'}</p>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--text-secondary)]">{data?.greeting ?? '正在整理今日经营简报，AI 会把机会、风险、审批和点数余额压缩到一个首屏。'}</p>
             </div>
-            <div className="rounded-xl border border-white/15 bg-white/10 p-4 text-right backdrop-blur">
-              <p className="text-xs text-silver-main">当前时间</p>
+            <div className="rounded-xl border border-[var(--border-silver)] bg-[var(--surface-muted)] p-4 text-right">
+              <p className="text-xs text-[var(--text-secondary)]">当前时间</p>
               <p className="mt-1 text-2xl font-semibold tabular-nums">{now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}</p>
-              <p className="mt-1 text-xs text-silver-light">{now.toLocaleDateString('zh-CN')} · 今日 3 个经营节点</p>
+              <p className="mt-1 text-xs text-[var(--text-secondary)]">{now.toLocaleDateString('zh-CN')} · 今日 3 个经营节点</p>
             </div>
           </div>
         </section>
@@ -35,6 +43,25 @@ export default function DashboardPage() {
 
         {data ? (
           <>
+            <SectionCard
+              actions={<Link href="/opportunities"><Button>立即开始第 1 步</Button></Link>}
+              className="tq-glass-card"
+              title="今日推荐路径：从“机会雷达”开始"
+            >
+              <div className="grid gap-4 md:grid-cols-5">
+                {journeySteps.map((step, index) => (
+                  <Link
+                    key={step.href}
+                    className="rounded-md border border-[var(--border-silver)] bg-[var(--surface)] p-4 text-sm text-[var(--text-primary)] transition hover:border-[var(--accent-rose)] hover:shadow-md"
+                    href={step.href}
+                  >
+                    <span className="block text-xs font-semibold text-[var(--accent)]">第 {index + 1} 步</span>
+                    <span className="mt-2 block leading-6">{step.text}</span>
+                  </Link>
+                ))}
+              </div>
+            </SectionCard>
+
             <section className="grid gap-4 md:grid-cols-4">
               <StatCard icon={<Radar />} label="今日机会" trend={<span className="text-success-700">{data.kpis.opportunities.trend}</span>} value={data.kpis.opportunities.value} />
               <StatCard className="tq-pulse-danger" icon={<AlertTriangle />} label="风险红灯" trend={<span className="text-danger-700">{data.kpis.riskRed.trend}</span>} value={data.kpis.riskRed.value} />
@@ -43,7 +70,7 @@ export default function DashboardPage() {
             </section>
 
             <section className="grid gap-4 lg:grid-cols-[1.35fr_1fr]">
-              <SectionCard className="tq-glass-card" title="今日机会推送">
+              <SectionCard className="tq-glass-card" title="今日机会推荐">
                 <div className="space-y-4">
                   {data.opportunities.map((item) => (
                     <OpportunityCard key={item.title} className="group border-l-4 border-l-rose-main" deadline={item.deadline} meta={item.meta} title={<span className="flex items-center justify-between gap-4">{item.title}<Button className="opacity-0 transition-opacity group-hover:opacity-100" size="sm">一键申请</Button></span>} />

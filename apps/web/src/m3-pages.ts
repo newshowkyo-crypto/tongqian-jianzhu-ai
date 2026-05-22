@@ -83,9 +83,10 @@ function withSeeds(key: string, copy: BaseCopy): WebModulePageCopy {
   return {
     ...copy,
     seedActions: [
-      { label: `${copy.action}并生成行动清单`, taskType: `${key}.action_plan` },
-      { label: '让 AI 复核风险和证据链', taskType: `${key}.risk_review` },
-      { label: '申请智能管家线下协助', taskType: `${key}.steward_handoff` },
+      { label: `${copy.action}并生成行动清单`, taskType: 'contract.review.basic' },
+      { label: '让 AI 复核风险和证据链', taskType: 'contract.review.basic' },
+      { label: '生成老板 3 分钟摘要', taskType: 'contract.review.basic' },
+      { label: '申请智能管家线下协助', taskType: 'contract.review.basic' },
     ],
     seedKpis: [
       { label: copy.metric, trend: '+12.3%', value: '18' },

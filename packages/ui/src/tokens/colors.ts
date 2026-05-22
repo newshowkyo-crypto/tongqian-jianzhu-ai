@@ -68,3 +68,18 @@ export const colors = {
   },
   white: '#ffffff',
 } as const;
+
+export const lightTokens = {
+  accent: '#1e5fbf',
+  accentRose: '#d99880',
+  bg: '#f7f9fc',
+  border: '#e2e7f0',
+  danger: '#dc2626',
+  success: '#10b981',
+  surface: '#ffffff',
+  surfaceMuted: '#f0f4fa',
+  text: '#0a1d3d',
+  textMuted: '#6b7895',
+  textSecondary: '#3f4a63',
+  warning: '#f59e0b',
+} as const;

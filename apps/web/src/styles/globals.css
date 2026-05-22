@@ -1,1 +1,31 @@
 @import '@tongqian/ui/styles/globals.css';
+
+:root,
+[data-theme='light'] {
+  --bg: #f7f9fc;
+  --surface: #ffffff;
+  --surface-muted: #f0f4fa;
+  --text-primary: #0a1d3d;
+  --text-secondary: #3f4a63;
+  --text-muted: #6b7895;
+  --border-silver: #e2e7f0;
+  --accent: #1e5fbf;
+  --accent-rose: #d99880;
+}
+
+[data-theme='dark'] {
+  --bg: #0a1d3d;
+  --surface: rgba(255,255,255,0.05);
+  --surface-muted: rgba(216,221,229,0.10);
+  --text-primary: #ffffff;
+  --text-secondary: #d8dde5;
+  --text-muted: #b5bcc8;
+  --border-silver: #b5bcc8;
+  --accent: #4a8eff;
+  --accent-rose: #d99880;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+}
