@@ -81,7 +81,7 @@ export default function OpportunityDetailPage({ params }: { params: { id: string
 
         <section className="grid gap-4 lg:grid-cols-2">
           <SectionCard title="业主真实性核验">
-            <div className="grid gap-3">
+            <div className="grid gap-4">
               {ownerRows.map(([label, value]) => (
                 <div key={label} className="rounded-md border border-[var(--outline-variant)] bg-[var(--surface-container-low)] p-4">
                   <p className="text-xs text-[var(--text-secondary)]">{label}</p>
@@ -133,7 +133,7 @@ export default function OpportunityDetailPage({ params }: { params: { id: string
           </div>
         </SectionCard>
 
-        <section className="flex flex-wrap gap-3 rounded-lg border border-[var(--outline-variant)] bg-[var(--surface)] p-4">
+        <section className="flex flex-wrap gap-4 rounded-lg border border-[var(--outline-variant)] bg-[var(--surface)] p-4">
           <Link className={buttonVariants({ variant: 'primary' })} href={`/tenders/new?opp=${detail.id}`}>立即投标</Link>
           {guideButtons.map((label) => <Button key={label} variant="outline">{label}</Button>)}
         </section>
