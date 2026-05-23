@@ -149,6 +149,54 @@ export interface TenderDetail extends TenderListItem {
   traceId: string;
 }
 
+export interface OpportunityListItem {
+  amount: string;
+  deadline: string;
+  id: string;
+  matchScore: number;
+  owner: string;
+  region: string;
+  title: string;
+}
+
+export interface OpportunityDetail extends OpportunityListItem {
+  confidence: 'high' | 'low' | 'medium';
+  disclaimer: string;
+  ownerVerification: {
+    businessInfo: string;
+    complaints: number;
+    creditCode: string;
+    historyProjects: number;
+    relatedCompanies: string[];
+    risk: string;
+  };
+  peerRadar: {
+    avgBid: string;
+    medianBid: string;
+    period: string;
+    winners: number;
+  };
+  recommendedPrice: {
+    ceiling: string;
+    floor: string;
+    reasoning: string;
+    sweet: string;
+  };
+  tier: 1 | 2 | 3 | 4;
+  timeline: Array<{ date: string; milestone: string }>;
+  traceId: string;
+}
+
+export interface InvestabilityReport {
+  confidence: 'high' | 'low' | 'medium';
+  ownerVerification: OpportunityDetail['ownerVerification'];
+  peerRadar: OpportunityDetail['peerRadar'];
+  recommendedPrice: OpportunityDetail['recommendedPrice'];
+  score: number;
+  tier: 1 | 2 | 3 | 4;
+  traceId: string;
+}
+
 export interface QualificationCert {
   category: string;
   daysToExpiry: number;
@@ -321,6 +369,7 @@ export function createApiClient(options: ApiClientOptions = {}) {
     dashboard: createDashboardApi(http, mock),
     http,
     mock,
+    opportunity: createOpportunityApi(http, mock),
     riskReview: createRiskReviewApi(http, mock),
     qualification: createQualificationApi(http, mock),
     tender: createTenderApi(http, mock),
@@ -424,6 +473,40 @@ function createTenderApi(http: AxiosInstance, mock: boolean) {
     async list(filters?: Record<string, unknown>): Promise<TenderListItem[]> {
       if (mock) return delay(tenderListFixture().filter((row) => !filters?.projectType || filters.projectType === 'all' || row.projectType.includes(String(filters.projectType))));
       return unwrap(await http.get('/tenders', { params: filters }));
+    },
+  };
+}
+
+function createOpportunityApi(http: AxiosInstance, mock: boolean) {
+  return {
+    async get(id: string): Promise<OpportunityDetail> {
+      if (mock) return delay(opportunityDetailFixture(id));
+      return unwrap(await http.get(`/opportunities/${id}`));
+    },
+    async investabilityReport(id: string): Promise<InvestabilityReport> {
+      if (mock) {
+        const detail = opportunityDetailFixture(id);
+        return delay({
+          confidence: detail.confidence,
+          ownerVerification: detail.ownerVerification,
+          peerRadar: detail.peerRadar,
+          recommendedPrice: detail.recommendedPrice,
+          score: detail.matchScore,
+          tier: detail.tier,
+          traceId: detail.traceId,
+        });
+      }
+      return unwrap(await http.post(`/opportunities/${id}/investability`));
+    },
+    async list(filters?: Record<string, unknown>): Promise<OpportunityListItem[]> {
+      if (mock) {
+        return delay(opportunityListFixture().filter((row) => !filters?.region || filters.region === 'all' || row.region === filters.region));
+      }
+      return unwrap(await http.get('/opportunities', { params: filters }));
+    },
+    async savePreference(payload: Record<string, unknown>): Promise<{ ok: true; traceId: string }> {
+      if (mock) return delay({ ok: true, traceId: cryptoRandomId() });
+      return unwrap(await http.post('/opportunities/preferences', payload));
     },
   };
 }
@@ -751,6 +834,53 @@ function tenderDetailFixture(id: string): TenderDetail {
       { date: base.deadline, daysFromNow: 10, milestone: '投标截止' },
       { date: '2026-06-03', daysFromNow: 11, milestone: '开标' },
       { date: '2026-06-06', daysFromNow: 14, milestone: '评标' },
+    ],
+    traceId: cryptoRandomId(),
+  };
+}
+
+function opportunityListFixture(): OpportunityListItem[] {
+  return [
+    { amount: '3.2 亿元', deadline: '2026-06-06', id: 'opp-wuhan-metro', matchScore: 87, owner: '武汉地铁集团', region: '武汉', title: '武汉地铁 12 号线机电安装 EPC' },
+    { amount: '8500 万元', deadline: '2026-06-12', id: 'opp-xian-soe', matchScore: 79, owner: '西安城投建设', region: '西安', title: '西安城投片区更新施工总承包' },
+    { amount: '4600 万元', deadline: '2026-05-28', id: 'opp-risky', matchScore: 52, owner: '某园区开发公司', region: '鄂州', title: '园区标准厂房二期施工' },
+  ];
+}
+
+function opportunityDetailFixture(id: string): OpportunityDetail {
+  const base = opportunityListFixture().find((row) => row.id === id) ?? opportunityListFixture()[0]!;
+  const risky = base.id === 'opp-risky';
+  const xian = base.id === 'opp-xian-soe';
+  return {
+    ...base,
+    confidence: risky ? 'low' : xian ? 'medium' : 'high',
+    disclaimer: 'AI 生成内容仅供经营决策参考，不替代招标代理、律师、造价师或同乾方略人工复核。',
+    ownerVerification: {
+      businessInfo: risky ? '工商登记信息不完整，建议先核验股权与实控人。' : '工商状态正常，经营范围覆盖项目建设管理。',
+      complaints: risky ? 7 : xian ? 2 : 0,
+      creditCode: risky ? 'mock-credit-risky' : xian ? '91610100MA6XIAN00X' : '91420100MA4WUHAN00',
+      historyProjects: risky ? 2 : xian ? 18 : 42,
+      relatedCompanies: risky ? ['园区开发关联方', '贸易公司'] : xian ? ['西安城投子公司'] : ['武汉轨道交通建设公司', '武汉市政投资公司'],
+      risk: risky ? 'high_risk' : xian ? 'warning' : 'pass',
+    },
+    peerRadar: {
+      avgBid: risky ? '4380 万元' : xian ? '8120 万元' : '3.05 亿元',
+      medianBid: risky ? '4210 万元' : xian ? '7980 万元' : '2.96 亿元',
+      period: '近 6 个月',
+      winners: risky ? 3 : xian ? 9 : 14,
+    },
+    recommendedPrice: {
+      ceiling: risky ? '4320 万元' : xian ? '8280 万元' : '3.12 亿元',
+      floor: risky ? '3980 万元' : xian ? '7780 万元' : '2.88 亿元',
+      reasoning: risky ? '业主付款与投诉记录偏弱，建议降低资源投入并提高风险准备。' : '同类项目中标价集中，结合资质匹配与现金流压力建议贴近甜点价。',
+      sweet: risky ? '4150 万元' : xian ? '8050 万元' : '3.02 亿元',
+    },
+    tier: risky ? 3 : xian ? 2 : 1,
+    timeline: [
+      { date: '2026-05-26', milestone: '报名截止' },
+      { date: '2026-05-29', milestone: '答疑截止' },
+      { date: base.deadline, milestone: '投标截止' },
+      { date: '2026-06-08', milestone: '开标' },
     ],
     traceId: cryptoRandomId(),
   };

@@ -69,6 +69,14 @@ export class OpportunityController {
     return { code: 'OK', data: this.opportunities.updatePreference(tenantId, body), message: 'Opportunity preference saved', traceId: crypto.randomUUID() };
   }
 
+  @Post('opportunities/preferences')
+  saveOpportunityPreference(
+    @Body() body: { amountMaxCny?: number; amountMinCny?: number; industries?: string[]; pushEnabled?: boolean; regions?: string[] },
+    @Headers('x-tenant-id') tenantId = 'mock-tenant',
+  ): unknown {
+    return { code: 'OK', data: { ok: true, preference: this.opportunities.updatePreference(tenantId, body) }, message: 'Opportunity preference saved', traceId: crypto.randomUUID() };
+  }
+
   @Get('opportunity-feature-wall/:plan')
   featureWall(@Param('plan') plan: 'ent' | 'flag' | 'lite' | 'std' | 'trial'): unknown {
     return { code: 'OK', data: this.opportunities.featureWall(plan), message: 'Opportunity feature wall', traceId: crypto.randomUUID() };
