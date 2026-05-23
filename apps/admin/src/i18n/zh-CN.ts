@@ -12,6 +12,13 @@ export const zhCN = {
     },
   },
   credentialsPage: {
+    actions: {
+      cancel: '取消',
+      edit: '编辑',
+      mock: '回退模拟',
+      real: '切到真实',
+      test: '测试连通',
+    },
     approval: {
       approver: '审批人：PLATFORM_OWNER',
       field: '审批流 ID',
@@ -22,6 +29,7 @@ export const zhCN = {
       rows: ['credential.upsert', 'system_config.sync', 'audit_log.write'],
       title: '审计日志',
     },
+    description: '平台外部凭证统一从后端读取，支持加密写入、真实连通测试、模式切换和审计追踪。',
     form: {
       key: '凭证 Key',
       mock: 'mock',
@@ -31,14 +39,37 @@ export const zhCN = {
       real: 'real',
       reason: '变更原因',
       submit: '提交替换申请',
+      title: '编辑凭证',
       value: '真实凭证值',
+    },
+    groupPending: '继续补齐',
+    groupReady: '已达上线阈值',
+    groups: {
+      ai: 'AI 模型',
+      collector: '数据采集',
+      notification: '通知',
+      payment: '支付',
+      storage: '存储',
     },
     hotUpdate: {
       items: ['写入 system_configs.credentials.*', '60 秒内热更新 provider 配置', '失败自动回退到 mock provider'],
       title: 'system_configs 热更新',
     },
+    messages: {
+      connected: '已连通',
+      failed: '未连通：',
+      notTested: '尚未测试',
+      saved: '凭证已加密写入',
+      switched: '模式已切换',
+      unknown: '未知原因',
+    },
+    p0Label: 'P0 凭证',
+    progressLabel: '上线进度',
+    searchPlaceholder: '搜索凭证 Key',
     table: {
+      actions: '操作',
       approval: '审批状态',
+      health: '连通状态',
       key: 'Key',
       mode: '模式',
       provider: 'Provider',
@@ -57,6 +88,17 @@ export const zhCN = {
     modules: ['业务运营', '规则审核', 'Prompt 管理', '模型路由', '审批工作台', '财务对账', '系统日志'],
     title: '同乾方略 · 平台后台',
   },
+  launchOnboarding: {
+    action: '前往',
+    badge: '上线引导',
+    completed: '已就绪可上线',
+    credentials: '凭证',
+    description: '上线前只看三件事：真实凭证、ICP 备案、业务底料。',
+    fuel: '业务底料',
+    icp: 'ICP',
+    loading: '读取上线状态',
+    title: '上线引导',
+  },
   navigation: {
     current: '当前页面',
     home: '后台首页',
@@ -66,6 +108,7 @@ export const zhCN = {
     theme: '主题',
     items: [
       { href: '/', icon: 'operations', label: '业务运营' },
+      { href: '/admin/onboarding', icon: 'operations', label: '上线引导' },
       { href: '/admin/credentials', icon: 'credentials', label: '凭证管理' },
       { href: '/admin/rules', icon: 'rules', label: '规则审核' },
       { href: '/admin/prompts', icon: 'prompts', label: 'Prompt 管理' },
@@ -78,12 +121,11 @@ export const zhCN = {
       { href: '/ingest/policies', icon: 'billing', label: '政策资金采集' },
       { href: '/ingest/templates', icon: 'prompts', label: '标准模板采集' },
       { href: '/ingest/court-judgments', icon: 'audit', label: '裁判文书 CSV' },
-      { href: '/ingest/tianyancha', icon: 'credentials', label: '天眼查查询' },
+      { href: '/ingest/tianyancha', icon: 'credentials', label: '天眼查查验' },
       { href: '/ingest/ocr', icon: 'models', label: 'OCR 任务' },
     ],
   },
   permissions: {
-    title: '权限点开关',
     items: [
       { enabled: true, key: 'credential:approve', label: '凭证审批' },
       { enabled: true, key: 'model:route:update', label: '模型路由配置' },
@@ -91,5 +133,6 @@ export const zhCN = {
       { enabled: true, key: 'audit:read', label: '审计读取' },
       { enabled: false, key: 'security:override', label: '安全策略覆写' },
     ],
+    title: '权限点开关',
   },
 } as const;
