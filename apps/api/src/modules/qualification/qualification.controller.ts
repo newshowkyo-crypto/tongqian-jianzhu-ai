@@ -6,6 +6,27 @@ import { QualificationService } from './qualification.service.js';
 export class QualificationController {
   constructor(@Inject(QualificationService) private readonly qualifications: QualificationService) {}
 
+  @Get()
+  list(@Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
+    return { code: 'OK', data: this.qualifications.archive(tenantId).certs, message: 'Qualification list', traceId: crypto.randomUUID() };
+  }
+
+  @Post()
+  create(@Body() body: { category?: string; level?: string; rawImageUrl?: string; subType?: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
+    const cert = this.qualifications.uploadCert({ category: body.category ?? 'construction', level: body.level ?? 'second', rawImageUrl: body.rawImageUrl ?? 'mock://cert.pdf', subType: body.subType, tenantId });
+    return { code: 'OK', data: { certId: cert.id, providerUsed: 'mock', traceId: cert.certNo }, message: 'Qualification created', traceId: cert.certNo };
+  }
+
+  @Get('checkup')
+  getCheckup(@Headers('x-tenant-id') tenantId = 'mock-tenant', @Headers('x-user-id') userId = 'mock-user'): unknown {
+    return { code: 'OK', data: this.qualifications.checkup(tenantId, userId), message: 'Qualification checkup', traceId: crypto.randomUUID() };
+  }
+
+  @Get(':id/upgrade')
+  getUpgrade(@Param('id') id: string, @Headers('x-tenant-id') tenantId = 'mock-tenant', @Headers('x-user-id') userId = 'mock-user'): unknown {
+    return { code: 'OK', data: this.qualifications.upgradePath({ category: 'construction', fromLevel: id, tenantId, toLevel: 'first', userId }), message: 'Qualification upgrade path', traceId: crypto.randomUUID() };
+  }
+
   @Post('certs')
   uploadCert(@Body() body: { category: string; level: string; rawImageUrl: string; subType?: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
     return { code: 'OK', data: this.qualifications.uploadCert({ ...body, tenantId }), message: 'Qualification cert uploaded', traceId: crypto.randomUUID() };
