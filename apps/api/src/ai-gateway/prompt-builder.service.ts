@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { RED_LINE_PHRASES } from '@tongqian/constants';
 import { BusinessError, ErrorCodes } from '@tongqian/errors';
 import type { AiPromptMessage, PromptTemplate } from '@tongqian/types';
 
@@ -38,6 +39,7 @@ export class PromptBuilderService {
    */
   build(template: PromptTemplate, input: unknown): AiPromptMessage[] {
     this.assertTemplate(template);
+    this.assertNoRedLineLanguage(template);
     const tier = template.tier({});
     const user = this.renderUserTemplate(template.userTemplate, input);
     return [
@@ -119,6 +121,22 @@ export class PromptBuilderService {
         message: 'Prompt template is incomplete.',
       });
     }
+  }
+
+  private assertNoRedLineLanguage(template: PromptTemplate): void {
+    const scanned = [
+      template.systemPrompt,
+      JSON.stringify(template.fewShotExamples),
+      template.fallbackText,
+    ].join('\n');
+    const phrase = RED_LINE_PHRASES.forbidden.find((item) => scanned.includes(item));
+    if (!phrase) return;
+    throw new BusinessError({
+      code: ErrorCodes.AI_PROMPT_RED_LINE_VIOLATION.code,
+      details: { phrase, taskType: template.taskType },
+      httpStatus: ErrorCodes.AI_PROMPT_RED_LINE_VIOLATION.httpStatus,
+      message: ErrorCodes.AI_PROMPT_RED_LINE_VIOLATION.message,
+    });
   }
 
   private renderUserTemplate(template: string, input: unknown): string {

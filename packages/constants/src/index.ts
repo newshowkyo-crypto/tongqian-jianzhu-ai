@@ -24,9 +24,11 @@ export { FISSION_RATES } from './fission-rates.js';
 export { LOTTERY_SCHEDULE } from './lottery-schedule.js';
 export { DEFAULT_RATE_LIMITS } from './rate-limits.js';
 export { REACTIVATION_WINDOW } from './reactivation-window.js';
+export { RED_LINE_PHRASES } from './red-line-phrases.js';
 export { REFUND_POLICY } from './refund-policy.js';
 export { REFUND_TIERS } from './refund-tiers.js';
 export { URGENCY_LIMITS } from './urgency-limits.js';
+export { VALUE_DENSITY_CHECK, VALUE_DENSITY_THRESHOLDS } from './value-density-check.js';
 
 export {
   DEFAULT_SUBSCRIPTION_PLANS,

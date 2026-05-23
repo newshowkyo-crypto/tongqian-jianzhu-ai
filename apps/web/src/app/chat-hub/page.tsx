@@ -72,7 +72,7 @@ export default function ChatHubPage() {
       const aiReply = await apiClient.ai.chat(
         [
           ...localMessages.map((item) => ({ content: item.content, role: item.role })),
-          { content: `${persona.systemPrompt}\n<owner_message>${content}</owner_message>`, role: 'user' as const },
+          { content, role: 'user' as const },
         ],
         persona.model === 'deepseek-reasoner' ? 'contract.review.pro' : 'chat.long',
       );

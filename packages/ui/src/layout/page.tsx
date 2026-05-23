@@ -340,10 +340,10 @@ export function CyberShell({
                 <div className="space-y-2">
                   <p className="font-semibold text-white">{actionLabels.notificationsTitle ?? actionLabels.notifications}</p>
                   <a className="block rounded-md border border-[var(--border-silver)] px-3 py-2 hover:border-[var(--accent-rose)] hover:text-white" href="/reports">
-                    AI audit report ready
+                    AI 审计报告已生成
                   </a>
                   <a className="block rounded-md border border-[var(--border-silver)] px-3 py-2 hover:border-[var(--accent-rose)] hover:text-white" href="/approvals">
-                    Approval queue updated
+                    审批队列已更新
                   </a>
                 </div>
               ) : null}
@@ -351,10 +351,10 @@ export function CyberShell({
                 <div className="space-y-2">
                   <p className="font-semibold text-white">{actionLabels.avatarTitle ?? actionLabels.avatar}</p>
                   <a className="block rounded-md border border-[var(--border-silver)] px-3 py-2 hover:border-[var(--accent-rose)] hover:text-white" href="/settings">
-                    Account settings
+                    账号设置
                   </a>
                   <button className="w-full rounded-md border border-[var(--border-silver)] px-3 py-2 text-left hover:border-[var(--accent-rose)] hover:text-white" type="button">
-                    Session active
+                    会话已启用
                   </button>
                 </div>
               ) : null}
@@ -401,7 +401,7 @@ export function CyberShell({
 
       <details className="fixed left-4 top-3 z-50 lg:hidden">
         <summary className="grid h-10 w-10 cursor-pointer list-none place-items-center rounded-md border border-[var(--border-silver)] bg-[var(--bg-glass)] shadow-sm">
-          Menu
+          菜单
         </summary>
         <nav className="mt-2 max-h-[80vh] w-64 overflow-auto rounded-lg border border-[var(--border-silver)] bg-[var(--bg-glass)] p-3 shadow-md">
           {navigation.map((item) => {

@@ -135,7 +135,7 @@ async function seedAgents(users: Awaited<ReturnType<typeof seedTenantsAndUsers>>
   for (const [index, user] of agentUsers.entries()) {
     await prisma.$executeRaw`
       INSERT INTO agent_profiles (id, user_id, tenant_id, subtype, region, promo_code, activity_status, trained_at, is_blacklisted)
-      VALUES (${randomUUID()}::uuid, ${user.id}, ${user.tenantId}, 'construction_runner', ${['上海', '江苏', '浙江', '安徽', '山东'][index]}, ${`TQAGENT${index + 1}`}, 'active', ${now}, false)
+      VALUES (${randomUUID()}::uuid, ${user.id}, ${user.tenantId}, ${index === 0 ? 'AGENT_PARTNER' : 'AGENT_QUAL'}, ${['上海', '江苏', '浙江', '安徽', '山东'][index]}, ${`TQAGENT${index + 1}`}, 'active', ${now}, false)
       ON CONFLICT DO NOTHING
     `;
     await prisma.$executeRaw`

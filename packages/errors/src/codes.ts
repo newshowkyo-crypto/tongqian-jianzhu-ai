@@ -40,6 +40,7 @@ export const ErrorCodes = {
   AUDIT_LOG_WRITE_FAILED: { code: 'AUDIT.LOG.WRITE_FAILED', httpStatus: 500, message: 'Audit log write failed.', userActionable: false },
   EXPORT_APPROVAL_REQUIRED: { code: 'EXPORT.APPROVAL.REQUIRED', httpStatus: 202, message: 'Data export requires approval.', userActionable: true },
   AI_GATEWAY_UNAVAILABLE: { code: 'AI.GATEWAY.UNAVAILABLE', httpStatus: 503, message: 'AI service is temporarily unavailable and credits were refunded.', userActionable: true },
+  AI_PROMPT_RED_LINE_VIOLATION: { code: 'AI.PROMPT.RED_LINE_VIOLATION', httpStatus: 422, message: 'Prompt contains red-line language.', userActionable: false },
 } as const satisfies Record<string, ErrorCodeDef>;
 
 export type ErrorCodeKey = keyof typeof ErrorCodes;

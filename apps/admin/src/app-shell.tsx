@@ -89,7 +89,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         theme: zhCN.navigation.theme,
       }}
       assistant={<AiAssistantBubble onSend={sendAssistantMessage} role="admin" />}
-      brand={{ eyebrow: 'OPC console', href: '/', title: zhCN.home.title }}
+      brand={{ href: '/', title: zhCN.home.title }}
       currentLabel={current?.label}
       currentPath={pathname}
       homeLabel={zhCN.navigation.home}

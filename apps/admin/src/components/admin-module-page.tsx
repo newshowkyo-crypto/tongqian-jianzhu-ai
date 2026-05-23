@@ -122,6 +122,13 @@ export function AdminModulePage({
   });
 
   const summary = query.data ?? buildFallbackSummary(copy, contract, moduleKey);
+  const summaryStats = summary.stats ?? [];
+  const summaryAlerts = summary.alerts ?? [];
+  const contractFilters = contract.filters ?? [];
+  const contractColumns = contract.columns ?? [];
+  const contractRowActions = contract.rowActions ?? [];
+  const whereGuards = contract.safeguards?.whereGuard ?? [];
+  const auditEvents = contract.safeguards?.auditEvents ?? [];
   const rows = useMemo(() => buildRows(summary, contract, moduleKey, selectedRow?.id), [contract, moduleKey, selectedRow?.id, summary]);
   const filteredRows = useMemo(
     () =>
@@ -173,7 +180,7 @@ export function AdminModulePage({
         ) : null}
 
         <FilterBar>
-          {contract.filters.map((filter) => (
+          {contractFilters.map((filter) => (
             <label className="min-w-48 text-sm font-medium text-neutral-700" key={filter.key}>
               {readable(filter.labelKey)}
               {filter.type === 'status-select' ? (
@@ -203,7 +210,7 @@ export function AdminModulePage({
         </FilterBar>
 
         <div className="grid gap-3 md:grid-cols-3">
-          {summary.stats.map((item) => (
+          {summaryStats.map((item) => (
             <StatCard key={item.label} label={item.label} trend={item.trend} value={item.value} />
           ))}
         </div>
@@ -214,7 +221,7 @@ export function AdminModulePage({
           ) : (
             <DataTable
               columns={[
-                ...contract.columns.map((column) => ({
+                ...contractColumns.map((column) => ({
                   cell: (row: AdminRow) => row[column.key] ?? '-',
                   header: readable(column.labelKey),
                   key: column.key as keyof AdminRow & string,
@@ -231,7 +238,7 @@ export function AdminModulePage({
         <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
           <SectionCard description="The page now consumes the per-route contract instead of discarding it." title="Contract safeguards">
             <div className="grid gap-3 md:grid-cols-2">
-              {contract.safeguards.whereGuard.map((guard) => (
+              {whereGuards.map((guard) => (
                 <label className="flex min-h-12 items-center justify-between rounded-md border border-neutral-200 bg-neutral-50 px-3 text-sm" key={guard}>
                   <span className="font-medium text-neutral-800">{guard}</span>
                   <input checked readOnly type="checkbox" />
@@ -239,7 +246,7 @@ export function AdminModulePage({
               ))}
             </div>
             <div className="mt-4 flex flex-wrap gap-2 text-xs text-neutral-600">
-              {contract.safeguards.auditEvents.map((event) => (
+              {auditEvents.map((event) => (
                 <span className="rounded-sm bg-neutral-100 px-2 py-1" key={event}>{event}</span>
               ))}
             </div>
@@ -252,7 +259,7 @@ export function AdminModulePage({
                   {readable(section.labelKey)}
                 </Alert>
               ))}
-              {summary.alerts.map((item) => (
+              {summaryAlerts.map((item) => (
                 <Alert key={item.message} tone={item.level === 'warning' ? 'warning' : 'success'}>
                   {item.message}
                 </Alert>
@@ -269,7 +276,7 @@ export function AdminModulePage({
   function buildRowActions(row: AdminRow): ReactNode {
     return (
       <div className="flex flex-wrap gap-2">
-        {contract.rowActions.map((rowAction) => (
+        {contractRowActions.map((rowAction) => (
           <Button
             className="min-h-11"
             key={rowAction.key}
@@ -288,7 +295,9 @@ export function AdminModulePage({
   }
 
   function buildRows(summaryData: AdminModuleSummary, pageContract: AdminPageContract, key: string, activeId?: string): AdminRow[] {
-    const sourceRows = summaryData.rows.length > 0 ? summaryData.rows : [...pageContract.seedRows];
+    const safeRows = summaryData?.rows ?? [];
+    const seedRows = pageContract?.seedRows ?? [];
+    const sourceRows = safeRows.length > 0 ? safeRows : [...seedRows];
     return sourceRows.map((source, index) => {
       const id = source.id ?? `${key}-${index + 1}`;
       const statusValue = normalizeStatus(source.status);

@@ -6,6 +6,11 @@ export const zhCN = {
     loginDescription: '开发环境会写入模拟登录 Cookie，生产环境接入统一认证。',
     loginTitle: '登录平台后台',
   },
+  chat: {
+    actions: {
+      ownerActions: ['自己执行', '申请智能管家', '申请同乾方略', '人工复核', '专家咨询'],
+    },
+  },
   credentialsPage: {
     approval: {
       approver: '审批人：PLATFORM_OWNER',
