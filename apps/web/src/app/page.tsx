@@ -78,8 +78,8 @@ export default function Page() {
             </div>
           </header>
 
-          <section className="rounded-md border border-neutral-200 bg-white p-5 shadow-sm">
-            <div className="mb-4 flex items-center justify-between gap-3">
+          <section className="rounded-md border border-neutral-200 bg-white p-6 shadow-sm">
+            <div className="mb-4 flex items-center justify-between gap-4">
               <div>
                 <h2 className="text-lg font-semibold">AI operation thread</h2>
                 <p className="mt-1 text-sm text-neutral-500">The same entry can later call contract review, tender framework, policy match, and briefing prompts.</p>
@@ -87,7 +87,7 @@ export default function Page() {
               <span className="rounded-sm bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700">Clickable</span>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               {messages.map((message, index) => (
                 <article
                   className={`rounded-md border px-3 py-2 text-sm leading-6 ${
@@ -106,13 +106,13 @@ export default function Page() {
         </div>
 
         <aside className="h-fit rounded-md border border-neutral-200 bg-white p-4 shadow-sm">
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center justify-between gap-4">
             <h2 className="text-sm font-semibold">AI assistant</h2>
             <span className="rounded-sm bg-primary-50 px-2 py-1 text-xs font-medium text-primary-700">DeepSeek</span>
           </div>
           <p className="mt-2 text-xs leading-5 text-neutral-600">Send with Ctrl/Cmd + Enter. Mock fallback keeps this usable without backend services.</p>
           <textarea
-            className="mt-3 h-28 w-full resize-none rounded-md border border-neutral-300 p-3 text-sm outline-none transition focus:border-primary-500"
+            className="mt-3 h-28 w-full resize-none rounded-md border border-neutral-300 p-4 text-sm outline-none transition focus:border-primary-500"
             onChange={(event) => setInput(event.target.value)}
             onKeyDown={(event) => {
               if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') send();

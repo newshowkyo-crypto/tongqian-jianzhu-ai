@@ -51,14 +51,14 @@ export default function ReportPage({ params }: { params: { id: string } }) {
           </div>
           <p className="text-sm leading-6 text-neutral-700">{copy.riskSummary}</p>
 
-          <section className="space-y-3">
+          <section className="space-y-4">
             <h2 className="text-base font-semibold text-neutral-900">{copy.findingsTitle}</h2>
             {copy.findings.map((finding, index) => (
               <article
                 key={finding.text}
                 className={`rounded-lg border border-neutral-200 border-l-4 bg-white p-4 shadow-sm ${findingClassName[finding.level as keyof typeof findingClassName]}`}
               >
-                <div className="flex gap-3">
+                <div className="flex gap-4">
                   <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" />
                   <div className="space-y-1">
                     <p className="text-sm font-semibold text-neutral-900">#{index + 1} {finding.text}</p>
@@ -76,7 +76,7 @@ export default function ReportPage({ params }: { params: { id: string } }) {
             </div>
           </section>
 
-          <section className="space-y-3 pb-24">
+          <section className="space-y-4 pb-24">
             <h2 className="text-base font-semibold text-neutral-900">{copy.actionsTitle}</h2>
             <div className="grid gap-2">
               {copy.ownerActions.map((action, index) => (

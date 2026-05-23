@@ -14,17 +14,17 @@ export default function DashboardPage() {
   return (
     <PageLayout className="tq-product-surface">
       <PageContent className="relative z-[1] space-y-6">
-        <section className="tq-particles overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#0a1d3d,#142a52_58%,#1e3a6f)] p-6 text-white shadow-2xl">
-          <div className="relative z-[1] flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+        <section className="tq-particles overflow-hidden rounded-xl bg-[var(--gradient-navy-hero)] p-6 text-white shadow-md">
+          <div className="relative z-[1] flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <p className="text-sm text-[#d8dde5]">同乾方略 · 建筑 AI 经营管家</p>
-              <h1 className="mt-3 text-3xl font-semibold tracking-normal md:text-5xl">早安，今日先看机会、风险和现金流</h1>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-[#d8dde5]">{data?.greeting ?? '正在整理今日经营简报，AI 会把机会、风险、审批和点数余额压缩到一个首屏。'}</p>
+              <p className="text-sm text-silver-light">同乾方略 · 建筑 AI 经营管家</p>
+              <h1 className="mt-3 text-3xl font-semibold tracking-normal md:text-3xl">早安，今日先看机会、风险和现金流</h1>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-silver-light">{data?.greeting ?? '正在整理今日经营简报，AI 会把机会、风险、审批和点数余额压缩到一个首屏。'}</p>
             </div>
-            <div className="rounded-2xl border border-white/15 bg-white/10 p-4 text-right backdrop-blur">
-              <p className="text-xs text-[#b5bcc8]">当前时间</p>
+            <div className="rounded-xl border border-white/15 bg-white/10 p-4 text-right backdrop-blur">
+              <p className="text-xs text-silver-main">当前时间</p>
               <p className="mt-1 text-2xl font-semibold tabular-nums">{now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}</p>
-              <p className="mt-1 text-xs text-[#d8dde5]">{now.toLocaleDateString('zh-CN')} · 今日 3 个经营节点</p>
+              <p className="mt-1 text-xs text-silver-light">{now.toLocaleDateString('zh-CN')} · 今日 3 个经营节点</p>
             </div>
           </div>
         </section>
@@ -44,17 +44,17 @@ export default function DashboardPage() {
 
             <section className="grid gap-4 lg:grid-cols-[1.35fr_1fr]">
               <SectionCard className="tq-glass-card" title="今日机会推送">
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {data.opportunities.map((item) => (
-                    <OpportunityCard key={item.title} className="group border-l-4 border-l-[#d99880]" deadline={item.deadline} meta={item.meta} title={<span className="flex items-center justify-between gap-3">{item.title}<Button className="opacity-0 transition-opacity group-hover:opacity-100" size="sm">一键申请</Button></span>} />
+                    <OpportunityCard key={item.title} className="group border-l-4 border-l-rose-main" deadline={item.deadline} meta={item.meta} title={<span className="flex items-center justify-between gap-4">{item.title}<Button className="opacity-0 transition-opacity group-hover:opacity-100" size="sm">一键申请</Button></span>} />
                   ))}
                 </div>
               </SectionCard>
               <SectionCard className="tq-glass-card bg-gradient-to-br from-red-50 to-white" title="风险红灯">
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {data.risks.map((risk) => (
                     <article key={risk.title} className="tq-pulse-danger rounded-xl border border-danger-100 bg-gradient-to-r from-danger-50 to-white p-4">
-                      <div className="flex items-start justify-between gap-3"><div><h3 className="font-semibold text-[#0a1d3d]">{risk.title}</h3><p className="mt-1 text-sm text-neutral-600">{risk.detail}</p></div><RiskBadge level={risk.level} /></div>
+                      <div className="flex items-start justify-between gap-4"><div><h3 className="font-semibold text-navy-deepest">{risk.title}</h3><p className="mt-1 text-sm text-neutral-600">{risk.detail}</p></div><RiskBadge level={risk.level} /></div>
                     </article>
                   ))}
                 </div>
@@ -64,8 +64,8 @@ export default function DashboardPage() {
             <SectionCard className="tq-glass-card" title="昨日 AI 报告速览">
               <div className="tq-snap-row pb-2">
                 {[...data.reports, ...reportCards].map((report) => (
-                  <article key={report} className="min-w-[260px] rounded-2xl border border-[#d8dde5] bg-white/80 p-4 text-sm text-neutral-700 shadow-sm">
-                    <p className="font-semibold text-[#0a1d3d]">{report}</p>
+                  <article key={report} className="min-w-[260px] rounded-xl border border-silver-light bg-white/80 p-4 text-sm text-neutral-700 shadow-sm">
+                    <p className="font-semibold text-navy-deepest">{report}</p>
                     <p className="mt-3 text-xs text-neutral-500">已生成可执行建议、证据缺口和下一步按钮。</p>
                   </article>
                 ))}

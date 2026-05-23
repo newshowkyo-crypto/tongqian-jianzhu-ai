@@ -40,14 +40,14 @@ const groups = [
 
 export default function CredentialsPage(): ReactNode {
   return (
-    <section className="space-y-5 text-white">
+    <section className="space-y-6 text-white">
       <header>
         <h1 className="text-2xl font-semibold">凭证管理控制台</h1>
         <p className="text-sm text-[var(--text-secondary)]">
           平台所有外部凭证可视化管理：编辑、测试连通、切换模拟模式与真实模式，全流程审计。
         </p>
       </header>
-      <div className="grid gap-3 md:grid-cols-5">
+      <div className="grid gap-4 md:grid-cols-5">
         {groups.map(([label, count]) => (
           <div className="rounded-md border border-[var(--border-silver)] bg-white/5 p-4 shadow-card" key={label}>
             <div className="text-sm text-[var(--text-secondary)]">凭证分组</div>
@@ -60,7 +60,7 @@ export default function CredentialsPage(): ReactNode {
         <table className="w-full text-sm">
           <thead className="bg-white/10">
             <tr>
-              <th className="p-3 text-left">键名</th>
+              <th className="p-4 text-left">键名</th>
               <th>模式</th>
               <th>健康</th>
               <th>最后切换</th>
@@ -72,7 +72,7 @@ export default function CredentialsPage(): ReactNode {
               const isLive = index > 23;
               return (
                 <tr className="border-t border-[var(--border-silver)]" key={key}>
-                  <td className="p-3 font-mono">{key}</td>
+                  <td className="p-4 font-mono">{key}</td>
                   <td>{isLive ? '真实模式' : '模拟模式'}</td>
                   <td>{isLive ? '真实环境已就绪' : '模拟环境已就绪'}</td>
                   <td>{index + 1} 小时前</td>

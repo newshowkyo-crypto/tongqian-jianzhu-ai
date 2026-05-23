@@ -23,7 +23,7 @@ export default function PremiumServicesPage() {
       <PageHeader description={copy.description} title={copy.title} />
       <PageContent className="space-y-6">
         <section className="rounded-lg border border-primary-100 bg-primary-900 p-6 text-white shadow-card">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <span className="h-10 w-1 rounded-full bg-accent-500" />
             <div>
               <p className="text-sm text-accent-500">{zhCN.brand.name}</p>
@@ -43,7 +43,7 @@ export default function PremiumServicesPage() {
               className="border-accent-50 transition-all duration-200 hover:-translate-y-1 hover:border-accent-500 hover:shadow-md"
               cta={copy.cta}
               description={
-                <span className="space-y-3">
+                <span className="space-y-4">
                   <span className="block text-2xl font-bold tabular-nums text-accent-500">{service.price}</span>
                   <span className="block space-y-1 text-sm text-neutral-600">
                     {service.deliverables.map((item) => (

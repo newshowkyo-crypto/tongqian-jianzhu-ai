@@ -17,7 +17,7 @@ export const buttonVariants = cva(
         danger: 'border border-danger-500/60 bg-danger-500/20 text-white shadow-[0_0_18px_rgba(220,38,38,0.28)] hover:bg-danger-500/30',
         ghost: 'bg-transparent text-[var(--text-secondary)] hover:bg-white/5 hover:text-white',
         outline: 'border border-[var(--border-silver)] bg-[rgba(10,29,61,0.48)] text-[var(--text-primary)] hover:border-[var(--border-silver-hover)] hover:bg-[var(--bg-glass-hover)]',
-        primary: 'border border-[var(--accent-rose)] bg-[linear-gradient(135deg,var(--accent-rose),#b8755c)] text-[#0a1d3d] shadow-[var(--shadow-rose-glow)] hover:brightness-110',
+        primary: 'border border-[var(--accent-rose)] bg-[linear-gradient(135deg,var(--accent-rose),#b8755c)] text-navy-deepest shadow-[var(--shadow-rose-glow)] hover:brightness-110',
         secondary: 'border border-[var(--cyber-blue)] bg-[rgba(74,142,255,0.16)] text-white shadow-[var(--shadow-cyber-glow)] hover:bg-[rgba(74,142,255,0.24)]',
       },
     },

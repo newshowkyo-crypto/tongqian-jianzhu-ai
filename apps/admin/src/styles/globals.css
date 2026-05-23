@@ -1,1 +1,8 @@
 @import '@tongqian/ui/styles/globals.css';
+
+:root {
+  --gradient-navy-hero: linear-gradient(135deg,#0a1d3d,#142a52 58%,#1e3a6f);
+  --gradient-glass: linear-gradient(135deg,rgba(255,255,255,.9),rgba(216,221,229,.35));
+  --shadow-glass: 0 1px 3px rgb(10 29 61 / 0.10), 0 0 0 1px rgb(216 221 229 / 0.20);
+  --border-silver: #b5bcc8;
+}

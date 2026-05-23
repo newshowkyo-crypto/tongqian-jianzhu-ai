@@ -47,7 +47,7 @@ export function AgentModulePage({ copy }: { copy: AgentModulePageCopy }) {
         </div>
 
         <SectionCard description="平台会保留关键动作审计，并在客户保护期、退款扣回、越权风险发生时提醒您。" title="本页重点">
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-3">
             {copy.highlights.map((item) => (
               <div key={item} className="rounded-md border border-primary-100 bg-primary-50 p-4 text-sm font-medium text-primary-700">
                 {item}
@@ -57,7 +57,7 @@ export function AgentModulePage({ copy }: { copy: AgentModulePageCopy }) {
         </SectionCard>
 
         <SectionCard title="当前事项">
-          <div className="space-y-3">
+          <div className="space-y-4">
             {copy.primaryList.map((item) => (
               <article key={item.title} className="flex min-h-16 flex-col gap-2 rounded-md border border-neutral-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
                 <div>

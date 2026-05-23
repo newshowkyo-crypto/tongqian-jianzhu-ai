@@ -60,7 +60,7 @@ export function BusinessFuelPage({ path, taskType }: { path: string; taskType?: 
   const rows: Array<Record<string, number | string>> = kind === 'golden' ? goldenRows : kind === 'knowledge' ? knowledgeRows : ruleRows;
 
   return (
-    <PageLayout className="min-h-screen bg-[#071015] text-slate-100">
+    <PageLayout className="min-h-screen bg-navy-deepest text-slate-100">
       <PageHeader
         actions={<Button variant="primary">{copy.focus}</Button>}
         breadcrumbs={copy.eyebrow}
@@ -84,9 +84,9 @@ export function BusinessFuelPage({ path, taskType }: { path: string; taskType?: 
           <CyberCard title={kind === 'rule' ? '版本与灰度' : kind === 'knowledge' ? '解析与向量化' : '运行差异'}>
             <div className="space-y-4 text-sm leading-7 text-slate-200">
               <p>{kind === 'rule' ? 'v4 当前灰度 50%，可回滚 v2；AI 调用按 ruleId 与灰度 hash 命中版本。' : kind === 'knowledge' ? '上传后自动拆 chunk，mock 向量索引保留原文引用，报告底部可追溯资料来源。' : '每次 Prompt 改版触发 run-all，低于 70% 阈值不得灰度发布。'}</p>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 {['专家复核', '审计留痕', '版本快照', '报告引用'].map((item) => (
-                  <div className="rounded border border-cyan-300/25 bg-cyan-300/10 p-3" key={item}>{item}</div>
+                  <div className="rounded border border-cyan-300/25 bg-cyan-300/10 p-4" key={item}>{item}</div>
                 ))}
               </div>
             </div>

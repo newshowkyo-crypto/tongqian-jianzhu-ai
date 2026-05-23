@@ -1,8 +1,11 @@
 export const colors = {
   accent: {
-    50: '#fdf6e7',
-    500: '#d4953a',
-    700: '#a06d24',
+    500: '#d99880',
+  },
+  cardBg: '#e8eaf0',
+  cyber: {
+    blue: '#4a8eff',
+    brightBlue: '#5fb4ff',
   },
   danger: {
     50: '#fef2f2',
@@ -27,17 +30,29 @@ export const colors = {
     800: '#27272a',
     900: '#18181b',
   },
+  navy: {
+    bright: '#2a5298',
+    deep: '#142a52',
+    deepest: '#0a1d3d',
+    mid: '#1e3a6f',
+  },
   primary: {
     50: '#f0f6fe',
     100: '#dde9fc',
-    200: '#bbd2f8',
-    300: '#92b3f1',
-    400: '#5e8be6',
     500: '#1e5fbf',
-    600: '#1a4ea3',
     700: '#163e87',
     800: '#143570',
     900: '#0d2950',
+  },
+  rose: {
+    deep: '#b8755c',
+    light: '#f5d3c0',
+    main: '#d99880',
+  },
+  silver: {
+    deep: '#8a93a2',
+    light: '#d8dde5',
+    main: '#b5bcc8',
   },
   success: {
     50: '#ecfdf5',
@@ -51,4 +66,5 @@ export const colors = {
     500: '#f59e0b',
     700: '#b45309',
   },
+  white: '#ffffff',
 } as const;

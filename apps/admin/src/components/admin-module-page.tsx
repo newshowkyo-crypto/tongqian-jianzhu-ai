@@ -168,7 +168,7 @@ export function AdminModulePage({
         description={copy.description}
         title={copy.title}
       />
-      <PageContent className="space-y-5">
+      <PageContent className="space-y-6">
         {query.isLoading ? <LoadingState label={readable(contract.states.loadingKey)} /> : null}
         {query.isError ? (
           <ErrorState
@@ -209,7 +209,7 @@ export function AdminModulePage({
           ))}
         </FilterBar>
 
-        <div className="grid gap-3 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-3">
           {summaryStats.map((item) => (
             <StatCard key={item.label} label={item.label} trend={item.trend} value={item.value} />
           ))}
@@ -237,7 +237,7 @@ export function AdminModulePage({
 
         <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
           <SectionCard description="The page now consumes the per-route contract instead of discarding it." title="Contract safeguards">
-            <div className="grid gap-3 md:grid-cols-2">
+            <div className="grid gap-4 md:grid-cols-2">
               {whereGuards.map((guard) => (
                 <label className="flex min-h-12 items-center justify-between rounded-md border border-neutral-200 bg-neutral-50 px-3 text-sm" key={guard}>
                   <span className="font-medium text-neutral-800">{guard}</span>
@@ -253,7 +253,7 @@ export function AdminModulePage({
           </SectionCard>
 
           <SectionCard description={selectedRow ? `Selected ${selectedRow.id}` : 'Click Open on a row to inspect action context.'} title="Drawer preview">
-            <div className="space-y-3">
+            <div className="space-y-4">
               {(contract.drawer?.sections ?? []).map((section) => (
                 <Alert key={section.key} tone="info">
                   {readable(section.labelKey)}
