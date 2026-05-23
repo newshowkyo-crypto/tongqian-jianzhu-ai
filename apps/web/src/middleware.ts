@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-const publicPaths = ['/login', '/forbidden'];
+const publicPaths = ['/login', '/forbidden', '/welcome'];
 const allowedRoles = new Set(['owner', 'employee', 'platform_owner']);
 const DEV_TOKEN = 'dev-web';
 const DEV_ROLE = 'owner';

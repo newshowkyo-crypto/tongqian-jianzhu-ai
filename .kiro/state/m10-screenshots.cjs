@@ -34,7 +34,9 @@ async function assertLoginStyled(page) {
   const text = await page.locator('body').innerText({ timeout: 30000 });
   const className = await page.locator('main').getAttribute('class');
   if (!text.includes('登录平台后台')) throw new Error('admin login copy missing');
-  if (!className?.includes('bg-navy-deepest')) throw new Error('admin login shell is not cyber styled');
+  const hasCyberShell = className?.includes('bg-navy-deepest');
+  const hasStitchShell = className?.includes('bg-[var(--bg)]');
+  if (!hasCyberShell && !hasStitchShell) throw new Error('admin login shell is not cyber or Stitch styled');
 }
 
 (async () => {
