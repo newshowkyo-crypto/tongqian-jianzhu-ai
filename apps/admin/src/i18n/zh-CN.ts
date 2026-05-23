@@ -129,11 +129,13 @@ export const zhCN = {
     action: '前往',
     badge: '上线引导',
     completed: '已就绪可上线',
-    credentials: '凭证',
     description: '上线前只看三件事：真实凭证、ICP 备案、业务底料。',
-    fuel: '业务底料',
-    icp: 'ICP',
     loading: '读取上线状态',
+    steps: {
+      credentials: '凭证',
+      fuel: '业务底料',
+      icp: 'ICP',
+    },
     title: '上线引导',
   },
   navigation: {
