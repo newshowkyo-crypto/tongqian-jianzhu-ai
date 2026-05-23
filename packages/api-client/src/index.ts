@@ -163,9 +163,9 @@ const credentialFixtures: CredentialRecord[] = [
 
 export function createApiClient(options: ApiClientOptions = {}) {
   const envMock =
-    typeof process !== 'undefined' && process.env.NEXT_PUBLIC_USE_MOCK
-      ? process.env.NEXT_PUBLIC_USE_MOCK === 'true'
-      : false;
+    typeof process !== 'undefined'
+      ? process.env.NEXT_PUBLIC_API_MOCK !== 'false'
+      : true;
   const mock = options.mock ?? envMock;
   const http = axios.create({
     baseURL: options.baseURL ?? process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://127.0.0.1:4000/api/v1',
@@ -359,7 +359,11 @@ function createAiApi(http: AxiosInstance, mock: boolean) {
         buttons: normalizeButtons(response.nextStepButtons ?? data.nextStepButtons),
         confidence: normalizeConfidence(response.confidence ?? data.confidence),
         message: {
-          content: normalizeText(data.answer ?? data.summary ?? data.message ?? response.fallbackText ?? latest),
+          content: [
+            normalizeText(data.answer ?? data.summary ?? data.message ?? response.fallbackText ?? latest),
+            `免责声明：${normalizeText(response.disclaimer ?? data.disclaimer ?? 'AI 生成内容仅供经营决策参考。')}`,
+            `Tier：${normalizeTier(response.tier ?? data.tier)} / traceId：${normalizeText(response.traceId ?? cryptoRandomId())}`,
+          ].join('\n'),
           role: 'assistant',
         },
         tier: normalizeTier(response.tier ?? data.tier),
@@ -541,7 +545,17 @@ function buildAdminModuleFixture(slug: string): AdminModuleSummary {
 }
 
 function normalizeButtons(value: unknown): string[] {
-  if (Array.isArray(value)) return value.map((item) => String(item)).slice(0, 5);
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => {
+        if (item && typeof item === 'object') {
+          const record = item as Record<string, unknown>;
+          return String(record.i18nKey ?? record.action ?? '下一步');
+        }
+        return String(item);
+      })
+      .slice(0, 5);
+  }
   return ['自己执行', '申请智能管家', '申请同乾方略', '人工复核', '专家咨询'];
 }
 

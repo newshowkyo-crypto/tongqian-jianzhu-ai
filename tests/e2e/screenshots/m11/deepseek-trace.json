@@ -1,0 +1,106 @@
+{
+  "code": "OK",
+  "data": {
+    "disclaimer": "本输出为AI经营决策参考，不替代法律专业意见。具体合同审阅需结合原件和完整背景。",
+    "tier": 2,
+    "confidence": "medium",
+    "dataSourceStatement": "基于用户请求、合同审阅常见风险点及平台建筑业知识库生成，无具体合同文本，结论为通用参考。",
+    "traceId": "d938966f-d0a2-4cf4-9ab8-d957f45cec8c",
+    "nextStepHint": "apply-human-review",
+    "nextStepButtons": [
+      {
+        "action": "self_execute",
+        "i18nKey": "ai.next.owner.executeSelf",
+        "role": "owner"
+      },
+      {
+        "action": "apply_agent",
+        "i18nKey": "ai.next.owner.applyAgent",
+        "role": "owner"
+      },
+      {
+        "action": "request_human_review",
+        "i18nKey": "ai.next.owner.humanReview",
+        "role": "owner"
+      }
+    ],
+    "executionDifficultyRadar": {
+      "professional": 68,
+      "time": 56,
+      "risk": 72,
+      "cost": 45
+    },
+    "sections": [
+      {
+        "title": "付款风险点",
+        "content": "1. 付款节点模糊：未明确阶段性付款的具体条件和时间，易产生争议。\n2. 逾期付款责任缺失：未约定逾期付款违约金或利息，导致业主拖延。\n3. 质保金返还条件不清晰：质保期起算点、返还期限未写清，可能长期占压资金。\n4. 付款与验收脱钩：未将付款与分项验收或进度确认挂钩，已完工部分无法及时收款。\n5. 支付方式不安全：如未约定业主将款项付至指定账户、保函替代预留金等保障措施。"
+      },
+      {
+        "title": "Tier 判定",
+        "content": "因未提供合同金额，按通用情景归入T1（金额<1000万或资料不全默认T1）。若实际金额更高，建议补充后重新评估。"
+      },
+      {
+        "title": "行动建议",
+        "content": "1. 智能管家尽快获取合同原件、招标文件、来往函件。\n2. 老板关注付款周期是否与项目现金流匹配，必要时补充逾期责任条款。\n3. 经营层在补充风险评估后，可委托法务或顾问审核付款条件。"
+      }
+    ],
+    "summary": "未提供具体合同文本，但可按常见工程合同梳理5个典型付款风险点。",
+    "title": "合同付款风险速读",
+    "cacheHit": false,
+    "cost": {
+      "credits": 360,
+      "rmb": 3.6
+    },
+    "data": {
+      "disclaimer": "本输出为AI经营决策参考，不替代法律专业意见。具体合同审阅需结合原件和完整背景。",
+      "tier": 2,
+      "confidence": "medium",
+      "dataSourceStatement": "基于用户请求、合同审阅常见风险点及平台建筑业知识库生成，无具体合同文本，结论为通用参考。",
+      "traceId": "contract-review-basic-001",
+      "nextStepHint": "apply-human-review",
+      "nextStepButtons": [
+        {
+          "action": "self_execute",
+          "i18nKey": "ai.next.owner.executeSelf",
+          "role": "owner"
+        },
+        {
+          "action": "apply_agent",
+          "i18nKey": "ai.next.owner.applyAgent",
+          "role": "owner"
+        },
+        {
+          "action": "request_human_review",
+          "i18nKey": "ai.next.owner.humanReview",
+          "role": "owner"
+        }
+      ],
+      "executionDifficultyRadar": {
+        "professional": 68,
+        "time": 56,
+        "risk": 72,
+        "cost": 45
+      },
+      "sections": [
+        {
+          "title": "付款风险点",
+          "content": "1. 付款节点模糊：未明确阶段性付款的具体条件和时间，易产生争议。\n2. 逾期付款责任缺失：未约定逾期付款违约金或利息，导致业主拖延。\n3. 质保金返还条件不清晰：质保期起算点、返还期限未写清，可能长期占压资金。\n4. 付款与验收脱钩：未将付款与分项验收或进度确认挂钩，已完工部分无法及时收款。\n5. 支付方式不安全：如未约定业主将款项付至指定账户、保函替代预留金等保障措施。"
+        },
+        {
+          "title": "Tier 判定",
+          "content": "因未提供合同金额，按通用情景归入T1（金额<1000万或资料不全默认T1）。若实际金额更高，建议补充后重新评估。"
+        },
+        {
+          "title": "行动建议",
+          "content": "1. 智能管家尽快获取合同原件、招标文件、来往函件。\n2. 老板关注付款周期是否与项目现金流匹配，必要时补充逾期责任条款。\n3. 经营层在补充风险评估后，可委托法务或顾问审核付款条件。"
+        }
+      ],
+      "summary": "未提供具体合同文本，但可按常见工程合同梳理5个典型付款风险点。",
+      "title": "合同付款风险速读"
+    },
+    "modelUsed": "deepseek-reasoner",
+    "providerUsed": "deepseek_direct"
+  },
+  "message": "AI invocation completed",
+  "traceId": "877c3144-0cfa-4c67-ae2f-03fc15863389"
+}

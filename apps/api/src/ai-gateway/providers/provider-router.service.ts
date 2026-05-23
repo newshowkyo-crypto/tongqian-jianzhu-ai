@@ -2,13 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { AiProviderCode } from '@tongqian/types';
 
 import type { AiProvider, AiProviderInvokeRequest, AiRawResponse } from './ai-provider.interface.js';
+import { DeepSeekProvider } from './deepseek-provider.js';
 import { MockAiProvider } from './mock-provider.js';
 
 @Injectable()
 export class ProviderRouterService {
   private readonly unhealthyUntil = new Map<AiProviderCode, number>();
   private readonly providers: AiProvider[] = [
-    new MockAiProvider(AiProviderCode.DEEPSEEK_DIRECT, 1, ['deepseek-reasoner'], isDeepSeekAvailable()),
+    process.env.DEEPSEEK_API_KEY
+      ? new DeepSeekProvider(AiProviderCode.DEEPSEEK_DIRECT, 1, ['deepseek-reasoner', 'deepseek-chat'])
+      : new MockAiProvider(AiProviderCode.DEEPSEEK_DIRECT, 1, ['deepseek-reasoner'], isDeepSeekAvailable()),
     new MockAiProvider(AiProviderCode.ALIYUN_DASHSCOPE, 2, ['qwen3-max', 'qwen3-vl-max', 'text-embedding-v3'], isDashScopeAvailable()),
   ];
 

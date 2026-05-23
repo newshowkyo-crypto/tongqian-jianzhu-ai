@@ -73,7 +73,7 @@ async function assertLoginStyled(page) {
     }
 
     const file = path.join(outDir, shot.name);
-    await page.screenshot({ fullPage: true, path: file });
+    await page.screenshot({ fullPage: true, path: file, timeout: 120000 });
     const bytes = await fs.readFile(file);
     const stat = await fs.stat(file);
     const idat = idatCount(bytes);

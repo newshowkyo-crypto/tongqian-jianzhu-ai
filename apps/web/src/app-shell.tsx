@@ -69,7 +69,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const tenant = zhCN.navigation.tenants[0] ?? zhCN.brand.name;
 
   async function sendAssistantMessage(messages: AiAssistantWidgetMessage[]) {
-    const reply = await apiClient.ai.chat(messages, 'chat.long');
+    const reply = await apiClient.ai.chat(messages, 'contract.review.basic');
     return {
       buttons: reply.buttons,
       confidence: reply.confidence,
