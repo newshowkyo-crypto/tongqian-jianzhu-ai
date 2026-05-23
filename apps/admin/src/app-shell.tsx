@@ -1,6 +1,7 @@
 'use client';
 
 import { apiClient } from '@tongqian/api-client';
+import { useQuery } from '@tanstack/react-query';
 import {
   CyberAiOrb,
   CyberShell,
@@ -14,6 +15,7 @@ import {
   type CyberShellNavigationItem,
 } from '@tongqian/ui';
 import type { CyberHeroProps } from '@tongqian/ui/cyber';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
 
@@ -58,6 +60,25 @@ function PermissionsPanel(): ReactNode {
   );
 }
 
+function LaunchOnboardingButton(): ReactNode {
+  const copy = zhCN.launchOnboarding;
+  const query = useQuery({
+    queryFn: async () => {
+      const response = await fetch('/api/v1/admin/onboarding/summary');
+      if (!response.ok) throw new Error(await response.text());
+      return (await response.json()) as { ready: boolean; readyCount: number; total: number };
+    },
+    queryKey: ['admin', 'onboarding-summary'],
+    staleTime: 30_000,
+  });
+  const summary = query.data;
+  return (
+    <Link className="fixed right-6 top-4 z-50 rounded-md border border-rose-300/60 bg-rose-500/20 px-4 py-2 text-sm font-semibold text-white shadow-card" href="/admin/onboarding">
+      {summary?.ready ? copy.completed : `${copy.badge} (${summary?.readyCount ?? 0}/${summary?.total ?? 3})`}
+    </Link>
+  );
+}
+
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const isPublic = pathname === '/login' || pathname === '/forbidden';
@@ -79,26 +100,29 @@ export function AppShell({ children }: { children: ReactNode }) {
   }
 
   return (
-    <CyberShell
-      actionLabels={{
-        avatar: zhCN.home.title.slice(0, 1),
-        avatarTitle: zhCN.home.title,
-        notifications: zhCN.navigation.notifications,
-        tenant: zhCN.navigation.tenant,
-        tenantTitle: zhCN.home.title,
-        theme: zhCN.navigation.theme,
-      }}
-      assistant={<CyberAiOrb currentContext={currentContext} onConvert={async (targetTask) => { await apiClient.chatHub.convert('latest', targetTask); }} onSend={sendAssistantMessage} />}
-      brand={{ href: '/', title: zhCN.home.title }}
-      currentLabel={current?.label}
-      currentPath={pathname}
-      homeLabel={zhCN.navigation.home}
-      iconMap={iconMap}
-      navigation={navigationItems}
-      rightPanel={<PermissionsPanel />}
-      searchPlaceholder={zhCN.navigation.search}
-    >
-      {children}
-    </CyberShell>
+    <>
+      <LaunchOnboardingButton />
+      <CyberShell
+        actionLabels={{
+          avatar: zhCN.home.title.slice(0, 1),
+          avatarTitle: zhCN.home.title,
+          notifications: zhCN.navigation.notifications,
+          tenant: zhCN.navigation.tenant,
+          tenantTitle: zhCN.home.title,
+          theme: zhCN.navigation.theme,
+        }}
+        assistant={<CyberAiOrb currentContext={currentContext} onConvert={async (targetTask) => { await apiClient.chatHub.convert('latest', targetTask); }} onSend={sendAssistantMessage} />}
+        brand={{ href: '/', title: zhCN.home.title }}
+        currentLabel={current?.label}
+        currentPath={pathname}
+        homeLabel={zhCN.navigation.home}
+        iconMap={iconMap}
+        navigation={navigationItems}
+        rightPanel={<PermissionsPanel />}
+        searchPlaceholder={zhCN.navigation.search}
+      >
+        {children}
+      </CyberShell>
+    </>
   );
 }
