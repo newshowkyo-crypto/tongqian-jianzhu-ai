@@ -32,6 +32,41 @@ export class AgentWorkspaceController {
     return { code: 'OK', data: this.workspace.classifyDispatch(body), message: 'Dispatch classified', traceId: crypto.randomUUID() };
   }
 
+  @Get('dispatches')
+  listDispatches(): unknown {
+    return { code: 'OK', data: [{ id: 'disp-pending-001', type: '资质代办', status: 'pending' }], message: 'Dispatch list', traceId: crypto.randomUUID() };
+  }
+
+  @Post('dispatches')
+  createDispatch(@Body() body: Record<string, unknown>): unknown {
+    return { code: 'OK', data: { dispatchId: 'disp-pending-001', source: body }, message: 'Dispatch created', traceId: crypto.randomUUID() };
+  }
+
+  @Get('dispatches/:id')
+  getDispatch(@Param('id') id: string): unknown {
+    return { code: 'OK', data: { id, type: '资质代办', status: 'pending' }, message: 'Dispatch detail', traceId: crypto.randomUUID() };
+  }
+
+  @Post('dispatches/:id/accept')
+  acceptDispatch(@Param('id') id: string, @Body() body: { agentId?: string }): unknown {
+    return { code: 'OK', data: { id, agentId: body.agentId, ok: true }, message: 'Dispatch accepted', traceId: crypto.randomUUID() };
+  }
+
+  @Post('dispatches/:id/quote')
+  quoteDispatch(@Param('id') id: string, @Body() body: { amount?: string; note?: string }): unknown {
+    return { code: 'OK', data: { id, ...body, ok: true }, message: 'Dispatch quoted', traceId: crypto.randomUUID() };
+  }
+
+  @Post('dispatches/:id/confirm')
+  confirmDispatch(@Param('id') id: string): unknown {
+    return { code: 'OK', data: { id, ok: true }, message: 'Dispatch confirmed', traceId: crypto.randomUUID() };
+  }
+
+  @Post('dispatches/:id/complete')
+  completeDispatch(@Param('id') id: string, @Body() body: { rating?: number; review?: string }): unknown {
+    return { code: 'OK', data: { id, ...body, ok: true }, message: 'Dispatch completed', traceId: crypto.randomUUID() };
+  }
+
   @Post('dispatches/:id/route')
   route(@Param('id') id: string, @Body() body: { agentId?: string }): unknown {
     return { code: 'OK', data: this.workspace.routeDispatch(id, body.agentId), message: 'Dispatch routed', traceId: crypto.randomUUID() };

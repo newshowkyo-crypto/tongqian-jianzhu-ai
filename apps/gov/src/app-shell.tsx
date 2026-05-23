@@ -2,7 +2,7 @@
 
 import { apiClient } from '@tongqian/api-client';
 import {
-  AiAssistantBubble,
+  CyberAiOrb,
   Building2,
   CyberShell,
   FileSearch,
@@ -10,7 +10,7 @@ import {
   MessageSquare,
   Shield,
   Wallet,
-  type AiAssistantWidgetMessage,
+  type CyberChatPanelProps,
   type CyberShellNavigationItem,
 } from '@tongqian/ui';
 import type { CyberHeroProps } from '@tongqian/ui/cyber';
@@ -46,13 +46,13 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   const current = navigationItems.find((item) => pathname === item.href || pathname.startsWith(`${item.href}/`));
 
-  async function sendAssistantMessage(messages: AiAssistantWidgetMessage[]) {
-    const reply = await apiClient.ai.chat(messages, 'gov.policy_impact');
+  const currentContext: CyberChatPanelProps['currentContext'] = { module: 'dashboard', pathname, resourceId: pathname.split('/').filter(Boolean).at(1) };
+  async function sendAssistantMessage(input: Parameters<NonNullable<CyberChatPanelProps['onSend']>>[0]) {
+    const reply = await apiClient.aiGateway.invoke({ taskType: 'chat.policy', context: { ...input.context, recentMessages: input.messages.slice(-3) }, userInput: input.userInput });
     return {
-      buttons: reply.buttons.slice(0, 3),
-      confidence: reply.confidence,
-      content: reply.message.content,
-      tier: reply.tier,
+      confidence: 'medium' as const,
+      content: reply.text ?? reply.summary ?? '已读取政企上下文。',
+      tier: 2 as const,
     };
   }
 
@@ -66,7 +66,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         tenantTitle: zhCN.home.title,
         theme: zhCN.navigation.theme,
       }}
-      assistant={<AiAssistantBubble onSend={sendAssistantMessage} role="gov" />}
+      assistant={<CyberAiOrb currentContext={currentContext} onConvert={async (targetTask) => { await apiClient.chatHub.convert('latest', targetTask); }} onSend={sendAssistantMessage} />}
       brand={{ eyebrow: zhCN.home.eyebrow, href: '/', title: zhCN.home.title }}
       currentLabel={current?.label}
       currentPath={pathname}

@@ -1,131 +1,35 @@
 'use client';
 
-import {
-  Avatar,
-  Badge,
-  Button,
-  EmptyState,
-  ErrorState,
-  Input,
-  LoadingState,
-  PageContent,
-  PageHeader,
-  PageLayout,
-  SectionCard,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  UserCheck,
-} from '@tongqian/ui';
-import { useMemo, useState } from 'react';
+import { apiClient, type DispatchListItem } from '@tongqian/api-client';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
-import { zhCN } from '../../i18n/zh-CN';
+const tabs = ['全部派单', '我的归属', '跨域池', '公开抢单'];
 
-const copy = zhCN.dispatch;
-
-function quoteTone(value: number) {
-  if (value <= 1800) return 'border-success-500 bg-success-50 text-success-700';
-  if (value <= 3600) return 'border-warning-500 bg-warning-50 text-warning-700';
-  return 'border-danger-500 bg-danger-50 text-danger-700';
-}
-
-function quoteLabel(value: number) {
-  if (value <= 1800) return copy.traffic.green;
-  if (value <= 3600) return copy.traffic.yellow;
-  return copy.traffic.red;
-}
-
-export default function DispatchPage() {
-  const [activeTab, setActiveTab] = useState<string>(copy.tabs[0]);
-  const [quotes, setQuotes] = useState<Record<string, number>>(
-    Object.fromEntries(copy.orders.map((order) => [order.id, order.quote])),
-  );
-  const isLoading = false;
-  const isError = false;
-  const visibleOrders = useMemo(() => copy.orders, []);
-
+export default function AgentDispatchPage() {
+  const [activeTab, setActiveTab] = useState(tabs[0]);
+  const [rows, setRows] = useState<DispatchListItem[]>([]);
+  useEffect(() => { void apiClient.dispatch.list('agent').then(setRows); }, []);
   return (
-    <PageLayout>
-      <PageHeader description={copy.description} title={copy.title} />
-      <PageContent className="space-y-6">
-        <Tabs>
-          <TabsList className="flex h-auto w-full flex-wrap gap-1">
-            {copy.tabs.map((tab) => (
-              <TabsTrigger key={tab} active={activeTab === tab} className="min-h-11 flex-1" onClick={() => setActiveTab(tab)}>
-                {tab}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
-
-        {isLoading ? <LoadingState label={zhCN.states.loading} /> : null}
-        {isError ? <ErrorState actionLabel={zhCN.states.retry} description={zhCN.states.errorDescription} title={zhCN.states.errorTitle} /> : null}
-        {!visibleOrders.length ? <EmptyState description={zhCN.states.emptyDescription} title={zhCN.states.emptyTitle} /> : null}
-
-        <div className="grid gap-4">
-          {visibleOrders.map((order) => {
-            const quote = quotes[order.id] ?? order.quote;
-            const urgent = 'urgent' in order && order.urgent === true;
-            return (
-              <SectionCard
-                key={order.id}
-                className={urgent ? 'border-l-4 border-l-warning-500' : ''}
-                title={
-                  <span className="flex flex-wrap items-center gap-2">
-                    {order.need}
-                    {urgent ? <Badge tone="warning">{copy.urgent}</Badge> : null}
-                  </span>
-                }
-                description={`${order.id} · ${order.due} · ${activeTab}`}
-              >
-                <div className="grid gap-4 lg:grid-cols-[1fr_260px]">
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-4">
-                      <Avatar fallback={order.customer.slice(0, 1)} />
-                      <div>
-                        <p className="text-sm font-semibold text-neutral-900">{order.customer}</p>
-                        <p className="text-xs text-accent-700">{copy.premium}</p>
-                      </div>
-                      <UserCheck className="h-5 w-5 text-accent-500" />
-                    </div>
-
-                    <div className="grid gap-2 sm:grid-cols-4">
-                      {order.match.map((score) => (
-                        <div key={score} className="rounded-md border border-primary-100 bg-primary-50 p-4 text-sm font-medium text-primary-700">
-                          {score}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <label className="space-y-2 text-sm font-medium text-neutral-700">
-                      <span>{copy.quoteLabel}</span>
-                      <Input
-                        className={`min-h-11 tabular-nums ${quoteTone(quote)}`}
-                        min={0}
-                        onChange={(event) => setQuotes((current) => ({ ...current, [order.id]: Number(event.target.value) }))}
-                        type="number"
-                        value={quote}
-                      />
-                    </label>
-                    <Badge className="w-fit" tone={quote <= 1800 ? 'success' : quote <= 3600 ? 'warning' : 'danger'}>
-                      {quoteLabel(quote)}
-                    </Badge>
-                    <div className="grid gap-2">
-                      {copy.actions.map((action, index) => (
-                        <Button key={action} className="min-h-11 w-full" variant={index === 0 ? 'primary' : 'outline'}>
-                          {action}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </SectionCard>
-            );
-          })}
-        </div>
-      </PageContent>
-    </PageLayout>
+    <main className="space-y-6 p-6">
+      <section className="rounded-xl bg-navy-deepest p-6 text-white">
+        <p className="text-sm text-rose-main">智能管家派单工作台</p>
+        <h1 className="text-2xl font-semibold">公开池、归属客户、跨域协作一处处理</h1>
+      </section>
+      <section className="grid gap-4 md:grid-cols-4">{[['待接单', 7], ['进行中', 3], ['月收入', '¥42,600'], ['信誉分', 96]].map(([label, value]) => <div className="rounded-lg border p-4" key={label}><p className="text-sm text-neutral-500">{label}</p><p className="text-xl font-semibold">{value}</p></div>)}</section>
+      <section className="flex flex-wrap gap-2">{tabs.map((tab) => <button className="rounded-md border px-3 py-2" key={tab} onClick={() => setActiveTab(tab)} type="button">{tab}</button>)}</section>
+      <section className="space-y-3">
+        {rows.map((row) => (
+          <Link className="grid gap-3 rounded-lg border p-4 hover:bg-neutral-50 md:grid-cols-6" href={`/dispatch/${row.id}`} key={row.id}>
+            <span className="rounded-md bg-warning-50 px-2 py-1 text-warning-700">紧急徽章</span>
+            <span>客户匿名名 {row.id.slice(-3)}</span>
+            <span>{row.type}</span>
+            <span>4 维匹配分 地理/类型/信誉/活跃度 {row.matchScore}</span>
+            <span>保护期倒计时 {row.protectionExpireAt ?? '3 天'}</span>
+            <button className="rounded-md bg-rose-main px-3 py-2 text-navy-deepest" onClick={(event) => { event.preventDefault(); void apiClient.dispatch.accept(row.id); }} type="button">立即接单</button>
+          </Link>
+        ))}
+      </section>
+    </main>
   );
 }

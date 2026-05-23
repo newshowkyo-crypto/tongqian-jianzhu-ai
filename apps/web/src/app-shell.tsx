@@ -2,7 +2,7 @@
 
 import { apiClient } from '@tongqian/api-client';
 import {
-  AiAssistantBubble,
+  CyberAiOrb,
   Award,
   Bell,
   Building2,
@@ -20,7 +20,7 @@ import {
   UserCheck,
   Wallet,
   Wrench,
-  type AiAssistantWidgetMessage,
+  type CyberChatPanelProps,
   type CyberShellNavigationItem,
 } from '@tongqian/ui';
 import type { CyberHeroProps } from '@tongqian/ui/cyber';
@@ -70,13 +70,22 @@ export function AppShell({ children }: { children: ReactNode }) {
   const current = navigationItems.find((item) => pathname === item.href || pathname.startsWith(`${item.href}/`));
   const tenant = zhCN.navigation.tenants[0] ?? zhCN.brand.name;
 
-  async function sendAssistantMessage(messages: AiAssistantWidgetMessage[]) {
-    const reply = await apiClient.ai.chat(messages, 'contract.review.basic');
+  const currentContext: CyberChatPanelProps['currentContext'] = {
+    module: pathname.includes('/contracts') ? 'contract' : pathname.includes('/tenders') ? 'tender' : pathname.includes('/qualifications') ? 'qualification' : pathname.includes('/opportunities') ? 'opportunity' : pathname.includes('/reports') ? 'report' : 'dashboard',
+    pathname,
+    resourceId: pathname.split('/').filter(Boolean).at(1),
+  };
+
+  async function sendAssistantMessage(input: Parameters<NonNullable<CyberChatPanelProps['onSend']>>[0]) {
+    const reply = await apiClient.aiGateway.invoke({
+      taskType: 'chat.long',
+      context: { ...input.context, personaId: input.personaId, recentMessages: input.messages.slice(-3) },
+      userInput: input.userInput,
+    });
     return {
-      buttons: reply.buttons,
-      confidence: reply.confidence,
-      content: reply.message.content,
-      tier: reply.tier,
+      confidence: 'medium' as const,
+      content: reply.text ?? reply.summary ?? '已读取上下文并生成建议。',
+      tier: 2 as const,
     };
   }
 
@@ -90,7 +99,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         tenantTitle: zhCN.brand.name,
         theme: zhCN.navigation.theme,
       }}
-      assistant={<AiAssistantBubble onSend={sendAssistantMessage} role="owner" />}
+      assistant={<CyberAiOrb currentContext={currentContext} onConvert={async (targetTask) => { const reply = await apiClient.chatHub.convert('latest', targetTask); if (typeof window !== 'undefined') window.location.href = `/${targetTask === 'risk-review' ? 'contracts' : targetTask}s/${reply.taskId}`; }} onSend={sendAssistantMessage} />}
       brand={{ eyebrow: zhCN.brand.name, href: '/dashboard', title: zhCN.brand.subBrand }}
       currentLabel={current?.label}
       currentPath={pathname}

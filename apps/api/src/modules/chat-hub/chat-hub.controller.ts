@@ -32,6 +32,26 @@ export class ChatHubController {
     return this.chat.streamSnapshot(id, this.ctx(tenantId, userId, 'web'));
   }
 
+  @Post('chat/stream')
+  streamPost(@Body() body: Record<string, unknown>): unknown {
+    return { code: 'OK', data: { deltas: ['已读取上下文', '正在生成建议', '可转为正式任务'], source: body, traceId: crypto.randomUUID() }, message: 'Chat SSE stream mock', traceId: crypto.randomUUID() };
+  }
+
+  @Get('chat/history')
+  history(): unknown {
+    return { code: 'OK', data: [], message: 'Chat history', traceId: crypto.randomUUID() };
+  }
+
+  @Post('chat/history')
+  saveHistory(@Body() body: Record<string, unknown>): unknown {
+    return { code: 'OK', data: body, message: 'Chat history saved', traceId: crypto.randomUUID() };
+  }
+
+  @Post('chat/convert')
+  convert(@Body() body: { targetTask: string }): unknown {
+    return { code: 'OK', data: { taskId: `${body.targetTask}-mock-001` }, message: 'Chat converted', traceId: crypto.randomUUID() };
+  }
+
   @Post('chat/channels/wechat/webhook')
   wechat(@Body() body: { content: string; openId: string; tenantId?: string; userId?: string }): unknown {
     return { code: 'OK', data: this.chat.ingestChannel({ channel: 'wechat', content: body.content, externalId: body.openId, tenantId: body.tenantId, userId: body.userId }), message: 'Wechat message accepted', traceId: crypto.randomUUID() };
