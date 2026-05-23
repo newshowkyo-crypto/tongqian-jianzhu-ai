@@ -26,7 +26,7 @@ M5-M13 完成产品骨架、视觉系统、登录、Dashboard 和 Stitch 集成�
 - `.github/workflows/{release-prod,desktop-release}.yml`，`docs/runbook/01-vps-bootstrap.md` 225 行 SOP。
 - `scripts/verify-m25.ps1`：12/12 PASS。
 
-## 4. 下一步：万婧媛手动 3 件事
+## 4. 下一步：万婷婷手动 3 件事
 
 | 任务 | 路径 | 预计周期 |
 |---|---|---|
