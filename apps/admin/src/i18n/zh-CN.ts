@@ -109,6 +109,22 @@ export const zhCN = {
     upload: '标记上传',
     uploaded: '已上传',
   },
+  fuelOnboarding: {
+    back: '返回业务底料',
+    cards: {
+      goldenTests: '黄金测试录入',
+      knowledge: '专家样本上传',
+      rules: '律师规则录入',
+    },
+    description: '看清规则、知识、黄金测试三类上线底料的录入进度。',
+    go: '去录入台',
+    overall: '总体准备度',
+    sop: '查看 SOP',
+    sopDescription: 'SOP 原文保存在 docs/sop，本页作为后台入口承接人工录入流程。',
+    sopTitle: 'SOP 查看',
+    timeline: '本周新增',
+    title: '业务底料进度',
+  },
   launchOnboarding: {
     action: '前往',
     badge: '上线引导',
