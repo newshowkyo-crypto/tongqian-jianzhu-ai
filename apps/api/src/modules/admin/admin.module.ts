@@ -20,8 +20,7 @@ import { CredentialsService } from './credentials/credentials.service.js';
 import { CreditsAdminController } from './credits/credits-admin.controller.js';
 import { DataExportsAdminController } from './data-exports/data-exports-admin.controller.js';
 import { FeatureFlagsAdminController } from './feature-flags/feature-flags-admin.controller.js';
-import { FuelProgressController } from './fuel-progress/fuel-progress.controller.js';
-import { FuelProgressService } from './fuel-progress/fuel-progress.service.js';
+import { FuelProgressModule } from './fuel-progress/fuel-progress.module.js';
 import { GovAdminController } from './gov/gov-admin.controller.js';
 import { IcpController } from './icp/icp.controller.js';
 import { IcpService } from './icp/icp.service.js';
@@ -51,9 +50,10 @@ import { TenantsAdminController } from './tenants/tenants-admin.controller.js';
 import { UsersAdminController } from './users/users-admin.controller.js';
 
 @Module({
-  controllers: [AddictionConfigAdminController, AgentsAdminController, ApprovalsAdminController, AuditAdminController, BillingAdminController, CaseMarketAdminController, ConfigAdminController, CredentialsAdminController, CredentialsController, CreditsAdminController, DataExportsAdminController, FeatureFlagsAdminController, FuelProgressController, GovAdminController, IcpController, IngestAdminController, IncidentsAdminController, JobsAdminController, ModelsAdminController, NotificationsAdminController, OnboardingController, OperationsAdminController, OpportunitiesAdminController, OrdersAdminController, PolicyFundsAdminController, PromptTestsAdminController, PromptsAdminController, RefundsAdminController, ReportsAdminController, RewardClaimsAdminController, RiskAdminController, RulesAdminController, SecurityAdminController, ServicesAdminController, SubscriptionsAdminController, SystemConfigAdminController, TenantsAdminController, UsersAdminController],
+  controllers: [AddictionConfigAdminController, AgentsAdminController, ApprovalsAdminController, AuditAdminController, BillingAdminController, CaseMarketAdminController, ConfigAdminController, CredentialsAdminController, CredentialsController, CreditsAdminController, DataExportsAdminController, FeatureFlagsAdminController, GovAdminController, IcpController, IngestAdminController, IncidentsAdminController, JobsAdminController, ModelsAdminController, NotificationsAdminController, OnboardingController, OperationsAdminController, OpportunitiesAdminController, OrdersAdminController, PolicyFundsAdminController, PromptTestsAdminController, PromptsAdminController, RefundsAdminController, ReportsAdminController, RewardClaimsAdminController, RiskAdminController, RulesAdminController, SecurityAdminController, ServicesAdminController, SubscriptionsAdminController, SystemConfigAdminController, TenantsAdminController, UsersAdminController],
   exports: [AdminResourceService],
-  providers: [AdminResourceService, CredentialsService, FuelProgressService, IcpService, OnboardingService, SecurityComplianceService, SystemConfigService, TenantContextService, JwtGuard, PermissionGuard],
+  imports: [FuelProgressModule],
+  providers: [AdminResourceService, CredentialsService, IcpService, OnboardingService, SecurityComplianceService, SystemConfigService, TenantContextService, JwtGuard, PermissionGuard],
 })
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class AdminModule {}

@@ -5,6 +5,7 @@ import { PromptTestingCurationService } from './prompt-testing-curation.service.
 
 @Module({
   controllers: [PromptTestingCurationController],
+  exports: [PromptTestingCurationService],
   providers: [PromptTestingCurationService],
 })
 // Nest modules are marker classes discovered through decorators.

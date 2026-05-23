@@ -1,44 +1,57 @@
 import { Injectable } from '@nestjs/common';
 
-const rulesStore = [
-  { category: 'contract', status: 'active', updatedAt: '2026-05-22T08:00:00.000Z' },
-  { category: 'tender', status: 'candidate', updatedAt: '2026-05-22T09:00:00.000Z' },
-];
-const knowledgeStore = [{ status: 'published', type: 'contract_sample', updatedAt: '2026-05-22T10:00:00.000Z' }];
-const goldenTestStore = [{ pass: true, taskType: 'contract.review', updatedAt: '2026-05-22T11:00:00.000Z' }];
+import { KnowledgeCurationService } from '../../knowledge-curation/knowledge-curation.service.js';
+import { PromptTestingCurationService } from '../../prompt-testing-curation/prompt-testing-curation.service.js';
+import { RulesService } from '../../rule-curation/rules.service.js';
 
 @Injectable()
 export class FuelProgressService {
+  constructor(
+    private readonly knowledgeService: KnowledgeCurationService,
+    private readonly promptTestingService: PromptTestingCurationService,
+    private readonly rulesService: RulesService,
+  ) {}
+
   get() {
+    const ruleRows = this.rulesService.listRules();
+    const ruleCandidates = this.rulesService.listCandidates();
+    const knowledgeRows = this.knowledgeService.list();
+    const publishedKnowledge = knowledgeRows.filter((item) => this.isPublishedKnowledge(item));
+    const goldenTestRows = this.promptTestingService.list();
+    const goldenRuns = this.promptTestingService.coverage();
     const rules = {
-      byCategory: this.countBy(rulesStore.filter((item) => item.status === 'active'), 'category'),
-      current: rulesStore.filter((item) => item.status === 'active').length,
-      lastBatchAt: this.latest(rulesStore),
-      pendingReview: rulesStore.filter((item) => item.status === 'candidate').length,
+      byCategory: this.countBy(ruleRows, 'type'),
+      current: ruleRows.length,
+      lastBatchAt: this.latest(ruleCandidates, 'createdAt'),
+      pendingReview: this.rulesService.listCandidates('pending').length,
       target: 200,
     };
     const knowledge = {
-      byType: this.countBy(knowledgeStore.filter((item) => item.status === 'published'), 'type'),
-      current: knowledgeStore.filter((item) => item.status === 'published').length,
-      lastUploadAt: this.latest(knowledgeStore),
+      byType: this.countBy(publishedKnowledge, 'category'),
+      current: publishedKnowledge.length,
+      lastUploadAt: this.latest(knowledgeRows, 'uploadedAt'),
       target: 10,
     };
     const goldenTests = {
-      byTaskType: this.countBy(goldenTestStore, 'taskType'),
-      current: goldenTestStore.length,
-      lastRunAt: this.latest(goldenTestStore),
-      passRate: goldenTestStore.length ? Math.round((goldenTestStore.filter((item) => item.pass).length / goldenTestStore.length) * 100) : 0,
+      byTaskType: this.countBy(goldenTestRows, 'taskType'),
+      current: goldenTestRows.length,
+      lastRunAt: this.latest(goldenTestRows, 'createdAt'),
+      passRate: goldenRuns.length ? Math.round(goldenRuns.reduce((sum, row) => sum + row.lastPassRate, 0) / goldenRuns.length) : 0,
       target: 350,
     };
     const overallReadiness = Math.min(100, Math.round((rules.current / rules.target) * 40 + (knowledge.current / knowledge.target) * 30 + (goldenTests.current / goldenTests.target) * 30));
-    const timeline = [...rulesStore, ...knowledgeStore, ...goldenTestStore]
-      .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+    const timeline = [
+      ...ruleCandidates.map((item) => ({ at: item.createdAt, event: `rule.${item.status}` })),
+      ...knowledgeRows.map((item) => ({ at: item.uploadedAt, event: `knowledge.${item.category}` })),
+      ...goldenTestRows.map((item) => ({ at: item.createdAt, event: `goldenTest.${item.taskType}` })),
+    ]
+      .sort((a, b) => b.at.localeCompare(a.at))
       .slice(0, 10)
-      .map((item) => ({ at: item.updatedAt, event: 'fuel.progress.updated' }));
+      .map((item) => ({ at: item.at, event: item.event }));
     return { goldenTests, knowledge, overallReadiness, rules, timeline };
   }
 
-  private countBy<TItem extends Record<string, unknown>>(items: TItem[], key: keyof TItem): Record<string, number> {
+  private countBy<TItem>(items: TItem[], key: keyof TItem): Record<string, number> {
     return items.reduce<Record<string, number>>((result, item) => {
       const value = String(item[key]);
       result[value] = (result[value] ?? 0) + 1;
@@ -46,7 +59,11 @@ export class FuelProgressService {
     }, {});
   }
 
-  private latest(items: Array<{ updatedAt: string }>): string | undefined {
-    return items.map((item) => item.updatedAt).sort().at(-1);
+  private isPublishedKnowledge(item: { parsedAt?: string; status?: string }): boolean {
+    return item.status === 'published' || Boolean(item.parsedAt);
+  }
+
+  private latest<TItem>(items: TItem[], key: keyof TItem): string | undefined {
+    return items.map((item) => String(item[key] ?? '')).filter(Boolean).sort().at(-1);
   }
 }

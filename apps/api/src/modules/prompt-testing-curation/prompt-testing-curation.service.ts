@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 interface GoldenTestCase {
+  createdAt: string;
   difficulty: 'hard' | 'medium' | 'simple';
   expectedSignals: string[];
   id: string;
@@ -24,8 +25,8 @@ export class PromptTestingCurationService {
     return [...this.cases.values()].filter((item) => !taskType || item.taskType === taskType);
   }
 
-  create(input: Omit<GoldenTestCase, 'id'>): GoldenTestCase {
-    const item = { ...input, id: `gt-${crypto.randomUUID()}` };
+  create(input: Omit<GoldenTestCase, 'createdAt' | 'id'>): GoldenTestCase {
+    const item = { ...input, createdAt: new Date().toISOString(), id: `gt-${crypto.randomUUID()}` };
     this.cases.set(item.id, item);
     return item;
   }

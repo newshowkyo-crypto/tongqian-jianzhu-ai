@@ -24,7 +24,7 @@ Check 'M24.4 icp/page.tsx' (Test-Path 'apps/admin/src/app/(main)/admin/onboardin
 Check 'M24.5 icp.controller.ts' (Test-Path 'apps/api/src/modules/admin/icp/icp.controller.ts')
 
 $fuelService = Get-Content 'apps/api/src/modules/admin/fuel-progress/fuel-progress.service.ts' -Raw
-Check 'M24.6 fuel-progress real aggregate' ($fuelService -match 'rules|knowledge|goldenTest' -and $fuelService -notmatch 'return\s*\{\s*rules:\s*\{\s*current:\s*\d')
+Check 'M24.6 fuel real inject' ($fuelService -match 'RulesService' -and $fuelService -match 'constructor' -and $fuelService -notmatch 'const rulesStore')
 
 Check 'M24.7 fuel/page.tsx' (Test-Path 'apps/admin/src/app/(main)/admin/onboarding/fuel/page.tsx')
 
