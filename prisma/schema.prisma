@@ -1522,10 +1522,41 @@ model RuleVersion {
   snapshot     Json
   changedBy    String   @map("changed_by")
   changeReason String   @map("change_reason")
+  grayPercent  Int      @default(0) @map("gray_percent")
   createdAt    DateTime @default(now()) @map("created_at")
 
   @@index([ruleTable, ruleId, version])
   @@map("rule_versions")
+}
+
+model PromptQualityReport {
+  id            String   @id @default(uuid()) @db.Uuid
+  reportMonth   String   @map("report_month")
+  taskType      String   @map("task_type")
+  passRate      Decimal  @map("pass_rate") @db.Decimal(5, 2)
+  caseCount     Int      @map("case_count")
+  failedSignals Json     @map("failed_signals")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([reportMonth, taskType])
+  @@map("prompt_quality_reports")
+}
+
+model RuleCandidate {
+  id          String   @id @default(uuid()) @db.Uuid
+  sourceName  String   @unique @map("source_name")
+  sourceTable String   @map("source_table")
+  type        String
+  ruleStruct  Json     @map("rule_struct")
+  confidence  Decimal  @db.Decimal(5, 4)
+  sourceText  String   @map("source_text")
+  reasoning   String
+  status      String   @default("pending")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([type, status])
+  @@map("rule_candidates")
 }
 
 model AgentProfile {
