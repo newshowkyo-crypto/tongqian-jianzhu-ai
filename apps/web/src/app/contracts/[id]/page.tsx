@@ -19,11 +19,11 @@ export default async function ContractReviewDetailPage({ params }: { params: { i
           </div>
           <TierBadge tier={detail.tier} />
         </div>
-        <div className={`mt-6 rounded-lg border p-5 ${detail.riskLevel === 'red' ? 'border-danger-200 bg-danger-50 text-danger-700' : detail.riskLevel === 'yellow' ? 'border-warning-100 bg-warning-50 text-warning-700' : 'border-success-100 bg-success-50 text-success-700'}`}>
+        <div className={`mt-6 rounded-lg border p-4 ${detail.riskLevel === 'red' ? 'border-danger-200 bg-danger-50 text-danger-700' : detail.riskLevel === 'yellow' ? 'border-warning-100 bg-warning-50 text-warning-700' : 'border-success-100 bg-success-50 text-success-700'}`}>
           <AlertTriangle className="mr-2 inline h-5 w-5" />
           总体风险：{detail.riskLevel}，发现 {attentionCount} 处需关注
         </div>
-        <div className="mt-4 flex items-center gap-3 text-sm text-[var(--text-secondary)]">
+        <div className="mt-4 flex items-center gap-4 text-sm text-[var(--text-secondary)]">
           <span>AI 信心度</span>
           <ConfidenceDots score={detail.confidence === 'high' ? 4 : detail.confidence === 'medium' ? 3 : 2} />
         </div>
@@ -31,8 +31,8 @@ export default async function ContractReviewDetailPage({ params }: { params: { i
 
       <section className="grid gap-4">
         {detail.findings.map((finding: RiskReviewFinding) => (
-          <article key={finding.id} className={`rounded-lg border border-[var(--border-silver)] bg-[var(--surface)] p-5 ${finding.level === 'red' ? 'border-l-4 border-l-danger-500' : finding.level === 'yellow' ? 'border-l-4 border-l-warning-500' : 'border-l-4 border-l-success-500'}`}>
-            <div className="flex flex-wrap items-start justify-between gap-3">
+          <article key={finding.id} className={`rounded-lg border border-[var(--border-silver)] bg-[var(--surface)] p-4 ${finding.level === 'red' ? 'border-l-4 border-l-danger-500' : finding.level === 'yellow' ? 'border-l-4 border-l-warning-500' : 'border-l-4 border-l-success-500'}`}>
+            <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <h2 className="text-lg font-semibold leading-7 text-[var(--text-primary)]">{finding.type}</h2>
                 <p className="mt-1 text-sm text-[var(--text-secondary)]">触发条款：{finding.clause}</p>
@@ -50,7 +50,7 @@ export default async function ContractReviewDetailPage({ params }: { params: { i
 
       <SectionCard title="下一步动作">
         <AiReportFooter audience="owner" confidence={detail.confidence} disclaimer={detail.disclaimer} tier={detail.tier} />
-        <div className="mt-4 flex flex-wrap gap-3">
+        <div className="mt-4 flex flex-wrap gap-4">
           <Button><FileSearch className="mr-2 h-4 w-4" />导出修改清单</Button>
           <Button variant="secondary"><Shield className="mr-2 h-4 w-4" />记录人工复核</Button>
         </div>
