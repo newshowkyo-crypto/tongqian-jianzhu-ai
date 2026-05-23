@@ -197,6 +197,29 @@ export interface InvestabilityReport {
   traceId: string;
 }
 
+export type ReportType = 'ai-cost-weekly' | 'contract-monthly' | 'kpi-weekly' | 'qualification-monthly' | 'tender-weekly';
+
+export interface ReportListItem {
+  createdAt: string;
+  id: string;
+  shared: boolean;
+  status: 'completed' | 'generating' | 'reviewing';
+  title: string;
+  type: ReportType;
+}
+
+export interface ReportDetail extends ReportListItem {
+  coBrand: { clientName?: string; tongqian: boolean };
+  confidence: 'high' | 'low' | 'medium';
+  dateRange: { from: string; to: string };
+  disclaimer: string;
+  findings: Array<{ detail: string; level: 'green' | 'red' | 'yellow'; title: string }>;
+  h5Url?: string;
+  pdfUrl?: string;
+  tier: 1 | 2 | 3 | 4;
+  traceId: string;
+}
+
 export interface QualificationCert {
   category: string;
   daysToExpiry: number;
@@ -370,6 +393,7 @@ export function createApiClient(options: ApiClientOptions = {}) {
     http,
     mock,
     opportunity: createOpportunityApi(http, mock),
+    report: createReportApi(http, mock),
     riskReview: createRiskReviewApi(http, mock),
     qualification: createQualificationApi(http, mock),
     tender: createTenderApi(http, mock),
@@ -507,6 +531,33 @@ function createOpportunityApi(http: AxiosInstance, mock: boolean) {
     async savePreference(payload: Record<string, unknown>): Promise<{ ok: true; traceId: string }> {
       if (mock) return delay({ ok: true, traceId: cryptoRandomId() });
       return unwrap(await http.post('/opportunities/preferences', payload));
+    },
+  };
+}
+
+function createReportApi(http: AxiosInstance, mock: boolean) {
+  return {
+    async create(payload: Record<string, unknown>): Promise<{ reportId: string; traceId: string }> {
+      if (mock) return delay({ reportId: 'rep-contract-monthly', traceId: cryptoRandomId() });
+      return unwrap(await http.post('/reports', payload));
+    },
+    async download(id: string, format: 'pdf' | 'h5'): Promise<{ url: string }> {
+      if (mock) return delay({ url: `mock://oss/reports/${id}.${format}?ttl=3600` });
+      return unwrap(await http.get(`/reports/${id}/download/${format}`));
+    },
+    async get(id: string): Promise<ReportDetail> {
+      if (mock) return delay(reportDetailFixture(id));
+      return unwrap(await http.get(`/reports/${id}`));
+    },
+    async list(filters?: Record<string, unknown>): Promise<ReportListItem[]> {
+      if (mock) {
+        return delay(reportListFixture().filter((row) => !filters?.type || filters.type === 'all' || row.type === filters.type));
+      }
+      return unwrap(await http.get('/reports', { params: filters }));
+    },
+    async share(id: string, channel: 'email' | 'link' | 'wechat'): Promise<{ shareUrl: string }> {
+      if (mock) return delay({ shareUrl: `https://mock.tongqian.local/reports/${id}?channel=${channel}` });
+      return unwrap(await http.post(`/reports/${id}/share`, { channel }));
     },
   };
 }
@@ -882,6 +933,38 @@ function opportunityDetailFixture(id: string): OpportunityDetail {
       { date: base.deadline, milestone: '投标截止' },
       { date: '2026-06-08', milestone: '开标' },
     ],
+    traceId: cryptoRandomId(),
+  };
+}
+
+function reportListFixture(): ReportListItem[] {
+  return [
+    { createdAt: '2026-05-22', id: 'rep-contract-monthly', shared: true, status: 'completed', title: '合同审查月报', type: 'contract-monthly' },
+    { createdAt: '2026-05-21', id: 'rep-tender-weekly', shared: false, status: 'completed', title: '招标参与周报', type: 'tender-weekly' },
+    { createdAt: '2026-05-20', id: 'rep-kpi-weekly', shared: true, status: 'completed', title: '经营 KPI 周报', type: 'kpi-weekly' },
+    { createdAt: '2026-05-19', id: 'rep-qualification-monthly', shared: false, status: 'reviewing', title: '资质合规月报', type: 'qualification-monthly' },
+    { createdAt: '2026-05-18', id: 'rep-ai-cost-weekly', shared: false, status: 'generating', title: 'AI 调用周报', type: 'ai-cost-weekly' },
+  ];
+}
+
+function reportDetailFixture(id: string): ReportDetail {
+  const base = reportListFixture().find((row) => row.id === id) ?? reportListFixture()[0]!;
+  return {
+    ...base,
+    coBrand: { clientName: '湖北某建设有限公司', tongqian: true },
+    confidence: base.type === 'kpi-weekly' ? 'high' : 'medium',
+    dateRange: { from: '2026-05-01', to: '2026-05-22' },
+    disclaimer: 'AI 报告仅供经营决策参考，不构成法律、招投标、财务或资质审批承诺；重大事项请结合原始材料与人工复核。',
+    findings: [
+      { detail: '3 份合同的付款节点缺少验收确认期限，建议先补充逾期视为认可条款。', level: 'red', title: '付款节点后置' },
+      { detail: '本周投标项目中 2 个需要补齐类似业绩截图与竣工验收页。', level: 'yellow', title: '投标证据链不足' },
+      { detail: '安全生产许可证与两名人员证书进入 90 天预警窗口。', level: 'yellow', title: '资质到期预警' },
+      { detail: '经营机会命中率较上周提升，武汉和西安两地匹配度最高。', level: 'green', title: '机会雷达提升' },
+      { detail: 'AI 调用成本率保持在红线内，DeepSeek 与 Qwen 路由稳定。', level: 'green', title: 'AI 成本可控' },
+    ],
+    h5Url: `mock://oss/reports/${base.id}.h5?ttl=3600`,
+    pdfUrl: `mock://oss/reports/${base.id}.pdf?ttl=3600`,
+    tier: base.type === 'contract-monthly' ? 2 : 1,
     traceId: cryptoRandomId(),
   };
 }

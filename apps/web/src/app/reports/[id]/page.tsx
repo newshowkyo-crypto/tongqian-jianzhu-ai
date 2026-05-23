@@ -1,94 +1,109 @@
-import {
-  AlertTriangle,
-  Button,
-  EmptyState,
-  ErrorState,
-  LoadingState,
-  PageLayout,
-  Shield,
-  TierBadge,
-} from '@tongqian/ui';
+'use client';
 
-import { zhCN } from '../../../i18n/zh-CN';
+import { apiClient, type ReportDetail } from '@tongqian/api-client';
+import { AiReportFooter, Badge, Button, ConfidenceDots, LoadingState, PageContent, PageLayout, SectionCard, TierBadge } from '@tongqian/ui';
+import { useEffect, useState } from 'react';
 
-const copy = zhCN.report;
-
-const findingClassName = {
-  green: 'border-l-success-500 bg-success-50 text-success-700',
-  red: 'border-l-danger-500 bg-danger-50 text-danger-700',
-  yellow: 'border-l-warning-500 bg-warning-50 text-warning-700',
+const findingTone = {
+  green: 'border-l-success-500',
+  red: 'border-l-danger-500',
+  yellow: 'border-l-warning-500',
 } as const;
 
-export default function ReportPage({ params }: { params: { id: string } }) {
-  const isLoading = false;
-  const isError = false;
-  const isEmpty = false;
+export default function ReportDetailPage({ params }: { params: { id: string } }) {
+  const [report, setReport] = useState<ReportDetail | null>(null);
+  const [tab, setTab] = useState<'h5' | 'pdf'>('h5');
+
+  useEffect(() => {
+    let mounted = true;
+    apiClient.report.get(params.id || 'rep-contract-monthly').then((next) => {
+      if (mounted) setReport(next);
+    });
+    return () => {
+      mounted = false;
+    };
+  }, [params.id]);
+
+  if (!report) {
+    return (
+      <PageLayout>
+        <PageContent>
+          <LoadingState label="正在加载报告" />
+        </PageContent>
+      </PageLayout>
+    );
+  }
 
   return (
-    <PageLayout className="bg-neutral-100">
-      <main className="mx-auto min-h-screen w-full max-w-[375px] bg-neutral-50 shadow-card">
-        <header className="relative bg-primary-900 px-4 py-4 text-white">
-          <div className="space-y-1">
-            <p className="text-xs font-medium text-accent-500">{zhCN.brand.name}</p>
-            <h1 className="text-xl font-bold">{copy.title}</h1>
-            <p className="text-xs text-primary-100">{copy.clientBrand}</p>
-            <p className="text-xs text-primary-100">{copy.generatedAt} · #{params.id}</p>
-          </div>
-          <TierBadge className="absolute right-4 top-4 bg-warning-500 text-white" tier={2} />
-        </header>
-
-        <section className="space-y-4 px-4 py-4">
-          {isLoading ? <LoadingState label={zhCN.states.loading} /> : null}
-          {isError ? <ErrorState actionLabel={zhCN.states.retry} description={zhCN.states.errorDescription} title={zhCN.states.errorTitle} /> : null}
-          {isEmpty ? <EmptyState description={zhCN.states.emptyDescription} title={zhCN.states.emptyTitle} /> : null}
-
-          <div className="flex h-20 items-center justify-between rounded-lg border border-warning-100 bg-warning-50 px-4 text-warning-700">
-            <div>
-              <p className="text-xs font-medium">{copy.overall}</p>
-              <p className="text-2xl font-bold">{copy.riskName}</p>
+    <PageLayout className="bg-[var(--bg)]">
+      <PageContent className="space-y-6">
+        <section className="rounded-lg border border-[var(--outline-variant)] bg-[var(--surface)] p-6 shadow-sm">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div className="space-y-4">
+              <Badge className="bg-[var(--surface-container-low)] text-[var(--primary)]">Report / {report.type}</Badge>
+              <h1 className="text-3xl font-semibold text-[var(--text-primary)]">{report.title}</h1>
+              <p className="text-sm text-[var(--text-secondary)]">
+                {report.dateRange.from} 至 {report.dateRange.to} · {report.coBrand.tongqian ? '同乾方略联合品牌' : '标准品牌'} · {report.coBrand.clientName}
+              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <TierBadge tier={report.tier} />
+                <ConfidenceDots score={report.confidence === 'high' ? 4 : report.confidence === 'medium' ? 3 : 2} />
+                <Badge>traceId: {report.traceId}</Badge>
+              </div>
             </div>
-            <Shield className="h-8 w-8" />
+            <div className="flex flex-wrap gap-2">
+              <Button onClick={() => void apiClient.report.download(report.id, 'pdf')} variant="outline">下载 PDF</Button>
+              <Button onClick={() => void apiClient.report.download(report.id, 'h5')} variant="outline">下载 H5 单页</Button>
+              <Button onClick={() => void apiClient.report.share(report.id, 'link')} variant="outline">分享</Button>
+              <Button variant="primary">重新生成</Button>
+            </div>
           </div>
-          <p className="text-sm leading-6 text-neutral-700">{copy.riskSummary}</p>
+        </section>
 
-          <section className="space-y-4">
-            <h2 className="text-base font-semibold text-neutral-900">{copy.findingsTitle}</h2>
-            {copy.findings.map((finding, index) => (
-              <article
-                key={finding.text}
-                className={`rounded-lg border border-neutral-200 border-l-4 bg-white p-4 shadow-sm ${findingClassName[finding.level as keyof typeof findingClassName]}`}
-              >
-                <div className="flex gap-4">
-                  <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" />
-                  <div className="space-y-1">
-                    <p className="text-sm font-semibold text-neutral-900">#{index + 1} {finding.text}</p>
-                    <p className="text-xs text-neutral-500">{finding.source}</p>
+        <div className="flex gap-2">
+          {(['h5', 'pdf'] as const).map((item) => (
+            <button
+              key={item}
+              className={`min-h-10 rounded-md border px-4 text-sm ${tab === item ? 'border-[var(--accent-rose)] bg-[var(--surface-container-low)] text-[var(--text-primary)]' : 'border-[var(--outline-variant)] text-[var(--text-secondary)]'}`}
+              onClick={() => setTab(item)}
+              type="button"
+            >
+              {item === 'h5' ? 'H5 视图' : 'PDF 视图'}
+            </button>
+          ))}
+        </div>
+
+        <section className="grid gap-4 lg:grid-cols-[430px_1fr]">
+          <article className="rounded-lg border border-[var(--outline-variant)] bg-[var(--surface)] p-4 shadow-sm">
+            <div className="rounded-lg bg-[var(--surface-container-low)] p-4">
+              <p className="text-xs text-[var(--text-secondary)]">{tab === 'h5' ? 'H5 boss view' : 'PDF A4 preview'}</p>
+              <h2 className="mt-2 text-2xl font-semibold leading-8 text-[var(--text-primary)]">{report.title}</h2>
+              <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                {tab === 'h5' ? '3 分钟读完的老板版，保留 5 个关键发现和底部引导按钮。' : 'PDF 详细版含封面、目录、正文、附录、数据源与水印。'}
+              </p>
+            </div>
+            <AiReportFooter audience="owner" className="mt-4" confidence={report.confidence} disclaimer={report.disclaimer} tier={report.tier} />
+          </article>
+
+          <SectionCard title="5 个关键发现">
+            <div className="grid gap-4">
+              {report.findings.map((finding) => (
+                <article key={finding.title} className={`rounded-md border border-[var(--outline-variant)] border-l-4 bg-[var(--surface-container-low)] p-4 ${findingTone[finding.level]}`}>
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className="text-base font-semibold leading-6 text-[var(--text-primary)]">{finding.title}</h3>
+                    <Badge>{finding.level}</Badge>
                   </div>
-                </div>
-              </article>
-            ))}
-          </section>
-
-          <section className="rounded-lg border border-neutral-200 bg-white p-4 shadow-sm">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold text-neutral-900">{copy.confidence}</p>
-              <p className="text-lg tracking-normal text-primary-700" aria-label={copy.confidence}>●●●○</p>
-            </div>
-          </section>
-
-          <section className="space-y-4 pb-24">
-            <h2 className="text-base font-semibold text-neutral-900">{copy.actionsTitle}</h2>
-            <div className="grid gap-2">
-              {copy.ownerActions.map((action, index) => (
-                <Button key={action} className="min-h-11 w-full" variant={index === 0 ? 'primary' : 'outline'}>
-                  {action}
-                </Button>
+                  <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">{finding.detail}</p>
+                </article>
               ))}
             </div>
-            <p className="text-xs leading-5 text-neutral-400">{copy.disclaimer}</p>
-          </section>
+          </SectionCard>
         </section>
-      </main>
+
+        <footer className="rounded-lg border border-[var(--outline-variant)] bg-[var(--surface)] p-4 text-xs leading-5 text-[var(--text-secondary)]">
+          traceId: {report.traceId} · {report.disclaimer}
+        </footer>
+      </PageContent>
     </PageLayout>
   );
 }

@@ -32,9 +32,24 @@ export class ReportCenterController {
     return { code: 'OK', data: this.reports.listReports(tenantId, userId), message: 'Reports', traceId: crypto.randomUUID() };
   }
 
+  @Get('reports')
+  listAll(@Headers('x-user-id') userId = 'mock-user', @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
+    return { code: 'OK', data: this.reports.listReports(tenantId, userId), message: 'Reports', traceId: crypto.randomUUID() };
+  }
+
   @Get('reports/:id')
   get(@Param('id') id: string, @Headers('x-user-id') userId = 'mock-user', @Headers('x-tenant-id') tenantId = 'mock-tenant', @Headers('x-device-id') deviceId?: string): unknown {
     return { code: 'OK', data: this.reports.getReport(id, tenantId, userId, deviceId), message: 'Report', traceId: crypto.randomUUID() };
+  }
+
+  @Get('reports/:id/download/:format')
+  download(@Param('id') id: string, @Param('format') format: 'h5' | 'pdf'): unknown {
+    return { code: 'OK', data: { url: `mock://oss/reports/${id}.${format}?ttl=3600` }, message: 'Report download url', traceId: crypto.randomUUID() };
+  }
+
+  @Post('reports/:id/share')
+  share(@Param('id') id: string, @Body() body: { channel: 'email' | 'link' | 'wechat' }): unknown {
+    return { code: 'OK', data: { shareUrl: `https://mock.tongqian.local/reports/${id}?channel=${body.channel}` }, message: 'Report shared', traceId: crypto.randomUUID() };
   }
 
   @Post('reports/:id/rate')
