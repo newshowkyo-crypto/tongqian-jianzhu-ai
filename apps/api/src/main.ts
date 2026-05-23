@@ -28,8 +28,8 @@ import { NotificationModule } from './modules/notification/notification.module.j
 import { OpportunityModule } from './modules/opportunity/opportunity.module.js';
 import { OpsToolkitModule } from './modules/ops-toolkit/ops-toolkit.module.js';
 import { PaymentModule } from './modules/payment/payment.module.js';
-import { PromptTestingCurationModule } from './modules/prompt-testing-curation/prompt-testing-curation.module.js';
 import { ProjectSiteModule } from './modules/project-site/project-site.module.js';
+import { PromptTestingCurationModule } from './modules/prompt-testing-curation/prompt-testing-curation.module.js';
 import { QualificationModule } from './modules/qualification/qualification.module.js';
 import { ReportCenterModule } from './modules/report-center/report-center.module.js';
 import { RiskReviewModule } from './modules/risk-review/risk-review.module.js';
@@ -39,6 +39,7 @@ import { SearchModule } from './modules/search/search.module.js';
 import { SecurityComplianceModule } from './modules/security-compliance/security-compliance.module.js';
 import { StorageModule } from './modules/storage/storage.module.js';
 import { SubscriptionModule } from './modules/subscription/subscription.module.js';
+import { SystemConfigModule } from './modules/system-config/system-config.module.js';
 import { TenderModule } from './modules/tender/tender.module.js';
 import { UserModule } from './modules/user/user.module.js';
 import { WebhookModule } from './modules/webhook/webhook.module.js';
@@ -89,6 +90,7 @@ class HealthController {
     SearchModule,
     StorageModule,
     SubscriptionModule,
+    SystemConfigModule,
     TenderModule,
     UserModule,
     WebhookModule,

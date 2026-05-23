@@ -1,5 +1,4 @@
-import { AiReportFooter, Badge, BrandHeader, ConfidenceDots, SectionCard, Shield, TierBadge } from '@tongqian/ui';
-import { AlertTriangle, FileSearch } from '@tongqian/ui';
+import { AiReportFooter, AlertTriangle, Badge, BrandHeader, ConfidenceDots, FileSearch, SectionCard, Shield, TierBadge } from '@tongqian/ui';
 
 const findings = [
   { level: 'red', title: '付款节点缺少验收期限', type: '现金流风险', advice: '补充“提交资料后 7 日内确认，逾期视为认可”的节点约束。' },

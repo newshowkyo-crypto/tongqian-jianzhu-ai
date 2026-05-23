@@ -90,6 +90,7 @@ export {
   type CyberShellProps,
 } from './layout/page.js';
 export { StitchLoginShell } from './layout/stitch-login.js';
+export { IcpFooter } from './layout/icp-footer.js';
 export {
   CyberAiOrb,
   CyberAiOrbPanel,

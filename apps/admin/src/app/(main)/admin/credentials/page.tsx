@@ -102,6 +102,9 @@ export default function CredentialsPage(): ReactNode {
           <p className="mt-2 text-sm text-[var(--text-secondary)]">
             敏感字段只写入加密存储，不在前端回显明文。
           </p>
+          <p className="mt-2 text-sm text-[var(--text-secondary)]">
+            ICP_RECORD_NO 保存到 system_configs.icp_record，四端页脚自动读取展示。
+          </p>
         </section>
         <section className="rounded-md border border-[var(--border-silver)] bg-white/5 p-4">
           <h2 className="text-base font-semibold">切换审计</h2>

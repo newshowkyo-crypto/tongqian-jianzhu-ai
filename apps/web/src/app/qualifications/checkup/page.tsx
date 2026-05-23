@@ -1,5 +1,5 @@
-import { AiReportFooter, Badge, CyberHero, CyberKpi, SectionCard, TierBadge } from '@tongqian/ui';
 import { apiClient } from '@tongqian/api-client';
+import { AiReportFooter, CyberHero, CyberKpi, SectionCard, TierBadge } from '@tongqian/ui';
 
 export default async function QualificationCheckupPage() {
   const report = await apiClient.qualification.checkup();

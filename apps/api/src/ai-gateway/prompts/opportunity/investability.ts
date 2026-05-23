@@ -1,5 +1,4 @@
 ﻿import { AiTaskType } from '@tongqian/types';
-
 import { z } from 'zod';
 
 import { createConstructionPrompt } from '../shared/system-base.js';

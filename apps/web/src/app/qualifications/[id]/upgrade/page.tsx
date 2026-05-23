@@ -1,5 +1,5 @@
-import { AiReportFooter, Badge, CyberCard, CyberHero, SectionCard, TierBadge } from '@tongqian/ui';
 import { apiClient } from '@tongqian/api-client';
+import { AiReportFooter, Badge, CyberCard, CyberHero, SectionCard, TierBadge } from '@tongqian/ui';
 
 export default async function QualificationUpgradePage({ params }: { params: { id: string } }) {
   const report = await apiClient.qualification.upgradePath(params.id, '一级');

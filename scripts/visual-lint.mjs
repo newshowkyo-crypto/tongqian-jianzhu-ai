@@ -1,5 +1,5 @@
-import { readFileSync } from 'node:fs';
 import { execSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 
 const files = execSync('git ls-files apps', { encoding: 'utf8' })
   .trim()
@@ -29,7 +29,7 @@ for (const file of files) {
     if (file.includes('apps/admin/src/app/admin/data-center') && /Search|All|Golden|Pending|Archived|Interface-first|Upload CSV|Wenshu CSV importer|case field/.test(line)) {
       hits.push(`R6 data-center English ${file}:${index + 1}: ${line.trim().slice(0, 180)}`);
     }
-    if (/\.tsx$/.test(file) && /[✅⚠️❌✒️🐛]/u.test(line)) {
+    if (/\.tsx$/.test(file) && /(✅|⚠️|❌|✒️|🐛)/u.test(line)) {
       hits.push(`R7 functional emoji ${file}:${index + 1}: ${line.trim().slice(0, 180)}`);
     }
   });

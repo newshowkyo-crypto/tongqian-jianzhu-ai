@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
 
-import { PromptTestingCurationService } from './prompt-testing-curation.service.js';
+import type { PromptTestingCurationService } from './prompt-testing-curation.service.js';
 
 @Controller('api/v1/admin/golden-tests')
 export class PromptTestingCurationController {

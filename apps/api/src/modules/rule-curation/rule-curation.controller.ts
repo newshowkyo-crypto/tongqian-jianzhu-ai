@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
 
-import { RulesService } from './rules.service.js';
+import type { RulesService } from './rules.service.js';
 
 @Controller('api/v1/admin/rules')
 export class RuleCurationController {

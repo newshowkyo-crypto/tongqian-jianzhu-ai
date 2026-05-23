@@ -1,6 +1,5 @@
-import { AiReportFooter, Badge, Button, ConfidenceDots, SectionCard, Shield, TierBadge } from '@tongqian/ui';
-import { AlertTriangle, FileSearch } from '@tongqian/ui';
 import { apiClient, type RiskReviewFinding } from '@tongqian/api-client';
+import { AiReportFooter, AlertTriangle, Badge, Button, ConfidenceDots, FileSearch, SectionCard, Shield, TierBadge } from '@tongqian/ui';
 
 const riskTone = { green: 'success', red: 'danger', yellow: 'warning' } as const;
 

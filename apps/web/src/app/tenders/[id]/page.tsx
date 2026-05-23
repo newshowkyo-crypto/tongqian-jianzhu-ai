@@ -1,7 +1,6 @@
-import Link from 'next/link';
-import { AiReportFooter, Badge, CyberHero, SectionCard, TierBadge } from '@tongqian/ui';
-import { FileSearch } from '@tongqian/ui';
 import { apiClient, type TenderEligibilityCheck, type TenderTimeline } from '@tongqian/api-client';
+import { AiReportFooter, Badge, CyberHero, FileSearch, SectionCard, TierBadge } from '@tongqian/ui';
+import Link from 'next/link';
 
 export default async function TenderDetailPage({ params }: { params: { id: string } }) {
   const detail = await apiClient.tender.get(params.id);

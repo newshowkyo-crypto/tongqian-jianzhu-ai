@@ -1,7 +1,7 @@
 ﻿import { AiTaskType } from '@tongqian/types';
+import { z } from 'zod';
 
 import { createConstructionPrompt } from '../shared/system-base.js';
-import { z } from 'zod';
 
 /**
  * M3.7 value-density self-check for tender framework.

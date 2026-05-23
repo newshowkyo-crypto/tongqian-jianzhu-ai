@@ -34,6 +34,7 @@
     "dist/",
     ".next/",
     ".turbo/",
+    "apps/desktop/src-tauri/target/",
     "coverage/",
     "pnpm-lock.yaml",
     "**/generated/**"

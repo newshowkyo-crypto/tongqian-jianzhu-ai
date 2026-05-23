@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 
-import { KnowledgeCurationService } from './knowledge-curation.service.js';
+import type { KnowledgeCurationService } from './knowledge-curation.service.js';
 
 @Controller('api/v1/admin/knowledge')
 export class KnowledgeCurationController {

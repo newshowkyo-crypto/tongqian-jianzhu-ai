@@ -30,7 +30,8 @@ export default function NewReportPage() {
   async function createReport(): Promise<void> {
     if (running) return;
     setRunning(true);
-    const selected = reportTypes.find((item) => item.value === type) ?? reportTypes[0]!;
+    const selected = reportTypes.find((item) => item.value === type) ?? reportTypes[0];
+    if (!selected) return;
     const context = { coBrand, dataSources, dateRange: { from, to }, type };
     await new Promise((resolve) => setTimeout(resolve, 3000));
     const reply = await apiClient.aiGateway.invoke({

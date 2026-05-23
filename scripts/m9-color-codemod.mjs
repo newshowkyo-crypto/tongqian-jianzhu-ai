@@ -1,6 +1,6 @@
+import { execSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { execSync } from 'node:child_process';
 
 const roots = ['apps/web/src', 'apps/agent/src', 'apps/gov/src', 'apps/admin/src', 'packages/ui/src'];
 const files = execSync(`git ls-files ${roots.join(' ')}`, { encoding: 'utf8' })
