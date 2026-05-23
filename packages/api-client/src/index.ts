@@ -113,6 +113,42 @@ export interface RiskReviewDetail extends RiskReviewListItem {
   traceId: string;
 }
 
+export interface TenderListItem {
+  amount: string;
+  deadline: string;
+  id: string;
+  matchScore: number;
+  owner: string;
+  projectType: string;
+  status: 'active' | 'completed' | 'expired' | 'reviewing';
+  title: string;
+}
+
+export interface TenderEligibilityCheck {
+  gap?: string;
+  item: string;
+  match: boolean;
+  ourStatus: string;
+  required: string;
+}
+
+export interface TenderTimeline {
+  date: string;
+  daysFromNow: number;
+  milestone: string;
+}
+
+export interface TenderDetail extends TenderListItem {
+  confidence: 'high' | 'low' | 'medium';
+  disclaimer: string;
+  eligibility: TenderEligibilityCheck[];
+  keyPoints: string[];
+  scorePrediction: { commercial: number; price: number; suggestions: string[]; technical: number };
+  tier: 1 | 2 | 3 | 4;
+  timeline: TenderTimeline[];
+  traceId: string;
+}
+
 export interface ChatConversation {
   channel: 'api' | 'desktop' | 'gov' | 'web' | 'wechat' | 'work_wechat';
   id: string;
@@ -251,6 +287,7 @@ export function createApiClient(options: ApiClientOptions = {}) {
     http,
     mock,
     riskReview: createRiskReviewApi(http, mock),
+    tender: createTenderApi(http, mock),
   };
 }
 
@@ -330,6 +367,27 @@ function createRiskReviewApi(http: AxiosInstance, mock: boolean) {
     async list(filters?: Record<string, unknown>): Promise<RiskReviewListItem[]> {
       if (mock) return delay(riskReviewListFixture().filter((row) => !filters?.riskLevel || filters.riskLevel === 'all' || row.riskLevel === filters.riskLevel));
       return unwrap(await http.get('/risk-review', { params: filters }));
+    },
+  };
+}
+
+function createTenderApi(http: AxiosInstance, mock: boolean) {
+  return {
+    async create(payload: Record<string, unknown>): Promise<{ confidence?: string; keyPointsCount?: number; modelUsed?: string; outputSchemaValid?: boolean; providerUsed?: string; tenderId: string; tier?: number; traceId?: string }> {
+      if (mock) return delay({ confidence: 'medium', keyPointsCount: 10, modelUsed: 'deepseek-reasoner', outputSchemaValid: true, providerUsed: 'mock', tenderId: 'demo-active', tier: 2, traceId: normalizeText(payload.traceId ?? cryptoRandomId()) });
+      return unwrap(await http.post('/tenders', payload));
+    },
+    async generateFramework(id: string): Promise<{ frameworkId: string }> {
+      if (mock) return delay({ frameworkId: `framework-${id}` });
+      return unwrap(await http.post(`/tenders/${id}/framework`));
+    },
+    async get(id: string): Promise<TenderDetail> {
+      if (mock) return delay(tenderDetailFixture(id));
+      return unwrap(await http.get(`/tenders/${id}`));
+    },
+    async list(filters?: Record<string, unknown>): Promise<TenderListItem[]> {
+      if (mock) return delay(tenderListFixture().filter((row) => !filters?.projectType || filters.projectType === 'all' || row.projectType.includes(String(filters.projectType))));
+      return unwrap(await http.get('/tenders', { params: filters }));
     },
   };
 }
@@ -606,6 +664,39 @@ function riskReviewListFixture(): RiskReviewListItem[] {
     { amount: '1800 万元', counterparty: '湖北某投资公司', createdAt: '2026-05-17', id: 'demo-bridge', riskLevel: 'yellow', status: 'reviewing', title: '市政桥梁专业分包' },
     { amount: '320 万元', counterparty: '武汉某材料商', createdAt: '2026-05-15', id: 'demo-supply', riskLevel: 'green', status: 'queued', title: '钢材采购框架协议' },
   ];
+}
+
+function tenderListFixture(): TenderListItem[] {
+  return [
+    { amount: '3200 万元', deadline: '2026-06-02', id: 'demo-active', matchScore: 70, owner: '武汉东湖高新区', projectType: '市政道路', status: 'active', title: '高新区道路改造施工总包' },
+    { amount: '860 万元', deadline: '2026-06-08', id: 'demo-perfect', matchScore: 95, owner: '黄陂区教育局', projectType: '学校维修', status: 'active', title: '中小学暑期维修项目' },
+    { amount: '5100 万元', deadline: '2026-05-29', id: 'demo-risky', matchScore: 48, owner: '鄂州临空园区', projectType: '厂房建设', status: 'reviewing', title: '标准厂房二期施工' },
+    { amount: '1800 万元', deadline: '2026-06-12', id: 'demo-bridge', matchScore: 82, owner: '湖北某投公司', projectType: '桥梁专业分包', status: 'completed', title: '市政桥梁专业分包' },
+    { amount: '650 万元', deadline: '2026-06-16', id: 'demo-park', matchScore: 76, owner: '武汉某街道', projectType: '园林绿化', status: 'active', title: '口袋公园更新工程' },
+  ];
+}
+
+function tenderDetailFixture(id: string): TenderDetail {
+  const base = tenderListFixture().find((row) => row.id === id) ?? tenderListFixture()[0]!;
+  const perfect = id === 'demo-perfect';
+  const risky = id === 'demo-risky';
+  return {
+    ...base,
+    confidence: perfect ? 'high' : 'medium',
+    disclaimer: 'AI 解析内容仅供投标经营决策参考，不替代招标代理、律师或造价专业复核。',
+    eligibility: ['企业资质', '安全生产许可证', '类似业绩', '项目经理', '技术负责人', '社保证明'].map((item, index) => ({ gap: index > 2 && !perfect ? '补齐原件扫描件与社保连续证明' : undefined, item, match: perfect || index < 4, ourStatus: perfect ? '已满足' : index < 4 ? '基本满足' : '待补充', required: '招标文件要求完整有效' })),
+    keyPoints: ['项目背景：城市更新配套工程', '业主：政府平台公司', `金额：${base.amount}`, '工期：180 日历天', '评分项：技术 50 / 商务 30 / 价格 20', `关键时间：${base.deadline} 前递交`, risky ? '废标条款：人员证书原件缺失即否决' : '废标条款：按常规资格文件核验', '保证金：80 万元电子保函', '提交方式：电子标 + CA 签章', risky ? '风险提示：资质与业绩压力较高' : '风险提示：建议补齐业绩证明'],
+    scorePrediction: { commercial: perfect ? 28 : risky ? 18 : 24, price: perfect ? 19 : 17, suggestions: ['补强类似业绩截图与合同关键页', '技术标突出进度、质量和安全响应', '报价前复核清单漏项'], technical: perfect ? 47 : risky ? 31 : 39 },
+    tier: risky ? 3 : perfect ? 1 : 2,
+    timeline: [
+      { date: '2026-05-27', daysFromNow: 4, milestone: '报名截止' },
+      { date: '2026-05-29', daysFromNow: 6, milestone: '答疑截止' },
+      { date: base.deadline, daysFromNow: 10, milestone: '投标截止' },
+      { date: '2026-06-03', daysFromNow: 11, milestone: '开标' },
+      { date: '2026-06-06', daysFromNow: 14, milestone: '评标' },
+    ],
+    traceId: cryptoRandomId(),
+  };
 }
 
 function riskReviewDetailFixture(id: string): RiskReviewDetail {
