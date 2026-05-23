@@ -85,6 +85,34 @@ export interface AiGatewayInvokeResult {
   traceId?: string;
 }
 
+export interface RiskReviewListItem {
+  amount: string;
+  counterparty: string;
+  createdAt: string;
+  id: string;
+  riskLevel: 'green' | 'red' | 'yellow';
+  status: 'completed' | 'queued' | 'reviewing';
+  title: string;
+}
+
+export interface RiskReviewFinding {
+  clause: string;
+  id: string;
+  impact: string;
+  level: 'green' | 'red' | 'yellow';
+  standardWording?: string;
+  suggestion: string;
+  type: string;
+}
+
+export interface RiskReviewDetail extends RiskReviewListItem {
+  confidence: 'high' | 'low' | 'medium';
+  disclaimer: string;
+  findings: RiskReviewFinding[];
+  tier: 1 | 2 | 3 | 4;
+  traceId: string;
+}
+
 export interface ChatConversation {
   channel: 'api' | 'desktop' | 'gov' | 'web' | 'wechat' | 'work_wechat';
   id: string;
@@ -222,6 +250,7 @@ export function createApiClient(options: ApiClientOptions = {}) {
     dashboard: createDashboardApi(http, mock),
     http,
     mock,
+    riskReview: createRiskReviewApi(http, mock),
   };
 }
 
@@ -280,6 +309,27 @@ function createDashboardApi(http: AxiosInstance, mock: boolean) {
     async owner(): Promise<OwnerDashboardData> {
       if (mock) return delay(ownerDashboardFixture());
       return unwrap(await http.get('/dashboard/owner-kpi'));
+    },
+  };
+}
+
+function createRiskReviewApi(http: AxiosInstance, mock: boolean) {
+  return {
+    async create(payload: Record<string, unknown>): Promise<{ confidence?: string; findingsCount?: number; modelUsed?: string; outputSchemaValid?: boolean; providerUsed?: string; reviewId: string; tier?: number; traceId?: string }> {
+      if (mock) return delay({ confidence: 'medium', findingsCount: 5, modelUsed: 'deepseek-reasoner', outputSchemaValid: true, providerUsed: 'mock', reviewId: 'demo-yellow', tier: 2, traceId: normalizeText(payload.traceId ?? cryptoRandomId()) });
+      return unwrap(await http.post('/risk-review', payload));
+    },
+    async download(id: string, format: 'docx' | 'pdf'): Promise<{ url: string }> {
+      if (mock) return delay({ url: `mock://oss/risk-review/${id}.${format}?ttl=3600` });
+      return unwrap(await http.get(`/risk-review/${id}/download`, { params: { format } }));
+    },
+    async get(id: string): Promise<RiskReviewDetail> {
+      if (mock) return delay(riskReviewDetailFixture(id));
+      return unwrap(await http.get(`/risk-review/${id}`));
+    },
+    async list(filters?: Record<string, unknown>): Promise<RiskReviewListItem[]> {
+      if (mock) return delay(riskReviewListFixture().filter((row) => !filters?.riskLevel || filters.riskLevel === 'all' || row.riskLevel === filters.riskLevel));
+      return unwrap(await http.get('/risk-review', { params: filters }));
     },
   };
 }
@@ -545,6 +595,39 @@ function adminDashboardFixture(): AdminDashboardData {
       { code: 'BR-901', status: 'green', value: 'AI 成本率 7.8%' },
       { code: 'BR-903', status: 'yellow', value: '退款率 2.1%' },
     ],
+  };
+}
+
+function riskReviewListFixture(): RiskReviewListItem[] {
+  return [
+    { amount: '5100 万元', counterparty: '鄂州临空园区', createdAt: '2026-05-20', id: 'demo-red', riskLevel: 'red', status: 'completed', title: '厂房二期总承包合同' },
+    { amount: '2860 万元', counterparty: '武汉某建设单位', createdAt: '2026-05-21', id: 'demo-yellow', riskLevel: 'yellow', status: 'completed', title: '学校改造施工合同' },
+    { amount: '860 万元', counterparty: '黄陂区教育局', createdAt: '2026-05-18', id: 'demo-green', riskLevel: 'green', status: 'completed', title: '暑期维修合同' },
+    { amount: '1800 万元', counterparty: '湖北某投资公司', createdAt: '2026-05-17', id: 'demo-bridge', riskLevel: 'yellow', status: 'reviewing', title: '市政桥梁专业分包' },
+    { amount: '320 万元', counterparty: '武汉某材料商', createdAt: '2026-05-15', id: 'demo-supply', riskLevel: 'green', status: 'queued', title: '钢材采购框架协议' },
+  ];
+}
+
+function riskReviewDetailFixture(id: string): RiskReviewDetail {
+  const base = riskReviewListFixture().find((row) => row.id === id) ?? riskReviewListFixture()[1]!;
+  const red = id === 'demo-red';
+  const green = id === 'demo-green';
+  const levels: Array<'green' | 'red' | 'yellow'> = red ? ['red', 'red', 'red', 'red', 'red'] : green ? ['yellow', 'green', 'green', 'green', 'green'] : ['red', 'red', 'yellow', 'yellow', 'yellow'];
+  return {
+    ...base,
+    confidence: green ? 'high' : 'medium',
+    disclaimer: 'AI 生成内容仅供经营决策参考，不构成法律、财务或招投标承诺；重大签约请结合原合同与人工复核。',
+    findings: levels.map((level, index) => ({
+      clause: `合同第 ${index + 3} 条`,
+      id: `${base.id}-finding-${index + 1}`,
+      impact: ['付款节点未限定审计周期，可能拉长现金回款。', '违约金上限不清，可能形成单方加重责任。', '变更签证证据链不足，结算时容易被压价。', '工期顺延触发条件表述较窄。', '争议管辖地点增加维权成本。'][index]!,
+      level,
+      standardWording: '建议写明资料提交、确认期限、逾期视为认可、争议处理和证据形式。',
+      suggestion: '先补齐期限、责任上限、签证材料和复核节点，再进入盖章流程。',
+      type: ['付款风险', '违约责任', '结算风险', '履约保护', '诉讼成本'][index]!,
+    })),
+    tier: red ? 3 : green ? 1 : 2,
+    traceId: cryptoRandomId(),
   };
 }
 
