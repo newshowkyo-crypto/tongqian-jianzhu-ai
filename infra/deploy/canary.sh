@@ -1,4 +1,23 @@
 #!/usr/bin/env bash
+#
+# 灰度发布脚本
+#
+# 重要说明：本脚本当前是“分段健康守门员 + 自动回滚”，不是真流量灰度。
+#   - 每步循环都会 100% 切流量到新版本，仅在 wait_for_health 通过后进下一步。
+#   - 4 步阈值（5/25/50/100）通过 CANARY_WEIGHT 导出，但 nginx.conf 未消费。
+#   - 真流量灰度需要 nginx upstream 配权重 + 同时双跑 api-new/api-old 两组容器。
+#
+# 适用场景：
+#   - 上线初期 DAU < 1000，作为“分段验证 + 失败自动回滚”使用。
+#   - DAU 上量后，建议补 nginx 双 upstream + 动态 reload，参见 docs/runbook/01-vps-bootstrap.md 灰度发布演练。
+#
+# 环境变量：
+#   TAG                     目标镜像 tag，默认 prod-latest。
+#   ROLLBACK_TAG            失败回滚 tag，默认 prod-previous。
+#   CANARY_STEPS            步进权重列表，默认 "5 25 50 100"。
+#   HEALTH_TIMEOUT_SECONDS  每步健康等待秒数，默认 90。
+#   AUTO_ROLLBACK=1         health fail 时自动切回 ROLLBACK_TAG。
+#   SKIP_SSH_DEPLOY=1       本地 dry-run，不进 ACR。
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

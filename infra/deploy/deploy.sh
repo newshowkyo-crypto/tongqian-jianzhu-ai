@@ -1,43 +1,24 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
-COMPOSE_FILE="${COMPOSE_FILE:-infra/docker-compose.prod.yml}"
-TAG="${1:-${TAG:-prod-latest}}"
-HEALTH_TIMEOUT_SECONDS="${HEALTH_TIMEOUT_SECONDS:-90}"
+TAG=${1:-prod-latest}
+cd /opt/tongqian
 
-cd "$ROOT_DIR"
+echo "$ACR_PASSWORD" | docker login --username "$ACR_USERNAME" --password-stdin "$ACR_REGISTRY"
 
-if ! command -v docker >/dev/null 2>&1; then
-  echo "docker is required" >&2
-  exit 1
-fi
-
-echo "Deploying tag: $TAG"
-export TAG
-
-if [ -n "${ACR_USERNAME:-}" ] && [ -n "${ACR_PASSWORD:-}" ] && [ -n "${ACR_LOGIN_REGISTRY:-}" ]; then
-  echo "$ACR_PASSWORD" | docker login "$ACR_LOGIN_REGISTRY" -u "$ACR_USERNAME" --password-stdin
-fi
-
-if [ "${SKIP_PULL:-0}" != "1" ]; then
-  docker compose -f "$COMPOSE_FILE" pull
-fi
-docker compose -f "$COMPOSE_FILE" up -d
-
-deadline=$((SECONDS + HEALTH_TIMEOUT_SECONDS))
-while [ "$SECONDS" -lt "$deadline" ]; do
-  unhealthy="$(docker compose -f "$COMPOSE_FILE" ps --format json | grep -E 'unhealthy|starting|exited|dead' || true)"
-  if [ -z "$unhealthy" ]; then
-    docker compose -f "$COMPOSE_FILE" ps
-    echo "Deployment healthy: $TAG"
-    exit 0
-  fi
-  sleep 5
+for svc in api worker web admin agent gov nginx; do
+  docker tag "$ACR_REGISTRY/$svc:prod-latest" "$ACR_REGISTRY/$svc:prod-previous" 2>/dev/null || true
 done
 
-docker compose -f "$COMPOSE_FILE" ps
-docker compose -f "$COMPOSE_FILE" logs --tail 120
-echo "Deployment failed health check: $TAG" >&2
-exit 1
+TAG="$TAG" docker compose -f infra/docker-compose.prod.yml pull
+TAG="$TAG" docker compose -f infra/docker-compose.prod.yml up -d
+
+for i in {1..30}; do
+  unhealthy=$(docker compose -f infra/docker-compose.prod.yml ps --format json | jq -r 'select(.Health != "healthy" and .Health != "") | .Name' || true)
+  [[ -z "$unhealthy" ]] && break
+  echo "等待 healthy ($i/30): $unhealthy"
+  sleep 10
+done
+
+bash infra/deploy/health-check.sh
+echo "$(date -Iseconds) deploy $TAG ok" >> /opt/tongqian/deploy.log

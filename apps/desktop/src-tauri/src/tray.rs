@@ -5,9 +5,9 @@ use tauri::{
 };
 
 pub fn install<R: Runtime>(app: &mut App<R>) -> tauri::Result<()> {
-  let open = MenuItem::with_id(app, "open", "Open Tongqian", true, None::<&str>)?;
-  let settings = MenuItem::with_id(app, "settings", "Settings", true, None::<&str>)?;
-  let quit = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
+  let open = MenuItem::with_id(app, "open", "打开主窗口", true, None::<&str>)?;
+  let settings = MenuItem::with_id(app, "settings", "检查更新", true, None::<&str>)?;
+  let quit = MenuItem::with_id(app, "quit", "退出", true, None::<&str>)?;
   let menu = Menu::with_items(app, &[&open, &settings, &quit])?;
 
   TrayIconBuilder::new()

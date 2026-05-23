@@ -6,12 +6,14 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm dlx @tauri-apps/cli@2 dev",
-    "build": "pnpm --filter @tongqian/desktop prepare:web && pnpm --filter @tongqian/desktop tauri build --bundles msi",
+    "build": "pnpm --filter @tongqian/desktop build:msi",
+    "build:msi": "node scripts/build-msi.mjs",
     "prepare:web": "pnpm --filter @tongqian/web build && node scripts/prepare-web-standalone.mjs",
     "lint": "echo \"No lint yet for @tongqian/desktop\"",
     "typecheck": "echo \"No TypeScript sources yet for @tongqian/desktop\"",
     "test": "echo \"No tests yet for @tongqian/desktop\"",
     "clean": "node -e \"require('fs').rmSync('src-tauri/target', { recursive: true, force: true })\"",
+    "sign:placeholder": "echo 'Sign command placeholder, replace with real signtool when EV cert ready'",
     "tauri": "pnpm dlx @tauri-apps/cli@2"
   }
 }
