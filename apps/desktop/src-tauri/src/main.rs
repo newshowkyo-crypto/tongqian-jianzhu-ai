@@ -7,6 +7,7 @@ mod updater;
 
 fn main() {
   tauri::Builder::default()
+    .plugin(tauri_plugin_updater::Builder::new().build())
     .setup(|app| {
       tray::install(app)?;
       Ok(())
