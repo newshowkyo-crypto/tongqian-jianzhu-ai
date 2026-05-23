@@ -1,0 +1,23 @@
+name: pr-checks
+
+on:
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9.12.0
+      - uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+          node-version: 22
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test
+      - run: node scripts/visual-lint.mjs
+      - run: bash -n infra/scripts/build-images.sh && bash -n infra/scripts/push-images.sh

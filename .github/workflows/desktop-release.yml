@@ -1,106 +1,27 @@
-name: Desktop Release
+name: desktop-release
 
 on:
   push:
-    tags:
-      - 'desktop-v*'
+    tags: ['desktop-v*']
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
-  build-windows:
-    name: Build Windows MSI
-    runs-on: windows-latest
-    timeout-minutes: 30
-
+  build-msi:
+    runs-on: windows-2022
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
         with:
           version: 9.12.0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
-
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Prepare desktop web artifacts
-        run: pnpm --filter @tongqian/desktop prepare:web
-
-      - name: Resolve package version
-        id: version
-        shell: pwsh
-        run: |
-          $version = node -p "require('./apps/desktop/package.json').version"
-          "version=$version" >> $env:GITHUB_OUTPUT
-
-      - name: Build MSI
-        run: pnpm --filter @tongqian/desktop tauri build --bundles msi --config '{"version":"${{ steps.version.outputs.version }}"}'
-
-      - name: Install minisign
-        run: choco install minisign -y --no-progress
-
-      - name: Sign MSI
-        shell: pwsh
-        env:
-          MINISIGN_PRIVATE_KEY: ${{ secrets.TAURI_UPDATER_PRIVATE_KEY }}
-          MINISIGN_PASSWORD: ${{ secrets.TAURI_UPDATER_PRIVATE_KEY_PASSWORD }}
-        run: |
-          if (-not $env:MINISIGN_PRIVATE_KEY) {
-            Write-Host "TAURI_UPDATER_PRIVATE_KEY is not configured; signing is deferred to 99-FINAL."
-            exit 0
-          }
-          $keyPath = "$env:RUNNER_TEMP\minisign.key"
-          $env:MINISIGN_PRIVATE_KEY | Set-Content -Path $keyPath -NoNewline
-          Get-ChildItem apps/desktop/src-tauri/target/release/bundle/msi/*.msi | ForEach-Object {
-            minisign -S -s $keyPath -m $_.FullName -x "$($_.FullName).minisig" -W
-          }
-
-      - name: Generate updater manifest
-        shell: pwsh
-        run: |
-          $msi = Get-ChildItem apps/desktop/src-tauri/target/release/bundle/msi/*.msi | Select-Object -First 1
-          $signaturePath = "$($msi.FullName).minisig"
-          $signature = if (Test-Path $signaturePath) { Get-Content $signaturePath -Raw } else { "SIGNING_DEFERRED_TO_99_FINAL" }
-          @{
-            version = "${{ steps.version.outputs.version }}"
-            notes = "Tongqian desktop release"
-            pub_date = (Get-Date).ToUniversalTime().ToString("o")
-            platforms = @{
-              "windows-x86_64" = @{
-                signature = $signature.Trim()
-                url = "https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/$($msi.Name)"
-              }
-            }
-          } | ConvertTo-Json -Depth 8 | Set-Content apps/desktop/src-tauri/target/release/bundle/msi/latest.json
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @tongqian/desktop build:msi
+      - uses: actions/upload-artifact@v4
         with:
-          name: tongqian-desktop-msi
+          name: tongqian-jianzhu-desktop-msi
           path: |
             apps/desktop/src-tauri/target/release/bundle/msi/*.msi
-            apps/desktop/src-tauri/target/release/bundle/msi/*.minisig
-            apps/desktop/src-tauri/target/release/bundle/msi/latest.json
-          if-no-files-found: error
-
-      - name: Publish GitHub Release
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            apps/desktop/src-tauri/target/release/bundle/msi/*.msi
-            apps/desktop/src-tauri/target/release/bundle/msi/*.minisig
-            apps/desktop/src-tauri/target/release/bundle/msi/latest.json
+            apps/desktop/dist/latest.json
