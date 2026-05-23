@@ -1,10 +1,37 @@
-import { Body, Controller, Get, Headers, Inject, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Inject, Param, Post, Query } from '@nestjs/common';
 
 import { RiskReviewService } from './risk-review.service.js';
 
 @Controller('api/v1')
 export class RiskReviewController {
   constructor(@Inject(RiskReviewService) private readonly risks: RiskReviewService) {}
+
+  @Get('risk-review')
+  list(@Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
+    const monthly = this.risks.monthlyReview(tenantId);
+    return { code: 'OK', data: { items: [], monthly, total: monthly.green + monthly.red + monthly.yellow }, message: 'Risk review list', traceId: crypto.randomUUID() };
+  }
+
+  @Post('risk-review')
+  createRiskReview(
+    @Body() body: { amountCny?: number; contractType?: string; contractUrl?: string; tenantType?: 'BUILDING_COMPANY' | 'GOV'; type?: 'basic' | 'pro' },
+    @Headers('x-tenant-id') tenantId = 'mock-tenant',
+    @Headers('x-user-id') userId = 'mock-user',
+  ): unknown {
+    const review = this.risks.createReview({ amountCny: body.amountCny, contractType: body.contractType ?? 'construction', contractUrl: body.contractUrl ?? 'mock://upload/contract.pdf', tenantId, tenantType: body.tenantType, type: body.type ?? 'pro', userId });
+    return { code: 'OK', data: { ...review, providerUsed: 'mock', traceId: review.aiTaskId }, message: 'Risk review created', traceId: review.aiTaskId };
+  }
+
+  @Get('risk-review/:id')
+  getRiskReview(@Param('id') id: string, @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
+    return { code: 'OK', data: this.risks.getReview(id, tenantId), message: 'Risk review detail', traceId: crypto.randomUUID() };
+  }
+
+  @Get('risk-review/:id/download')
+  download(@Param('id') id: string, @Query('format') format: 'docx' | 'pdf' = 'pdf', @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
+    this.risks.getReview(id, tenantId);
+    return { code: 'OK', data: { url: `mock://oss/risk-review/${id}.${format}?ttl=3600` }, message: 'Risk review download', traceId: crypto.randomUUID() };
+  }
 
   @Post('contract-reviews')
   create(
