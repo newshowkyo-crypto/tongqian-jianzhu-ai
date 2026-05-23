@@ -149,6 +149,41 @@ export interface TenderDetail extends TenderListItem {
   traceId: string;
 }
 
+export interface QualificationCert {
+  category: string;
+  daysToExpiry: number;
+  expiresAt: string;
+  id: string;
+  issuedAt: string;
+  level: string;
+  name: string;
+  riskLevel: 'green' | 'red' | 'yellow';
+}
+
+export interface QualificationCheckupReport {
+  confidence: 'high' | 'low' | 'medium';
+  disclaimer: string;
+  expiring: QualificationCert[];
+  gaps: Array<{ area: string; description: string; suggestion: string }>;
+  overallScore: number;
+  tier: 1 | 2 | 3 | 4;
+  traceId: string;
+  upgradable: Array<{ from: string; potential: number; to: string }>;
+}
+
+export interface UpgradePathReport {
+  confidence: 'high' | 'low' | 'medium';
+  current: string;
+  disclaimer: string;
+  estimatedMonths: number;
+  gaps: Array<{ current: string; dimension: string; missing: string; required: string }>;
+  recommendedRoute: string;
+  routes: Array<{ description: string; name: string }>;
+  target: string;
+  tier: 1 | 2 | 3 | 4;
+  traceId: string;
+}
+
 export interface ChatConversation {
   channel: 'api' | 'desktop' | 'gov' | 'web' | 'wechat' | 'work_wechat';
   id: string;
@@ -287,6 +322,7 @@ export function createApiClient(options: ApiClientOptions = {}) {
     http,
     mock,
     riskReview: createRiskReviewApi(http, mock),
+    qualification: createQualificationApi(http, mock),
     tender: createTenderApi(http, mock),
   };
 }
@@ -388,6 +424,27 @@ function createTenderApi(http: AxiosInstance, mock: boolean) {
     async list(filters?: Record<string, unknown>): Promise<TenderListItem[]> {
       if (mock) return delay(tenderListFixture().filter((row) => !filters?.projectType || filters.projectType === 'all' || row.projectType.includes(String(filters.projectType))));
       return unwrap(await http.get('/tenders', { params: filters }));
+    },
+  };
+}
+
+function createQualificationApi(http: AxiosInstance, mock: boolean) {
+  return {
+    async checkup(): Promise<QualificationCheckupReport> {
+      if (mock) return delay(qualificationCheckupFixture());
+      return unwrap(await http.get('/qualifications/checkup'));
+    },
+    async create(payload: Record<string, unknown>): Promise<{ certId: string; confidence?: string; outputSchemaValid?: boolean; providerUsed?: string; traceId?: string }> {
+      if (mock) return delay({ certId: 'qual-upgrade-easy', confidence: 'medium', outputSchemaValid: true, providerUsed: 'mock', traceId: normalizeText(payload.traceId ?? cryptoRandomId()) });
+      return unwrap(await http.post('/qualifications', payload));
+    },
+    async list(): Promise<QualificationCert[]> {
+      if (mock) return delay(qualificationCertFixture());
+      return unwrap(await http.get('/qualifications'));
+    },
+    async upgradePath(certId: string, targetLevel = '一级'): Promise<UpgradePathReport> {
+      if (mock) return delay(upgradePathFixture(certId, targetLevel));
+      return unwrap(await http.get(`/qualifications/${certId}/upgrade`, { params: { targetLevel } }));
     },
   };
 }
@@ -695,6 +752,64 @@ function tenderDetailFixture(id: string): TenderDetail {
       { date: '2026-06-03', daysFromNow: 11, milestone: '开标' },
       { date: '2026-06-06', daysFromNow: 14, milestone: '评标' },
     ],
+    traceId: cryptoRandomId(),
+  };
+}
+
+function qualificationCertFixture(): QualificationCert[] {
+  return [
+    { category: '施工总承包', daysToExpiry: 28, expiresAt: '2026-06-20', id: 'qual-upgrade-easy', issuedAt: '2023-06-20', level: '建筑工程二级', name: '建筑工程施工总承包', riskLevel: 'red' },
+    { category: '专业承包', daysToExpiry: 58, expiresAt: '2026-07-18', id: 'qual-upgrade-hard', issuedAt: '2022-07-18', level: '市政公用工程二级', name: '市政公用工程施工', riskLevel: 'yellow' },
+    { category: '安全许可', daysToExpiry: 86, expiresAt: '2026-08-15', id: 'qual-safety', issuedAt: '2023-08-15', level: '有效', name: '安全生产许可证', riskLevel: 'yellow' },
+    { category: '专业承包', daysToExpiry: 220, expiresAt: '2026-12-29', id: 'qual-upgrade-impossible', issuedAt: '2021-12-29', level: '钢结构三级', name: '钢结构工程专业承包', riskLevel: 'green' },
+    { category: '劳务', daysToExpiry: 360, expiresAt: '2027-05-18', id: 'qual-labor', issuedAt: '2024-05-18', level: '备案制', name: '施工劳务备案', riskLevel: 'green' },
+  ];
+}
+
+function qualificationCheckupFixture(): QualificationCheckupReport {
+  return {
+    confidence: 'medium',
+    disclaimer: 'AI 体检仅供资质经营管理参考，最终申报口径请以主管部门和人工复核为准。',
+    expiring: qualificationCertFixture().slice(0, 3),
+    gaps: [
+      { area: '业绩归档', description: '部分合同缺竣工验收页和中标通知书。', suggestion: '按资质类别建立业绩证据包。' },
+      { area: '人员社保', description: '两名关键人员社保连续性不足。', suggestion: '补齐近 6 个月社保和劳动合同。' },
+      { area: '设备清单', description: '自有设备发票与台账未绑定。', suggestion: '补设备编号、发票和照片。' },
+      { area: '净资产', description: '最近一期报表净资产仍有缺口。', suggestion: '先做审计口径测算再申报。' },
+    ],
+    overallScore: 78,
+    tier: 2,
+    traceId: cryptoRandomId(),
+    upgradable: [
+      { from: '建筑工程二级', potential: 82, to: '一级' },
+      { from: '市政公用工程二级', potential: 71, to: '一级' },
+      { from: '钢结构三级', potential: 46, to: '二级' },
+    ],
+  };
+}
+
+function upgradePathFixture(certId: string, targetLevel: string): UpgradePathReport {
+  const hard = certId === 'qual-upgrade-hard';
+  const impossible = certId === 'qual-upgrade-impossible';
+  return {
+    confidence: impossible ? 'low' : 'medium',
+    current: hard ? '市政公用工程二级' : impossible ? '钢结构三级' : '建筑工程二级',
+    disclaimer: '升级路径由 AI 基于台账与规则生成，仅供经营决策参考。',
+    estimatedMonths: impossible ? 18 : hard ? 9 : 4,
+    gaps: [
+      { current: '3 个项目', dimension: '业绩差距', missing: '缺 2 个', required: '5 个 ≥1000 万项目' },
+      { current: '一建 4 人', dimension: '人员差距', missing: hard ? '缺 3 人' : '缺 1 人', required: '技术负责人 / 一级建造师 / 工程师' },
+      { current: '台账不完整', dimension: '设备差距', missing: '缺发票绑定', required: '自有施工设备清单' },
+      { current: hard ? '3800 万' : '4200 万', dimension: '净资产差距', missing: hard ? '缺 1200 万' : '缺 800 万', required: '≥5000 万' },
+    ],
+    recommendedRoute: impossible ? '横向扩展' : hard ? '借资质' : '硬升',
+    routes: [
+      { description: '自补业绩、人员和净资产，周期最长但沉淀资产。', name: '硬升' },
+      { description: '通过收购或合作缩短周期，需重点看债务与诉讼。', name: '收购' },
+      { description: '短期联合投标或资源合作，适合窗口期项目。', name: '借资质' },
+    ],
+    target: targetLevel,
+    tier: impossible ? 3 : hard ? 2 : 1,
     traceId: cryptoRandomId(),
   };
 }
