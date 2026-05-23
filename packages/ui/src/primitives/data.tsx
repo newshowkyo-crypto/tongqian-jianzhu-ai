@@ -5,7 +5,7 @@ import { cn } from '../utils.js';
 
 export const Table = forwardRef<ElementRef<'table'>, ComponentPropsWithoutRef<'table'>>(
   ({ className, ...props }, ref) => (
-    <div className="w-full overflow-auto">
+    <div className="w-full overflow-auto rounded-lg border border-[var(--border-silver)] bg-[rgba(10,29,61,0.28)]">
       <table ref={ref} className={cn('w-full caption-bottom text-sm', className)} {...props} />
     </div>
   ),
@@ -24,20 +24,20 @@ TableBody.displayName = 'TableBody';
 
 export const TableRow = forwardRef<ElementRef<'tr'>, ComponentPropsWithoutRef<'tr'>>(
   ({ className, ...props }, ref) => (
-    <tr ref={ref} className={cn('border-b border-border transition-all duration-200 hover:bg-gradient-to-r hover:from-white hover:to-[#e8f1ff] data-[state=selected]:border-l-4 data-[state=selected]:border-l-[#d99880]', className)} {...props} />
+    <tr ref={ref} className={cn('border-b border-[var(--border-silver)] transition-all duration-200 hover:bg-gradient-to-r hover:from-[rgba(217,152,128,0.12)] hover:to-[rgba(74,142,255,0.10)] data-[state=selected]:border-l-4 data-[state=selected]:border-l-[var(--accent-rose)]', className)} {...props} />
   ),
 );
 TableRow.displayName = 'TableRow';
 
 export const TableHead = forwardRef<ElementRef<'th'>, ComponentPropsWithoutRef<'th'>>(
   ({ className, ...props }, ref) => (
-    <th ref={ref} className={cn('h-10 px-3 text-left align-middle text-xs font-medium text-neutral-500', className)} {...props} />
+    <th ref={ref} className={cn('h-10 px-3 text-left align-middle text-xs font-medium uppercase tracking-wide text-[var(--text-secondary)]', className)} {...props} />
   ),
 );
 TableHead.displayName = 'TableHead';
 
 export const TableCell = forwardRef<ElementRef<'td'>, ComponentPropsWithoutRef<'td'>>(
-  ({ className, ...props }, ref) => <td ref={ref} className={cn('px-3 py-2 align-middle', className)} {...props} />,
+  ({ className, ...props }, ref) => <td ref={ref} className={cn('px-3 py-2 align-middle text-[var(--text-secondary)]', className)} {...props} />,
 );
 TableCell.displayName = 'TableCell';
 
@@ -74,7 +74,7 @@ export function DataTable<TData extends Record<string, ReactNode>>({
       <TableBody>
         {data.length === 0 ? (
           <TableRow>
-            <TableCell className="py-8 text-center text-neutral-500" colSpan={columns.length}>
+            <TableCell className="py-8 text-center text-[var(--text-secondary)]" colSpan={columns.length}>
               {empty}
             </TableCell>
           </TableRow>
@@ -124,7 +124,7 @@ export const Avatar = forwardRef<ElementRef<'span'>, AvatarProps>(
   ({ className, fallback, src, ...props }, ref) => (
     <span
       ref={ref}
-      className={cn('inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-neutral-100 text-xs font-medium text-neutral-700', className)}
+      className={cn('inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border border-[var(--border-silver)] bg-[rgba(74,142,255,0.14)] text-xs font-medium text-white', className)}
       {...props}
     >
       {src ? <img alt="" className="h-full w-full object-cover" src={src} /> : fallback.slice(0, 2).toUpperCase()}
@@ -141,7 +141,7 @@ export const Progress = forwardRef<ElementRef<'progress'>, ProgressProps>(
   ({ className, value, ...props }, ref) => (
     <progress
       ref={ref}
-      className={cn('h-2 w-full overflow-hidden rounded-full accent-primary-600', className)}
+      className={cn('h-2 w-full overflow-hidden rounded-full accent-[var(--accent-rose)]', className)}
       max={100}
       value={Math.max(0, Math.min(100, value))}
       {...props}
@@ -151,7 +151,7 @@ export const Progress = forwardRef<ElementRef<'progress'>, ProgressProps>(
 Progress.displayName = 'Progress';
 
 export const Skeleton = forwardRef<ElementRef<'div'>, ComponentPropsWithoutRef<'div'>>(
-  ({ className, ...props }, ref) => <div ref={ref} className={cn('tq-shimmer rounded-md bg-neutral-100', className)} {...props} />,
+  ({ className, ...props }, ref) => <div ref={ref} className={cn('tq-shimmer rounded-md bg-white/10', className)} {...props} />,
 );
 Skeleton.displayName = 'Skeleton';
 
@@ -159,7 +159,7 @@ export const Spinner = forwardRef<ElementRef<'span'>, ComponentPropsWithoutRef<'
   ({ className, ...props }, ref) => (
     <span
       ref={ref}
-      className={cn('inline-block h-4 w-4 animate-spin rounded-full border-2 border-neutral-200 border-t-primary-600', className)}
+      className={cn('inline-block h-4 w-4 animate-spin rounded-full border-2 border-[var(--border-silver)] border-t-[var(--accent-rose)]', className)}
       role="status"
       {...props}
     />
@@ -169,7 +169,7 @@ Spinner.displayName = 'Spinner';
 
 export const Breadcrumb = forwardRef<ElementRef<'nav'>, ComponentPropsWithoutRef<'nav'>>(
   ({ className, ...props }, ref) => (
-    <nav ref={ref} aria-label="breadcrumb" className={cn('flex items-center gap-1 text-sm text-neutral-500', className)} {...props} />
+    <nav ref={ref} aria-label="breadcrumb" className={cn('flex items-center gap-1 text-sm text-[var(--text-secondary)]', className)} {...props} />
   ),
 );
 Breadcrumb.displayName = 'Breadcrumb';

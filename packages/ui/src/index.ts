@@ -73,6 +73,7 @@ export {
   SectionCard,
   Sidebar,
   TopNav,
+  CyberShell,
   type EmptyStateProps,
   type ErrorStateProps,
   type FilterBarProps,
@@ -83,6 +84,10 @@ export {
   type SectionCardProps,
   type SidebarProps,
   type TopNavProps,
+  type CyberShellActionLabels,
+  type CyberShellBrand,
+  type CyberShellNavigationItem,
+  type CyberShellProps,
 } from './layout/page.js';
 export { BrandHeader, DisclaimerFooter, ReportCardH5, ReportFullPdf } from './report/index.js';
 export { uiTestConfig } from './testing.js';

@@ -23,9 +23,9 @@ export interface CommandProps {
 }
 
 const FALLBACK_RESULTS: CommandResult[] = [
-  { href: '/dashboard', id: 'dashboard', subtitle: '今日机会、风险红灯和待办审批', title: '老板首页', type: 'page' },
-  { href: '/admin/credentials', id: 'credentials', subtitle: '凭证 mock/real 切换与审批', title: '凭证管理', type: 'admin' },
-  { href: '/reports/history', id: 'reports', subtitle: 'AI 报告、Tier 和信心度', title: '报告中心', type: 'report' },
+  { href: '/dashboard', id: 'dashboard', subtitle: '\u4eca\u65e5\u673a\u4f1a\u3001\u98ce\u9669\u7ea2\u706f\u548c\u5f85\u529e\u5ba1\u6279', title: '\u8001\u677f\u9996\u9875', type: 'page' },
+  { href: '/admin/credentials', id: 'credentials', subtitle: '\u51ed\u8bc1 mock/real \u5207\u6362\u4e0e\u5ba1\u8ba1', title: '\u51ed\u8bc1\u7ba1\u7406', type: 'admin' },
+  { href: '/reports/history', id: 'reports', subtitle: 'AI \u62a5\u544a\u3001Tier \u548c\u4fe1\u5fc3\u5ea6', title: '\u62a5\u544a\u4e2d\u5fc3', type: 'report' },
 ];
 
 export function Command({
@@ -33,7 +33,7 @@ export function Command({
   className,
   defaultOpen = false,
   onNavigate,
-  placeholder = '搜索客户、项目、合同、报告、智能管家、招标、政策',
+  placeholder = '\u641c\u7d22\u5ba2\u6237\u3001\u9879\u76ee\u3001\u5408\u540c\u3001\u62a5\u544a\u3001\u667a\u80fd\u7ba1\u5bb6\u3001\u62db\u6807\u3001\u653f\u7b56',
   seedResults = FALLBACK_RESULTS,
 }: CommandProps): ReactNode {
   const [open, setOpen] = useState(defaultOpen);
@@ -86,23 +86,23 @@ export function Command({
   return (
     <>
       <button
-        aria-label="打开全局搜索"
-        className={cn('flex h-10 min-w-0 flex-1 items-center rounded-md border border-neutral-300 bg-neutral-50 px-3 text-sm text-neutral-500', className)}
+        aria-label="\u6253\u5f00\u5168\u5c40\u641c\u7d22"
+        className={cn('tq-cyber-control flex h-10 min-w-0 flex-1 items-center rounded-md px-3 text-sm', className)}
         onClick={() => setOpen(true)}
         type="button"
       >
-        <Search className="mr-2 h-4 w-4" />
-        <span className="truncate">{placeholder}</span>
-        <kbd className="ml-auto hidden rounded bg-white px-1.5 py-0.5 text-xs text-neutral-500 sm:inline">Ctrl K</kbd>
+        <Search className="mr-2 h-4 w-4 text-[var(--cyber-blue)]" />
+        <span className="truncate text-[var(--text-secondary)]">{placeholder}</span>
+        <kbd className="ml-auto hidden rounded border border-[var(--border-silver)] bg-white/5 px-1.5 py-0.5 text-xs text-[var(--text-tertiary)] sm:inline">Ctrl K</kbd>
       </button>
       {open ? (
-        <div className="fixed inset-0 z-[90] bg-neutral-950/30 px-4 pt-[12vh]" role="dialog" aria-modal="true">
-          <div className="mx-auto max-w-2xl overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-2xl">
-            <div className="flex h-14 items-center gap-3 border-b border-neutral-200 px-4">
-              <Search className="h-5 w-5 text-primary-600" />
+        <div className="fixed inset-0 z-[90] bg-[#020817]/70 px-4 pt-[12vh] backdrop-blur-sm" role="dialog" aria-modal="true">
+          <div className="tq-cyber-panel mx-auto max-w-2xl overflow-hidden">
+            <div className="flex h-14 items-center gap-3 border-b border-[var(--border-silver)] px-4">
+              <Search className="h-5 w-5 text-[var(--cyber-blue)]" />
               <input
                 autoFocus
-                className="h-full flex-1 bg-transparent text-base outline-none"
+                className="h-full flex-1 bg-transparent text-base text-white outline-none placeholder:text-[var(--text-tertiary)]"
                 onChange={(event) => setQuery(event.target.value)}
                 onKeyDown={(event) => {
                   if (event.key === 'ArrowDown') setActiveIndex((value) => Math.min(value + 1, results.length - 1));
@@ -112,22 +112,22 @@ export function Command({
                 placeholder={placeholder}
                 value={query}
               />
-              <button aria-label="关闭搜索" className="grid h-9 w-9 place-items-center rounded-md hover:bg-neutral-100" onClick={() => setOpen(false)} type="button">
+              <button aria-label="\u5173\u95ed\u641c\u7d22" className="grid h-9 w-9 place-items-center rounded-md hover:bg-white/10" onClick={() => setOpen(false)} type="button">
                 <X className="h-4 w-4" />
               </button>
             </div>
             <div className="max-h-[420px] overflow-auto p-2">
-              {results.length === 0 ? <div className="p-8 text-center text-sm text-neutral-500">暂无结果</div> : null}
+              {results.length === 0 ? <div className="p-8 text-center text-sm text-[var(--text-secondary)]">{'\u6682\u65e0\u7ed3\u679c'}</div> : null}
               {results.map((result, index) => (
                 <button
                   key={`${result.type}-${result.id}`}
-                  className={cn('flex min-h-14 w-full flex-col rounded-md px-3 py-2 text-left transition-colors', index === activeIndex ? 'bg-primary-50' : 'hover:bg-neutral-50')}
+                  className={cn('flex min-h-14 w-full flex-col rounded-md px-3 py-2 text-left transition-colors', index === activeIndex ? 'bg-[rgba(74,142,255,0.14)]' : 'hover:bg-white/5')}
                   onMouseEnter={() => setActiveIndex(index)}
                   onClick={() => choose(result)}
                   type="button"
                 >
-                  <span className="text-sm font-semibold text-neutral-900">{result.title}</span>
-                  <span className="text-xs text-neutral-500">{result.type ?? 'result'} · {result.subtitle ?? result.href}</span>
+                  <span className="text-sm font-semibold text-white">{result.title}</span>
+                  <span className="text-xs text-[var(--text-secondary)]">{result.type ?? 'result'} / {result.subtitle ?? result.href}</span>
                 </button>
               ))}
             </div>

@@ -54,35 +54,35 @@ model Tenant {
 }
 
 model User {
-  id             String     @id @default(uuid()) @db.Uuid
-  tenantId       String     @map("tenant_id") @db.Uuid
-  phone          String     @unique
-  email          String?
-  passwordHash   String     @map("password_hash")
-  name           String
-  primaryRole    UserRole   @map("primary_role")
-  platformRole   String?    @map("platform_role")
-  positionTags   String[]   @default([]) @map("position_tags")
-  is2faEnabled   Boolean    @default(false) @map("is_2fa_enabled")
-  totpSecret     String?    @map("totp_secret")
-  status         UserStatus @default(active)
-  lastLoginAt    DateTime?  @map("last_login_at")
-  createdAt      DateTime   @default(now()) @map("created_at")
+  id           String     @id @default(uuid()) @db.Uuid
+  tenantId     String     @map("tenant_id") @db.Uuid
+  phone        String     @unique
+  email        String?
+  passwordHash String     @map("password_hash")
+  name         String
+  primaryRole  UserRole   @map("primary_role")
+  platformRole String?    @map("platform_role")
+  positionTags String[]   @default([]) @map("position_tags")
+  is2faEnabled Boolean    @default(false) @map("is_2fa_enabled")
+  totpSecret   String?    @map("totp_secret")
+  status       UserStatus @default(active)
+  lastLoginAt  DateTime?  @map("last_login_at")
+  createdAt    DateTime   @default(now()) @map("created_at")
 
   @@index([tenantId, status])
   @@map("users")
 }
 
 model RefreshToken {
-  id         String    @id @default(uuid()) @db.Uuid
-  userId     String    @map("user_id") @db.Uuid
-  tokenHash  String    @unique @map("token_hash")
-  deviceId   String?   @map("device_id") @db.Uuid
-  expiresAt  DateTime  @map("expires_at")
-  revokedAt  DateTime? @map("revoked_at")
-  ip         String?
-  userAgent  String?   @map("user_agent")
-  createdAt  DateTime  @default(now()) @map("created_at")
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  tokenHash String    @unique @map("token_hash")
+  deviceId  String?   @map("device_id") @db.Uuid
+  expiresAt DateTime  @map("expires_at")
+  revokedAt DateTime? @map("revoked_at")
+  ip        String?
+  userAgent String?   @map("user_agent")
+  createdAt DateTime  @default(now()) @map("created_at")
 
   @@index([userId, revokedAt])
   @@map("refresh_tokens")
@@ -264,15 +264,15 @@ model RenewalAttempt {
 }
 
 model Invoice {
-  id             String   @id @default(uuid()) @db.Uuid
-  tenantId       String   @map("tenant_id") @db.Uuid
-  subscriptionId String   @map("subscription_id") @db.Uuid
-  amount         Decimal  @db.Decimal(10, 2)
-  invoiceNo      String   @unique @map("invoice_no")
-  invoiceUrl     String?  @map("invoice_url")
+  id             String    @id @default(uuid()) @db.Uuid
+  tenantId       String    @map("tenant_id") @db.Uuid
+  subscriptionId String    @map("subscription_id") @db.Uuid
+  amount         Decimal   @db.Decimal(10, 2)
+  invoiceNo      String    @unique @map("invoice_no")
+  invoiceUrl     String?   @map("invoice_url")
   emailSentAt    DateTime? @map("email_sent_at")
   status         String
-  createdAt      DateTime @default(now()) @map("created_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
 
   @@index([tenantId, createdAt])
   @@map("invoices")
@@ -305,16 +305,16 @@ model CreditLot {
 }
 
 model CreditLog {
-  id              String        @id @default(uuid()) @db.Uuid
-  accountId       String        @map("account_id") @db.Uuid
-  type            CreditLogType
-  amount          Int
-  balanceAfter    Int           @map("balance_after")
-  sourceModule    String        @map("source_module")
-  sourceResource  String?       @map("source_resource")
-  idempotencyKey  String?       @unique @map("idempotency_key")
-  traceId         String        @map("trace_id")
-  createdAt       DateTime      @default(now()) @map("created_at")
+  id             String        @id @default(uuid()) @db.Uuid
+  accountId      String        @map("account_id") @db.Uuid
+  type           CreditLogType
+  amount         Int
+  balanceAfter   Int           @map("balance_after")
+  sourceModule   String        @map("source_module")
+  sourceResource String?       @map("source_resource")
+  idempotencyKey String?       @unique @map("idempotency_key")
+  traceId        String        @map("trace_id")
+  createdAt      DateTime      @default(now()) @map("created_at")
 
   @@index([accountId, createdAt])
   @@map("credit_logs")
@@ -348,29 +348,29 @@ model AiTask {
 }
 
 model AiCostLog {
-  id              String   @id @default(uuid()) @db.Uuid
-  aiTaskId        String   @unique @map("ai_task_id") @db.Uuid
-  inputTokens     Int      @map("input_tokens")
-  outputTokens    Int      @map("output_tokens")
-  inputCostRmb    Decimal  @map("input_cost_rmb") @db.Decimal(10, 6)
-  outputCostRmb   Decimal  @map("output_cost_rmb") @db.Decimal(10, 6)
-  totalCostRmb    Decimal  @map("total_cost_rmb") @db.Decimal(10, 4)
-  creditsCharged  Int      @map("credits_charged")
-  profitRmb       Decimal  @map("profit_rmb") @db.Decimal(10, 4)
-  cacheHit        Boolean  @default(false) @map("cache_hit")
-  createdAt       DateTime @default(now()) @map("created_at")
+  id             String   @id @default(uuid()) @db.Uuid
+  aiTaskId       String   @unique @map("ai_task_id") @db.Uuid
+  inputTokens    Int      @map("input_tokens")
+  outputTokens   Int      @map("output_tokens")
+  inputCostRmb   Decimal  @map("input_cost_rmb") @db.Decimal(10, 6)
+  outputCostRmb  Decimal  @map("output_cost_rmb") @db.Decimal(10, 6)
+  totalCostRmb   Decimal  @map("total_cost_rmb") @db.Decimal(10, 4)
+  creditsCharged Int      @map("credits_charged")
+  profitRmb      Decimal  @map("profit_rmb") @db.Decimal(10, 4)
+  cacheHit       Boolean  @default(false) @map("cache_hit")
+  createdAt      DateTime @default(now()) @map("created_at")
 
   @@index([createdAt])
   @@map("ai_cost_logs")
 }
 
 model AiProviderHealth {
-  id             String   @id @default(uuid()) @db.Uuid
-  providerName   String   @unique @map("provider_name")
-  status         String
-  errorRate5Min  Decimal  @map("error_rate_5min") @db.Decimal(5, 4)
-  p95LatencyMs   Int?     @map("p95_latency_ms")
-  lastCheckAt    DateTime @map("last_check_at")
+  id            String   @id @default(uuid()) @db.Uuid
+  providerName  String   @unique @map("provider_name")
+  status        String
+  errorRate5Min Decimal  @map("error_rate_5min") @db.Decimal(5, 4)
+  p95LatencyMs  Int?     @map("p95_latency_ms")
+  lastCheckAt   DateTime @map("last_check_at")
 
   @@map("ai_provider_health")
 }
@@ -412,17 +412,17 @@ model TenantMonthlyCost {
 }
 
 model UserDevice {
-  id            String           @id @default(uuid()) @db.Uuid
-  userId        String           @map("user_id")
-  tenantId      String           @map("tenant_id")
-  deviceType    String           @map("device_type")
-  deviceName    String           @map("device_name")
-  deviceFinger  String           @map("device_finger")
-  lastLoginAt   DateTime         @default(now()) @map("last_login_at")
-  lastIp        String?          @map("last_ip")
-  status        UserDeviceStatus @default(active)
-  revokedAt     DateTime?        @map("revoked_at")
-  createdAt     DateTime         @default(now()) @map("created_at")
+  id           String           @id @default(uuid()) @db.Uuid
+  userId       String           @map("user_id")
+  tenantId     String           @map("tenant_id")
+  deviceType   String           @map("device_type")
+  deviceName   String           @map("device_name")
+  deviceFinger String           @map("device_finger")
+  lastLoginAt  DateTime         @default(now()) @map("last_login_at")
+  lastIp       String?          @map("last_ip")
+  status       UserDeviceStatus @default(active)
+  revokedAt    DateTime?        @map("revoked_at")
+  createdAt    DateTime         @default(now()) @map("created_at")
 
   @@unique([userId, deviceFinger])
   @@index([tenantId, userId, status])
@@ -593,20 +593,20 @@ model ReportDifficultyRadar {
 }
 
 model Opportunity {
-  id              String   @id @default(uuid()) @db.Uuid
+  id              String    @id @default(uuid()) @db.Uuid
   title           String
   source          String
   region          String
   industry        String
-  amountEstimate  Decimal  @map("amount_estimate") @db.Decimal(15, 2)
-  ownerName       String   @map("owner_name")
-  ownerCreditCode String?  @map("owner_credit_code")
-  publishDate     DateTime @map("publish_date")
+  amountEstimate  Decimal   @map("amount_estimate") @db.Decimal(15, 2)
+  ownerName       String    @map("owner_name")
+  ownerCreditCode String?   @map("owner_credit_code")
+  publishDate     DateTime  @map("publish_date")
   deadline        DateTime?
-  rawUrl          String?  @map("raw_url")
-  rawText         String?  @map("raw_text") @db.Text
+  rawUrl          String?   @map("raw_url")
+  rawText         String?   @map("raw_text") @db.Text
   meta            Json?
-  createdAt       DateTime @default(now()) @map("created_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
 
   @@index([region, industry, amountEstimate])
   @@map("opportunities")
@@ -864,16 +864,16 @@ model KeyPersonnel {
 }
 
 model PerformanceRecord {
-  id                    String   @id @default(uuid()) @db.Uuid
-  tenantId              String   @map("tenant_id")
-  projectName           String   @map("project_name")
-  contractAmount        Decimal  @map("contract_amount") @db.Decimal(15, 2)
-  contractUrl           String?  @map("contract_url")
-  acceptanceUrl         String?  @map("acceptance_url")
+  id                    String    @id @default(uuid()) @db.Uuid
+  tenantId              String    @map("tenant_id")
+  projectName           String    @map("project_name")
+  contractAmount        Decimal   @map("contract_amount") @db.Decimal(15, 2)
+  contractUrl           String?   @map("contract_url")
+  acceptanceUrl         String?   @map("acceptance_url")
   industry              String
-  startAt               DateTime @map("start_at")
+  startAt               DateTime  @map("start_at")
   endAt                 DateTime? @map("end_at")
-  matchedQualifications Json     @map("matched_qualifications")
+  matchedQualifications Json      @map("matched_qualifications")
   meta                  Json?
 
   @@index([tenantId, industry])
@@ -926,20 +926,20 @@ model PersonnelComplianceCheck {
 }
 
 model QualificationServiceOrder {
-  id                    String   @id @default(uuid()) @db.Uuid
-  clientId              String   @map("client_id")
-  agentId               String   @map("agent_id")
-  qualificationTarget   String   @map("qualification_target")
-  quotedAmount          Decimal  @map("quoted_amount") @db.Decimal(12, 2)
-  serviceTerms          String   @map("service_terms")
-  servicePeriodDays     Int      @map("service_period_days")
-  failureCompensation   Int      @map("failure_compensation")
+  id                    String    @id @default(uuid()) @db.Uuid
+  clientId              String    @map("client_id")
+  agentId               String    @map("agent_id")
+  qualificationTarget   String    @map("qualification_target")
+  quotedAmount          Decimal   @map("quoted_amount") @db.Decimal(12, 2)
+  serviceTerms          String    @map("service_terms")
+  servicePeriodDays     Int       @map("service_period_days")
+  failureCompensation   Int       @map("failure_compensation")
   milestones            Json
-  paymentStatus         String   @map("payment_status")
+  paymentStatus         String    @map("payment_status")
   clientAcceptanceAt    DateTime? @map("client_acceptance_at")
   acceptanceWindowUntil DateTime? @map("acceptance_window_until")
-  createdAt             DateTime @default(now()) @map("created_at")
-  updatedAt             DateTime @updatedAt @map("updated_at")
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
 
   @@index([clientId, agentId])
   @@map("qualification_service_orders")
@@ -1164,11 +1164,11 @@ model MaterialPrice {
 }
 
 model MaterialPriceAlert {
-  id            String  @id @default(uuid()) @db.Uuid
-  tenantId      String  @map("tenant_id")
-  materialCode  String  @map("material_code")
-  region        String
-  thresholdPct  Decimal @map("threshold_pct") @db.Decimal(5, 2)
+  id           String  @id @default(uuid()) @db.Uuid
+  tenantId     String  @map("tenant_id")
+  materialCode String  @map("material_code")
+  region       String
+  thresholdPct Decimal @map("threshold_pct") @db.Decimal(5, 2)
 
   @@unique([tenantId, materialCode, region])
   @@map("material_price_alerts")
@@ -1277,13 +1277,13 @@ model CashflowForecast {
 }
 
 model FinancingDiagnosis {
-  id               String @id @default(uuid()) @db.Uuid
-  tenantId         String @map("tenant_id")
-  availableTypes   Json   @map("available_types")
-  estimatedAmounts Json   @map("estimated_amounts")
-  preparationSteps Json   @map("preparation_steps")
-  recommendedPath  String @map("recommended_path")
-  aiTaskId         String @unique @map("ai_task_id")
+  id               String  @id @default(uuid()) @db.Uuid
+  tenantId         String  @map("tenant_id")
+  availableTypes   Json    @map("available_types")
+  estimatedAmounts Json    @map("estimated_amounts")
+  preparationSteps Json    @map("preparation_steps")
+  recommendedPath  String  @map("recommended_path")
+  aiTaskId         String  @unique @map("ai_task_id")
   reportId         String? @map("report_id")
 
   @@index([tenantId])
@@ -1482,14 +1482,14 @@ model ReputationScore {
 }
 
 model ReputationLog {
-  id          String   @id @default(uuid()) @db.Uuid
-  entityId    String   @map("entity_id")
-  entityType  String   @map("entity_type")
-  delta       Int
-  reason      String
-  resourceId  String?  @map("resource_id")
-  reversible  Boolean  @default(true)
-  createdAt   DateTime @default(now()) @map("created_at")
+  id         String   @id @default(uuid()) @db.Uuid
+  entityId   String   @map("entity_id")
+  entityType String   @map("entity_type")
+  delta      Int
+  reason     String
+  resourceId String?  @map("resource_id")
+  reversible Boolean  @default(true)
+  createdAt  DateTime @default(now()) @map("created_at")
 
   @@index([entityId, entityType, createdAt])
   @@map("reputation_logs")
@@ -1686,13 +1686,187 @@ model PolicyFund {
   aiSummary        String   @map("ai_summary")
   status           String
   province         String?
+  sourceKey        String?  @unique @map("source_key")
+  sourceUrl        String?  @map("source_url")
+  rawText          String?  @map("raw_text") @db.Text
   rolloutPct       Int      @default(0) @map("rollout_pct")
   pinned           Boolean  @default(false)
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
 
   @@index([category, status])
+  @@index([province, status])
   @@map("policy_funds")
+}
+
+model Regulation {
+  id          String   @id @default(uuid()) @db.Uuid
+  sourceKey   String   @unique @map("source_key")
+  title       String
+  level       String
+  authority   String
+  region      String
+  publishDate DateTime @map("publish_date")
+  sourceUrl   String   @map("source_url")
+  rawText     String   @map("raw_text") @db.Text
+  aiSummary   String   @map("ai_summary") @db.Text
+  status      String   @default("published")
+  tenantId    String   @default("platform-tenant") @map("tenant_id")
+  scopeType   String   @default("platform") @map("scope_type")
+  projectId   String?  @map("project_id")
+  ownerId     String?  @map("owner_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([tenantId, scopeType, status])
+  @@index([publishDate])
+  @@map("regulations")
+}
+
+model TenderNotice {
+  id             String    @id @default(uuid()) @db.Uuid
+  sourceKey      String    @unique @map("source_key")
+  title          String
+  projectType    String    @map("project_type")
+  region         String
+  ownerName      String    @map("owner_name")
+  amountEstimate Decimal?  @map("amount_estimate") @db.Decimal(15, 2)
+  deadline       DateTime?
+  sourceUrl      String    @map("source_url")
+  rawText        String    @map("raw_text") @db.Text
+  aiSummary      String    @map("ai_summary") @db.Text
+  status         String    @default("pending_review")
+  tenantId       String    @default("platform-tenant") @map("tenant_id")
+  scopeType      String    @default("platform") @map("scope_type")
+  projectId      String?   @map("project_id")
+  ownerId        String?   @map("owner_id")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  @@index([tenantId, scopeType, status])
+  @@index([region, deadline])
+  @@map("tender_notices")
+}
+
+model StandardTemplate {
+  id        String   @id @default(uuid()) @db.Uuid
+  sourceKey String   @unique @map("source_key")
+  category  String
+  nameZh    String   @map("name_zh")
+  version   String
+  sourceUrl String   @map("source_url")
+  body      String   @db.Text
+  aiSummary String   @map("ai_summary") @db.Text
+  status    String   @default("published")
+  tenantId  String   @default("platform-tenant") @map("tenant_id")
+  scopeType String   @default("platform") @map("scope_type")
+  projectId String?  @map("project_id")
+  ownerId   String?  @map("owner_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([tenantId, scopeType, category])
+  @@map("standard_templates")
+}
+
+model CourtJudgment {
+  id           String   @id @default(uuid()) @db.Uuid
+  sourceKey    String   @unique @map("source_key")
+  caseNo       String   @map("case_no")
+  court        String
+  cause        String
+  judgmentDate DateTime @map("judgment_date")
+  sourceUrl    String   @map("source_url")
+  summary      String   @db.Text
+  riskTags     String[] @default([]) @map("risk_tags")
+  rawText      String   @map("raw_text") @db.Text
+  status       String   @default("published")
+  tenantId     String   @default("platform-tenant") @map("tenant_id")
+  scopeType    String   @default("platform") @map("scope_type")
+  projectId    String?  @map("project_id")
+  ownerId      String?  @map("owner_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@index([tenantId, scopeType, cause])
+  @@index([judgmentDate])
+  @@map("court_judgments")
+}
+
+model CompanyProfile {
+  id          String   @id @default(uuid()) @db.Uuid
+  sourceKey   String   @unique @map("source_key")
+  creditCode  String   @map("credit_code")
+  name        String
+  region      String
+  industry    String
+  legalPerson String?  @map("legal_person")
+  riskScore   Int      @map("risk_score")
+  profile     Json
+  sourceUrl   String   @map("source_url")
+  status      String   @default("active")
+  tenantId    String   @default("platform-tenant") @map("tenant_id")
+  scopeType   String   @default("platform") @map("scope_type")
+  projectId   String?  @map("project_id")
+  ownerId     String?  @map("owner_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([tenantId, scopeType, status])
+  @@index([creditCode])
+  @@map("company_profiles")
+}
+
+model OcrTask {
+  id        String     @id @default(uuid()) @db.Uuid
+  taskNo    String     @unique @map("task_no")
+  fileName  String     @map("file_name")
+  fileHash  String     @map("file_hash")
+  source    String
+  status    String     @default("completed")
+  tenantId  String     @default("platform-tenant") @map("tenant_id")
+  scopeType String     @default("platform") @map("scope_type")
+  projectId String?    @map("project_id")
+  ownerId   String?    @map("owner_id")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  result    OcrResult?
+
+  @@index([tenantId, scopeType, status])
+  @@map("ocr_tasks")
+}
+
+model OcrResult {
+  id         String   @id @default(uuid()) @db.Uuid
+  taskId     String   @unique @map("task_id") @db.Uuid
+  text       String   @db.Text
+  extracted  Json
+  confidence Decimal  @db.Decimal(5, 4)
+  createdAt  DateTime @default(now()) @map("created_at")
+  task       OcrTask  @relation(fields: [taskId], references: [id], onDelete: Restrict)
+
+  @@map("ocr_results")
+}
+
+model IngestRun {
+  id            String   @id @default(uuid()) @db.Uuid
+  jobName       String   @map("job_name")
+  targetTable   String   @map("target_table")
+  status        String
+  fetchedCount  Int      @default(0) @map("fetched_count")
+  upsertedCount Int      @default(0) @map("upserted_count")
+  failedCount   Int      @default(0) @map("failed_count")
+  summary       Json
+  error         String?  @db.Text
+  startedAt     DateTime @map("started_at")
+  endedAt       DateTime @map("ended_at")
+  createdBy     String   @default("platform-owner") @map("created_by")
+  traceId       String   @map("trace_id")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([jobName, startedAt])
+  @@index([status, startedAt])
+  @@map("ingest_runs")
 }
 
 model AdminSystemConfigHistory {
@@ -1936,14 +2110,14 @@ model Notification {
 }
 
 model NotificationPreference {
-  id                 String  @id @default(uuid()) @db.Uuid
-  userId             String  @unique @map("user_id") @db.Uuid
-  inboxEnabled       Boolean @default(true) @map("inbox_enabled")
-  wechatMpEnabled    Boolean @default(true) @map("wechat_mp_enabled")
-  workWechatEnabled  Boolean @default(true) @map("work_wechat_enabled")
-  smsEnabled         Boolean @default(true) @map("sms_enabled")
-  emailEnabled       Boolean @default(false) @map("email_enabled")
-  desktopEnabled     Boolean @default(true) @map("desktop_enabled")
+  id                String  @id @default(uuid()) @db.Uuid
+  userId            String  @unique @map("user_id") @db.Uuid
+  inboxEnabled      Boolean @default(true) @map("inbox_enabled")
+  wechatMpEnabled   Boolean @default(true) @map("wechat_mp_enabled")
+  workWechatEnabled Boolean @default(true) @map("work_wechat_enabled")
+  smsEnabled        Boolean @default(true) @map("sms_enabled")
+  emailEnabled      Boolean @default(false) @map("email_enabled")
+  desktopEnabled    Boolean @default(true) @map("desktop_enabled")
 
   @@map("notification_preferences")
 }
@@ -2042,15 +2216,15 @@ model ComplianceSelfCheck {
 }
 
 model AIDataSource {
-  id               String    @id @default(uuid()) @db.Uuid
-  sourceName       String    @unique @map("source_name")
-  sourceUrl        String    @map("source_url")
-  sourceType       String    @map("source_type")
-  authorized       Boolean   @default(false)
-  qpsLimit         Int       @default(1) @map("qps_limit")
-  userAgent        String    @map("user_agent")
-  robotsCompliant  Boolean   @default(true) @map("robots_compliant")
-  lastAuditAt      DateTime? @map("last_audit_at")
+  id              String    @id @default(uuid()) @db.Uuid
+  sourceName      String    @unique @map("source_name")
+  sourceUrl       String    @map("source_url")
+  sourceType      String    @map("source_type")
+  authorized      Boolean   @default(false)
+  qpsLimit        Int       @default(1) @map("qps_limit")
+  userAgent       String    @map("user_agent")
+  robotsCompliant Boolean   @default(true) @map("robots_compliant")
+  lastAuditAt     DateTime? @map("last_audit_at")
 
   @@map("ai_data_sources")
 }

@@ -1,5 +1,8 @@
-import { type ComponentPropsWithoutRef, type ReactNode } from 'react';
+'use client';
 
+import { type ComponentPropsWithoutRef, type ComponentType, type ReactNode, useMemo, useState } from 'react';
+
+import { Command } from '../primitives/Command.js';
 import { Skeleton, Spinner } from '../primitives/data.js';
 import { CardContent, CardHeader } from '../primitives/feedback.js';
 import { Button } from '../primitives/form.js';
@@ -14,7 +17,7 @@ export interface PageLayoutProps extends ComponentPropsWithoutRef<'div'> {
 
 export function PageLayout({ children, className, footer, header, sidebar, ...props }: PageLayoutProps): ReactNode {
   return (
-    <div className={cn('min-h-screen bg-neutral-50 text-foreground', className)} {...props}>
+    <div className={cn('tq-cyber-shell min-h-screen text-[var(--text-primary)]', className)} {...props}>
       {header}
       <div className="mx-auto grid w-full max-w-7xl gap-6 px-4 py-6 lg:grid-cols-[16rem_1fr] lg:px-6">
         {sidebar ? <aside className="hidden lg:block">{sidebar}</aside> : null}
@@ -43,10 +46,10 @@ export function PageHeader({
   return (
     <header className={cn('mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between', className)} {...props}>
       <div className="min-w-0 space-y-2">
-        {breadcrumbs ? <div className="text-sm text-neutral-500">{breadcrumbs}</div> : null}
+        {breadcrumbs ? <div className="text-sm text-[var(--text-secondary)]">{breadcrumbs}</div> : null}
         <div className="space-y-1">
-          <h1 className="text-2xl font-semibold tracking-normal text-neutral-900">{title}</h1>
-          {description ? <p className="max-w-3xl text-sm text-neutral-600">{description}</p> : null}
+          <h1 className="text-2xl font-semibold tracking-normal text-white">{title}</h1>
+          {description ? <p className="max-w-3xl text-sm text-[var(--text-secondary)]">{description}</p> : null}
         </div>
       </div>
       {actions ? <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div> : null}
@@ -79,8 +82,8 @@ export function SectionCard({
       {title || description || actions ? (
         <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-1">
-            {title ? <h2 className="text-base font-semibold text-neutral-900">{title}</h2> : null}
-            {description ? <p className="text-sm text-neutral-600">{description}</p> : null}
+            {title ? <h2 className="text-base font-semibold text-white">{title}</h2> : null}
+            {description ? <p className="text-sm text-[var(--text-secondary)]">{description}</p> : null}
           </div>
           {actions ? <div className="flex shrink-0 items-center gap-2">{actions}</div> : null}
         </CardHeader>
@@ -95,7 +98,7 @@ export type FilterBarProps = ComponentPropsWithoutRef<'div'>;
 export function FilterBar({ className, ...props }: FilterBarProps): ReactNode {
   return (
     <div
-      className={cn('flex flex-col gap-2 rounded-md border border-border bg-background p-3 sm:flex-row sm:items-center', className)}
+      className={cn('tq-cyber-panel flex flex-col gap-2 p-3 sm:flex-row sm:items-center', className)}
       {...props}
     />
   );
@@ -109,9 +112,9 @@ export interface EmptyStateProps extends Omit<ComponentPropsWithoutRef<'div'>, '
 
 export function EmptyState({ action, className, description, title, ...props }: EmptyStateProps): ReactNode {
   return (
-    <div className={cn('flex min-h-40 flex-col items-center justify-center rounded-md border border-dashed border-border p-6 text-center', className)} {...props}>
-      <h3 className="text-sm font-semibold text-neutral-900">{title}</h3>
-      {description ? <p className="mt-1 max-w-md text-sm text-neutral-500">{description}</p> : null}
+    <div className={cn('flex min-h-40 flex-col items-center justify-center rounded-md border border-dashed border-[var(--border-silver)] bg-white/5 p-6 text-center', className)} {...props}>
+      <h3 className="text-sm font-semibold text-white">{title}</h3>
+      {description ? <p className="mt-1 max-w-md text-sm text-[var(--text-secondary)]">{description}</p> : null}
       {action ? <div className="mt-4">{action}</div> : null}
     </div>
   );
@@ -124,8 +127,8 @@ export interface LoadingStateProps extends ComponentPropsWithoutRef<'div'> {
 
 export function LoadingState({ className, label, rows = 3, ...props }: LoadingStateProps): ReactNode {
   return (
-    <div className={cn('space-y-3 rounded-md border border-border bg-background p-4', className)} {...props}>
-      <div className="flex items-center gap-2 text-sm text-neutral-600">
+    <div className={cn('tq-cyber-panel space-y-3 p-4', className)} {...props}>
+      <div className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
         <Spinner />
         {label}
       </div>
@@ -152,7 +155,7 @@ export function ErrorState({
   ...props
 }: ErrorStateProps): ReactNode {
   return (
-    <div className={cn('rounded-md border border-danger-100 bg-danger-50 p-4 text-danger-700', className)} {...props}>
+    <div className={cn('rounded-md border border-danger-500/50 bg-danger-500/15 p-4 text-danger-100', className)} {...props}>
       <h3 className="text-sm font-semibold">{title}</h3>
       {description ? <p className="mt-1 text-sm">{description}</p> : null}
       {onRetry && actionLabel ? (
@@ -178,7 +181,7 @@ export interface SidebarProps extends ComponentPropsWithoutRef<'nav'> {
 
 export function Sidebar({ className, items, logo, ...props }: SidebarProps): ReactNode {
   return (
-    <nav className={cn('rounded-lg border border-border bg-background p-3 shadow-sm', className)} {...props}>
+    <nav className={cn('tq-cyber-panel p-3', className)} {...props}>
       {logo ? <div className="mb-4 px-2 py-2">{logo}</div> : null}
       <div className="space-y-1">
         {items.map((item) => (
@@ -186,11 +189,11 @@ export function Sidebar({ className, items, logo, ...props }: SidebarProps): Rea
             key={item.href}
             className={cn(
               'flex min-h-11 items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
-              item.active ? 'bg-primary-50 text-primary-700' : 'text-neutral-700 hover:bg-neutral-100',
+              item.active ? 'tq-cyber-nav-item-active' : 'tq-cyber-nav-item',
             )}
             href={item.href}
           >
-            {item.icon ? <span className="text-neutral-500">{item.icon}</span> : null}
+            {item.icon ? <span className="text-[var(--text-secondary)]">{item.icon}</span> : null}
             <span>{item.label}</span>
           </a>
         ))}
@@ -209,12 +212,224 @@ export interface TopNavProps extends ComponentPropsWithoutRef<'header'> {
 
 export function TopNav({ avatar, className, notifications, search, tenantSwitcher, themeToggle, ...props }: TopNavProps): ReactNode {
   return (
-    <header className={cn('sticky top-0 z-40 flex h-16 items-center gap-3 border-b border-border bg-background/95 px-4 backdrop-blur', className)} {...props}>
+    <header className={cn('tq-cyber-topbar sticky top-0 z-40 flex h-16 items-center gap-3 px-4', className)} {...props}>
       <div className="min-w-0 flex-1">{search}</div>
       {tenantSwitcher}
       {themeToggle}
       {notifications}
       {avatar}
     </header>
+  );
+}
+
+export interface CyberShellNavigationItem {
+  href: string;
+  icon: string;
+  label: ReactNode;
+}
+
+export interface CyberShellBrand {
+  eyebrow?: ReactNode;
+  href: string;
+  title: ReactNode;
+}
+
+export interface CyberShellActionLabels {
+  avatar: ReactNode;
+  avatarTitle?: ReactNode;
+  notifications: ReactNode;
+  notificationsTitle?: ReactNode;
+  tenant: ReactNode;
+  tenantTitle?: ReactNode;
+  theme: ReactNode;
+}
+
+export interface CyberShellProps {
+  actionLabels: CyberShellActionLabels;
+  assistant?: ReactNode;
+  brand: CyberShellBrand;
+  children: ReactNode;
+  currentLabel?: ReactNode;
+  currentPath: string;
+  homeLabel: ReactNode;
+  iconMap: Record<string, ComponentType<{ className?: string }>>;
+  navigation: CyberShellNavigationItem[];
+  rightPanel?: ReactNode;
+  searchPlaceholder: string;
+  tabs?: ReactNode[];
+}
+
+export function CyberShell({
+  actionLabels,
+  assistant,
+  brand,
+  children,
+  currentLabel,
+  currentPath,
+  homeLabel,
+  iconMap,
+  navigation,
+  rightPanel,
+  searchPlaceholder,
+  tabs,
+}: CyberShellProps): ReactNode {
+  const [openPanel, setOpenPanel] = useState<'avatar' | 'notifications' | 'tenant' | null>(null);
+  const [themeMode, setThemeMode] = useState<'cyber' | 'focus'>('cyber');
+
+  const activeItem = useMemo(
+    () => navigation.find((item) => currentPath === item.href || currentPath.startsWith(`${item.href}/`)),
+    [currentPath, navigation],
+  );
+  const crumb = currentLabel ?? activeItem?.label ?? homeLabel;
+
+  function togglePanel(panel: 'avatar' | 'notifications' | 'tenant'): void {
+    setOpenPanel((current) => (current === panel ? null : panel));
+  }
+
+  return (
+    <div className={cn('tq-cyber-shell min-h-screen text-[var(--text-primary)]', themeMode === 'focus' && 'tq-cyber-focus')}>
+      <header className="tq-cyber-topbar fixed inset-x-0 top-0 z-40 flex h-16 items-center px-4 lg:pl-72">
+        <div className="relative flex w-full items-center gap-3">
+          <Command placeholder={searchPlaceholder} />
+          <button
+            aria-expanded={openPanel === 'tenant'}
+            className="tq-cyber-control hidden h-10 rounded-md px-3 text-sm sm:block"
+            onClick={() => togglePanel('tenant')}
+            type="button"
+          >
+            {actionLabels.tenant}
+          </button>
+          <button
+            aria-expanded={openPanel === 'notifications'}
+            aria-label={String(actionLabels.notifications)}
+            className="tq-cyber-control relative grid h-10 w-10 place-items-center rounded-md"
+            onClick={() => togglePanel('notifications')}
+            type="button"
+          >
+            <span aria-hidden="true" className="text-base leading-none">!</span>
+            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-[var(--accent-rose)]" />
+          </button>
+          <button
+            className="tq-cyber-control h-10 rounded-md px-3 text-sm"
+            onClick={() => setThemeMode((value) => (value === 'cyber' ? 'focus' : 'cyber'))}
+            type="button"
+          >
+            {actionLabels.theme}
+          </button>
+          <button
+            aria-expanded={openPanel === 'avatar'}
+            aria-label={String(actionLabels.avatarTitle ?? actionLabels.avatar)}
+            className="grid h-10 w-10 place-items-center rounded-full bg-[rgba(74,142,255,0.14)] text-sm font-semibold text-[var(--accent-rose)] ring-1 ring-[var(--border-silver)]"
+            onClick={() => togglePanel('avatar')}
+            type="button"
+          >
+            {actionLabels.avatar}
+          </button>
+
+          {openPanel ? (
+            <div className="absolute right-0 top-12 z-50 w-72 rounded-md border border-[var(--border-silver)] bg-[var(--bg-glass)] p-3 text-sm text-[var(--text-secondary)] shadow-[var(--shadow-card)] backdrop-blur-xl">
+              {openPanel === 'tenant' ? (
+                <div className="space-y-2">
+                  <p className="font-semibold text-white">{actionLabels.tenantTitle ?? actionLabels.tenant}</p>
+                  <button className="w-full rounded-md border border-[var(--border-silver)] px-3 py-2 text-left hover:border-[var(--accent-rose)] hover:text-white" type="button">
+                    {actionLabels.tenant}
+                  </button>
+                </div>
+              ) : null}
+              {openPanel === 'notifications' ? (
+                <div className="space-y-2">
+                  <p className="font-semibold text-white">{actionLabels.notificationsTitle ?? actionLabels.notifications}</p>
+                  <a className="block rounded-md border border-[var(--border-silver)] px-3 py-2 hover:border-[var(--accent-rose)] hover:text-white" href="/reports">
+                    AI audit report ready
+                  </a>
+                  <a className="block rounded-md border border-[var(--border-silver)] px-3 py-2 hover:border-[var(--accent-rose)] hover:text-white" href="/approvals">
+                    Approval queue updated
+                  </a>
+                </div>
+              ) : null}
+              {openPanel === 'avatar' ? (
+                <div className="space-y-2">
+                  <p className="font-semibold text-white">{actionLabels.avatarTitle ?? actionLabels.avatar}</p>
+                  <a className="block rounded-md border border-[var(--border-silver)] px-3 py-2 hover:border-[var(--accent-rose)] hover:text-white" href="/settings">
+                    Account settings
+                  </a>
+                  <button className="w-full rounded-md border border-[var(--border-silver)] px-3 py-2 text-left hover:border-[var(--accent-rose)] hover:text-white" type="button">
+                    Session active
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+        </div>
+      </header>
+
+      <aside className="tq-cyber-sidebar fixed inset-y-0 left-0 z-50 hidden w-64 p-4 lg:block">
+        <a className="tq-cyber-brand block rounded-lg p-4 text-white" href={brand.href}>
+          {brand.eyebrow ? <p className="text-sm font-medium text-[var(--text-secondary)]">{brand.eyebrow}</p> : null}
+          <p className="mt-1 text-base font-semibold">{brand.title}</p>
+        </a>
+        {tabs?.length ? (
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            {tabs.map((tab, index) => (
+              <button
+                key={index}
+                className="h-9 rounded-md border border-[var(--border-silver)] bg-white/5 text-xs font-medium text-[var(--text-secondary)] hover:border-[var(--accent-rose)] hover:text-white"
+                type="button"
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+        ) : null}
+        <nav className="mt-4 space-y-1" data-navigation-config="CyberShell">
+          {navigation.map((item) => {
+            const Icon = iconMap[item.icon];
+            const active = currentPath === item.href || currentPath.startsWith(`${item.href}/`);
+            return (
+              <a
+                key={item.href}
+                className={cn('flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium transition-colors', active ? 'tq-cyber-nav-item-active' : 'tq-cyber-nav-item')}
+                href={item.href}
+              >
+                {Icon ? <Icon className="h-4 w-4" /> : null}
+                {item.label}
+              </a>
+            );
+          })}
+        </nav>
+      </aside>
+
+      <details className="fixed left-4 top-3 z-50 lg:hidden">
+        <summary className="grid h-10 w-10 cursor-pointer list-none place-items-center rounded-md border border-[var(--border-silver)] bg-[var(--bg-glass)] shadow-sm">
+          Menu
+        </summary>
+        <nav className="mt-2 max-h-[80vh] w-64 overflow-auto rounded-lg border border-[var(--border-silver)] bg-[var(--bg-glass)] p-3 shadow-md">
+          {navigation.map((item) => {
+            const Icon = iconMap[item.icon];
+            return (
+              <a key={item.href} className="flex h-11 items-center gap-3 rounded-md px-3 text-sm font-medium text-[var(--text-secondary)]" href={item.href}>
+                {Icon ? <Icon className="h-4 w-4" /> : null}
+                {item.label}
+              </a>
+            );
+          })}
+        </nav>
+      </details>
+
+      <main className="px-4 pb-8 pt-20 lg:pl-72 lg:pr-8">
+        <div className={cn('mx-auto max-w-7xl', rightPanel && 'grid gap-6 xl:grid-cols-[1fr_280px]')}>
+          <section>
+            <div className="mb-4 text-sm text-[var(--text-secondary)]">
+              <a className="text-[var(--accent-rose)]" href={brand.href}>{homeLabel}</a>
+              <span className="px-2">/</span>
+              <span>{crumb}</span>
+            </div>
+            {children}
+          </section>
+          {rightPanel}
+        </div>
+      </main>
+      {assistant}
+    </div>
   );
 }

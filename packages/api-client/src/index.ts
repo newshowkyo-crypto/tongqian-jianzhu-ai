@@ -41,6 +41,23 @@ export interface AdminMutationResult {
   traceId: string;
 }
 
+export interface IngestRunRecord {
+  ended_at?: string;
+  failed_count: number;
+  fetched_count: number;
+  id: string;
+  job_name: string;
+  started_at: string;
+  status: string;
+  target_table: string;
+  trace_id: string;
+  upserted_count: number;
+}
+
+export interface IngestStats {
+  counts: Array<{ count: number; table_name: string }>;
+}
+
 export interface AiChatMessage {
   content: string;
   role: 'assistant' | 'user';
@@ -282,7 +299,34 @@ function createAdminApi(http: AxiosInstance, mock: boolean) {
       }
       return unwrap(await http.post(`/admin/${slug}`, input, { headers: { 'Idempotency-Key': input.idempotencyKey } }));
     },
+    ingest: {
+      async run(jobName: string): Promise<{ jobName: string; status: string; targetTable: string; upsertedCount: number }> {
+        return unwrap(await http.post(`/admin/ingest/${encodeURIComponent(jobName)}/run`));
+      },
+      async uploadCourtJudgments(fileOrForm: File | FormData): Promise<{ imported: number; targetTable: string }> {
+        return unwrap(await http.post('/admin/ingest/court-judgments/upload', toFormData(fileOrForm, 'court.csv')));
+      },
+      async searchTianyancha(keyword: string): Promise<{ keyword: string; targetTable: string; upserted: number }> {
+        return unwrap(await http.post('/admin/ingest/tianyancha/search', { keyword }));
+      },
+      async submitOcr(fileOrForm: File | FormData): Promise<{ status: string; targetTable: string; taskNo: string }> {
+        return unwrap(await http.post('/admin/ingest/ocr/submit', toFormData(fileOrForm, 'ocr.pdf')));
+      },
+      async runs(jobName?: string): Promise<{ items: IngestRunRecord[]; total: number }> {
+        return unwrap(await http.get('/admin/ingest/runs', { params: jobName ? { jobName } : undefined }));
+      },
+      async stats(): Promise<IngestStats> {
+        return unwrap(await http.get('/admin/ingest/stats'));
+      },
+    },
   };
+}
+
+function toFormData(fileOrForm: File | FormData, fallbackName: string): FormData {
+  if (fileOrForm instanceof FormData) return fileOrForm;
+  const form = new FormData();
+  form.append('file', fileOrForm, fileOrForm.name || fallbackName);
+  return form;
 }
 
 function createAiApi(http: AxiosInstance, mock: boolean) {

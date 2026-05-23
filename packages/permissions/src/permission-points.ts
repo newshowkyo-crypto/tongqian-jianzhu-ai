@@ -50,6 +50,7 @@ export const PermissionPoints = {
   SYSTEM_CONFIG_EDIT: 'system-config:edit',
   TENANT_REVIEW: 'tenant:review',
   AUDIT_LOG_VIEW: 'audit-log:view',
+  ADMIN_INGEST_RUN: 'admin:ingest:run',
 } as const;
 
 export type PermissionPointKey = keyof typeof PermissionPoints;
