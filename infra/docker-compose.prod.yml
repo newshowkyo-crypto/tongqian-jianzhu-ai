@@ -3,6 +3,8 @@ services:
     image: postgres:15-alpine
     container_name: tqj-prod-postgres
     restart: unless-stopped
+    labels:
+      com.tongqian.service: postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
@@ -21,6 +23,8 @@ services:
     image: redis:7-alpine
     container_name: tqj-prod-redis
     restart: unless-stopped
+    labels:
+      com.tongqian.service: redis
     command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:?REDIS_PASSWORD is required}
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD:?REDIS_PASSWORD is required}
@@ -37,6 +41,8 @@ services:
     image: ${ACR_REGISTRY:-registry.cn-hangzhou.aliyuncs.com/tongqian}/api:${TAG:-prod-latest}
     container_name: tqj-prod-api
     restart: unless-stopped
+    labels:
+      com.tongqian.service: api
     init: true
     environment:
       NODE_ENV: production
@@ -60,6 +66,8 @@ services:
     image: ${ACR_REGISTRY:-registry.cn-hangzhou.aliyuncs.com/tongqian}/worker:${TAG:-prod-latest}
     container_name: tqj-prod-worker
     restart: unless-stopped
+    labels:
+      com.tongqian.service: worker
     init: true
     environment:
       NODE_ENV: production
@@ -83,12 +91,14 @@ services:
     image: ${ACR_REGISTRY:-registry.cn-hangzhou.aliyuncs.com/tongqian}/web:${TAG:-prod-latest}
     container_name: tqj-prod-web
     restart: unless-stopped
+    labels:
+      com.tongqian.service: web
     environment:
       NODE_ENV: production
       PORT: 3000
       TZ: ${TZ:-Asia/Shanghai}
     healthcheck:
-      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:3000/ || exit 1']
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:3000/api/health || exit 1']
       interval: 30s
       timeout: 5s
       retries: 5
@@ -98,12 +108,14 @@ services:
     image: ${ACR_REGISTRY:-registry.cn-hangzhou.aliyuncs.com/tongqian}/gov:${TAG:-prod-latest}
     container_name: tqj-prod-gov
     restart: unless-stopped
+    labels:
+      com.tongqian.service: gov
     environment:
       NODE_ENV: production
       PORT: 3000
       TZ: ${TZ:-Asia/Shanghai}
     healthcheck:
-      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:3000/ || exit 1']
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:3000/api/health || exit 1']
       interval: 30s
       timeout: 5s
       retries: 5
@@ -113,12 +125,14 @@ services:
     image: ${ACR_REGISTRY:-registry.cn-hangzhou.aliyuncs.com/tongqian}/agent:${TAG:-prod-latest}
     container_name: tqj-prod-agent
     restart: unless-stopped
+    labels:
+      com.tongqian.service: agent
     environment:
       NODE_ENV: production
       PORT: 3000
       TZ: ${TZ:-Asia/Shanghai}
     healthcheck:
-      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:3000/ || exit 1']
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:3000/api/health || exit 1']
       interval: 30s
       timeout: 5s
       retries: 5
@@ -128,12 +142,14 @@ services:
     image: ${ACR_REGISTRY:-registry.cn-hangzhou.aliyuncs.com/tongqian}/admin:${TAG:-prod-latest}
     container_name: tqj-prod-admin
     restart: unless-stopped
+    labels:
+      com.tongqian.service: admin
     environment:
       NODE_ENV: production
       PORT: 3000
       TZ: ${TZ:-Asia/Shanghai}
     healthcheck:
-      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:3000/ || exit 1']
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:3000/api/health || exit 1']
       interval: 30s
       timeout: 5s
       retries: 5
@@ -143,6 +159,8 @@ services:
     image: ${ACR_REGISTRY:-registry.cn-hangzhou.aliyuncs.com/tongqian}/nginx:${TAG:-prod-latest}
     container_name: tqj-prod-nginx
     restart: unless-stopped
+    labels:
+      com.tongqian.service: nginx
     ports:
       - '${HTTP_PORT:-80}:80'
     depends_on:
@@ -157,7 +175,7 @@ services:
       admin:
         condition: service_healthy
     healthcheck:
-      test: ['CMD-SHELL', 'nginx -t || exit 1']
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1/healthz || exit 1']
       interval: 30s
       timeout: 5s
       retries: 5
@@ -167,6 +185,8 @@ services:
     image: louislam/uptime-kuma:1
     container_name: tqj-prod-uptime-kuma
     restart: unless-stopped
+    labels:
+      com.tongqian.service: uptime-kuma
     ports:
       - '${UPTIME_KUMA_PORT:-3010}:3001'
     volumes:
