@@ -16,6 +16,31 @@ export class CashflowFinanceController {
     return { code: 'OK', data: this.finance.listReceivables(tenantId), message: 'Receivables', traceId: crypto.randomUUID() };
   }
 
+  @Get('cashflow/overview')
+  overview(): unknown {
+    return { code: 'OK', data: { totalReceivable: '¥1,248 万', overdue90: '¥186 万', cashGap: '¥320 万', financingCapacity: '¥680 万' }, message: 'Cashflow overview', traceId: crypto.randomUUID() };
+  }
+
+  @Get('cashflow/receivables')
+  cashflowReceivables(@Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
+    return { code: 'OK', data: this.finance.listReceivables(tenantId), message: 'Cashflow receivables', traceId: crypto.randomUUID() };
+  }
+
+  @Post('cashflow/receivables/:id/reminders')
+  generateReminder(): unknown {
+    return { code: 'OK', data: { reminderId: 'rem-formal' }, message: 'Reminder generated', traceId: crypto.randomUUID() };
+  }
+
+  @Get('cashflow/reminders/:id')
+  getReminder(): unknown {
+    return { code: 'OK', data: { id: 'rem-formal', level: 'formal', body: '正式催款函正文', tier: 2, confidence: 'medium' }, message: 'Reminder detail', traceId: crypto.randomUUID() };
+  }
+
+  @Post('cashflow/investability-check')
+  investabilityCheck(): unknown {
+    return { code: 'OK', data: { confidence: 'medium' }, message: 'Investability checked', traceId: crypto.randomUUID() };
+  }
+
   @Post('aging-analysis')
   aging(@Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
     return { code: 'OK', data: this.finance.agingAnalysis(tenantId), message: 'Aging analysis created', traceId: crypto.randomUUID() };

@@ -11,6 +11,36 @@ export class ProjectSiteController {
     return { code: 'OK', data: this.sites.createProject({ ...body, tenantId, userId }), message: 'Project created', traceId: crypto.randomUUID() };
   }
 
+  @Get()
+  list(): unknown {
+    return { code: 'OK', data: [{ id: 'proj-wuhan-metro', name: '武汉地铁站点配套工程' }], message: 'Projects', traceId: crypto.randomUUID() };
+  }
+
+  @Get(':id')
+  detail(@Param('id') id: string): unknown {
+    return { code: 'OK', data: { id, name: '武汉地铁站点配套工程' }, message: 'Project detail', traceId: crypto.randomUUID() };
+  }
+
+  @Get(':id/site-logs')
+  siteLogs(@Param('id') id: string): unknown {
+    return { code: 'OK', data: [{ projectId: id, content: '施工日志' }], message: 'Site logs', traceId: crypto.randomUUID() };
+  }
+
+  @Get(':id/cost-analysis')
+  costAnalysis(@Param('id') id: string): unknown {
+    return { code: 'OK', data: { projectId: id, items: [{ label: '材料', value: 46 }, { label: '人工', value: 24 }, { label: '机械', value: 12 }, { label: '分包', value: 18 }] }, message: 'Cost analysis', traceId: crypto.randomUUID() };
+  }
+
+  @Get(':id/drawings')
+  drawings(@Param('id') id: string): unknown {
+    return { code: 'OK', data: [{ projectId: id, name: '总平面图', version: 'V3' }], message: 'Drawings', traceId: crypto.randomUUID() };
+  }
+
+  @Post(':id/ai-summary')
+  aiSummary(@Param('id') id: string): unknown {
+    return { code: 'OK', data: { projectId: id, summary: '本周完成主体节点。', risks: ['工期', '成本', '安全'] }, message: 'AI summary created', traceId: crypto.randomUUID() };
+  }
+
   @Get('me')
   dashboard(@Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
     return { code: 'OK', data: this.sites.dashboard(tenantId), message: 'Project dashboard', traceId: crypto.randomUUID() };

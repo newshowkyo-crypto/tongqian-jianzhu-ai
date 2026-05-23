@@ -289,6 +289,78 @@ export interface ChatSendResult {
   userMessage: ChatMessage;
 }
 
+export interface DispatchListItem {
+  id: string;
+  type: string;
+  status: 'pending' | 'accepted' | 'quoted' | 'confirmed' | 'in_progress' | 'completed' | 'refunded';
+  agent?: { id: string; name: string; level: 'LV1' | 'LV2' | 'LV3' | 'LV4' | 'LV5'; reputation: number };
+  amount?: string;
+  createdAt: string;
+  protectionExpireAt?: string;
+  matchScore?: number;
+}
+
+export interface DispatchDetail extends DispatchListItem {
+  budget?: string;
+  description: string;
+  expectedDate: string;
+  messages: Array<{ at: string; content: string; from: 'agent' | 'owner' }>;
+  rating?: number;
+  review?: string;
+  timeline: Array<{ date: string; milestone: string; status: string }>;
+}
+
+export interface CashflowOverview {
+  alerts: Array<{ level: 'red' | 'yellow'; message: string; type: string }>;
+  cashGap: string;
+  financingCapacity: string;
+  forecast: { day30: string; day60: string; day90: string };
+  overdue90: string;
+  totalReceivable: string;
+}
+
+export interface Receivable {
+  aging: number;
+  amount: string;
+  client: string;
+  id: string;
+  project: string;
+  riskLevel: 'green' | 'red' | 'yellow';
+  status: 'active' | 'badDebt' | 'collecting' | 'legal';
+}
+
+export interface ReminderDetail {
+  body: string;
+  confidence: 'high' | 'low' | 'medium';
+  disclaimer: string;
+  id: string;
+  level: 'formal' | 'legal' | 'soft';
+  receivable: Receivable;
+  tier: 1 | 2 | 3 | 4;
+  traceId: string;
+}
+
+export interface ProjectListItem {
+  amount: string;
+  client: string;
+  id: string;
+  name: string;
+  pm: string;
+  progress: number;
+  riskLevel: 'green' | 'red' | 'yellow';
+}
+
+export interface ProjectDetail extends ProjectListItem {
+  costBreakdown: Array<{ label: string; value: number }>;
+  drawings: Array<{ id: string; name: string; version: string }>;
+  endDate: string;
+  kpis: { collected: number; completed: number; costVariance: number; scheduleVariance: number };
+  risks: Array<{ level: 'green' | 'red' | 'yellow'; title: string }>;
+  siteLogs: Array<{ at: string; content: string; weather: string }>;
+  startDate: string;
+  tier: 1 | 2 | 3 | 4;
+}
+
 export interface OwnerDashboardData {
   generatedAt: string;
   greeting: string;
@@ -390,6 +462,8 @@ export function createApiClient(options: ApiClientOptions = {}) {
     chatHub: createChatHubApi(http, mock),
     credentials: createCredentialApi(http, mock),
     dashboard: createDashboardApi(http, mock),
+    dispatch: createDispatchApi(http, mock),
+    cashflow: createCashflowApi(http, mock),
     http,
     mock,
     opportunity: createOpportunityApi(http, mock),
@@ -397,6 +471,7 @@ export function createApiClient(options: ApiClientOptions = {}) {
     riskReview: createRiskReviewApi(http, mock),
     qualification: createQualificationApi(http, mock),
     tender: createTenderApi(http, mock),
+    projectSite: createProjectSiteApi(http, mock),
   };
 }
 
@@ -767,6 +842,123 @@ function createChatHubApi(http: AxiosInstance, mock: boolean) {
       }
       return unwrap(await http.post(`/chat/conversations/${conversationId}/messages`, { channel, content }));
     },
+    async *stream(payload: Record<string, unknown>): AsyncGenerator<{ delta: string; traceId?: string }> {
+      if (mock) {
+        const traceId = cryptoRandomId();
+        for (const delta of ['已读取上下文。', '正在拆解经营问题。', '建议形成正式任务。']) {
+          yield { delta, traceId };
+        }
+        return;
+      }
+      const response = await unwrap<{ deltas: string[]; traceId?: string }>(await http.post('/chat/stream', payload));
+      for (const delta of response.deltas) yield { delta, traceId: response.traceId };
+    },
+    async history(personaId: string): Promise<ChatMessage[]> {
+      if (mock) return delay(messages.filter((item) => item.intent === personaId || personaId));
+      return unwrap(await http.get('/chat/history', { params: { persona: personaId } }));
+    },
+    async saveHistory(personaId: string, nextMessages: ChatMessage[]): Promise<void> {
+      if (mock) {
+        messages = nextMessages.map((item) => ({ ...item, intent: personaId }));
+        return delay(undefined);
+      }
+      return unwrap(await http.post('/chat/history', { messages: nextMessages, personaId }));
+    },
+    async convert(messageId: string, targetTask: 'dispatch' | 'report' | 'risk-review' | 'tender'): Promise<{ taskId: string }> {
+      if (mock) return delay({ taskId: `${targetTask}-${messageId.slice(0, 8) || cryptoRandomId().slice(0, 8)}` });
+      return unwrap(await http.post('/chat/convert', { messageId, targetTask }));
+    },
+  };
+}
+
+function createDispatchApi(http: AxiosInstance, mock: boolean) {
+  return {
+    async accept(id: string, agentId = 'agent-lv4-wuhan'): Promise<{ ok: true; traceId: string }> {
+      if (mock) return delay({ ok: true, traceId: cryptoRandomId() });
+      return unwrap(await http.post(`/dispatches/${id}/accept`, { agentId }));
+    },
+    async complete(id: string, rating: number, review: string): Promise<{ ok: true }> {
+      if (mock) return delay({ ok: true });
+      return unwrap(await http.post(`/dispatches/${id}/complete`, { rating, review }));
+    },
+    async confirm(id: string): Promise<{ ok: true }> {
+      if (mock) return delay({ ok: true });
+      return unwrap(await http.post(`/dispatches/${id}/confirm`));
+    },
+    async create(payload: Record<string, unknown>): Promise<{ dispatchId: string; traceId: string }> {
+      if (mock) return delay({ dispatchId: 'disp-pending-001', traceId: cryptoRandomId() });
+      return unwrap(await http.post('/dispatches', payload));
+    },
+    async get(id: string): Promise<DispatchDetail> {
+      if (mock) return delay(dispatchDetailFixture(id));
+      return unwrap(await http.get(`/dispatches/${id}`));
+    },
+    async list(role: 'agent' | 'owner', filters?: Record<string, unknown>): Promise<DispatchListItem[]> {
+      if (mock) return delay(dispatchListFixture().filter((item) => !filters?.status || item.status === filters.status || role));
+      return unwrap(await http.get('/dispatches', { params: { ...filters, role } }));
+    },
+    async quote(id: string, amount: string, note: string): Promise<{ ok: true; traceId: string }> {
+      if (mock) return delay({ ok: true, traceId: cryptoRandomId() });
+      return unwrap(await http.post(`/dispatches/${id}/quote`, { amount, note }));
+    },
+  };
+}
+
+function createCashflowApi(http: AxiosInstance, mock: boolean) {
+  return {
+    async generateReminder(receivableId: string, level: 'formal' | 'legal' | 'soft' = 'formal'): Promise<{ reminderId: string; traceId: string }> {
+      if (mock) return delay({ reminderId: level === 'soft' ? 'rem-soft' : level === 'legal' ? 'rem-legal' : 'rem-formal', traceId: cryptoRandomId() });
+      return unwrap(await http.post(`/cashflow/receivables/${receivableId}/reminders`, { level }));
+    },
+    async getReminder(id: string): Promise<ReminderDetail> {
+      if (mock) return delay(reminderFixture(id));
+      return unwrap(await http.get(`/cashflow/reminders/${id}`));
+    },
+    async investabilityCheck(): Promise<{ confidence: 'medium'; traceId: string }> {
+      if (mock) return delay({ confidence: 'medium', traceId: cryptoRandomId() });
+      return unwrap(await http.post('/cashflow/investability-check'));
+    },
+    async overview(): Promise<CashflowOverview> {
+      if (mock) return delay(cashflowOverviewFixture());
+      return unwrap(await http.get('/cashflow/overview'));
+    },
+    async receivables(filters?: Record<string, unknown>): Promise<Receivable[]> {
+      if (mock) return delay(receivableFixtures().filter((row) => !filters?.riskLevel || row.riskLevel === filters.riskLevel));
+      return unwrap(await http.get('/cashflow/receivables', { params: filters }));
+    },
+  };
+}
+
+function createProjectSiteApi(http: AxiosInstance, mock: boolean) {
+  return {
+    async aiSummarizeWeek(projectId: string): Promise<{ risks: string[]; summary: string; traceId: string }> {
+      if (mock) return delay({ risks: ['雨季基坑排水', '材料到场滞后', '签证资料未闭合'], summary: `${projectId} 本周完成主体节点，需盯紧工期和回款证据链。`, traceId: cryptoRandomId() });
+      return unwrap(await http.post(`/projects/${projectId}/ai-summary`));
+    },
+    async costAnalysis(projectId: string): Promise<{ items: Array<{ label: string; value: number }>; traceId: string }> {
+      if (mock) return delay({ items: projectDetailFixture(projectId).costBreakdown, traceId: cryptoRandomId() });
+      return unwrap(await http.get(`/projects/${projectId}/cost-analysis`));
+    },
+    async create(payload: Record<string, unknown>): Promise<{ projectId: string }> {
+      if (mock) return delay({ projectId: 'proj-wuhan-metro' });
+      return unwrap(await http.post('/projects', payload));
+    },
+    async drawingsList(projectId: string): Promise<ProjectDetail['drawings']> {
+      if (mock) return delay(projectDetailFixture(projectId).drawings);
+      return unwrap(await http.get(`/projects/${projectId}/drawings`));
+    },
+    async get(id: string): Promise<ProjectDetail> {
+      if (mock) return delay(projectDetailFixture(id));
+      return unwrap(await http.get(`/projects/${id}`));
+    },
+    async list(): Promise<ProjectListItem[]> {
+      if (mock) return delay(projectFixtures());
+      return unwrap(await http.get('/projects'));
+    },
+    async siteLogs(projectId: string): Promise<ProjectDetail['siteLogs']> {
+      if (mock) return delay(projectDetailFixture(projectId).siteLogs);
+      return unwrap(await http.get(`/projects/${projectId}/site-logs`));
+    },
   };
 }
 
@@ -868,7 +1060,9 @@ function tenderListFixture(): TenderListItem[] {
 }
 
 function tenderDetailFixture(id: string): TenderDetail {
-  const base = tenderListFixture().find((row) => row.id === id) ?? tenderListFixture()[0]!;
+  const [tenderFallback] = tenderListFixture();
+  const base = tenderListFixture().find((row) => row.id === id) ?? tenderFallback;
+  if (!base) throw new Error('Tender fixture missing');
   const perfect = id === 'demo-perfect';
   const risky = id === 'demo-risky';
   return {
@@ -899,7 +1093,9 @@ function opportunityListFixture(): OpportunityListItem[] {
 }
 
 function opportunityDetailFixture(id: string): OpportunityDetail {
-  const base = opportunityListFixture().find((row) => row.id === id) ?? opportunityListFixture()[0]!;
+  const [opportunityFallback] = opportunityListFixture();
+  const base = opportunityListFixture().find((row) => row.id === id) ?? opportunityFallback;
+  if (!base) throw new Error('Opportunity fixture missing');
   const risky = base.id === 'opp-risky';
   const xian = base.id === 'opp-xian-soe';
   return {
@@ -948,7 +1144,9 @@ function reportListFixture(): ReportListItem[] {
 }
 
 function reportDetailFixture(id: string): ReportDetail {
-  const base = reportListFixture().find((row) => row.id === id) ?? reportListFixture()[0]!;
+  const [reportFallback] = reportListFixture();
+  const base = reportListFixture().find((row) => row.id === id) ?? reportFallback;
+  if (!base) throw new Error('Report fixture missing');
   return {
     ...base,
     coBrand: { clientName: '湖北某建设有限公司', tongqian: true },
@@ -1028,10 +1226,14 @@ function upgradePathFixture(certId: string, targetLevel: string): UpgradePathRep
 }
 
 function riskReviewDetailFixture(id: string): RiskReviewDetail {
-  const base = riskReviewListFixture().find((row) => row.id === id) ?? riskReviewListFixture()[1]!;
+  const reviewFallback = riskReviewListFixture()[1] ?? riskReviewListFixture()[0];
+  const base = riskReviewListFixture().find((row) => row.id === id) ?? reviewFallback;
+  if (!base) throw new Error('Risk review fixture missing');
   const red = id === 'demo-red';
   const green = id === 'demo-green';
   const levels: Array<'green' | 'red' | 'yellow'> = red ? ['red', 'red', 'red', 'red', 'red'] : green ? ['yellow', 'green', 'green', 'green', 'green'] : ['red', 'red', 'yellow', 'yellow', 'yellow'];
+  const impacts = ['付款节点未限定审计周期，可能拉长现金回款。', '违约金上限不清，可能形成单方加重责任。', '变更签证证据链不足，结算时容易被压价。', '工期顺延触发条件表述较窄。', '争议管辖地点增加维权成本。'];
+  const types = ['付款风险', '违约责任', '结算风险', '履约保护', '诉讼成本'];
   return {
     ...base,
     confidence: green ? 'high' : 'medium',
@@ -1039,14 +1241,124 @@ function riskReviewDetailFixture(id: string): RiskReviewDetail {
     findings: levels.map((level, index) => ({
       clause: `合同第 ${index + 3} 条`,
       id: `${base.id}-finding-${index + 1}`,
-      impact: ['付款节点未限定审计周期，可能拉长现金回款。', '违约金上限不清，可能形成单方加重责任。', '变更签证证据链不足，结算时容易被压价。', '工期顺延触发条件表述较窄。', '争议管辖地点增加维权成本。'][index]!,
+      impact: impacts[index] ?? impacts[0] ?? '',
       level,
       standardWording: '建议写明资料提交、确认期限、逾期视为认可、争议处理和证据形式。',
       suggestion: '先补齐期限、责任上限、签证材料和复核节点，再进入盖章流程。',
-      type: ['付款风险', '违约责任', '结算风险', '履约保护', '诉讼成本'][index]!,
+      type: types[index] ?? types[0] ?? '',
     })),
     tier: red ? 3 : green ? 1 : 2,
     traceId: cryptoRandomId(),
+  };
+}
+
+function dispatchListFixture(): DispatchListItem[] {
+  return [
+    { id: 'disp-pending-001', type: '资质代办', status: 'pending', amount: '预算 ¥4,000', createdAt: '2026-05-23 09:20', protectionExpireAt: '2026-05-30', matchScore: 92 },
+    { id: 'disp-progress-002', type: '标书代写', status: 'in_progress', agent: { id: 'agent-lv4-wuhan', name: '武汉金牌管家', level: 'LV4', reputation: 96 }, amount: '¥8,800', createdAt: '2026-05-22 14:10', matchScore: 88 },
+    { id: 'disp-completed-003', type: '应收催收', status: 'completed', agent: { id: 'agent-lv3-fin', name: '金融资深管家', level: 'LV3', reputation: 91 }, amount: '¥6,000', createdAt: '2026-05-18 11:40', matchScore: 84 },
+  ];
+}
+
+function dispatchDetailFixture(id: string): DispatchDetail {
+  const [dispatchFallback] = dispatchListFixture();
+  const base = dispatchListFixture().find((item) => item.id === id) ?? dispatchFallback;
+  if (!base) throw new Error('Dispatch fixture missing');
+  return {
+    ...base,
+    budget: base.amount ?? '¥5,000',
+    description: '客户需要智能管家线下跑窗口、协调材料补正，并在失败时给出兜底路径。',
+    expectedDate: '2026-06-05',
+    messages: [
+      { from: 'owner', content: '请先确认能否本周去窗口核验材料。', at: '09:30' },
+      { from: 'agent', content: '已收到，今天先看清单，明天上午到场。', at: '09:42' },
+    ],
+    rating: base.status === 'completed' ? 5 : undefined,
+    review: base.status === 'completed' ? '响应快，窗口材料一次补齐。' : undefined,
+    timeline: ['发起', '接单', '报价确认', '服务中', '完成'].map((milestone, index) => ({
+      date: `05-${23 + index}`,
+      milestone,
+      status: index < 3 || base.status === 'completed' ? 'done' : 'pending',
+    })),
+  };
+}
+
+function cashflowOverviewFixture(): CashflowOverview {
+  return {
+    alerts: [
+      { type: '90 天逾期', message: '华中城建 186 万进入红灯催收。', level: 'red' },
+      { type: '融资窗口', message: '可用应收池超过 500 万，建议做融资诊断。', level: 'yellow' },
+    ],
+    cashGap: '¥320 万',
+    financingCapacity: '¥680 万',
+    forecast: { day30: '+¥120 万', day60: '-¥80 万', day90: '-¥320 万' },
+    overdue90: '¥186 万',
+    totalReceivable: '¥1,248 万',
+  };
+}
+
+function receivableFixtures(): Receivable[] {
+  return [
+    { id: 'ar-wuhan-001', client: '华中城建集团', project: '东湖道路改造', amount: '¥186 万', aging: 126, riskLevel: 'red', status: 'collecting' },
+    { id: 'ar-ezhou-002', client: '鄂州临空公司', project: '标准厂房二期', amount: '¥320 万', aging: 78, riskLevel: 'yellow', status: 'active' },
+    { id: 'ar-huangpi-003', client: '黄陂教育局', project: '暑期维修', amount: '¥96 万', aging: 42, riskLevel: 'green', status: 'active' },
+  ];
+}
+
+function reminderFixture(id: string): ReminderDetail {
+  const level = id.includes('legal') ? 'legal' : id.includes('soft') ? 'soft' : 'formal';
+  const receivable = receivableFixtures()[level === 'soft' ? 2 : 0] ?? receivableFixtures()[0];
+  if (!receivable) throw new Error('Receivable fixture missing');
+  return {
+    body: `# ${level === 'legal' ? '律师函级催款函' : level === 'soft' ? '温和提醒函' : '正式催款函'}\n\n贵司 ${receivable.project} 项目应付款 ${receivable.amount} 已逾期 ${receivable.aging} 天。建议在三个工作日内确认付款计划，并补齐对账单、验收单与付款审批节点。`,
+    confidence: 'medium',
+    disclaimer: '本催款函由 AI 根据台账生成，仅供经营和法务沟通参考，正式发函前建议人工复核。',
+    id,
+    level,
+    receivable,
+    tier: level === 'legal' ? 3 : 2,
+    traceId: cryptoRandomId(),
+  };
+}
+
+function projectFixtures(): ProjectListItem[] {
+  return [
+    { id: 'proj-wuhan-metro', name: '武汉地铁站点配套工程', client: '武汉轨道集团', amount: '¥5,200 万', progress: 62, riskLevel: 'yellow', pm: '周经理' },
+    { id: 'proj-completed', name: '黄陂学校暑修项目', client: '黄陂教育局', amount: '¥860 万', progress: 100, riskLevel: 'green', pm: '李经理' },
+    { id: 'proj-stalled', name: '鄂州标准厂房三期', client: '鄂州临空公司', amount: '¥4,100 万', progress: 38, riskLevel: 'red', pm: '陈经理' },
+  ];
+}
+
+function projectDetailFixture(id: string): ProjectDetail {
+  const [projectFallback] = projectFixtures();
+  const base = projectFixtures().find((item) => item.id === id) ?? projectFallback;
+  if (!base) throw new Error('Project fixture missing');
+  return {
+    ...base,
+    costBreakdown: [
+      { label: '材料', value: 46 },
+      { label: '人工', value: 24 },
+      { label: '机械', value: 12 },
+      { label: '分包', value: 18 },
+    ],
+    drawings: [
+      { id: 'dwg-01', name: '总平面图', version: 'V3' },
+      { id: 'dwg-02', name: '机电综合图', version: 'V2' },
+    ],
+    endDate: '2026-12-20',
+    kpis: { collected: 46, completed: base.progress, costVariance: base.riskLevel === 'red' ? 12 : 4, scheduleVariance: base.riskLevel === 'green' ? -2 : 8 },
+    risks: [
+      { level: 'yellow', title: '雨季施工影响土方外运' },
+      { level: 'red', title: '甲供材料到场晚于计划' },
+      { level: 'green', title: '安全晨会记录完整' },
+    ],
+    siteLogs: [
+      { at: '05-20', weather: '小雨', content: '完成二区模板加固，监理抽查合格。' },
+      { at: '05-21', weather: '多云', content: '钢筋班组进场 24 人，材料复检完成。' },
+      { at: '05-22', weather: '晴', content: '机电预留洞口复核，发现 2 处碰撞。' },
+    ],
+    startDate: '2026-03-01',
+    tier: base.riskLevel === 'red' ? 3 : 2,
   };
 }
 
