@@ -6,7 +6,7 @@ import { QueryProvider } from '../components/query-provider';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="zh-CN">
+    <html data-theme="light" lang="zh-CN">
       <body><QueryProvider><AppShell>{children}</AppShell></QueryProvider></body>
     </html>
   );

@@ -71,6 +71,20 @@ export interface AiChatResult {
   traceId: string;
 }
 
+export interface AiGatewayInvokeInput {
+  context?: Record<string, unknown>;
+  taskType: string;
+  userInput: string;
+}
+
+export interface AiGatewayInvokeResult {
+  message?: AiChatMessage;
+  providerUsed?: string;
+  summary?: string;
+  text?: string;
+  traceId?: string;
+}
+
 export interface ChatConversation {
   channel: 'api' | 'desktop' | 'gov' | 'web' | 'wechat' | 'work_wechat';
   id: string;
@@ -202,11 +216,43 @@ export function createApiClient(options: ApiClientOptions = {}) {
   return {
     admin: createAdminApi(http, mock),
     ai: createAiApi(http, mock),
+    aiGateway: createAiGatewayApi(http, mock),
     chatHub: createChatHubApi(http, mock),
     credentials: createCredentialApi(http, mock),
     dashboard: createDashboardApi(http, mock),
     http,
     mock,
+  };
+}
+
+function createAiGatewayApi(http: AxiosInstance, mock: boolean) {
+  return {
+    async invoke(input: AiGatewayInvokeInput): Promise<AiGatewayInvokeResult> {
+      if (mock) {
+        return delay({
+          providerUsed: 'mock',
+          summary: `已基于 ${input.taskType} 生成执行清单：先确认金额和截止时间，再补齐证据链、责任人和下一次复核节点。`,
+          traceId: cryptoRandomId(),
+        });
+      }
+      const response = await unwrap<Record<string, unknown>>(
+        await http.post('/ai/invoke', {
+          input: {
+            context: input.context,
+            message: input.userInput,
+          },
+          taskType: input.taskType,
+        }),
+      );
+      const data = (response.data && typeof response.data === 'object' ? response.data : response) as Record<string, unknown>;
+      return {
+        message: { content: normalizeText(data.answer ?? data.summary ?? response.fallbackText), role: 'assistant' },
+        providerUsed: normalizeText(response.providerUsed ?? data.providerUsed),
+        summary: normalizeText(data.summary ?? response.summary ?? data.answer),
+        text: normalizeText(data.answer ?? data.summary ?? response.fallbackText),
+        traceId: normalizeText(response.traceId ?? data.traceId),
+      };
+    },
   };
 }
 

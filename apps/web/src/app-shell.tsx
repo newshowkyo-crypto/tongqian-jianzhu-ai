@@ -50,6 +50,8 @@ const iconMap = {
 };
 
 const navigationItems: CyberShellNavigationItem[] = zhCN.navigation.items.map((item) => ({
+  group: item.group,
+  groupLabel: 'groupLabel' in item ? item.groupLabel : undefined,
   href: item.href,
   icon: item.icon,
   label: item.label,

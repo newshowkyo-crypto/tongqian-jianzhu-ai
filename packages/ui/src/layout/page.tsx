@@ -1,6 +1,6 @@
 'use client';
 
-import { type ComponentPropsWithoutRef, type ComponentType, type ReactNode, useMemo, useState } from 'react';
+import { type ComponentPropsWithoutRef, type ComponentType, type ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { Command } from '../primitives/Command.js';
 import { Skeleton, Spinner } from '../primitives/data.js';
@@ -223,6 +223,8 @@ export function TopNav({ avatar, className, notifications, search, tenantSwitche
 }
 
 export interface CyberShellNavigationItem {
+  group?: string;
+  groupLabel?: ReactNode;
   href: string;
   icon: string;
   label: ReactNode;
@@ -274,7 +276,7 @@ export function CyberShell({
   tabs,
 }: CyberShellProps): ReactNode {
   const [openPanel, setOpenPanel] = useState<'avatar' | 'notifications' | 'tenant' | null>(null);
-  const [themeMode, setThemeMode] = useState<'cyber' | 'focus'>('cyber');
+  const [themeMode, setThemeMode] = useState<'dark' | 'light'>('light');
 
   const activeItem = useMemo(
     () => navigation.find((item) => currentPath === item.href || currentPath.startsWith(`${item.href}/`)),
@@ -286,8 +288,25 @@ export function CyberShell({
     setOpenPanel((current) => (current === panel ? null : panel));
   }
 
+  useEffect(() => {
+    const current = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+    const saved = window.localStorage.getItem('tongqian.theme');
+    const next = saved === 'dark' || saved === 'light' ? saved : current;
+    document.documentElement.dataset.theme = next;
+    setThemeMode(next);
+  }, []);
+
+  function toggleTheme(): void {
+    setThemeMode((current) => {
+      const next = current === 'light' ? 'dark' : 'light';
+      document.documentElement.dataset.theme = next;
+      window.localStorage.setItem('tongqian.theme', next);
+      return next;
+    });
+  }
+
   return (
-    <div className={cn('tq-cyber-shell min-h-screen text-[var(--text-primary)]', themeMode === 'focus' && 'tq-cyber-focus')}>
+    <div className="tq-cyber-shell min-h-screen text-[var(--text-primary)]">
       <header className="tq-cyber-topbar fixed inset-x-0 top-0 z-40 flex h-16 items-center px-4 lg:pl-72">
         <div className="relative flex w-full items-center gap-3">
           <Command placeholder={searchPlaceholder} />
@@ -311,10 +330,10 @@ export function CyberShell({
           </button>
           <button
             className="tq-cyber-control h-10 rounded-md px-3 text-sm"
-            onClick={() => setThemeMode((value) => (value === 'cyber' ? 'focus' : 'cyber'))}
+            onClick={toggleTheme}
             type="button"
           >
-            {actionLabels.theme}
+            {actionLabels.theme} · {themeMode}
           </button>
           <button
             aria-expanded={openPanel === 'avatar'}
@@ -381,19 +400,23 @@ export function CyberShell({
             ))}
           </div>
         ) : null}
-        <nav className="mt-4 space-y-1" data-navigation-config="CyberShell">
-          {navigation.map((item) => {
+        <nav className="mt-4 space-y-3" data-navigation-config="CyberShell">
+          {navigation.map((item, index) => {
             const Icon = iconMap[item.icon];
             const active = currentPath === item.href || currentPath.startsWith(`${item.href}/`);
+            const previous = navigation[index - 1];
+            const showGroup = item.groupLabel && item.group !== previous?.group;
             return (
-              <a
-                key={item.href}
-                className={cn('flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium transition-colors', active ? 'tq-cyber-nav-item-active' : 'tq-cyber-nav-item')}
-                href={item.href}
-              >
-                {Icon ? <Icon className="h-4 w-4" /> : null}
-                {item.label}
-              </a>
+              <div key={item.href} className="space-y-1">
+                {showGroup ? <p className="px-3 pt-2 text-[11px] font-semibold uppercase tracking-normal text-[var(--text-muted)]">{item.groupLabel}</p> : null}
+                <a
+                  className={cn('flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium transition-colors', active ? 'tq-cyber-nav-item-active' : 'tq-cyber-nav-item')}
+                  href={item.href}
+                >
+                  {Icon ? <Icon className="h-4 w-4" /> : null}
+                  {item.label}
+                </a>
+              </div>
             );
           })}
         </nav>
