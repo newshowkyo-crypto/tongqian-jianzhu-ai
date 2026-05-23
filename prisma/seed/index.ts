@@ -3,6 +3,58 @@ import { randomUUID } from 'node:crypto';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
+const permissionPoints = [
+  'contract:view', 'contract:create', 'contract:update', 'contract:delete', 'contract:approve', 'contract:review', 'contract:export',
+  'subscription:view', 'subscription:upgrade', 'subscription:cancel', 'subscription:reactivate', 'subscription-invoice:view',
+  'credit:view', 'credit:top-up', 'credit:gift', 'credit:refund',
+  'dispatch:view', 'dispatch:create', 'dispatch:accept', 'dispatch:quote', 'dispatch:assign', 'dispatch:takeover',
+  'data-export:trigger', 'data-export:approve', 'data-export:download',
+  'withdrawal:request', 'withdrawal:approve', 'withdrawal:reject',
+  'appeal:create', 'appeal:decide:initial', 'appeal:decide:risk', 'appeal:decide:final',
+  'prompt:view', 'prompt:edit', 'model-route:view', 'model-route:edit', 'rule:view', 'rule:review',
+  'reputation:view', 'reputation:adjust', 'system-config:view', 'system-config:edit', 'tenant:review', 'audit-log:view',
+  'admin:ingest:run',
+];
+
+const rolePermissionMap: Record<string, string[]> = {
+  OWNER: ['contract:approve', 'subscription:cancel', 'data-export:approve', 'withdrawal:approve'],
+  PLATFORM_OWNER: permissionPoints,
+  FIN: ['credit:view', 'credit:refund', 'subscription-invoice:view', 'withdrawal:approve', 'withdrawal:reject', 'audit-log:view'],
+  RISK: ['contract:review', 'rule:review', 'appeal:decide:risk', 'reputation:adjust', 'audit-log:view'],
+  EXPERT: ['contract:review', 'rule:review', 'prompt:view'],
+  CSM: ['tenant:review', 'dispatch:view', 'appeal:decide:initial', 'reputation:view'],
+};
+
+const credentialSeeds = [
+  ['WECHAT_PAY_MCH_ID', 'wechat_pay', 'payment'],
+  ['WECHAT_PAY_API_KEY', 'wechat_pay', 'payment'],
+  ['WECHAT_PAY_CERT_PATH', 'wechat_pay', 'payment'],
+  ['WECHAT_MP_APP_ID', 'wechat_mp', 'notification'],
+  ['WECHAT_MP_APP_SECRET', 'wechat_mp', 'notification'],
+  ['WECHAT_WORK_AGENT_ID', 'wechat_work', 'notification'],
+  ['WECHAT_WORK_SECRET', 'wechat_work', 'notification'],
+  ['ALIPAY_APP_ID', 'alipay', 'payment'],
+  ['ALIPAY_PRIVATE_KEY', 'alipay', 'payment'],
+  ['ALIYUN_OSS_ACCESS_KEY_ID', 'aliyun_oss', 'storage'],
+  ['ALIYUN_OSS_ACCESS_KEY_SECRET', 'aliyun_oss', 'storage'],
+  ['ALIYUN_OSS_BUCKET', 'aliyun_oss', 'storage'],
+  ['ALIYUN_OSS_REGION', 'aliyun_oss', 'storage'],
+  ['ALIYUN_OCR_ENABLED', 'aliyun_ocr', 'data_collection'],
+  ['ALIYUN_DOCMIND_ENABLED', 'aliyun_docmind', 'data_collection'],
+  ['ALIYUN_SLS_PROJECT', 'aliyun_sls', 'storage'],
+  ['ALIYUN_SLS_LOGSTORE', 'aliyun_sls', 'storage'],
+  ['ALIYUN_SLS_ENDPOINT', 'aliyun_sls', 'storage'],
+  ['ALIYUN_SMS_ACCESS_KEY_ID', 'aliyun_sms', 'notification'],
+  ['ALIYUN_SMS_ACCESS_KEY_SECRET', 'aliyun_sms', 'notification'],
+  ['ALIYUN_SMS_SIGN_NAME', 'aliyun_sms', 'notification'],
+  ['ALIYUN_SMS_TEMPLATE_VERIFY', 'aliyun_sms', 'notification'],
+  ['DASHVECTOR_API_KEY', 'dashvector', 'ai_model'],
+  ['TIANYANCHA_API_KEY', 'tianyancha', 'data_collection'],
+  ['ICP_RECORD_NO', 'icp', 'compliance'],
+  ['ALIYUN_DASHSCOPE_API_KEY', 'dashscope', 'ai_model'],
+  ['OPENROUTER_API_KEY', 'openrouter', 'ai_model'],
+  ['DEEPSEEK_API_KEY', 'deepseek', 'ai_model'],
+] as const;
 
 const now = new Date();
 const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
@@ -169,6 +221,95 @@ async function seedSystemConfigs() {
   }
 }
 
+async function seedM6Rbac() {
+  for (const point of permissionPoints) {
+    await prisma.$executeRaw`
+      INSERT INTO permissions (id, code, name, description, created_at, updated_at)
+      VALUES (${randomUUID()}::uuid, ${point}, ${point}, 'Seeded from packages/permissions permission points', ${now}, ${now})
+      ON CONFLICT (code) DO UPDATE SET name = EXCLUDED.name, updated_at = EXCLUDED.updated_at
+    `;
+  }
+
+  for (const [role, grants] of Object.entries(rolePermissionMap)) {
+    await prisma.$executeRaw`
+      INSERT INTO roles (id, code, name, description, created_at, updated_at)
+      VALUES (${randomUUID()}::uuid, ${role}, ${role}, 'M6 seeded RBAC role', ${now}, ${now})
+      ON CONFLICT (code) DO UPDATE SET name = EXCLUDED.name, updated_at = EXCLUDED.updated_at
+    `;
+    for (const permission of grants) {
+      await prisma.$executeRaw`
+        INSERT INTO role_permissions (id, role_id, permission_id, created_at)
+        SELECT ${randomUUID()}::uuid, r.id, p.id, ${now}
+        FROM roles r, permissions p
+        WHERE r.code = ${role} AND p.code = ${permission}
+        ON CONFLICT (role_id, permission_id) DO NOTHING
+      `;
+    }
+  }
+}
+
+async function seedM6CredentialsAndMetrics() {
+  for (const [key, provider, category] of credentialSeeds) {
+    const isReal = key === 'DEEPSEEK_API_KEY' || key === 'ALIYUN_DASHSCOPE_API_KEY';
+    await prisma.$executeRaw`
+      INSERT INTO secrets (id, key, provider, category, mode, encrypted_value, masked_value, health_status, schema, kms_level, last_switched_at, last_tested_at, created_at, updated_at)
+      VALUES (${randomUUID()}::uuid, ${key}, ${provider}, ${category}, ${isReal ? 'real' : 'mock'}, ${`dev-encrypted-placeholder:${key}`}, ${`${key.slice(0, 4)}****${key.slice(-4)}`}, ${isReal ? 'ok' : 'mock'}, ${JSON.stringify({ fields: ['value'], editable: true })}::jsonb, 'dev', ${now}, ${now}, ${now}, ${now})
+      ON CONFLICT (key) DO UPDATE SET provider = EXCLUDED.provider, category = EXCLUDED.category, mode = EXCLUDED.mode, health_status = EXCLUDED.health_status, updated_at = EXCLUDED.updated_at
+    `;
+  }
+
+  const metrics = ['api.qps.24h', 'api.latency.p95', 'ai.calls.today', 'ai.cost.today', 'worker.queue.depth', 'db.slow.query.ms', 'online.users', 'alerts.open'];
+  for (let index = 0; index < 40; index += 1) {
+    await prisma.$executeRaw`
+      INSERT INTO metrics_snapshots (id, metric_key, metric_value, unit, dimensions, captured_at)
+      VALUES (${randomUUID()}::uuid, ${metrics[index % metrics.length]}, ${(index + 1) * 1.7}, ${index % 2 === 0 ? 'count' : 'ms'}, ${JSON.stringify({ source: 'm6-seed', bucket: index % 8 })}::jsonb, ${new Date(now.getTime() - index * 60_000)})
+    `;
+  }
+}
+
+async function seedM6DemoRows(users: Awaited<ReturnType<typeof seedTenantsAndUsers>>['users']) {
+  const ownerUsers = users.filter((user) => user.role === 'BUILDING_COMPANY_USER');
+  for (let index = 0; index < 20; index += 1) {
+    const user = ownerUsers[index % ownerUsers.length] ?? users[0];
+    await prisma.$executeRaw`
+      INSERT INTO tender_projects (id, tenant_id, user_id, name, region, industry, amount_estimate, source_file_url, status, meta, created_at)
+      VALUES (${randomUUID()}::uuid, ${user.tenantId}, ${user.id}, ${`M6 demo tender project ${index + 1}`}, ${['湖北', '江苏', '广东', '四川'][index % 4]}, ${index % 2 === 0 ? 'municipal' : 'housing'}, ${(500 + index * 60) * 10000}, ${`minio://m6/tenders/${index + 1}.pdf`}, ${index < 5 ? 'active' : 'completed'}, ${JSON.stringify({ seed: 'm6', deadlineDays: index + 2 })}::jsonb, ${now})
+    `;
+  }
+
+  for (let index = 5; index < 15; index += 1) {
+    const user = ownerUsers[index % ownerUsers.length] ?? users[0];
+    await prisma.$executeRaw`
+      INSERT INTO contract_reviews (id, tenant_id, user_id, type, contract_url, contract_type, project_amount, ai_task_id, report_id, overall_risk, finding_count, red_count, yellow_count, green_count, status, created_at)
+      VALUES (${randomUUID()}::uuid, ${user.tenantId}, ${user.id}, 'construction_contract', ${`minio://m6/contracts/${index + 1}.pdf`}, '施工总承包', ${(300 + index * 88) * 10000}, ${randomUUID()}::uuid::text, ${`m6-report-${index + 1}`}, ${index % 3 === 0 ? 'red' : 'yellow'}, ${5 + index}, ${index % 3}, ${2 + index}, 1, 'completed', ${now})
+    `;
+  }
+
+  for (let index = 0; index < 10; index += 1) {
+    const user = ownerUsers[index % ownerUsers.length] ?? users[0];
+    await prisma.$executeRaw`
+      INSERT INTO qualification_certificates (id, tenant_id, category, sub_type, level, cert_no, issued_at, valid_until, issuer, raw_image_url, status, meta, created_at, updated_at)
+      VALUES (${randomUUID()}::uuid, ${user.tenantId}, 'construction', 'general-contracting', ${index % 3 === 0 ? '一级' : '二级'}, ${`M6-CERT-${String(index + 1).padStart(3, '0')}`}, ${new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000)}, ${new Date(now.getTime() + (index < 3 ? 25 : 180 + index) * 24 * 60 * 60 * 1000)}, '住房城乡建设主管部门', ${`minio://m6/certs/${index + 1}.png`}, ${index < 3 ? 'expiring' : 'valid'}, ${JSON.stringify({ seed: 'm6', redLight: index < 3 })}::jsonb, ${now}, ${now})
+      ON CONFLICT (cert_no) DO UPDATE SET valid_until = EXCLUDED.valid_until, status = EXCLUDED.status, updated_at = EXCLUDED.updated_at
+    `;
+  }
+
+  for (let index = 0; index < 50; index += 1) {
+    await prisma.$executeRaw`
+      INSERT INTO ai_cost_logs (id, ai_task_id, input_tokens, output_tokens, input_cost_rmb, output_cost_rmb, total_cost_rmb, credits_charged, profit_rmb, cache_hit, created_at)
+      VALUES (${randomUUID()}::uuid, ${randomUUID()}::uuid, ${900 + index * 10}, ${260 + index * 3}, 0.001200, 0.002400, 0.0036, ${30 + (index % 5) * 10}, 0.2964, ${index % 4 === 0}, ${new Date(now.getTime() - index * 2 * 60 * 60 * 1000)})
+      ON CONFLICT (ai_task_id) DO NOTHING
+    `;
+  }
+
+  for (let index = 0; index < 100; index += 1) {
+    await prisma.$executeRaw`
+      INSERT INTO audit_logs (id, tenant_id, user_id, action, resource, resource_type, resource_id, trace_id, before, after, ip, user_agent, meta, created_at)
+      VALUES (${randomUUID()}::uuid, NULL, NULL, ${index % 10 === 0 ? 'manual-run' : `m6.audit.${index % 8}`}, ${index % 10 === 0 ? 'cron' : 'm6'}, 'm6', ${`m6-${index}`}, ${`m6-seed-${index}`}, NULL, ${JSON.stringify({ ok: true })}::jsonb, '127.0.0.1', 'm6-seed', ${JSON.stringify({ module: index % 10 === 0 ? 'cron' : 'admin' })}::jsonb, ${new Date(now.getTime() - index * 60_000)})
+    `;
+  }
+}
+
 async function seedM5IngestTables() {
   const traceId = `seed-m5-${randomUUID()}`;
 
@@ -233,8 +374,11 @@ async function main(): Promise<void> {
   await seedOpportunities();
   await seedContracts(seeded.users);
   await seedSystemConfigs();
+  await seedM6Rbac();
+  await seedM6CredentialsAndMetrics();
+  await seedM6DemoRows(seeded.users);
   await seedM5IngestTables();
-  console.log('Prisma seed completed: core fixtures plus M5 ingest tables.');
+  console.log('Prisma seed completed: core fixtures plus M5/M6 finish tables.');
 }
 
 void main()

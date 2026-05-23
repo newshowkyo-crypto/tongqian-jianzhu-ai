@@ -11,6 +11,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./cyber": {
+      "types": "./src/cyber/index.ts",
+      "default": "./src/cyber/index.ts"
+    },
     "./tailwind-preset": {
       "types": "./src/tailwind-preset.ts",
       "default": "./src/tailwind-preset.ts"

@@ -64,6 +64,21 @@ require_docker
 echo "Starting canary deployment: $TAG"
 export TAG
 
+if [ "${SKIP_SSH_DEPLOY:-0}" = "1" ]; then
+  start_epoch="$(date +%s)"
+  echo "SKIP_SSH_DEPLOY=1: running local docker compose deployment only"
+  if [ "${SKIP_PULL:-1}" != "1" ]; then
+    compose pull
+  fi
+  compose up -d
+  wait_for_health "local-${TAG}"
+  end_epoch="$(date +%s)"
+  duration=$((end_epoch - start_epoch))
+  printf 'tag=%s duration_seconds=%s completed_at=%s\n' "$TAG" "$duration" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > infra/deploy/local-deploy-duration.log
+  echo "Local deployment complete in ${duration}s"
+  exit 0
+fi
+
 if [ -n "${ACR_USERNAME:-}" ] && [ -n "${ACR_PASSWORD:-}" ] && [ -n "${ACR_LOGIN_REGISTRY:-}" ]; then
   echo "$ACR_PASSWORD" | docker login "$ACR_LOGIN_REGISTRY" -u "$ACR_USERNAME" --password-stdin
 fi
