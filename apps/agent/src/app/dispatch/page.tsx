@@ -18,9 +18,9 @@ export default function AgentDispatchPage() {
       </section>
       <section className="grid gap-4 md:grid-cols-4">{[['待接单', 7], ['进行中', 3], ['月收入', '¥42,600'], ['信誉分', 96]].map(([label, value]) => <div className="rounded-lg border p-4" key={label}><p className="text-sm text-neutral-500">{label}</p><p className="text-xl font-semibold">{value}</p></div>)}</section>
       <section className="flex flex-wrap gap-2">{tabs.map((tab) => <button className="rounded-md border px-3 py-2" key={tab} onClick={() => setActiveTab(tab)} type="button">{tab}</button>)}</section>
-      <section className="space-y-3">
+      <section className="space-y-4">
         {rows.map((row) => (
-          <Link className="grid gap-3 rounded-lg border p-4 hover:bg-neutral-50 md:grid-cols-6" href={`/dispatch/${row.id}`} key={row.id}>
+          <Link className="grid gap-4 rounded-lg border p-4 hover:bg-neutral-50 md:grid-cols-6" href={`/dispatch/${row.id}`} key={row.id}>
             <span className="rounded-md bg-warning-50 px-2 py-1 text-warning-700">紧急徽章</span>
             <span>客户匿名名 {row.id.slice(-3)}</span>
             <span>{row.type}</span>

@@ -35,7 +35,7 @@ export default function DispatchPage() {
       <section className="grid gap-4 md:grid-cols-4">{kpis.map(([label, value]) => <div className="rounded-lg border p-4" key={label}><p className="text-sm text-neutral-500">{label}</p><p className="text-xl font-semibold">{value}</p></div>)}</section>
       <section className="overflow-hidden rounded-lg border">
         {rows.map((row) => (
-          <Link className="grid gap-3 border-b p-4 hover:bg-neutral-50 md:grid-cols-5" href={`/dispatch/${row.id}`} key={row.id}>
+          <Link className="grid gap-4 border-b p-4 hover:bg-neutral-50 md:grid-cols-5" href={`/dispatch/${row.id}`} key={row.id}>
             <span>{row.type}</span>
             <span>{row.agent?.name ?? '公开池匹配中'}</span>
             <span className="w-fit rounded-md border px-2 py-1 text-sm">{statusText[row.status]}</span>

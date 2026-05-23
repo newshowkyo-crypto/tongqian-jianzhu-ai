@@ -26,7 +26,7 @@ export default function NewDispatchPage() {
         {step === 'step2' ? (
           <section className="space-y-4">
             <h2 className="font-semibold">Step 2 填写需求与材料</h2>
-            <textarea className="min-h-32 w-full rounded-md border p-3" onChange={(event) => setForm({ ...form, detail: event.target.value })} placeholder="详细需求 textarea" value={form.detail} />
+            <textarea className="min-h-32 w-full rounded-md border p-4" onChange={(event) => setForm({ ...form, detail: event.target.value })} placeholder="详细需求 textarea" value={form.detail} />
             <input className="min-h-11 rounded-md border p-2" onChange={(event) => setForm({ ...form, expectedDate: event.target.value })} type="date" value={form.expectedDate} />
             <input className="block" type="file" />
             <button className="rounded-md bg-navy-deepest px-4 py-2 text-white" onClick={() => setStep('step3')} type="button">下一步</button>
