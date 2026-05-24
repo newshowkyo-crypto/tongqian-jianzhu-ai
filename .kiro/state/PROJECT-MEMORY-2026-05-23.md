@@ -20,11 +20,11 @@
 
 ## 0. 一句话状态
 
-代码层 M0-M25 全部收口，main HEAD = `a71d174`（[修了 founder name typo]），M24 + M25 已合并。3 件待办事项现状已变化：DeepSeek 真付费 key ✓，ICP 备案审核中尾声，业务底料策略改为 M26 全网采集（爬虫，非人工）。VPS 已备好（华东 1）。
+代码层 M0-M26 全部收口，M24 + M25 + M26 已合并 main。3 件待办事项现状已变化：DeepSeek 真付费 key ✓，ICP 备案审核中尾声，业务底料策略已落地为 M26 全网采集（真爬虫 + AI 抽规则候选 + 律师只审不录）。VPS 已备好（华东 1），但本次 SSH 同步超时，需人工网络/SSH 复跑。
 
-## 1. 最新里程碑（M0-M25 全部 done）
+## 1. 最新里程碑（M0-M26 全部 done）
 
-M5-M13 完成产品骨架、视觉系统、登录、Dashboard 和 Stitch 集成；M14 完成合同审查业务闭环范本。M15-M22 完成招标、资质、机会、报告、派单、AI 聊天、现金流、项目现场等业务闭环，verify 均已通过。M23 完成上线准备，M24 完成可视化上线引导，verify-m24 10/10 PASS；M25 完成桌面封装、Docker 镜像、VPS 部署演练和 CI/CD，verify-m25 12/12 PASS。
+M5-M13 完成产品骨架、视觉系统、登录、Dashboard 和 Stitch 集成；M14 完成合同审查业务闭环范本。M15-M22 完成招标、资质、机会、报告、派单、AI 聊天、现金流、项目现场等业务闭环，verify 均已通过。M23 完成上线准备，M24 完成可视化上线引导，verify-m24 10/10 PASS；M25 完成桌面封装、Docker 镜像、VPS 部署演练和 CI/CD，verify-m25 12/12 PASS；M26 完成全网爬虫 + AI 规则候选抽取 + 律师只审不录，verify-m26 12/12 PASS，typecheck 22/22 PASS。
 
 ## 2. M24 关键交付（凭证 + ICP + 业务底料 + 顶层向导）
 
@@ -50,11 +50,11 @@ M5-M13 完成产品骨架、视觉系统、登录、Dashboard 和 Stitch 集成�
 |---|---|---|
 | 凭证 | DeepSeek **已付费 key 真活** ✓；其余 6 个待填 | `/admin/credentials` -> 填阿里百炼、OpenRouter、微信公众号、OSS、SMS（这 6 个等阿里云审签名 / 微信支付商户号下来再填） |
 | ICP 备案 | **审核最终阶段**（已提交，几天内下证） | 下证后到 `/admin/credentials` 填 `ICP_RECORD_NO` 即可，4 端页脚自动显示 |
-| 业务底料 | **策略已变更** — **不再人工录**，改为 M26 真爬虫全网采集 + AI 抽规则候选 + 律师审 + 入库 | 详见第 5 节 M26。律师 SOP 从"录入"改成"审核 AI 候选" |
+| 业务底料 | **策略已落地** — **不再人工录**，M26 已实现真爬虫全网采集 + AI 抽规则候选 + 律师审 + 入库 | 详见第 5 节 M26。律师 SOP 从"录入"改成"审核 AI 候选" |
 
-## 5. 待规划（M26+，下次会话立刻可做）
+## 5. 已完成 / 待规划（M26+）
 
-**M26 全网数据采集 + AI 规则抽取（最优先，万婷婷已要求）**：把现有 mock 爬虫骨架（`security-compliance.service.ts` 12 个数据源 + `knowledge.triggerCrawler` + `admin/ingest` 3 个 job）换成真爬虫：
+**M26 已完成：全网数据采集 + AI 规则抽取**：已把现有 mock 爬虫骨架（`security-compliance.service.ts` 12 个数据源 + `knowledge.triggerCrawler` + `admin/ingest` 3 个 job）推进为真爬虫链路：
 - 真抓住建部 / 财政部 / 发改委 / 招标 / 信用 / 裁判文书 / 四库一平台 / 各省公共资源
 - BullMQ 调度（每天定时增量 + 每周全量）
 - AI 自动抽出规则候选 → 写入 `rule_candidates` 表（律师只在 admin 审）
