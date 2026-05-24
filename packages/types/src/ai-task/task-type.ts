@@ -53,6 +53,7 @@ export enum AiTaskType {
   REPORT_PDF_BUILD = 'report.pdf_build',
   AGENT_ASSISTANT_REPLY = 'agent.assistant_reply',
   ADMIN_PROMPT_TEST = 'admin.prompt_test',
+  RULE_EXTRACT = 'rule.extract',
 }
 
 export const AI_TASK_TYPE_VALUES = Object.values(AiTaskType);

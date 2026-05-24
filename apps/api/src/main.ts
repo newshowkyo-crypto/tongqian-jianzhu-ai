@@ -34,6 +34,7 @@ import { QualificationModule } from './modules/qualification/qualification.modul
 import { ReportCenterModule } from './modules/report-center/report-center.module.js';
 import { RiskReviewModule } from './modules/risk-review/risk-review.module.js';
 import { RuleCurationModule } from './modules/rule-curation/rule-curation.module.js';
+import { RuleExtractionModule } from './modules/rule-extraction/rule-extraction.module.js';
 import { RulesEngineModule } from './modules/rules-engine/rules-engine.module.js';
 import { SearchModule } from './modules/search/search.module.js';
 import { SecurityComplianceModule } from './modules/security-compliance/security-compliance.module.js';
@@ -85,6 +86,7 @@ class HealthController {
     ReportCenterModule,
     RiskReviewModule,
     RuleCurationModule,
+    RuleExtractionModule,
     RulesEngineModule,
     SecurityComplianceModule,
     SearchModule,
