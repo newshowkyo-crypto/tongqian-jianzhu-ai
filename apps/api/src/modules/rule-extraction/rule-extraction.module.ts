@@ -5,11 +5,14 @@ import { RuleCurationModule } from '../rule-curation/rule-curation.module.js';
 import { SecurityComplianceModule } from '../security-compliance/security-compliance.module.js';
 
 import { RuleExtractionService } from './rule-extraction.service.js';
+import { AutoDeprecateService } from './auto-deprecate.service.js';
+import { DedupService } from './dedup.service.js';
+import { TimelinessService } from './timeliness.service.js';
 
 @Module({
-  exports: [RuleExtractionService],
+  exports: [AutoDeprecateService, DedupService, RuleExtractionService, TimelinessService],
   imports: [AiGatewayModule, RuleCurationModule, SecurityComplianceModule],
-  providers: [RuleExtractionService],
+  providers: [AutoDeprecateService, DedupService, RuleExtractionService, TimelinessService],
 })
 // Nest modules are marker classes discovered through decorators.
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
