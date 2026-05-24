@@ -40,6 +40,7 @@ import { PromptsAdminController } from './prompts/prompts-admin.controller.js';
 import { RefundsAdminController } from './refunds/refunds-admin.controller.js';
 import { ReportsAdminController } from './reports/reports-admin.controller.js';
 import { RewardClaimsAdminController } from './reward-claims/reward-claims-admin.controller.js';
+import { RuleCandidatesModule } from './rule-candidates/rule-candidates.module.js';
 import { RiskAdminController } from './risk/risk-admin.controller.js';
 import { RulesAdminController } from './rules/rules-admin.controller.js';
 import { SecurityAdminController } from './security/security-admin.controller.js';
@@ -52,7 +53,7 @@ import { UsersAdminController } from './users/users-admin.controller.js';
 @Module({
   controllers: [AddictionConfigAdminController, AgentsAdminController, ApprovalsAdminController, AuditAdminController, BillingAdminController, CaseMarketAdminController, ConfigAdminController, CredentialsAdminController, CredentialsController, CreditsAdminController, DataExportsAdminController, FeatureFlagsAdminController, GovAdminController, IcpController, IngestAdminController, IncidentsAdminController, JobsAdminController, ModelsAdminController, NotificationsAdminController, OnboardingController, OperationsAdminController, OpportunitiesAdminController, OrdersAdminController, PolicyFundsAdminController, PromptTestsAdminController, PromptsAdminController, RefundsAdminController, ReportsAdminController, RewardClaimsAdminController, RiskAdminController, RulesAdminController, SecurityAdminController, ServicesAdminController, SubscriptionsAdminController, SystemConfigAdminController, TenantsAdminController, UsersAdminController],
   exports: [AdminResourceService],
-  imports: [FuelProgressModule],
+  imports: [FuelProgressModule, RuleCandidatesModule],
   providers: [AdminResourceService, CredentialsService, IcpService, OnboardingService, SecurityComplianceService, SystemConfigService, TenantContextService, JwtGuard, PermissionGuard],
 })
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
