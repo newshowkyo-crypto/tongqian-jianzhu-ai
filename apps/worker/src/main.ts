@@ -23,6 +23,7 @@ import { MorningBriefingCron } from './jobs/morning-briefing.cron.js';
 import { OpportunityRadarScanCron } from './jobs/opportunity-radar-scan.cron.js';
 import { QualificationAlertCron } from './jobs/qualification-alert.cron.js';
 import { SubscriptionRenewalCron } from './jobs/subscription-renewal.cron.js';
+import { crawlerJobs, registerCrawlerSchedules, runCrawlerJob } from './queues/crawler.queue.js';
 
 const cronJobs = [
   new SubscriptionRenewalCron(),
@@ -55,7 +56,9 @@ async function bootstrap(): Promise<void> {
   for (const cron of cronJobs) {
     await cron.register(queue);
   }
+  await registerCrawlerSchedules(queue);
   const worker = new Worker(queueName, async (job) => {
+    if (crawlerJobs.some((item) => item.name === job.name)) return runCrawlerJob(job.name);
     const cron = cronJobs.find((item) => item.name === job.name);
     if (!cron) return { id: job.id, name: job.name, skipped: true };
     return cron.run(job.data as Record<string, unknown>);
