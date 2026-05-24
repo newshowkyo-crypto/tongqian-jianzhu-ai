@@ -5,7 +5,9 @@ export class NdrcFetcher extends BaseFetcher<CrawlerItem> {
   sourceUrl = 'https://www.ndrc.gov.cn';
 
   async fetch(): Promise<CrawlerItem[]> {
-    const html = await this.fetchText('https://www.ndrc.gov.cn/xxgk/zcfb/');
+    const response = await fetch('https://www.ndrc.gov.cn/xxgk/zcfb/', { headers: { 'User-Agent': this.userAgent } });
+    if (!response.ok) throw new Error(`ndrc ${response.status}`);
+    const html = await response.text();
     return this.parse(html);
   }
 

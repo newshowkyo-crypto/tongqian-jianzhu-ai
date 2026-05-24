@@ -5,7 +5,9 @@ export class MofFetcher extends BaseFetcher<CrawlerItem> {
   sourceUrl = 'https://www.mof.gov.cn';
 
   async fetch(): Promise<CrawlerItem[]> {
-    const html = await this.fetchText('https://www.mof.gov.cn/zhengwuxinxi/caizhengxinwen/');
+    const response = await fetch('https://www.mof.gov.cn/zhengwuxinxi/caizhengxinwen/', { headers: { 'User-Agent': this.userAgent } });
+    if (!response.ok) throw new Error(`mof ${response.status}`);
+    const html = await response.text();
     return this.parse(html);
   }
 

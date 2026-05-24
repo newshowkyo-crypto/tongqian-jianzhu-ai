@@ -5,7 +5,9 @@ export class WenshuFetcher extends BaseFetcher<CrawlerItem> {
   sourceUrl = 'https://wenshu.court.gov.cn';
 
   async fetch(): Promise<CrawlerItem[]> {
-    const html = await this.fetchText('https://wenshu.court.gov.cn/website/wenshu/181107ANFZ0BXSK4/index.html');
+    const response = await fetch('https://wenshu.court.gov.cn/website/wenshu/181107ANFZ0BXSK4/index.html', { headers: { 'User-Agent': this.userAgent } });
+    if (!response.ok) throw new Error(`wenshu ${response.status}`);
+    const html = await response.text();
     return this.parse(html);
   }
 

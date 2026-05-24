@@ -5,7 +5,9 @@ export class MohurdFetcher extends BaseFetcher<CrawlerItem> {
   sourceUrl = 'https://www.mohurd.gov.cn';
 
   async fetch(): Promise<CrawlerItem[]> {
-    const html = await this.fetchText('https://www.mohurd.gov.cn/gongkai/zhengce/');
+    const response = await fetch('https://www.mohurd.gov.cn/gongkai/zhengce/', { headers: { 'User-Agent': this.userAgent } });
+    if (!response.ok) throw new Error(`mohurd ${response.status}`);
+    const html = await response.text();
     return this.parse(html);
   }
 

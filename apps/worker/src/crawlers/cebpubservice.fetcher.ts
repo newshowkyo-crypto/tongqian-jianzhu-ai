@@ -5,7 +5,9 @@ export class CebpubserviceFetcher extends BaseFetcher<CrawlerItem> {
   sourceUrl = 'https://www.cebpubservice.com';
 
   async fetch(): Promise<CrawlerItem[]> {
-    const html = await this.fetchText('https://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getSearch.do');
+    const response = await fetch('https://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getSearch.do', { headers: { 'User-Agent': this.userAgent } });
+    if (!response.ok) throw new Error(`cebpubservice ${response.status}`);
+    const html = await response.text();
     return this.parse(html);
   }
 

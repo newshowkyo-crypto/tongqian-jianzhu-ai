@@ -5,7 +5,9 @@ export class CreditchinaFetcher extends BaseFetcher<CrawlerItem> {
   sourceUrl = 'https://www.creditchina.gov.cn';
 
   async fetch(): Promise<CrawlerItem[]> {
-    const text = await this.fetchText('https://www.creditchina.gov.cn/xinyongfuwu/?navPage=4');
+    const response = await fetch('https://www.creditchina.gov.cn/xinyongfuwu/?navPage=4', { headers: { 'User-Agent': this.userAgent } });
+    if (!response.ok) throw new Error(`creditchina ${response.status}`);
+    const text = await response.text();
     return this.parse(text);
   }
 
