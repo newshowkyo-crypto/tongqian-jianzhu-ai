@@ -1,20 +1,34 @@
-const changes = ['设计变更', '范围增加', '材料替代'];
-const claims = ['业主供料延误', '现场条件变化', '设计错误'];
+import { EmptyState, ErrorState, LoadingState, PageContent, PageHeader, PageLayout, SectionCard } from '@tongqian/ui';
 
-export default function ChangesClaimsPage(): JSX.Element {
+const metrics = [
+  ['????', '92%'],
+  ['????', '3'],
+  ['AI ???', '?'],
+];
+
+export default function Page(): JSX.Element {
   return (
-    <main className="min-h-screen bg-slate-50 p-6 text-slate-950">
-      <section className="mx-auto max-w-6xl">
-        <div className="mb-4 flex items-center justify-between"><h1 className="text-xl font-semibold">变更签证与索赔</h1><span className="rounded bg-emerald-50 px-2 py-1 text-xs text-emerald-700">Tier 2</span></div>
-        <div className="grid gap-4 lg:grid-cols-2">
-          <Panel title="变更签证" items={changes} />
-          <Panel title="索赔台账" items={claims} />
-        </div>
-      </section>
-    </main>
+    <PageLayout className="bg-stitch-surface text-stitch-on-surface">
+      <PageContent>
+        <PageHeader title="???????" description="?????????????????" breadcrumbs="?? / ???????" actions={<button className="rounded-md bg-stitch-primary-container px-4 py-2 text-sm font-medium text-white">AI ??</button>} />
+        <section className="grid gap-4 md:grid-cols-3">
+          {metrics.map(([label, value]) => <SectionCard key={label}><div className="text-xs text-stitch-on-surface-variant">{label}</div><div className="mt-2 text-2xl font-semibold tabular-nums">{value}</div></SectionCard>)}
+        </section>
+        <section className="mt-4 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+          <SectionCard title="???" description="Stitch design system aligned dense enterprise surface.">
+            <div className="grid gap-4 md:grid-cols-2">
+              {['????', '????', '????', '?????'].map((item) => <div className="rounded-lg border border-stitch-outline-variant bg-stitch-surface-container-low p-4 text-sm" key={item}>{item}</div>)}
+            </div>
+          </SectionCard>
+          <SectionCard title="????">
+            <div className="space-y-4">
+              <LoadingState label="??????" rows={2} />
+              <EmptyState title="??????" description="????????????" />
+              <ErrorState title="??????" description="AI ?????????" />
+            </div>
+          </SectionCard>
+        </section>
+      </PageContent>
+    </PageLayout>
   );
-}
-
-function Panel({ items, title }: { items: string[]; title: string }): JSX.Element {
-  return <div className="rounded border bg-white p-4"><h2 className="font-semibold">{title}</h2>{items.map((item, index) => <div className="mt-4 rounded border p-4" key={item}><div>{item}</div><div className="mt-1 text-sm text-slate-500">时效倒计时 {7 - index * 2} 天 · AI成功率 {68 - index * 8}%</div></div>)}</div>;
 }
