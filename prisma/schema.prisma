@@ -1733,6 +1733,27 @@ model RoughQuantityEstimate {
   @@map("rough_quantity_estimates")
 }
 
+model PaymentLedger {
+  id          String    @id @default(cuid())
+  tenantId    String    @map("tenant_id")
+  projectId   String    @map("project_id")
+  contractId  String?   @map("contract_id")
+  eventType   String    @map("event_type")
+  amountCny   Decimal   @map("amount_cny") @db.Decimal(20, 2)
+  eventDate   DateTime  @map("event_date")
+  period      String
+  invoiceNo   String?   @map("invoice_no")
+  invoiceDate DateTime? @map("invoice_date")
+  paymentDate DateTime? @map("payment_date")
+  status      String
+  notes       String?   @db.Text
+  createdBy   String    @map("created_by")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@index([tenantId, projectId, eventDate])
+  @@map("payment_ledgers")
+}
+
 model ProjectSchedule {
   id        String         @id @default(uuid()) @db.Uuid
   projectId String         @map("project_id")

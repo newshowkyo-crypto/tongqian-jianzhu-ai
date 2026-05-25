@@ -1,12 +1,13 @@
 import { Body, Controller, Get, Headers, Inject, Param, Post, Query } from '@nestjs/common';
 
 import { PhotoService } from './photo.service.js';
+import { PaymentLedgerService } from './payment-ledger.service.js';
 import { ProjectSiteService } from './project-site.service.js';
 import { ScheduleService } from './schedule.service.js';
 
 @Controller('api/v1/projects')
 export class ProjectSiteController {
-  constructor(@Inject(ProjectSiteService) private readonly sites: ProjectSiteService, private readonly schedules: ScheduleService, private readonly photos: PhotoService) {}
+  constructor(@Inject(ProjectSiteService) private readonly sites: ProjectSiteService, private readonly schedules: ScheduleService, private readonly photos: PhotoService, private readonly ledgers: PaymentLedgerService) {}
 
   @Post()
   create(@Body() body: { name: string; planCode?: string; region?: string; type?: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant', @Headers('x-user-id') userId = 'mock-user'): unknown {
@@ -61,6 +62,11 @@ export class ProjectSiteController {
   @Post(':id/progress-payments')
   progress(@Param('id') id: string, @Body() body: { completedValueCny: number; period: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
     return { code: 'OK', data: this.sites.progressPayment({ ...body, projectId: id, tenantId }), message: 'Progress payment application created', traceId: crypto.randomUUID() };
+  }
+
+  @Post(':id/payment-ledger')
+  paymentLedger(@Param('id') id: string, @Body() body: { amountCny: number; eventDate?: string; eventType: 'contract_signed' | 'dispute' | 'invoice_issued' | 'payment_received' | 'work_completed' | 'written_off'; invoiceDate?: string; period: string; status?: 'confirmed' | 'disputed' | 'pending' | 'written_off' }, @Headers('x-tenant-id') tenantId = 'mock-tenant', @Headers('x-user-id') createdBy = 'mock-user'): unknown {
+    return { code: 'OK', data: this.ledgers.recordEvent({ ...body, createdBy, eventDate: body.eventDate ?? new Date().toISOString(), projectId: id, status: body.status ?? 'pending', tenantId }), message: 'Payment ledger recorded', traceId: crypto.randomUUID() };
   }
 
   @Post(':id/major-hazards')
