@@ -1,0 +1,62 @@
+[
+  {
+    "code": "GF-2017-0201",
+    "title": "建设工程施工合同（示范文本）",
+    "issuer": "住建部 + 国家工商行政管理总局",
+    "docType": "contract_template",
+    "version": "2017",
+    "sourceUrl": "https://www.mohurd.gov.cn/（待补全官方 PDF）",
+    "expectedClauseCount": 120,
+    "filePath": "GF-2017-0201.placeholder"
+  },
+  {
+    "code": "BID-LAW-REG-2019",
+    "title": "招标投标法 + 实施条例",
+    "issuer": "全国人大 + 国务院",
+    "docType": "law",
+    "version": "2019",
+    "sourceUrl": "https://www.gov.cn/（待补全官方网页）",
+    "expectedClauseCount": 80,
+    "filePath": "BID-LAW-REG-2019.placeholder"
+  },
+  {
+    "code": "QUAL-STD-2022",
+    "title": "建筑业企业资质标准",
+    "issuer": "住建部",
+    "docType": "regulation",
+    "version": "2022",
+    "sourceUrl": "https://www.mohurd.gov.cn/（待补全官方 PDF）",
+    "expectedClauseCount": 150,
+    "filePath": "QUAL-STD-2022.placeholder"
+  },
+  {
+    "code": "GB50500-2024",
+    "title": "建设工程工程量清单计价规范",
+    "issuer": "国家标准委 + 住建部",
+    "docType": "standard",
+    "version": "2024",
+    "sourceUrl": "https://openstd.samr.gov.cn/（待补全标准页）",
+    "expectedClauseCount": 200,
+    "filePath": "GB50500-2024.placeholder"
+  },
+  {
+    "code": "GB50300-2013",
+    "title": "建筑工程施工质量验收统一标准 + 系列",
+    "issuer": "国家标准委 + 住建部",
+    "docType": "standard",
+    "version": "2013",
+    "sourceUrl": "https://openstd.samr.gov.cn/（待补全标准页）",
+    "expectedClauseCount": 400,
+    "filePath": "GB50300-2013.placeholder"
+  },
+  {
+    "code": "SPC-CONTRACT-2020-25",
+    "title": "最高法建工合同司法解释",
+    "issuer": "最高人民法院",
+    "docType": "judicial_interpretation",
+    "version": "法释[2020]25号",
+    "sourceUrl": "https://www.court.gov.cn/（待补全司法解释页）",
+    "expectedClauseCount": 50,
+    "filePath": "SPC-CONTRACT-2020-25.placeholder"
+  }
+]
