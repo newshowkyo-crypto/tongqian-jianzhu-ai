@@ -1,7 +1,7 @@
 import animate from 'tailwindcss-animate';
 
-import { designTokens } from './tokens.js';
 import { stitchColors, stitchFontFamily, stitchRounded, stitchShadows, stitchSpacing, stitchTypography } from './tokens/stitch-tokens.js';
+import { designTokens } from './tokens.js';
 
 type TailwindPresetConfig = {
   darkMode?: string[];

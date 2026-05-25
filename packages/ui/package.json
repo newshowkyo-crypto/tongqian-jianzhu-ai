@@ -19,6 +19,10 @@
       "types": "./src/tailwind-preset.ts",
       "default": "./src/tailwind-preset.ts"
     },
+    "./tokens": {
+      "types": "./src/tokens/index.ts",
+      "default": "./src/tokens/index.ts"
+    },
     "./styles/globals.css": "./src/styles/globals.css",
     "./styles/tokens.css": "./src/styles/tokens.css"
   },
