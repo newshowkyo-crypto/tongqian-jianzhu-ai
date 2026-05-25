@@ -5,13 +5,14 @@ import { RuleCurationModule } from '../rule-curation/rule-curation.module.js';
 import { StorageModule } from '../storage/storage.module.js';
 
 import { RiskReviewController } from './risk-review.controller.js';
+import { RedFlagScanService } from './red-flag-scan.service.js';
 import { RiskReviewService } from './risk-review.service.js';
 
 @Module({
   controllers: [RiskReviewController],
   exports: [RiskReviewService],
   imports: [ReportCenterModule, RuleCurationModule, StorageModule],
-  providers: [RiskReviewService],
+  providers: [RedFlagScanService, RiskReviewService],
 })
 // Nest modules are marker classes discovered through decorators.
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class

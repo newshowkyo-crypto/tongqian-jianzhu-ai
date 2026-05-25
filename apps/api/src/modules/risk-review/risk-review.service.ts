@@ -5,6 +5,7 @@ import type { ClaimStrategyView, ContractReviewView, ContractRiskFindingView, Mo
 import { ReportCenterService } from '../report-center/report-center.service.js';
 import { RulesService } from '../rule-curation/rules.service.js';
 import { StorageService } from '../storage/storage.service.js';
+import { RedFlagScanService } from './red-flag-scan.service.js';
 
 interface ReviewInput {
   amountCny?: number;
@@ -25,6 +26,7 @@ export class RiskReviewService {
   constructor(
     @Inject(ReportCenterService) private readonly reportCenter: ReportCenterService,
     @Inject(RulesService) private readonly rules: RulesService,
+    private readonly redFlagScan: RedFlagScanService,
     @Inject(StorageService) private readonly storage: StorageService,
   ) {}
 
@@ -163,6 +165,11 @@ export class RiskReviewService {
 
   consultChat(question: string): { answer: string; costCredits: number; risk: 'minor' } {
     return { answer: `risk.consult.placeholder:${question.slice(0, 24)}`, costCredits: 100, risk: 'minor' };
+  }
+
+  scanWithRedFlags(contractText: string): { flags: ReturnType<RedFlagScanService['scan']>['flags']; summary: Record<string, number> } {
+    const result = this.redFlagScan.scan(contractText);
+    return { flags: result.flags, summary: this.redFlagScan.categories() };
   }
 
   featureWall(plan: 'ent' | 'flag' | 'lite' | 'std' | 'trial'): Record<string, number | string> {
