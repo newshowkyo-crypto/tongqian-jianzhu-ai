@@ -15,7 +15,7 @@ const nonNextFilters = [
   '@tongqian/desktop',
 ];
 
-const nextApps = ['@tongqian/web', '@tongqian/admin', '@tongqian/agent', '@tongqian/gov'];
+const nextApps = ['@tongqian/admin', '@tongqian/agent', '@tongqian/gov'];
 
 function run(command, args, options = {}) {
   const result = spawnSync(command, args, {
@@ -29,13 +29,20 @@ function run(command, args, options = {}) {
   }
 }
 
+const pnpm = (...args) => ['--config.engine-strict=false', ...args];
+
 run(
   'pnpm',
-  nonNextFilters.flatMap((filter) => ['--filter', filter]).concat('build'),
+  pnpm('--filter', '@tongqian/web', 'build'),
+);
+
+run(
+  'pnpm',
+  pnpm(...nonNextFilters.flatMap((filter) => ['--filter', filter]), 'build'),
 );
 
 for (const app of nextApps) {
-  run('pnpm', ['--filter', app, 'build'], {
+  run('pnpm', pnpm('--filter', app, 'build'), {
     env: {
       NEXT_STANDALONE: 'false',
     },

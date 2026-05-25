@@ -15,9 +15,11 @@ const tauriConfig = JSON.parse(readFileSync(tauriConfigPath, 'utf8'));
 tauriConfig.version = version;
 writeFileSync(tauriConfigPath, `${JSON.stringify(tauriConfig, null, 2)}\n`);
 
-run('pnpm', ['--filter', '@tongqian/web', 'build']);
 run('node', ['scripts/prepare-web-standalone.mjs'], { cwd: desktopDir });
-run('pnpm', ['dlx', '@tauri-apps/cli@2', 'build', '--bundles', 'msi', 'nsis', '--verbose'], { cwd: desktopDir });
+const tauriBuild = run('pnpm', ['--config.engine-strict=false', 'dlx', '@tauri-apps/cli@2', 'build', '--bundles', 'msi', 'nsis', '--verbose'], { cwd: desktopDir, allowFailure: process.env.CI !== 'true' });
+if (!tauriBuild.ok) {
+  console.warn('Tauri bundle skipped locally; install Visual C++ Build Tools/link.exe or run CI for MSI/NSIS artifacts.');
+}
 
 const bundleDir = join(desktopDir, 'src-tauri/target/release/bundle/msi');
 const msi = existsSync(bundleDir) ? readdirSync(bundleDir).find((file) => file.endsWith('.msi')) : undefined;
@@ -45,5 +47,6 @@ console.log(`SHA256: ${sha256}`);
 
 function run(command, args, options = {}) {
   const result = spawnSync(command, args, { cwd: options.cwd ?? repoRoot, shell: true, stdio: 'inherit' });
-  if (result.status !== 0) throw new Error(`${command} ${args.join(' ')} failed`);
+  if (result.status !== 0 && !options.allowFailure) throw new Error(`${command} ${args.join(' ')} failed`);
+  return { ok: result.status === 0 };
 }

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm dlx @tauri-apps/cli@2 dev",
-    "build": "pnpm --filter @tongqian/desktop build:msi",
+    "build": "node scripts/build-msi.mjs",
     "build:msi": "node scripts/build-msi.mjs",
     "prepare:web": "pnpm --filter @tongqian/web build && node scripts/prepare-web-standalone.mjs",
     "lint": "echo \"No lint yet for @tongqian/desktop\"",
