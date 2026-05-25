@@ -5,13 +5,14 @@ import { CostCatalogModule } from '../cost-catalog/cost-catalog.module.js';
 
 import { CostEstimateController } from './cost-estimate.controller.js';
 import { CostEstimateService } from './cost-estimate.service.js';
+import { BudgetEstimatorService } from './budget-estimator.service.js';
 import { HistoricalCostService } from './historical-cost.service.js';
 
 @Module({
   controllers: [CostEstimateController],
   exports: [CostEstimateService],
   imports: [AiGatewayModule, CostCatalogModule],
-  providers: [CostEstimateService, HistoricalCostService],
+  providers: [BudgetEstimatorService, CostEstimateService, HistoricalCostService],
 })
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class CostEstimateModule {}
