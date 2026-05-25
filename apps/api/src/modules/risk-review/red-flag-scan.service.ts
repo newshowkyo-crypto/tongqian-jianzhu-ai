@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
 import { readFileSync } from 'node:fs';
+
+import { Injectable } from '@nestjs/common';
 
 interface RedFlagRule {
   category: string;

@@ -5,7 +5,8 @@ import type { ClaimStrategyView, ContractReviewView, ContractRiskFindingView, Mo
 import { ReportCenterService } from '../report-center/report-center.service.js';
 import { RulesService } from '../rule-curation/rules.service.js';
 import { StorageService } from '../storage/storage.service.js';
-import { RedFlagScanService } from './red-flag-scan.service.js';
+
+import type { RedFlagScanService } from './red-flag-scan.service.js';
 
 interface ReviewInput {
   amountCny?: number;

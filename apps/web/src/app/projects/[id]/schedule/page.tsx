@@ -11,10 +11,10 @@ const tasks = [
 
 export default function ProjectSchedulePage(): ReactNode {
   return (
-    <main className="min-h-screen bg-[#101820] p-6 text-white">
+    <main className="min-h-screen bg-primary-900 p-6 text-white">
       <header className="flex items-center justify-between">
         <div><h1 className="text-2xl font-semibold">进度计划</h1><p className="text-sm text-white/60">甘特图 + 关键路径 + 滞后预警</p></div>
-        <button className="rounded-md bg-[#d6ad60] px-4 py-2 text-black" type="button">AI 风险提示</button>
+        <button className="rounded-md bg-accent-500 px-4 py-2 text-black" type="button">AI 风险提示</button>
       </header>
       <svg className="mt-6 h-72 w-full rounded-md border border-white/15 bg-white/5" viewBox="0 0 900 280">
         {tasks.map((task, index) => {

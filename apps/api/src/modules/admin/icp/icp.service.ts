@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { SystemConfigService } from '../../system-config/system-config.service.js';
+import type { SystemConfigService } from '../../system-config/system-config.service.js';
 
 type IcpStatus = 'approved' | 'materials_uploaded' | 'not_started' | 'rejected' | 'reviewing' | 'submitted';
 

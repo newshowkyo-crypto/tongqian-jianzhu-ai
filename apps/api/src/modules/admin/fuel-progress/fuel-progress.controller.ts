@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 
-import { FuelProgressService } from './fuel-progress.service.js';
+import type { FuelProgressService } from './fuel-progress.service.js';
 
 @Controller('api/v1/admin/fuel-progress')
 export class FuelProgressController {

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 
-import { RulesService } from '../../rule-curation/rules.service.js';
-import { SecurityComplianceService } from '../../security-compliance/security-compliance.service.js';
+import type { RulesService } from '../../rule-curation/rules.service.js';
+import type { SecurityComplianceService } from '../../security-compliance/security-compliance.service.js';
 
 @Controller('api/v1/admin/rule-candidates')
 export class RuleCandidatesController {

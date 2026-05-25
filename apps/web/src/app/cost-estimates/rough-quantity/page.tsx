@@ -20,8 +20,8 @@ export default function RoughQuantityPage(): JSX.Element {
         </div>
         <div className="rounded border bg-white">
           <table className="w-full text-sm">
-            <thead><tr className="border-b text-left"><th className="p-3">工程项</th><th>工程量</th><th>单位</th><th>单价</th><th>合价</th></tr></thead>
-            <tbody>{rows.map((row) => <tr className="border-b" key={row[0]}><td className="p-3">{row[0]}</td><td>{row[1]}</td><td>{row[2]}</td><td>{row[3]}</td><td>{Number(row[1]) * Number(row[3])}</td></tr>)}</tbody>
+            <thead><tr className="border-b text-left"><th className="p-4">工程项</th><th>工程量</th><th>单位</th><th>单价</th><th>合价</th></tr></thead>
+            <tbody>{rows.map((row) => <tr className="border-b" key={row[0]}><td className="p-4">{row[0]}</td><td>{row[1]}</td><td>{row[2]}</td><td>{row[3]}</td><td>{Number(row[1]) * Number(row[3])}</td></tr>)}</tbody>
           </table>
         </div>
         <div className="mt-4 rounded border bg-white p-4">合计 {total.toLocaleString()} 元。工程量粗算仅供经营辅助，不替代正式清单。</div>

@@ -1579,6 +1579,7 @@ model LegalCorpus {
 
   @@index([docType, status])
   @@index([code])
+  @@index([tenantId])
   @@map("legal_corpus")
 }
 
@@ -1608,10 +1609,12 @@ model CostCatalog {
   sourceUrl     String?    @map("source_url")
   importedAt    DateTime?  @map("imported_at")
   itemCount     Int        @default(0) @map("item_count")
+  tenantId      String     @default("platform") @map("tenant_id")
   createdAt     DateTime   @default(now()) @map("created_at")
   updatedAt     DateTime   @updatedAt @map("updated_at")
   items         CostItem[]
 
+  @@index([tenantId])
   @@map("cost_catalogs")
 }
 
@@ -1630,10 +1633,12 @@ model CostItem {
   totalUnitPrice Decimal?     @map("total_unit_price") @db.Decimal(20, 4)
   laborHours     Decimal?     @map("labor_hours") @db.Decimal(20, 4)
   keywords       String[]
+  tenantId       String       @default("platform") @map("tenant_id")
   embedding      Bytes?
   catalog        CostCatalog  @relation(fields: [catalogId], references: [id], onDelete: Cascade)
 
   @@index([catalogId, classCode])
+  @@index([tenantId])
   @@index([workCode])
   @@map("cost_items")
 }
@@ -1645,15 +1650,17 @@ model RfpChunk {
   pageNumber Int?    @map("page_number")
   content    String  @db.Text
   keywords   String[]
+  tenantId   String   @default("platform") @map("tenant_id")
   embedding  Bytes?
 
   @@index([tenderId])
+  @@index([tenantId])
   @@map("rfp_chunks")
 }
 
 model HistoricalProjectCost {
   id                String   @id @default(uuid()) @db.Uuid
-  tenantId          String   @map("tenant_id")
+  tenantId          String   @default("platform") @map("tenant_id")
   projectName       String   @map("project_name")
   projectType       String   @map("project_type")
   region            String
@@ -1669,6 +1676,7 @@ model HistoricalProjectCost {
 }
 
 model BaselineUnitCost {
+  // platform-wide, no tenant_id
   id            String  @id @default(cuid())
   projectType   String  @map("project_type")
   structureType String  @map("structure_type")
@@ -1683,7 +1691,7 @@ model BaselineUnitCost {
 
 model BudgetEstimate {
   id              String    @id @default(cuid())
-  tenantId        String    @map("tenant_id")
+  tenantId        String    @default("platform") @map("tenant_id")
   projectName     String    @map("project_name")
   areaSqm         Float     @map("area_sqm")
   projectType     String    @map("project_type")
@@ -1707,6 +1715,7 @@ model BudgetEstimate {
 }
 
 model QuantityIndicator {
+  // platform-wide, no tenant_id
   id            String  @id @default(cuid())
   projectType   String  @map("project_type")
   structureType String  @map("structure_type")
@@ -1721,7 +1730,7 @@ model QuantityIndicator {
 
 model RoughQuantityEstimate {
   id            String  @id @default(cuid())
-  tenantId      String  @map("tenant_id")
+  tenantId      String  @default("platform") @map("tenant_id")
   projectName   String  @map("project_name")
   areaSqm       Float   @map("area_sqm")
   projectType   String  @map("project_type")
@@ -1730,12 +1739,13 @@ model RoughQuantityEstimate {
   totalCny      Decimal @map("total_cny") @db.Decimal(20, 2)
   aiAnalysis    String? @map("ai_analysis") @db.Text
 
+  @@index([tenantId])
   @@map("rough_quantity_estimates")
 }
 
 model PaymentLedger {
   id          String    @id @default(cuid())
-  tenantId    String    @map("tenant_id")
+  tenantId    String    @default("platform") @map("tenant_id")
   projectId   String    @map("project_id")
   contractId  String?   @map("contract_id")
   eventType   String    @map("event_type")
@@ -1756,7 +1766,7 @@ model PaymentLedger {
 
 model ChangeOrder {
   id                     String    @id @default(cuid())
-  tenantId               String    @map("tenant_id")
+  tenantId               String    @default("platform") @map("tenant_id")
   projectId              String    @map("project_id")
   contractId             String    @map("contract_id")
   orderType              String    @map("order_type")
@@ -1778,7 +1788,7 @@ model ChangeOrder {
 
 model ClaimRecord {
   id               String    @id @default(cuid())
-  tenantId         String    @map("tenant_id")
+  tenantId         String    @default("platform") @map("tenant_id")
   projectId        String    @map("project_id")
   contractId       String    @map("contract_id")
   claimType        String    @map("claim_type")
@@ -1800,6 +1810,7 @@ model ClaimRecord {
 }
 
 model CarbonFactor {
+  // platform-wide, no tenant_id
   id          String  @id @default(cuid())
   material    String
   category    String
@@ -1812,7 +1823,7 @@ model CarbonFactor {
 
 model CarbonEstimate {
   id                    String   @id @default(cuid())
-  tenantId              String   @map("tenant_id")
+  tenantId              String   @default("platform") @map("tenant_id")
   projectName           String   @map("project_name")
   areaSqm               Float    @map("area_sqm")
   materialItems         Json     @map("material_items")
@@ -1823,11 +1834,13 @@ model CarbonEstimate {
   aiSuggestions         Json     @map("ai_suggestions")
   disclaimer            String
 
+  @@index([tenantId])
   @@map("carbon_estimates")
 }
 
 model ProjectTask {
   id                    String    @id @default(cuid())
+  tenantId              String    @default("platform") @map("tenant_id")
   projectId             String    @map("project_id")
   parentTaskId          String?   @map("parent_task_id")
   title                 String
@@ -1846,18 +1859,21 @@ model ProjectTask {
   createdBy             String    @map("created_by")
   createdAt             DateTime  @default(now()) @map("created_at")
 
+  @@index([tenantId])
   @@index([projectId, status, dueDate])
   @@map("project_tasks")
 }
 
 model TaskComment {
   id          String   @id @default(cuid())
+  tenantId    String   @default("platform") @map("tenant_id")
   taskId      String   @map("task_id")
   userId      String   @map("user_id")
   content     String   @db.Text
   attachments String[]
   createdAt   DateTime @default(now()) @map("created_at")
 
+  @@index([tenantId])
   @@index([taskId, createdAt])
   @@map("task_comments")
 }
@@ -1870,11 +1886,12 @@ model ProjectSchedule {
   startDate DateTime       @map("start_date")
   endDate   DateTime       @map("end_date")
   status    String         @default("active")
-  tenantId  String         @map("tenant_id")
+  tenantId  String         @default("platform") @map("tenant_id")
   createdAt DateTime       @default(now()) @map("created_at")
   tasks     ScheduleTask[]
 
   @@index([projectId])
+  @@index([tenantId])
   @@map("project_schedules")
 }
 
@@ -1900,6 +1917,7 @@ model ScheduleTask {
 
 model SitePhoto {
   id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @default("platform") @map("tenant_id")
   projectId   String   @map("project_id")
   ossUrl      String   @map("oss_url")
   uploadedBy  String   @map("uploaded_by")
@@ -1912,6 +1930,7 @@ model SitePhoto {
   geoLat      Float?   @map("geo_lat")
   geoLng      Float?   @map("geo_lng")
 
+  @@index([tenantId])
   @@index([projectId, category])
   @@map("site_photos")
 }

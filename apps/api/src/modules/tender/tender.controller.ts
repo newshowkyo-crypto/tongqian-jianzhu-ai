@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Headers, Inject, Param, Post } from '@nestjs/common';
 
+import type { RfpRagService } from './rfp-rag.service.js';
 import { TenderService } from './tender.service.js';
-import { RfpRagService } from './rfp-rag.service.js';
 
 @Controller('api/v1')
 export class TenderController {

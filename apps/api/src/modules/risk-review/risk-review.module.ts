@@ -4,8 +4,8 @@ import { ReportCenterModule } from '../report-center/report-center.module.js';
 import { RuleCurationModule } from '../rule-curation/rule-curation.module.js';
 import { StorageModule } from '../storage/storage.module.js';
 
-import { RiskReviewController } from './risk-review.controller.js';
 import { RedFlagScanService } from './red-flag-scan.service.js';
+import { RiskReviewController } from './risk-review.controller.js';
 import { RiskReviewService } from './risk-review.service.js';
 
 @Module({

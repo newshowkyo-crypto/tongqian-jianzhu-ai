@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { AiCacheStrategy, AiTaskType } from '@tongqian/types';
 import { z } from 'zod';
 
-import { AiGatewayService } from '../../ai-gateway/ai-gateway.service.js';
+import type { AiGatewayService } from '../../ai-gateway/ai-gateway.service.js';
 import { ruleExtractOutputSchema, type RuleExtractInput, type RuleExtractOutput } from '../../prompts/rules/rule-extract.prompt.js';
-import { RulesService } from '../rule-curation/rules.service.js';
-import { SecurityComplianceService } from '../security-compliance/security-compliance.service.js';
+import type { RulesService } from '../rule-curation/rules.service.js';
+import type { SecurityComplianceService } from '../security-compliance/security-compliance.service.js';
 
 @Injectable()
 export class RuleExtractionService {

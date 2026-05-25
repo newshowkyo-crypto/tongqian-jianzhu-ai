@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
-import { KnowledgeCurationService } from '../../knowledge-curation/knowledge-curation.service.js';
-import { PromptTestingCurationService } from '../../prompt-testing-curation/prompt-testing-curation.service.js';
-import { RulesService } from '../../rule-curation/rules.service.js';
+import type { KnowledgeCurationService } from '../../knowledge-curation/knowledge-curation.service.js';
+import type { PromptTestingCurationService } from '../../prompt-testing-curation/prompt-testing-curation.service.js';
+import type { RulesService } from '../../rule-curation/rules.service.js';
 
 @Injectable()
 export class FuelProgressService {

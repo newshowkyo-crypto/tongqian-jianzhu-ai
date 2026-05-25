@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 
 import { StorageModule } from '../storage/storage.module.js';
 
-import { ReportCenterController } from './report-center.controller.js';
 import { AutoSummaryService } from './auto-summary.service.js';
+import { QualityCheckService } from './quality-check.service.js';
+import { ReportCenterController } from './report-center.controller.js';
 import { ReportCenterService } from './report-center.service.js';
 import { ReportExportService } from './report-export.service.js';
-import { QualityCheckService } from './quality-check.service.js';
 
 @Module({
   controllers: [ReportCenterController],

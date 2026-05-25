@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import type { ChatChannel, ChatContext, ChatConversationView, ChatDispatchResult, ChatIntent, ChatMemoryView, ChatMessageView, ChatSendResult } from '@tongqian/types';
-import { ToolRegistryService } from './tool-registry.service.js';
+
+import type { ToolRegistryService } from './tool-registry.service.js';
 
 interface StoredConversation extends ChatConversationView {
   tenantId: string;

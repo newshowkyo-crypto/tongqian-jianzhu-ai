@@ -16,5 +16,5 @@ export default function ChangesClaimsPage(): JSX.Element {
 }
 
 function Panel({ items, title }: { items: string[]; title: string }): JSX.Element {
-  return <div className="rounded border bg-white p-4"><h2 className="font-semibold">{title}</h2>{items.map((item, index) => <div className="mt-3 rounded border p-3" key={item}><div>{item}</div><div className="mt-1 text-sm text-slate-500">时效倒计时 {7 - index * 2} 天 · AI成功率 {68 - index * 8}%</div></div>)}</div>;
+  return <div className="rounded border bg-white p-4"><h2 className="font-semibold">{title}</h2>{items.map((item, index) => <div className="mt-4 rounded border p-4" key={item}><div>{item}</div><div className="mt-1 text-sm text-slate-500">时效倒计时 {7 - index * 2} 天 · AI成功率 {68 - index * 8}%</div></div>)}</div>;
 }

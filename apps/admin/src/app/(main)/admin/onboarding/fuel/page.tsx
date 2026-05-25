@@ -1,7 +1,7 @@
 'use client';
 
-import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
 import { type ReactNode } from 'react';
 
 import { zhCN } from '../../../../../i18n/zh-CN';
@@ -71,7 +71,7 @@ export default function FuelOnboardingPage(): ReactNode {
       </div>
       <section className="rounded-md border border-[var(--border-silver)] bg-white/5 p-4">
         <h2 className="text-lg font-semibold">{copy.timeline}</h2>
-        <div className="mt-4 space-y-3 text-sm text-[var(--text-secondary)]">
+        <div className="mt-4 space-y-4 text-sm text-[var(--text-secondary)]">
           {(data?.timeline ?? []).map((item) => <div className="flex justify-between gap-4" key={`${item.at}-${item.event}`}><span>{item.event}</span><span>{item.at}</span></div>)}
         </div>
       </section>

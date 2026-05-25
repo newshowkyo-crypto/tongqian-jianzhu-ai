@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { SecurityComplianceService } from '../security-compliance/security-compliance.service.js';
+import type { SecurityComplianceService } from '../security-compliance/security-compliance.service.js';
 
 export interface DeprecateInput {
   ageInDays: number;

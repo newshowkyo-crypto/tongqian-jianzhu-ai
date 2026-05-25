@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
 import { readFile } from 'node:fs/promises';
+
+import { Injectable } from '@nestjs/common';
 
 export interface LegalCorpusRecord {
   clauseCount: number;
@@ -50,7 +51,7 @@ export class LegalCorpusService {
 
   async loadFromFile(filePath: string): Promise<string> {
     const buffer = await readFile(filePath);
-    return buffer.toString('utf8').replace(/\u0000/g, '').trim();
+    return buffer.toString('utf8').split(String.fromCharCode(0)).join('').trim();
   }
 
   parseToClauses(text: string, corpusId = 'preview'): LegalClauseRecord[] {

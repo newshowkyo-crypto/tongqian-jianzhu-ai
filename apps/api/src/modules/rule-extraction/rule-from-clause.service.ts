@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { AiCacheStrategy, AiTaskType } from '@tongqian/types';
 import { z } from 'zod';
 
-import { AiGatewayService } from '../../ai-gateway/ai-gateway.service.js';
+import type { AiGatewayService } from '../../ai-gateway/ai-gateway.service.js';
 import { ruleFromClauseOutputSchema, type RuleFromClauseOutput } from '../../prompts/rules/rule-from-clause.prompt.js';
-import { LegalCorpusService } from '../legal-corpus/legal-corpus.service.js';
-import { RulesService, type RuleCandidate } from '../rule-curation/rules.service.js';
-import { SecurityComplianceService } from '../security-compliance/security-compliance.service.js';
+import type { LegalCorpusService } from '../legal-corpus/legal-corpus.service.js';
+import type { RuleCandidate, RulesService } from '../rule-curation/rules.service.js';
+import type { SecurityComplianceService } from '../security-compliance/security-compliance.service.js';
 
-import { DedupService } from './dedup.service.js';
+import type { DedupService } from './dedup.service.js';
 
 @Injectable()
 export class RuleFromClauseService {

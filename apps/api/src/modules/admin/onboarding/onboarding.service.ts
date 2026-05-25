@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
-import { CredentialsService } from '../credentials/credentials.service.js';
-import { FuelProgressService } from '../fuel-progress/fuel-progress.service.js';
-import { IcpService } from '../icp/icp.service.js';
+import type { CredentialsService } from '../credentials/credentials.service.js';
+import type { FuelProgressService } from '../fuel-progress/fuel-progress.service.js';
+import type { IcpService } from '../icp/icp.service.js';
 
 @Injectable()
 export class OnboardingService {

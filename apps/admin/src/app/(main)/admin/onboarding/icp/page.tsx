@@ -75,7 +75,7 @@ export default function IcpOnboardingPage(): ReactNode {
           <a className="text-sm text-[var(--accent-gold)]" href="https://beian.aliyun.com/" rel="noreferrer" target="_blank">{copy.aliyunLink}</a>
         </div>
         <div className="mt-4 h-2 rounded-full bg-white/10"><div className="h-2 rounded-full bg-[var(--accent-gold)]" style={{ width: `${progress}%` }} /></div>
-        <div className="mt-4 grid gap-3 md:grid-cols-2">
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
           {(data?.materialsChecklist ?? []).map((item) => (
             <div className="flex items-center justify-between gap-4 rounded-md border border-[var(--border-silver)] p-4" key={item.name}>
               <span>{item.name}</span>
@@ -86,7 +86,7 @@ export default function IcpOnboardingPage(): ReactNode {
       </section>
       <section className="rounded-md border border-[var(--border-silver)] bg-white/5 p-4">
         <h2 className="text-lg font-semibold">{copy.progress}</h2>
-        <div className="mt-4 grid gap-3 md:grid-cols-5">
+        <div className="mt-4 grid gap-4 md:grid-cols-5">
           {copy.steps.map((step, index) => (
             <div className={`rounded-md border p-4 text-sm ${index * 25 <= progress ? 'border-emerald-300/60 bg-emerald-500/10' : 'border-[var(--border-silver)] bg-black/20'}`} key={step}>{step}</div>
           ))}

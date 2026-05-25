@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { readFileSync } from 'node:fs';
 
-import { LegalCorpusService } from '../../legal-corpus/legal-corpus.service.js';
-import { RuleFromClauseService } from '../../rule-extraction/rule-from-clause.service.js';
-import { SecurityComplianceService } from '../../security-compliance/security-compliance.service.js';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+
+import type { LegalCorpusService } from '../../legal-corpus/legal-corpus.service.js';
+import type { RuleFromClauseService } from '../../rule-extraction/rule-from-clause.service.js';
+import type { SecurityComplianceService } from '../../security-compliance/security-compliance.service.js';
 
 interface CorpusMetadata {
   code: string;

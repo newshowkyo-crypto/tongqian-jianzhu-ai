@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 
-import { CredentialsService } from './credentials.service.js';
+import type { CredentialsService } from './credentials.service.js';
 
 @Controller('api/v1/admin/credentials')
 export class CredentialsController {

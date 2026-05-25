@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
 import { createReadStream } from 'node:fs';
 import { createInterface } from 'node:readline';
+
+import { Injectable } from '@nestjs/common';
 
 export interface CostCatalogItem {
   classCode: string;
