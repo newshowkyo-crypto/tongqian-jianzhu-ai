@@ -1,10 +1,11 @@
 import { Body, Controller, Get, Headers, Inject, Param, Post } from '@nestjs/common';
 
 import { ProjectSiteService } from './project-site.service.js';
+import { ScheduleService } from './schedule.service.js';
 
 @Controller('api/v1/projects')
 export class ProjectSiteController {
-  constructor(@Inject(ProjectSiteService) private readonly sites: ProjectSiteService) {}
+  constructor(@Inject(ProjectSiteService) private readonly sites: ProjectSiteService, private readonly schedules: ScheduleService) {}
 
   @Post()
   create(@Body() body: { name: string; planCode?: string; region?: string; type?: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant', @Headers('x-user-id') userId = 'mock-user'): unknown {
@@ -74,5 +75,30 @@ export class ProjectSiteController {
   @Post(':id/safety-monthly-reminder')
   safety(@Param('id') id: string, @Body() body: { season?: 'rain' | 'spring' }, @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
     return { code: 'OK', data: this.sites.safetyMonthlyReminder({ ...body, projectId: id, tenantId }), message: 'Safety reminder created', traceId: crypto.randomUUID() };
+  }
+
+  @Post(':id/schedules')
+  createSchedule(@Param('id') id: string, @Body() body: { endDate: string; startDate: string; title?: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
+    return { code: 'OK', data: this.schedules.createSchedule({ ...body, projectId: id, tenantId }), message: 'Schedule created', traceId: crypto.randomUUID() };
+  }
+
+  @Post(':id/schedules/:scheduleId/tasks')
+  addScheduleTask(@Param('scheduleId') scheduleId: string, @Body() body: { dependencies?: string[]; name: string; plannedEnd: string; plannedStart: string }): unknown {
+    return { code: 'OK', data: this.schedules.addTask(scheduleId, { ...body, dependencies: body.dependencies ?? [] }), message: 'Schedule task created', traceId: crypto.randomUUID() };
+  }
+
+  @Post(':id/schedules/:scheduleId/tasks/:taskId/progress')
+  updateScheduleProgress(@Param('taskId') taskId: string, @Body() body: { actualEnd?: string; actualStart?: string; progressPct: number }): unknown {
+    return { code: 'OK', data: this.schedules.updateProgress(taskId, body.progressPct, body.actualStart, body.actualEnd), message: 'Schedule progress updated', traceId: crypto.randomUUID() };
+  }
+
+  @Get(':id/schedules/:scheduleId/critical-path')
+  criticalPath(@Param('scheduleId') scheduleId: string): unknown {
+    return { code: 'OK', data: { criticalPath: this.schedules.computeCriticalPath(scheduleId), delayReport: this.schedules.getDelayReport(scheduleId) }, message: 'Critical path', traceId: crypto.randomUUID() };
+  }
+
+  @Post(':id/schedules/:scheduleId/risk-advisor')
+  scheduleRiskAdvisor(@Param('scheduleId') scheduleId: string): unknown {
+    return { code: 'OK', data: this.schedules.getDelayReport(scheduleId), message: 'Schedule risk advisor', traceId: crypto.randomUUID() };
   }
 }

@@ -1651,6 +1651,42 @@ model RfpChunk {
   @@map("rfp_chunks")
 }
 
+model ProjectSchedule {
+  id        String         @id @default(uuid()) @db.Uuid
+  projectId String         @map("project_id")
+  title     String         @default("主进度计划 v1")
+  version   Int            @default(1)
+  startDate DateTime       @map("start_date")
+  endDate   DateTime       @map("end_date")
+  status    String         @default("active")
+  tenantId  String         @map("tenant_id")
+  createdAt DateTime       @default(now()) @map("created_at")
+  tasks     ScheduleTask[]
+
+  @@index([projectId])
+  @@map("project_schedules")
+}
+
+model ScheduleTask {
+  id             String         @id @default(uuid()) @db.Uuid
+  scheduleId     String         @map("schedule_id") @db.Uuid
+  parentId       String?        @map("parent_id") @db.Uuid
+  name           String
+  plannedStart   DateTime       @map("planned_start")
+  plannedEnd     DateTime       @map("planned_end")
+  actualStart    DateTime?      @map("actual_start")
+  actualEnd      DateTime?      @map("actual_end")
+  progressPct    Int            @default(0) @map("progress_pct")
+  isCriticalPath Boolean        @default(false) @map("is_critical_path")
+  dependencies   String[]
+  schedule       ProjectSchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  parent         ScheduleTask?   @relation("TaskHierarchy", fields: [parentId], references: [id])
+  children       ScheduleTask[]  @relation("TaskHierarchy")
+
+  @@index([scheduleId])
+  @@map("schedule_tasks")
+}
+
 model AgentProfile {
   id             String    @id @default(uuid()) @db.Uuid
   userId         String    @unique @map("user_id")
