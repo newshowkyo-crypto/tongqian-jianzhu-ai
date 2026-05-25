@@ -1,7 +1,7 @@
 'use client';
 
-import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
 import { type ReactNode } from 'react';
 
 import { zhCN } from '../../../../../i18n/zh-CN';
