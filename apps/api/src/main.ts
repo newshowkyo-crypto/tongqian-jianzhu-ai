@@ -22,8 +22,9 @@ import { DrawingModule } from './modules/drawing/drawing.module.js';
 import { ExternalApiModule } from './modules/external-api/external-api.module.js';
 import { GovSoeModule } from './modules/gov-soe/gov-soe.module.js';
 import { HealthModule } from './modules/health/health.module.js';
-import { KnowledgeModule } from './modules/knowledge/knowledge.module.js';
 import { KnowledgeCurationModule } from './modules/knowledge-curation/knowledge-curation.module.js';
+import { KnowledgeModule } from './modules/knowledge/knowledge.module.js';
+import { LegalCorpusModule } from './modules/legal-corpus/legal-corpus.module.js';
 import { NotificationModule } from './modules/notification/notification.module.js';
 import { OpportunityModule } from './modules/opportunity/opportunity.module.js';
 import { OpsToolkitModule } from './modules/ops-toolkit/ops-toolkit.module.js';
@@ -76,6 +77,7 @@ class HealthController {
     HealthModule,
     KnowledgeModule,
     KnowledgeCurationModule,
+    LegalCorpusModule,
     NotificationModule,
     OpportunityModule,
     OpsToolkitModule,

@@ -3,6 +3,8 @@ import { Module } from '@nestjs/common';
 import { TenantContextService } from '../../common/context/tenant-context.service.js';
 import { JwtGuard } from '../../common/guards/jwt.guard.js';
 import { PermissionGuard } from '../../common/guards/permission.guard.js';
+import { LegalCorpusModule } from '../legal-corpus/legal-corpus.module.js';
+import { RuleExtractionModule } from '../rule-extraction/rule-extraction.module.js';
 import { SecurityComplianceService } from '../security-compliance/security-compliance.service.js';
 import { SystemConfigService } from '../system-config/system-config.service.js';
 
@@ -27,6 +29,7 @@ import { IcpService } from './icp/icp.service.js';
 import { IncidentsAdminController } from './incidents/incidents-admin.controller.js';
 import { IngestAdminController } from './ingest/ingest-admin.controller.js';
 import { JobsAdminController } from './jobs/jobs-admin.controller.js';
+import { LegalCorpusAdminController } from './legal-corpus-admin/legal-corpus-admin.controller.js';
 import { ModelsAdminController } from './models/models-admin.controller.js';
 import { NotificationsAdminController } from './notifications/notifications-admin.controller.js';
 import { OperationsAdminController } from './operations/operations-admin.controller.js';
@@ -51,9 +54,9 @@ import { TenantsAdminController } from './tenants/tenants-admin.controller.js';
 import { UsersAdminController } from './users/users-admin.controller.js';
 
 @Module({
-  controllers: [AddictionConfigAdminController, AgentsAdminController, ApprovalsAdminController, AuditAdminController, BillingAdminController, CaseMarketAdminController, ConfigAdminController, CredentialsAdminController, CredentialsController, CreditsAdminController, DataExportsAdminController, FeatureFlagsAdminController, GovAdminController, IcpController, IngestAdminController, IncidentsAdminController, JobsAdminController, ModelsAdminController, NotificationsAdminController, OnboardingController, OperationsAdminController, OpportunitiesAdminController, OrdersAdminController, PolicyFundsAdminController, PromptTestsAdminController, PromptsAdminController, RefundsAdminController, ReportsAdminController, RewardClaimsAdminController, RiskAdminController, RulesAdminController, SecurityAdminController, ServicesAdminController, SubscriptionsAdminController, SystemConfigAdminController, TenantsAdminController, UsersAdminController],
+  controllers: [AddictionConfigAdminController, AgentsAdminController, ApprovalsAdminController, AuditAdminController, BillingAdminController, CaseMarketAdminController, ConfigAdminController, CredentialsAdminController, CredentialsController, CreditsAdminController, DataExportsAdminController, FeatureFlagsAdminController, GovAdminController, IcpController, IngestAdminController, IncidentsAdminController, JobsAdminController, LegalCorpusAdminController, ModelsAdminController, NotificationsAdminController, OnboardingController, OperationsAdminController, OpportunitiesAdminController, OrdersAdminController, PolicyFundsAdminController, PromptTestsAdminController, PromptsAdminController, RefundsAdminController, ReportsAdminController, RewardClaimsAdminController, RiskAdminController, RulesAdminController, SecurityAdminController, ServicesAdminController, SubscriptionsAdminController, SystemConfigAdminController, TenantsAdminController, UsersAdminController],
   exports: [AdminResourceService],
-  imports: [FuelProgressModule, RuleCandidatesModule],
+  imports: [FuelProgressModule, LegalCorpusModule, RuleCandidatesModule, RuleExtractionModule],
   providers: [AdminResourceService, CredentialsService, IcpService, OnboardingService, SecurityComplianceService, SystemConfigService, TenantContextService, JwtGuard, PermissionGuard],
 })
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
