@@ -1,0 +1,66 @@
+{
+  "traceId": "m27-sample-2026-05-25",
+  "mode": "sample-5-only",
+  "candidates": [
+    {
+      "title": "进度款逾期预警",
+      "type": "contract",
+      "clauseRef": "GF-2017-0201 12.4.1",
+      "riskLevel": "red",
+      "condition": "发包人逾期支付进度款",
+      "consequence": "可能形成现金流风险和索赔争议",
+      "suggestion": "建议关注付款节点、催告证据和暂停施工条件。",
+      "legalBasis": "GF-2017-0201 12.4.1",
+      "applicableScenario": ["工程款回款", "进度款催收"],
+      "confidence": 0.92
+    },
+    {
+      "title": "异常资格门槛识别",
+      "type": "tender",
+      "clauseRef": "BID-LAW-REG-2019 第三十二条",
+      "riskLevel": "yellow",
+      "condition": "招标文件设置本地备案等异常门槛",
+      "consequence": "可能构成限制排斥投标",
+      "suggestion": "建议关注资格条件是否与项目实际需要相匹配。",
+      "legalBasis": "BID-LAW-REG-2019 第三十二条",
+      "applicableScenario": ["投标报名", "资格预审"],
+      "confidence": 0.86
+    },
+    {
+      "title": "清单漏项复核",
+      "type": "cost",
+      "clauseRef": "GB50500-2024 3.1.2",
+      "riskLevel": "yellow",
+      "condition": "工程量清单项目特征描述不完整",
+      "consequence": "可能引发报价偏差和结算争议",
+      "suggestion": "建议关注项目特征、计量单位和综合单价口径。",
+      "legalBasis": "GB50500-2024 3.1.2",
+      "applicableScenario": ["投标报价", "结算复核"],
+      "confidence": 0.88
+    },
+    {
+      "title": "检验批记录校验",
+      "type": "quality",
+      "clauseRef": "GB50300-2013 5.0.6",
+      "riskLevel": "yellow",
+      "condition": "检验批验收资料缺失或填写主体不清",
+      "consequence": "可能影响验收通过和结算资料完整性",
+      "suggestion": "建议关注检验批记录填写人、签章和归档链路。",
+      "legalBasis": "GB50300-2013 5.0.6",
+      "applicableScenario": ["质量验收", "资料归档"],
+      "confidence": 0.89
+    },
+    {
+      "title": "司法解释索赔证据",
+      "type": "contract",
+      "clauseRef": "SPC-CONTRACT-2020-25 第十条",
+      "riskLevel": "red",
+      "condition": "工期顺延或价款调整缺少签证证据",
+      "consequence": "可能降低诉讼或谈判中的支持概率",
+      "suggestion": "建议关注书面签证、会议纪要和催告记录。",
+      "legalBasis": "SPC-CONTRACT-2020-25 第十条",
+      "applicableScenario": ["工期索赔", "工程价款争议"],
+      "confidence": 0.83
+    }
+  ]
+}
