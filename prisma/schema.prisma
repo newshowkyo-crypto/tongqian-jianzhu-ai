@@ -1651,6 +1651,23 @@ model RfpChunk {
   @@map("rfp_chunks")
 }
 
+model HistoricalProjectCost {
+  id                String   @id @default(uuid()) @db.Uuid
+  tenantId          String   @map("tenant_id")
+  projectName       String   @map("project_name")
+  projectType       String   @map("project_type")
+  region            String
+  areaSqm           Float    @map("area_sqm")
+  totalCostCny      Decimal  @map("total_cost_cny") @db.Decimal(20, 2)
+  unitCostCnyPerSqm Decimal  @map("unit_cost_cny_per_sqm") @db.Decimal(20, 2)
+  breakdown         Json
+  completedAt       DateTime @map("completed_at")
+  notes             String?  @db.Text
+
+  @@index([tenantId, projectType, region])
+  @@map("historical_project_costs")
+}
+
 model ProjectSchedule {
   id        String         @id @default(uuid()) @db.Uuid
   projectId String         @map("project_id")
