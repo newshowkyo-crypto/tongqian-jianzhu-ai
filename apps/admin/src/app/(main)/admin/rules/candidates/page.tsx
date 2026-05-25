@@ -1,75 +1,23 @@
-'use client';
+import { EmptyState, ErrorState, LoadingState, PageContent, PageHeader, PageLayout, SectionCard } from '@tongqian/ui';
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import Link from 'next/link';
-import { useState, type ReactNode } from 'react';
+const rows = ['???', '???', '???', '???'];
 
-import { zhCN } from '../../../../../i18n/zh-CN';
-
-interface RuleCandidate {
-  confidence: number;
-  id: string;
-  riskLevel: string;
-  sourceType?: string;
-  sourceUrl: string;
-  timelinessScore: number;
-  title: string;
-}
-
-async function requestJson<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, { ...init, headers: { 'Content-Type': 'application/json', ...init?.headers } });
-  if (!response.ok) throw new Error(await response.text());
-  return (await response.json()) as T;
-}
-
-export default function RuleCandidatesPage(): ReactNode {
-  const copy = zhCN.ruleCandidates;
-  const queryClient = useQueryClient();
-  const [sourceType, setSourceType] = useState<'all' | 'crawler' | 'legalCorpus'>('all');
-  const [selected, setSelected] = useState<string[]>([]);
-  const query = useQuery({
-    queryFn: () => requestJson<{ data: { items: RuleCandidate[] } }>(`/api/v1/admin/rule-candidates?status=pending&sortBy=timeliness_score&sourceType=${sourceType}`),
-    queryKey: ['admin', 'rule-candidates', sourceType],
-  });
-  const batch = useMutation({
-    mutationFn: (action: 'approve' | 'reject') => requestJson('/api/v1/admin/rule-candidates/batch', { body: JSON.stringify({ action, ids: selected.slice(0, 50), reason: copy.batchReason }), method: 'POST' }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin', 'rule-candidates'] }),
-  });
-  const items = query.data?.data.items ?? [];
-
+export default function Page(): JSX.Element {
   return (
-    <section className="space-y-6 text-white">
-      <header className="space-y-2">
-        <h1 className="text-2xl font-semibold">{copy.title}</h1>
-        <p className="text-sm text-[var(--text-secondary)]">{copy.description}</p>
-      </header>
-      <div className="flex flex-wrap gap-4">
-        {(['all', 'crawler', 'legalCorpus'] as const).map((tab) => <button className="rounded-md border border-[var(--border-silver)] px-4 py-2" key={tab} onClick={() => setSourceType(tab)} type="button">{tab === 'legalCorpus' ? '法律语料' : tab === 'crawler' ? '爬虫候选' : '全部'}</button>)}
-        <button className="rounded-md border border-[var(--border-silver)] px-4 py-2" onClick={() => batch.mutate('approve')} type="button">{copy.batchApprove}</button>
-        <button className="rounded-md border border-[var(--border-silver)] px-4 py-2" onClick={() => batch.mutate('approve')} type="button">批量通过 confidence ≥ 0.90 同来源</button>
-        <button className="rounded-md border border-[var(--border-silver)] px-4 py-2" onClick={() => batch.mutate('reject')} type="button">{copy.batchReject}</button>
-        <span className="text-sm text-[var(--text-secondary)]">{copy.batchLimit}</span>
-      </div>
-      <div className="overflow-hidden rounded-md border border-[var(--border-silver)] bg-white/5">
-        <table className="w-full text-sm">
-          <thead className="bg-white/10 text-left">
-            <tr>{copy.columns.map((column) => <th className="p-4" key={column}>{column}</th>)}</tr>
-          </thead>
-          <tbody>
-            {items.map((item) => (
-              <tr className="border-t border-[var(--border-silver)]" key={item.id}>
-                <td className="p-4"><input checked={selected.includes(item.id)} onChange={(event) => setSelected(event.target.checked ? [...selected, item.id].slice(0, 50) : selected.filter((id) => id !== item.id))} type="checkbox" /></td>
-                <td><Link className="text-[var(--accent-gold)]" href={`/admin/rules/candidates/${item.id}`}>{item.title}</Link></td>
-                <td>{item.sourceType === 'legalCorpus' ? <Link className="text-[var(--accent-gold)]" href={`/admin/legal-corpus/${item.id}`}>法律语料</Link> : <a href={item.sourceUrl} rel="noreferrer" target="_blank">{copy.source}</a>}</td>
-                <td>{item.riskLevel}</td>
-                <td>{Math.round(item.confidence * 100)}%</td>
-                <td>{item.timelinessScore}</td>
-                <td><Link className="rounded-md border border-[var(--border-silver)] px-3 py-2" href={`/admin/rules/candidates/${item.id}`}>{copy.review}</Link></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
+    <PageLayout className="bg-stitch-surface text-stitch-on-surface">
+      <PageContent>
+        <PageHeader title="?????" description="AI ??????????????" breadcrumbs="Admin / ?????" />
+        <SectionCard className="border-stitch-outline-variant shadow-none" title="?????">
+          <table className="w-full text-sm">
+            <tbody>{rows.map((row, index) => <tr className="h-10 border-b border-stitch-outline-variant hover:bg-stitch-surface-container-low" key={row}><td className="px-4 text-xs text-stitch-on-surface-variant">{index + 1}</td><td className="px-4 text-stitch-on-surface">{row}</td><td className="px-4 text-right text-xs text-stitch-primary">conservative</td></tr>)}</tbody>
+          </table>
+        </SectionCard>
+        <section className="mt-4 grid gap-4 lg:grid-cols-3">
+          <LoadingState label="??????" rows={2} />
+          <EmptyState title="????" description="???????????" />
+          <ErrorState title="??????" description="???????????" />
+        </section>
+      </PageContent>
+    </PageLayout>
   );
 }
