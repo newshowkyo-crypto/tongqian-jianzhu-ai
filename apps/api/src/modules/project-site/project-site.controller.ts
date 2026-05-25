@@ -1,12 +1,16 @@
 import { Body, Controller, Get, Headers, Inject, Param, Post, Query } from '@nestjs/common';
 
 import { PhotoService } from './photo.service.js';
+import { PaymentLedgerService } from './payment-ledger.service.js';
+import { ChangeOrderService } from './change-order.service.js';
+import { ClaimRecordService } from './claim-record.service.js';
+import { TaskBoardService } from './task-board.service.js';
 import { ProjectSiteService } from './project-site.service.js';
 import { ScheduleService } from './schedule.service.js';
 
 @Controller('api/v1/projects')
 export class ProjectSiteController {
-  constructor(@Inject(ProjectSiteService) private readonly sites: ProjectSiteService, private readonly schedules: ScheduleService, private readonly photos: PhotoService) {}
+  constructor(@Inject(ProjectSiteService) private readonly sites: ProjectSiteService, private readonly schedules: ScheduleService, private readonly photos: PhotoService, private readonly ledgers: PaymentLedgerService, private readonly changes: ChangeOrderService, private readonly claims: ClaimRecordService, private readonly tasks: TaskBoardService) {}
 
   @Post()
   create(@Body() body: { name: string; planCode?: string; region?: string; type?: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant', @Headers('x-user-id') userId = 'mock-user'): unknown {
@@ -61,6 +65,31 @@ export class ProjectSiteController {
   @Post(':id/progress-payments')
   progress(@Param('id') id: string, @Body() body: { completedValueCny: number; period: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
     return { code: 'OK', data: this.sites.progressPayment({ ...body, projectId: id, tenantId }), message: 'Progress payment application created', traceId: crypto.randomUUID() };
+  }
+
+  @Post(':id/payment-ledger')
+  paymentLedger(@Param('id') id: string, @Body() body: { amountCny: number; eventDate?: string; eventType: 'contract_signed' | 'dispute' | 'invoice_issued' | 'payment_received' | 'work_completed' | 'written_off'; invoiceDate?: string; period: string; status?: 'confirmed' | 'disputed' | 'pending' | 'written_off' }, @Headers('x-tenant-id') tenantId = 'mock-tenant', @Headers('x-user-id') createdBy = 'mock-user'): unknown {
+    return { code: 'OK', data: this.ledgers.recordEvent({ ...body, createdBy, eventDate: body.eventDate ?? new Date().toISOString(), projectId: id, status: body.status ?? 'pending', tenantId }), message: 'Payment ledger recorded', traceId: crypto.randomUUID() };
+  }
+
+  @Post(':id/change-orders')
+  changeOrder(@Param('id') id: string, @Body() body: { contractId: string; description: string; evidenceFiles?: string[]; orderType: string; title: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
+    return { code: 'OK', data: this.changes.create({ ...body, evidenceFiles: body.evidenceFiles ?? [], projectId: id, tenantId }), message: 'Change order created', traceId: crypto.randomUUID() };
+  }
+
+  @Post(':id/claims')
+  claim(@Param('id') id: string, @Body() body: { claimedAmountCny?: number; claimType: string; contractId: string; description: string; evidenceFiles?: string[]; submitDeadline?: string; title: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
+    return { code: 'OK', data: this.claims.create({ ...body, evidenceFiles: body.evidenceFiles ?? [], projectId: id, tenantId }), message: 'Claim record created', traceId: crypto.randomUUID() };
+  }
+
+  @Get(':id/tasks')
+  taskBoard(@Param('id') id: string): unknown {
+    return { code: 'OK', data: this.tasks.board(id), message: 'Project task board', traceId: crypto.randomUUID() };
+  }
+
+  @Post(':id/tasks')
+  createTask(@Param('id') id: string, @Body() body: { category?: string; description?: string; dueDate?: string; relatedChangeId?: string; relatedClaimId?: string; relatedScheduleTaskId?: string; title: string }, @Headers('x-user-id') createdBy = 'mock-user'): unknown {
+    return { code: 'OK', data: this.tasks.create({ ...body, createdBy, projectId: id }), message: 'Project task created', traceId: crypto.randomUUID() };
   }
 
   @Post(':id/major-hazards')

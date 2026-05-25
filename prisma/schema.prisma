@@ -1668,6 +1668,200 @@ model HistoricalProjectCost {
   @@map("historical_project_costs")
 }
 
+model BaselineUnitCost {
+  id            String  @id @default(cuid())
+  projectType   String  @map("project_type")
+  structureType String  @map("structure_type")
+  region        String
+  baseCnyPerSqm Decimal @map("base_cny_per_sqm") @db.Decimal(20, 2)
+  baseYear      Int     @default(2026) @map("base_year")
+  sourceNotes   String? @map("source_notes") @db.Text
+
+  @@unique([projectType, structureType, region, baseYear])
+  @@map("baseline_unit_costs")
+}
+
+model BudgetEstimate {
+  id              String    @id @default(cuid())
+  tenantId        String    @map("tenant_id")
+  projectName     String    @map("project_name")
+  areaSqm         Float     @map("area_sqm")
+  projectType     String    @map("project_type")
+  structureType   String    @map("structure_type")
+  region          String
+  qualityLevel    String    @map("quality_level")
+  plannedStart    DateTime? @map("planned_start")
+  baselineCny     Decimal   @map("baseline_cny") @db.Decimal(20, 2)
+  coefficients    Json
+  estimateLowCny  Decimal   @map("estimate_low_cny") @db.Decimal(20, 2)
+  estimateMidCny  Decimal   @map("estimate_mid_cny") @db.Decimal(20, 2)
+  estimateHighCny Decimal   @map("estimate_high_cny") @db.Decimal(20, 2)
+  aiAnalysis      String?   @map("ai_analysis") @db.Text
+  confidence      Float
+  disclaimer      String
+  createdBy       String    @map("created_by")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  @@index([tenantId, createdAt])
+  @@map("budget_estimates")
+}
+
+model QuantityIndicator {
+  id            String  @id @default(cuid())
+  projectType   String  @map("project_type")
+  structureType String  @map("structure_type")
+  workItem      String  @map("work_item")
+  unit          String
+  coefficient   Decimal @db.Decimal(20, 6)
+  sourceNotes   String? @map("source_notes") @db.Text
+
+  @@unique([projectType, structureType, workItem])
+  @@map("quantity_indicators")
+}
+
+model RoughQuantityEstimate {
+  id            String  @id @default(cuid())
+  tenantId      String  @map("tenant_id")
+  projectName   String  @map("project_name")
+  areaSqm       Float   @map("area_sqm")
+  projectType   String  @map("project_type")
+  structureType String  @map("structure_type")
+  items         Json
+  totalCny      Decimal @map("total_cny") @db.Decimal(20, 2)
+  aiAnalysis    String? @map("ai_analysis") @db.Text
+
+  @@map("rough_quantity_estimates")
+}
+
+model PaymentLedger {
+  id          String    @id @default(cuid())
+  tenantId    String    @map("tenant_id")
+  projectId   String    @map("project_id")
+  contractId  String?   @map("contract_id")
+  eventType   String    @map("event_type")
+  amountCny   Decimal   @map("amount_cny") @db.Decimal(20, 2)
+  eventDate   DateTime  @map("event_date")
+  period      String
+  invoiceNo   String?   @map("invoice_no")
+  invoiceDate DateTime? @map("invoice_date")
+  paymentDate DateTime? @map("payment_date")
+  status      String
+  notes       String?   @db.Text
+  createdBy   String    @map("created_by")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@index([tenantId, projectId, eventDate])
+  @@map("payment_ledgers")
+}
+
+model ChangeOrder {
+  id                     String    @id @default(cuid())
+  tenantId               String    @map("tenant_id")
+  projectId              String    @map("project_id")
+  contractId             String    @map("contract_id")
+  orderType              String    @map("order_type")
+  title                  String
+  description            String    @db.Text
+  estimatedCostImpactCny Decimal?  @map("estimated_cost_impact_cny") @db.Decimal(20, 2)
+  estimatedTimeImpactDays Int?     @map("estimated_time_impact_days")
+  status                 String
+  evidenceFiles          String[]  @map("evidence_files")
+  submittedAt            DateTime? @map("submitted_at")
+  approvedAt             DateTime? @map("approved_at")
+  finalCostCny           Decimal?  @map("final_cost_cny") @db.Decimal(20, 2)
+  finalTimeDays          Int?      @map("final_time_days")
+  aiRiskAnalysis         String?   @map("ai_risk_analysis") @db.Text
+
+  @@index([tenantId, projectId, status])
+  @@map("change_orders")
+}
+
+model ClaimRecord {
+  id               String    @id @default(cuid())
+  tenantId         String    @map("tenant_id")
+  projectId        String    @map("project_id")
+  contractId       String    @map("contract_id")
+  claimType        String    @map("claim_type")
+  title            String
+  description      String    @db.Text
+  claimedAmountCny Decimal?  @map("claimed_amount_cny") @db.Decimal(20, 2)
+  claimedTimeDays  Int?      @map("claimed_time_days")
+  submitDeadline   DateTime? @map("submit_deadline")
+  submittedAt      DateTime? @map("submitted_at")
+  status           String
+  evidenceFiles    String[]  @map("evidence_files")
+  finalAmountCny   Decimal?  @map("final_amount_cny") @db.Decimal(20, 2)
+  finalTimeDays    Int?      @map("final_time_days")
+  aiSuccessScore   Float?    @map("ai_success_score")
+  aiAnalysis       String?   @map("ai_analysis") @db.Text
+
+  @@index([tenantId, projectId, submitDeadline])
+  @@map("claim_records")
+}
+
+model CarbonFactor {
+  id          String  @id @default(cuid())
+  material    String
+  category    String
+  unit        String
+  factorValue Decimal @map("factor_value") @db.Decimal(20, 4)
+  sourceNotes String? @map("source_notes") @db.Text
+
+  @@map("carbon_factors")
+}
+
+model CarbonEstimate {
+  id                    String   @id @default(cuid())
+  tenantId              String   @map("tenant_id")
+  projectName           String   @map("project_name")
+  areaSqm               Float    @map("area_sqm")
+  materialItems         Json     @map("material_items")
+  totalKgCo2e           Decimal  @map("total_kg_co2e") @db.Decimal(20, 2)
+  perSqmKgCo2e          Decimal  @map("per_sqm_kg_co2e") @db.Decimal(20, 2)
+  benchmarkPerSqmKgCo2e Decimal? @map("benchmark_per_sqm_kg_co2e") @db.Decimal(20, 2)
+  deviationPct          Float?   @map("deviation_pct")
+  aiSuggestions         Json     @map("ai_suggestions")
+  disclaimer            String
+
+  @@map("carbon_estimates")
+}
+
+model ProjectTask {
+  id                    String    @id @default(cuid())
+  projectId             String    @map("project_id")
+  parentTaskId          String?   @map("parent_task_id")
+  title                 String
+  description           String?   @db.Text
+  status                String    @default("todo")
+  priority              String    @default("normal")
+  category              String?
+  assignedTo            String?   @map("assigned_to")
+  reviewerId            String?   @map("reviewer_id")
+  dueDate               DateTime? @map("due_date")
+  completedAt           DateTime? @map("completed_at")
+  relatedScheduleTaskId String?   @map("related_schedule_task_id")
+  relatedClaimId        String?   @map("related_claim_id")
+  relatedChangeId       String?   @map("related_change_id")
+  tags                  String[]
+  createdBy             String    @map("created_by")
+  createdAt             DateTime  @default(now()) @map("created_at")
+
+  @@index([projectId, status, dueDate])
+  @@map("project_tasks")
+}
+
+model TaskComment {
+  id          String   @id @default(cuid())
+  taskId      String   @map("task_id")
+  userId      String   @map("user_id")
+  content     String   @db.Text
+  attachments String[]
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([taskId, createdAt])
+  @@map("task_comments")
+}
+
 model ProjectSchedule {
   id        String         @id @default(uuid()) @db.Uuid
   projectId String         @map("project_id")
