@@ -2,6 +2,8 @@
 
 :root,
 [data-theme='light'] {
+  --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "Source Code Pro", Menlo, Consolas, monospace;
   --bg: #f7f9fc;
   --surface: #ffffff;
   --surface-muted: #f0f4fa;
@@ -28,6 +30,12 @@
 body {
   background: var(--bg);
   color: var(--text-primary);
+  font-family: var(--font-sans);
+}
+
+code,
+pre {
+  font-family: var(--font-mono);
 }
 
 :root {

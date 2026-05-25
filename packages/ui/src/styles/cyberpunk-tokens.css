@@ -150,6 +150,10 @@ body::after {
   box-shadow: var(--shadow-rose-glow);
 }
 
+[data-theme='light'] .tq-cyber-brand {
+  background: linear-gradient(135deg, #ffffff, #eef3f9);
+}
+
 .tq-cyber-nav-item {
   border: 1px solid transparent;
   color: var(--text-secondary);
@@ -193,6 +197,12 @@ body::after {
   background: rgba(10, 29, 61, 0.62);
   border: 1px solid var(--border-silver);
   color: var(--text-primary);
+}
+
+[data-theme='light'] .tq-cyber-control {
+  background: #ffffff;
+  border-color: #b5bcc8;
+  color: #0a1d3d;
 }
 
 .tq-cyber-control:hover,

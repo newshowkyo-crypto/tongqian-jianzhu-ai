@@ -12,6 +12,9 @@ const rules = [
   { id: 'R3', label: 'odd spacing', pattern: /\b(?:p|gap|space-y)-(3|5|7)\b/ },
   { id: 'R4', label: 'oversized radius', pattern: /\brounded-(?:2|3)xl\b|rounded-\[\d+px\]/ },
   { id: 'R5', label: 'oversized shadow', pattern: /\bshadow-(?:xl|2xl)\b/ },
+  { id: 'R9', label: 'low-contrast white on light bg', pattern: /\bbg-white(?:\s|["'`])[^"`']*?\btext-white\b/ },
+  { id: 'R9', label: 'low-contrast gray text', pattern: /\btext-(?:neutral-200|neutral-300|gray-200|gray-300)\b/ },
+  { id: 'R9', label: 'low-contrast translucent text', pattern: /\btext-(?:white|on-surface-variant)\/[0-3]0\b/ },
   { id: 'R8', label: 'inline color style', pattern: /style=\{\{[^}]*\b(?:color|background)\b/ },
 ];
 
@@ -40,4 +43,4 @@ if (hits.length > 0) {
   process.exit(1);
 }
 
-console.log('PASS visual-lint R1-R8: no violations');
+console.log('PASS visual-lint R1-R9: no violations');

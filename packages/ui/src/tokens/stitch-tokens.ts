@@ -87,5 +87,8 @@ export const stitchShadows = {
 } as const;
 
 export const stitchFontFamily = {
-  stitch: ['Inter', 'PingFang SC', 'Microsoft YaHei', 'sans-serif'],
+  mono: ['JetBrains Mono', 'Source Code Pro', 'Menlo', 'Consolas', 'monospace'],
+  sans: ['-apple-system', 'BlinkMacSystemFont', 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', 'Inter', 'Helvetica Neue', 'Arial', 'sans-serif'],
+  serif: ['Georgia', 'Times New Roman', 'Source Han Serif', 'serif'],
+  stitch: ['-apple-system', 'BlinkMacSystemFont', 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', 'Inter', 'Helvetica Neue', 'Arial', 'sans-serif'],
 } as const;

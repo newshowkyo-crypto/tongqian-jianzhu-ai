@@ -93,7 +93,7 @@ export function Command({
       >
         <Search className="mr-2 h-4 w-4 text-[var(--cyber-blue)]" />
         <span className="truncate text-[var(--text-secondary)]">{placeholder}</span>
-        <kbd className="ml-auto hidden rounded border border-[var(--border-silver)] bg-white/5 px-1.5 py-0.5 text-xs text-[var(--text-tertiary)] sm:inline">Ctrl K</kbd>
+        <kbd className="ml-auto hidden rounded border border-[var(--border-silver)] bg-[var(--bg-glass-hover)] px-1.5 py-0.5 text-xs text-[var(--text-secondary)] sm:inline">Ctrl K</kbd>
       </button>
       {open ? (
         <div className="fixed inset-0 z-[90] bg-[#020817]/70 px-4 pt-[12vh] backdrop-blur-sm" role="dialog" aria-modal="true">
@@ -102,7 +102,7 @@ export function Command({
               <Search className="h-5 w-5 text-[var(--cyber-blue)]" />
               <input
                 autoFocus
-                className="h-full flex-1 bg-transparent text-base text-white outline-none placeholder:text-[var(--text-tertiary)]"
+                className="h-full flex-1 bg-transparent text-base text-[var(--text-primary)] outline-none placeholder:text-[var(--text-secondary)]"
                 onChange={(event) => setQuery(event.target.value)}
                 onKeyDown={(event) => {
                   if (event.key === 'ArrowDown') setActiveIndex((value) => Math.min(value + 1, results.length - 1));
@@ -126,7 +126,7 @@ export function Command({
                   onClick={() => choose(result)}
                   type="button"
                 >
-                  <span className="text-sm font-semibold text-white">{result.title}</span>
+                  <span className="text-sm font-semibold text-[var(--text-primary)]">{result.title}</span>
                   <span className="text-xs text-[var(--text-secondary)]">{result.type ?? 'result'} / {result.subtitle ?? result.href}</span>
                 </button>
               ))}

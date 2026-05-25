@@ -15,7 +15,7 @@ export const buttonVariants = cva(
       },
       variant: {
         danger: 'border border-danger-500/60 bg-danger-500/20 text-white shadow-[0_0_18px_rgba(220,38,38,0.28)] hover:bg-danger-500/30',
-        ghost: 'bg-transparent text-[var(--text-secondary)] hover:bg-white/5 hover:text-white',
+        ghost: 'bg-transparent text-[var(--text-secondary)] hover:bg-[var(--bg-glass-hover)] hover:text-[var(--text-primary)]',
         outline: 'border border-[var(--border-silver)] bg-[rgba(10,29,61,0.48)] text-[var(--text-primary)] hover:border-[var(--border-silver-hover)] hover:bg-[var(--bg-glass-hover)]',
         primary: 'border border-[var(--accent-rose)] bg-[linear-gradient(135deg,var(--accent-rose),#b8755c)] text-navy-deepest shadow-[var(--shadow-rose-glow)] hover:brightness-110',
         secondary: 'border border-[var(--cyber-blue)] bg-[rgba(74,142,255,0.16)] text-white shadow-[var(--shadow-cyber-glow)] hover:bg-[rgba(74,142,255,0.24)]',
@@ -47,9 +47,9 @@ export const badgeVariants = cva(
 export type BadgeVariants = VariantProps<typeof badgeVariants>;
 
 export const inputClassName =
-  'tq-input-motion h-9 w-full rounded-[var(--radius-input)] border border-[var(--border-silver)] bg-[rgba(10,29,61,0.56)] px-3 text-sm text-[var(--text-primary)] outline-none transition-colors placeholder:text-[var(--text-tertiary)] focus:border-[var(--cyber-blue)] focus:ring-2 focus:ring-[rgba(74,142,255,0.22)] disabled:cursor-not-allowed disabled:opacity-50';
+  'tq-input-motion h-9 w-full rounded-[var(--radius-input)] border border-[var(--border-silver)] bg-[var(--bg-glass)] px-3 text-sm text-[var(--text-primary)] outline-none transition-colors placeholder:text-[var(--text-secondary)] focus:border-[var(--cyber-blue)] focus:ring-2 focus:ring-[rgba(74,142,255,0.22)] disabled:cursor-not-allowed disabled:opacity-50';
 
 export const textareaClassName =
-  'tq-input-motion min-h-24 w-full rounded-[var(--radius-input)] border border-[var(--border-silver)] bg-[rgba(10,29,61,0.56)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none transition-colors placeholder:text-[var(--text-tertiary)] focus:border-[var(--cyber-blue)] focus:ring-2 focus:ring-[rgba(74,142,255,0.22)] disabled:cursor-not-allowed disabled:opacity-50';
+  'tq-input-motion min-h-24 w-full rounded-[var(--radius-input)] border border-[var(--border-silver)] bg-[var(--bg-glass)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none transition-colors placeholder:text-[var(--text-secondary)] focus:border-[var(--cyber-blue)] focus:ring-2 focus:ring-[rgba(74,142,255,0.22)] disabled:cursor-not-allowed disabled:opacity-50';
 
 export const cardClassName = 'tq-hover-lift tq-click-inset tq-cyber-panel';

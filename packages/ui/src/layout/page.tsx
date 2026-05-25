@@ -312,7 +312,7 @@ export function CyberShell({
           <Command placeholder={searchPlaceholder} />
           <button
             aria-expanded={openPanel === 'tenant'}
-            className="tq-cyber-control hidden h-10 rounded-md px-3 text-sm sm:block"
+            className="tq-cyber-control hidden h-10 rounded-md px-3 text-sm font-medium sm:block"
             onClick={() => togglePanel('tenant')}
             type="button"
           >
@@ -349,30 +349,30 @@ export function CyberShell({
             <div className="absolute right-0 top-12 z-50 w-72 rounded-md border border-[var(--border-silver)] bg-[var(--bg-glass)] p-3 text-sm text-[var(--text-secondary)] shadow-[var(--shadow-card)] backdrop-blur-xl">
               {openPanel === 'tenant' ? (
                 <div className="space-y-2">
-                  <p className="font-semibold text-white">{actionLabels.tenantTitle ?? actionLabels.tenant}</p>
-                  <button className="w-full rounded-md border border-[var(--border-silver)] px-3 py-2 text-left hover:border-[var(--accent-rose)] hover:text-white" type="button">
+                  <p className="font-semibold text-[var(--text-primary)]">{actionLabels.tenantTitle ?? actionLabels.tenant}</p>
+                  <button className="w-full rounded-md border border-[var(--border-silver)] px-3 py-2 text-left hover:border-[var(--accent-rose)] hover:text-[var(--text-primary)]" type="button">
                     {actionLabels.tenant}
                   </button>
                 </div>
               ) : null}
               {openPanel === 'notifications' ? (
                 <div className="space-y-2">
-                  <p className="font-semibold text-white">{actionLabels.notificationsTitle ?? actionLabels.notifications}</p>
-                  <a className="block rounded-md border border-[var(--border-silver)] px-3 py-2 hover:border-[var(--accent-rose)] hover:text-white" href="/reports">
+                  <p className="font-semibold text-[var(--text-primary)]">{actionLabels.notificationsTitle ?? actionLabels.notifications}</p>
+                  <a className="block rounded-md border border-[var(--border-silver)] px-3 py-2 hover:border-[var(--accent-rose)] hover:text-[var(--text-primary)]" href="/reports">
                     AI 审计报告已生成
                   </a>
-                  <a className="block rounded-md border border-[var(--border-silver)] px-3 py-2 hover:border-[var(--accent-rose)] hover:text-white" href="/approvals">
+                  <a className="block rounded-md border border-[var(--border-silver)] px-3 py-2 hover:border-[var(--accent-rose)] hover:text-[var(--text-primary)]" href="/approvals">
                     审批队列已更新
                   </a>
                 </div>
               ) : null}
               {openPanel === 'avatar' ? (
                 <div className="space-y-2">
-                  <p className="font-semibold text-white">{actionLabels.avatarTitle ?? actionLabels.avatar}</p>
-                  <a className="block rounded-md border border-[var(--border-silver)] px-3 py-2 hover:border-[var(--accent-rose)] hover:text-white" href="/settings">
+                  <p className="font-semibold text-[var(--text-primary)]">{actionLabels.avatarTitle ?? actionLabels.avatar}</p>
+                  <a className="block rounded-md border border-[var(--border-silver)] px-3 py-2 hover:border-[var(--accent-rose)] hover:text-[var(--text-primary)]" href="/settings">
                     账号设置
                   </a>
-                  <button className="w-full rounded-md border border-[var(--border-silver)] px-3 py-2 text-left hover:border-[var(--accent-rose)] hover:text-white" type="button">
+                  <button className="w-full rounded-md border border-[var(--border-silver)] px-3 py-2 text-left hover:border-[var(--accent-rose)] hover:text-[var(--text-primary)]" type="button">
                     会话已启用
                   </button>
                 </div>
@@ -383,7 +383,7 @@ export function CyberShell({
       </header>
 
       <aside className="tq-cyber-sidebar fixed inset-y-0 left-0 z-50 hidden w-64 p-4 lg:block">
-        <a className="tq-cyber-brand block rounded-lg p-4 text-white" href={brand.href}>
+        <a className="tq-cyber-brand block rounded-lg p-4 text-[var(--text-primary)]" href={brand.href}>
           {brand.eyebrow ? <p className="text-sm font-medium text-[var(--text-secondary)]">{brand.eyebrow}</p> : null}
           <p className="mt-1 text-base font-semibold">{brand.title}</p>
         </a>
@@ -392,7 +392,7 @@ export function CyberShell({
             {tabs.map((tab, index) => (
               <button
                 key={index}
-                className="h-9 rounded-md border border-[var(--border-silver)] bg-white/5 text-xs font-medium text-[var(--text-secondary)] hover:border-[var(--accent-rose)] hover:text-white"
+                className="h-9 rounded-md border border-[var(--border-silver)] bg-[var(--bg-glass)] text-xs font-medium text-[var(--text-secondary)] hover:border-[var(--accent-rose)] hover:text-[var(--text-primary)]"
                 type="button"
               >
                 {tab}

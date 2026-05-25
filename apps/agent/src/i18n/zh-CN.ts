@@ -1,7 +1,7 @@
 export const zhCN = {
   brand: {
-    name: '同乾方略',
     agent: '智能管家',
+    name: '同乾方略',
     workspace: '智能管家工作台',
   },
   states: {
@@ -51,7 +51,7 @@ export const zhCN = {
       { href: '/dispatch', icon: 'dispatch', label: '派单大厅' },
       { href: '/reputation', icon: 'reputation', label: '信誉看板' },
       { href: '/reports', icon: 'reports', label: '服务报告' },
-      { href: '/earnings', icon: 'earnings', label: '分润提现' },
+      { href: '/earnings', icon: 'earnings', label: '收益提现' },
       { href: '/workspace', icon: 'workspace', label: '客户工作台' },
       { href: '/settings', icon: 'settings', label: '设置' },
     ],
@@ -70,33 +70,6 @@ export const zhCN = {
       red: '偏高',
       yellow: '需复核',
     },
-    orders: [
-      {
-        customer: '湖北宏建工程',
-        due: '2 小时内响应',
-        id: 'DQ-20260518-001',
-        match: ['LV5 +20', '区域 +18', '资质 +16', '满意度 +14'],
-        need: '合同风险现场协助',
-        quote: 4800,
-        urgent: true,
-      },
-      {
-        customer: '西安城投项目部',
-        due: '今日 18:00 前',
-        id: 'DQ-20260518-014',
-        match: ['LV4 +15', '区域 +12', '资质 +18', '满意度 +12'],
-        need: '投标材料窗口跑办',
-        quote: 2600,
-      },
-      {
-        customer: '苏州建安集团',
-        due: '24 小时内',
-        id: 'DQ-20260518-029',
-        match: ['LV3 +10', '区域 +16', '资质 +14', '满意度 +10'],
-        need: '资质升级材料预审',
-        quote: 1200,
-      },
-    ],
   },
   reputation: {
     title: '信誉看板',
@@ -108,7 +81,7 @@ export const zhCN = {
     withdrawal: '提现周期',
     appeal: '申诉入口',
     eventsTitle: '本月加减分明细',
-    monthlyRecovery: '自然回血 +20 / 月（活跃且无差评）',
+    monthlyRecovery: '自然回升 +20 / 月（活跃且无差评）',
     events: [
       { date: '5/18', delta: 50, reason: '推荐客户成交 ABS 大单' },
       { date: '5/16', delta: 10, reason: '客户五星评价' },
