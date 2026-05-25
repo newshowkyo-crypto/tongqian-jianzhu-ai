@@ -1599,6 +1599,45 @@ model LegalClause {
   @@map("legal_clauses")
 }
 
+model CostCatalog {
+  id            String     @id @default(uuid()) @db.Uuid
+  catalogCode   String     @unique @map("catalog_code")
+  region        String
+  language      String     @default("zh-CN")
+  sourceLicense String     @map("source_license")
+  sourceUrl     String?    @map("source_url")
+  importedAt    DateTime?  @map("imported_at")
+  itemCount     Int        @default(0) @map("item_count")
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+  items         CostItem[]
+
+  @@map("cost_catalogs")
+}
+
+model CostItem {
+  id             String       @id @default(uuid()) @db.Uuid
+  catalogId      String       @map("catalog_id") @db.Uuid
+  classCode      String       @map("class_code")
+  workCode       String       @map("work_code")
+  description    String       @db.Text
+  descriptionEn  String?      @map("description_en") @db.Text
+  unit           String
+  laborCost      Decimal?     @map("labor_cost") @db.Decimal(20, 4)
+  materialCost   Decimal?     @map("material_cost") @db.Decimal(20, 4)
+  machineryCost  Decimal?     @map("machinery_cost") @db.Decimal(20, 4)
+  overheadCost   Decimal?     @map("overhead_cost") @db.Decimal(20, 4)
+  totalUnitPrice Decimal?     @map("total_unit_price") @db.Decimal(20, 4)
+  laborHours     Decimal?     @map("labor_hours") @db.Decimal(20, 4)
+  keywords       String[]
+  embedding      Bytes?
+  catalog        CostCatalog  @relation(fields: [catalogId], references: [id], onDelete: Cascade)
+
+  @@index([catalogId, classCode])
+  @@index([workCode])
+  @@map("cost_items")
+}
+
 model AgentProfile {
   id             String    @id @default(uuid()) @db.Uuid
   userId         String    @unique @map("user_id")
