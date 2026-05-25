@@ -30,4 +30,19 @@ export class CostEstimateController {
   materialAlert(@Body() body: { materialCode: string; region: string; thresholdPct?: number }, @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
     return { code: 'OK', data: this.costs.upsertMaterialAlert({ ...body, tenantId }), message: 'Material alert saved', traceId: crypto.randomUUID() };
   }
+
+  @Post('estimate/from-text')
+  async estimateFromText(@Body() body: { area?: number; description: string; projectType: string; region: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant', @Headers('x-user-id') userId = 'mock-user'): Promise<unknown> {
+    return { code: 'OK', data: await this.costs.estimateFromText({ ...body, tenantId, userId }), message: 'Cost estimate from text', traceId: crypto.randomUUID() };
+  }
+
+  @Post('estimate/from-photo')
+  async estimateFromPhoto(@Body() body: { photoUrls: string[]; projectStage: 'finishing' | 'mep' | 'rough_in'; region: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant', @Headers('x-user-id') userId = 'mock-user'): Promise<unknown> {
+    return { code: 'OK', data: await this.costs.estimateFromPhoto({ ...body, tenantId, userId }), message: 'Cost estimate from photo', traceId: crypto.randomUUID() };
+  }
+
+  @Post('estimate/from-cad-boq')
+  async estimateFromCad(@Body() body: { extractedBoq: Array<{ description: string; qty: number; unit: string; workCode?: string }>; region: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant', @Headers('x-user-id') userId = 'mock-user'): Promise<unknown> {
+    return { code: 'OK', data: await this.costs.estimateFromCadBoq({ ...body, tenantId, userId }), message: 'Cost estimate from CAD BOQ', traceId: crypto.randomUUID() };
+  }
 }

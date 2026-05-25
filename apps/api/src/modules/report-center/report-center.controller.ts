@@ -2,10 +2,12 @@ import { Body, Controller, Get, Headers, Inject, Param, Post, Put } from '@nestj
 import type { AiAudienceRole } from '@tongqian/types';
 
 import { ReportCenterService } from './report-center.service.js';
+import { ReportExportService, type ExportFormat } from './report-export.service.js';
+import { QualityCheckService } from './quality-check.service.js';
 
 @Controller('api/v1')
 export class ReportCenterController {
-  constructor(@Inject(ReportCenterService) private readonly reports: ReportCenterService) {}
+  constructor(@Inject(ReportCenterService) private readonly reports: ReportCenterService, private readonly exports: ReportExportService, private readonly quality: QualityCheckService) {}
 
   @Post('reports')
   create(
@@ -45,6 +47,17 @@ export class ReportCenterController {
   @Get('reports/:id/download/:format')
   download(@Param('id') id: string, @Param('format') format: 'h5' | 'pdf'): unknown {
     return { code: 'OK', data: { url: `mock://oss/reports/${id}.${format}?ttl=3600` }, message: 'Report download url', traceId: crypto.randomUUID() };
+  }
+
+  @Post('reports/:id/export')
+  export(@Param('id') id: string, @Body() body: { format?: ExportFormat }): unknown {
+    const result = this.exports.export(id, body.format ?? 'pdf');
+    return { code: 'OK', data: { bytes: result.buffer.byteLength, format: result.format, note: result.note }, message: 'Report exported', traceId: crypto.randomUUID() };
+  }
+
+  @Get('reports/:id/quality-check')
+  qualityCheck(@Param('id') id: string, @Headers('x-tenant-id') tenantId = 'mock-tenant', @Headers('x-user-id') userId = 'mock-user'): unknown {
+    return { code: 'OK', data: this.quality.check(this.reports.getReport(id, tenantId, userId) as unknown as Record<string, unknown>), message: 'Report quality check', traceId: crypto.randomUUID() };
   }
 
   @Post('reports/:id/share')

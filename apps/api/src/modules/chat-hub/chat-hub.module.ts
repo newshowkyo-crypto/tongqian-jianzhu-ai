@@ -2,11 +2,12 @@ import { Module } from '@nestjs/common';
 
 import { ChatHubController } from './chat-hub.controller.js';
 import { ChatHubService } from './chat-hub.service.js';
+import { ToolRegistryService } from './tool-registry.service.js';
 
 @Module({
   controllers: [ChatHubController],
   exports: [ChatHubService],
-  providers: [ChatHubService],
+  providers: [ChatHubService, ToolRegistryService],
 })
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class ChatHubModule {}

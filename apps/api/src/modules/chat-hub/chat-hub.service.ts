@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import type { ChatChannel, ChatContext, ChatConversationView, ChatDispatchResult, ChatIntent, ChatMemoryView, ChatMessageView, ChatSendResult } from '@tongqian/types';
+import { ToolRegistryService } from './tool-registry.service.js';
 
 interface StoredConversation extends ChatConversationView {
   tenantId: string;
@@ -18,6 +19,8 @@ export class ChatHubService {
   private readonly conversations = new Map<string, StoredConversation>();
   private readonly messages = new Map<string, ChatMessageView[]>();
   private readonly summaries = new Map<string, StoredSummary>();
+
+  constructor(private readonly toolRegistry: ToolRegistryService) {}
 
   createConversation(ctx: ChatContext, title = 'chat.conversation.defaultTitle'): ChatConversationView {
     const now = new Date().toISOString();
@@ -67,6 +70,13 @@ export class ChatHubService {
       memory,
       userMessage,
     };
+  }
+
+  async sendMessageWithTools(input: { content: string; conversationId?: string; ctx: ChatContext }): Promise<ChatSendResult & { toolResults: unknown[] }> {
+    const toolName = this.toolRegistry.selectTool(input.content);
+    const toolResults = toolName ? [await this.toolRegistry.execute(toolName, toolName === 'list_my_contracts_by_status' ? { status: 'expiring' } : {}, { tenantId: input.ctx.tenantId, userId: input.ctx.userId })] : [];
+    const result = this.sendMessage({ ...input, content: toolResults.length ? `${input.content}\n工具结果:${JSON.stringify(toolResults)}` : input.content });
+    return { ...result, toolResults };
   }
 
   ingestChannel(input: { channel: ChatChannel; content: string; externalId: string; tenantId?: string; userId?: string }): ChatSendResult {

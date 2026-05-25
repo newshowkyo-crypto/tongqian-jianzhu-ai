@@ -1,10 +1,11 @@
 import { Body, Controller, Get, Headers, Inject, Param, Post } from '@nestjs/common';
 
 import { TenderService } from './tender.service.js';
+import { RfpRagService } from './rfp-rag.service.js';
 
 @Controller('api/v1')
 export class TenderController {
-  constructor(@Inject(TenderService) private readonly tender: TenderService) {}
+  constructor(@Inject(TenderService) private readonly tender: TenderService, private readonly rfpRag: RfpRagService) {}
 
   @Get('tenders')
   list(): unknown {
@@ -80,6 +81,21 @@ export class TenderController {
   @Post('tender/projects/:id/dispatch-tender-writer')
   dispatch(@Param('id') id: string, @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
     return { code: 'OK', data: this.tender.dispatchTenderWriter(id, tenantId), message: 'Tender dispatch decision', traceId: crypto.randomUUID() };
+  }
+
+  @Post('tender/projects/:id/rfp-ingest')
+  async rfpIngest(@Param('id') id: string, @Body() body: { docs: Array<{ name: string; ossUrl: string }> }): Promise<unknown> {
+    return { code: 'OK', data: await this.rfpRag.ingestRfpDocs(id, body.docs), message: 'RFP docs ingested', traceId: crypto.randomUUID() };
+  }
+
+  @Post('tender/projects/:id/rfp-search')
+  rfpSearch(@Param('id') id: string, @Body() body: { query: string }): unknown {
+    return { code: 'OK', data: { items: this.rfpRag.searchAcrossRfp(id, body.query) }, message: 'RFP search', traceId: crypto.randomUUID() };
+  }
+
+  @Get('tender/projects/:id/key-clauses')
+  keyClauses(@Param('id') id: string): unknown {
+    return { code: 'OK', data: { clauses: this.rfpRag.keyClauses(id), changes: this.rfpRag.compareDocs(id) }, message: 'RFP key clauses', traceId: crypto.randomUUID() };
   }
 
   @Get('tender/staff/daily-quiz')

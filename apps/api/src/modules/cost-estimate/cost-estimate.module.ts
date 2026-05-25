@@ -1,11 +1,15 @@
 import { Module } from '@nestjs/common';
 
+import { AiGatewayModule } from '../../ai-gateway/ai-gateway.module.js';
+import { CostCatalogModule } from '../cost-catalog/cost-catalog.module.js';
+
 import { CostEstimateController } from './cost-estimate.controller.js';
 import { CostEstimateService } from './cost-estimate.service.js';
 
 @Module({
   controllers: [CostEstimateController],
   exports: [CostEstimateService],
+  imports: [AiGatewayModule, CostCatalogModule],
   providers: [CostEstimateService],
 })
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class

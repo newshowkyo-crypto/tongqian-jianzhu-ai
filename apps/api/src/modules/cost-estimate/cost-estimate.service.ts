@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { AiCacheStrategy, AiTaskType } from '@tongqian/types';
 import type {
   ChecklistReviewView,
   MaterialPriceAlertView,
@@ -8,6 +9,9 @@ import type {
   RoughEstimateRequest,
   RoughEstimateView,
 } from '@tongqian/types';
+
+import { AiGatewayService } from '../../ai-gateway/ai-gateway.service.js';
+import { CostCatalogService } from '../cost-catalog/cost-catalog.service.js';
 
 const BASE_PER_SQM: Record<string, number> = {
   civil: 3100,
@@ -27,6 +31,8 @@ export class CostEstimateService {
   private readonly alerts = new Map<string, MaterialPriceAlertView>();
   private readonly checklistReviews = new Map<string, ChecklistReviewView>();
   private readonly estimates = new Map<string, RoughEstimateView & { tenantId: string }>();
+
+  constructor(private readonly aiGateway: AiGatewayService, private readonly costCatalogService: CostCatalogService) {}
 
   roughEstimate(input: RoughEstimateRequest & { tenantId: string }): RoughEstimateView {
     if (input.areaSqm <= 0) throw new Error('COST.INVALID_AREA');
@@ -112,6 +118,33 @@ export class CostEstimateService {
     };
     this.alerts.set(this.alertKey(input.tenantId, input.materialCode, input.region), alert);
     return alert;
+  }
+
+  async estimateFromText(input: { area?: number; description: string; projectType: string; region: string; tenantId: string; userId: string }): Promise<unknown> {
+    const catalogCandidates = this.costCatalogService.searchByKeyword(input.description, input.region);
+    return this.invokeEstimate('cost-from-text', input, catalogCandidates);
+  }
+
+  async estimateFromPhoto(input: { photoUrls: string[]; projectStage: 'finishing' | 'mep' | 'rough_in'; region: string; tenantId: string; userId: string }): Promise<unknown> {
+    const catalogCandidates = this.costCatalogService.searchByKeyword(input.projectStage, input.region);
+    return this.invokeEstimate('cost-from-photo', input, catalogCandidates);
+  }
+
+  async estimateFromCadBoq(input: { extractedBoq: Array<{ description: string; qty: number; unit: string; workCode?: string }>; region: string; tenantId: string; userId: string }): Promise<unknown> {
+    const catalogCandidates = input.extractedBoq.flatMap((item) => this.costCatalogService.searchByDescription(item.description)).slice(0, 20);
+    return this.invokeEstimate('cost-from-cad', input, catalogCandidates);
+  }
+
+  private async invokeEstimate(flow: string, input: unknown, catalogCandidates: unknown[]): Promise<unknown> {
+    const response = await this.aiGateway.invoke<unknown>({
+      context: { catalogCandidates, flow },
+      input: { catalogCandidates, input },
+      options: { cacheStrategy: AiCacheStrategy.EXACT_AND_SEMANTIC, idempotencyKey: `${flow}-${crypto.randomUUID()}` },
+      taskType: AiTaskType.COST_ROUGH_ESTIMATE,
+      tenantId: typeof input === 'object' && input && 'tenantId' in input ? String(input.tenantId) : 'mock-tenant',
+      userId: typeof input === 'object' && input && 'userId' in input ? String(input.userId) : 'mock-user',
+    });
+    return response.data;
   }
 
   private comparableProjects(region: string, projectType: string, reference: number): RoughEstimateView['comparableProjects'] {
