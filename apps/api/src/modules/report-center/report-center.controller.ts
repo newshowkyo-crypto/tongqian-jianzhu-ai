@@ -2,12 +2,13 @@ import { Body, Controller, Get, Headers, Inject, Param, Post, Put } from '@nestj
 import type { AiAudienceRole } from '@tongqian/types';
 
 import { ReportCenterService } from './report-center.service.js';
+import { AutoSummaryService } from './auto-summary.service.js';
 import { ReportExportService, type ExportFormat } from './report-export.service.js';
 import { QualityCheckService } from './quality-check.service.js';
 
 @Controller('api/v1')
 export class ReportCenterController {
-  constructor(@Inject(ReportCenterService) private readonly reports: ReportCenterService, private readonly exports: ReportExportService, private readonly quality: QualityCheckService) {}
+  constructor(@Inject(ReportCenterService) private readonly reports: ReportCenterService, private readonly autoSummary: AutoSummaryService, private readonly exports: ReportExportService, private readonly quality: QualityCheckService) {}
 
   @Post('reports')
   create(
@@ -96,5 +97,20 @@ export class ReportCenterController {
     @Body() body: { isActive?: boolean; layoutSchema?: Record<string, unknown>; sourceModule?: string; version?: number },
   ): unknown {
     return { code: 'OK', data: this.reports.upsertTemplate(id, body), message: 'Report template saved', traceId: crypto.randomUUID() };
+  }
+
+  @Get('reports/auto/daily')
+  autoDaily(@Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
+    return { code: 'OK', data: this.autoSummary.generateDaily({ date: new Date().toISOString().slice(0, 10), tenantId }), message: 'Auto daily summary', traceId: crypto.randomUUID() };
+  }
+
+  @Get('reports/auto/weekly')
+  autoWeekly(@Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
+    return { code: 'OK', data: this.autoSummary.generateWeekly({ tenantId, week: '2026-W22' }), message: 'Auto weekly summary', traceId: crypto.randomUUID() };
+  }
+
+  @Get('reports/auto/monthly')
+  autoMonthly(@Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
+    return { code: 'OK', data: this.autoSummary.generateMonthly({ month: '2026-05', tenantId }), message: 'Auto monthly summary', traceId: crypto.randomUUID() };
   }
 }

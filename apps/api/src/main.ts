@@ -16,6 +16,7 @@ import { ChatHubModule } from './modules/chat-hub/chat-hub.module.js';
 import { CostEstimateModule } from './modules/cost-estimate/cost-estimate.module.js';
 import { CostCatalogModule } from './modules/cost-catalog/cost-catalog.module.js';
 import { CreditModule } from './modules/credit/credit.module.js';
+import { CustomerDueDiligenceModule } from './modules/customer-due-diligence/customer-due-diligence.module.js';
 import { DashboardModule } from './modules/dashboard/dashboard.module.js';
 import { DataCurationModule } from './modules/data-curation/data-curation.module.js';
 import { DataExportModule } from './modules/data-export/data-export.module.js';
@@ -70,6 +71,7 @@ class HealthController {
     CostCatalogModule,
     CostEstimateModule,
     CreditModule,
+    CustomerDueDiligenceModule,
     DashboardModule,
     DataCurationModule,
     DataExportModule,
