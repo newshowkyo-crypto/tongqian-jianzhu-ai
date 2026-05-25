@@ -82,4 +82,12 @@ export class LegalCorpusService {
   listClauses(corpusId: string): LegalClauseRecord[] {
     return this.clauses.get(corpusId) ?? [];
   }
+
+  getClause(clauseId: string): { clause: LegalClauseRecord; corpus: LegalCorpusRecord } {
+    for (const [corpusId, clauses] of this.clauses.entries()) {
+      const clause = clauses.find((item) => item.id === clauseId);
+      if (clause) return { clause, corpus: this.get(corpusId) };
+    }
+    throw new Error('LEGAL_CLAUSE.NOT_FOUND');
+  }
 }
