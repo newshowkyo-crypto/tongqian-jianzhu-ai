@@ -1704,6 +1704,24 @@ model ScheduleTask {
   @@map("schedule_tasks")
 }
 
+model SitePhoto {
+  id          String   @id @default(uuid()) @db.Uuid
+  projectId   String   @map("project_id")
+  ossUrl      String   @map("oss_url")
+  uploadedBy  String   @map("uploaded_by")
+  uploadedAt  DateTime @default(now()) @map("uploaded_at")
+  category    String?
+  aiTags      String[] @map("ai_tags")
+  aiSummary   String?  @map("ai_summary") @db.Text
+  defectFound Boolean  @default(false) @map("defect_found")
+  defectLevel String?  @map("defect_level")
+  geoLat      Float?   @map("geo_lat")
+  geoLng      Float?   @map("geo_lng")
+
+  @@index([projectId, category])
+  @@map("site_photos")
+}
+
 model AgentProfile {
   id             String    @id @default(uuid()) @db.Uuid
   userId         String    @unique @map("user_id")

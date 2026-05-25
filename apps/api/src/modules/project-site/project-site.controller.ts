@@ -1,11 +1,12 @@
-import { Body, Controller, Get, Headers, Inject, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Inject, Param, Post, Query } from '@nestjs/common';
 
+import { PhotoService } from './photo.service.js';
 import { ProjectSiteService } from './project-site.service.js';
 import { ScheduleService } from './schedule.service.js';
 
 @Controller('api/v1/projects')
 export class ProjectSiteController {
-  constructor(@Inject(ProjectSiteService) private readonly sites: ProjectSiteService, private readonly schedules: ScheduleService) {}
+  constructor(@Inject(ProjectSiteService) private readonly sites: ProjectSiteService, private readonly schedules: ScheduleService, private readonly photos: PhotoService) {}
 
   @Post()
   create(@Body() body: { name: string; planCode?: string; region?: string; type?: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant', @Headers('x-user-id') userId = 'mock-user'): unknown {
@@ -100,5 +101,20 @@ export class ProjectSiteController {
   @Post(':id/schedules/:scheduleId/risk-advisor')
   scheduleRiskAdvisor(@Param('scheduleId') scheduleId: string): unknown {
     return { code: 'OK', data: this.schedules.getDelayReport(scheduleId), message: 'Schedule risk advisor', traceId: crypto.randomUUID() };
+  }
+
+  @Post(':id/photos')
+  uploadPhoto(@Param('id') id: string, @Body() body: { ossUrl: string; remark?: string }, @Headers('x-user-id') userId = 'mock-user'): unknown {
+    return { code: 'OK', data: this.photos.uploadAndClassify({ ...body, projectId: id, uploadedBy: userId }), message: 'Site photo classified', traceId: crypto.randomUUID() };
+  }
+
+  @Get(':id/photos')
+  listPhotos(@Param('id') id: string): unknown {
+    return { code: 'OK', data: this.photos.list(id), message: 'Site photos', traceId: crypto.randomUUID() };
+  }
+
+  @Get(':id/photos/daily-summary')
+  photoDailySummary(@Param('id') id: string, @Query('date') date?: string): unknown {
+    return { code: 'OK', data: this.photos.dailyPhotoSummary(id, date), message: 'Site photo daily summary', traceId: crypto.randomUUID() };
   }
 }
