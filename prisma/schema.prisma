@@ -1799,6 +1799,33 @@ model ClaimRecord {
   @@map("claim_records")
 }
 
+model CarbonFactor {
+  id          String  @id @default(cuid())
+  material    String
+  category    String
+  unit        String
+  factorValue Decimal @map("factor_value") @db.Decimal(20, 4)
+  sourceNotes String? @map("source_notes") @db.Text
+
+  @@map("carbon_factors")
+}
+
+model CarbonEstimate {
+  id                    String   @id @default(cuid())
+  tenantId              String   @map("tenant_id")
+  projectName           String   @map("project_name")
+  areaSqm               Float    @map("area_sqm")
+  materialItems         Json     @map("material_items")
+  totalKgCo2e           Decimal  @map("total_kg_co2e") @db.Decimal(20, 2)
+  perSqmKgCo2e          Decimal  @map("per_sqm_kg_co2e") @db.Decimal(20, 2)
+  benchmarkPerSqmKgCo2e Decimal? @map("benchmark_per_sqm_kg_co2e") @db.Decimal(20, 2)
+  deviationPct          Float?   @map("deviation_pct")
+  aiSuggestions         Json     @map("ai_suggestions")
+  disclaimer            String
+
+  @@map("carbon_estimates")
+}
+
 model ProjectSchedule {
   id        String         @id @default(uuid()) @db.Uuid
   projectId String         @map("project_id")
