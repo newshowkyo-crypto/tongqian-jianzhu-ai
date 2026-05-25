@@ -10,12 +10,13 @@ import { PhotoService } from './photo.service.js';
 import { PaymentLedgerService } from './payment-ledger.service.js';
 import { ProjectSiteService } from './project-site.service.js';
 import { ScheduleService } from './schedule.service.js';
+import { TaskBoardService } from './task-board.service.js';
 
 @Module({
   controllers: [ProjectSiteController],
   exports: [ProjectSiteService],
   imports: [ApprovalModule],
-  providers: [BriefingService, ChangeOrderService, ClaimRecordService, PaymentLedgerService, PhotoService, ProjectSiteService, ScheduleService],
+  providers: [BriefingService, ChangeOrderService, ClaimRecordService, PaymentLedgerService, PhotoService, ProjectSiteService, ScheduleService, TaskBoardService],
 })
 // Nest modules are marker classes discovered through decorators.
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class

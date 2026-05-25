@@ -1826,6 +1826,42 @@ model CarbonEstimate {
   @@map("carbon_estimates")
 }
 
+model ProjectTask {
+  id                    String    @id @default(cuid())
+  projectId             String    @map("project_id")
+  parentTaskId          String?   @map("parent_task_id")
+  title                 String
+  description           String?   @db.Text
+  status                String    @default("todo")
+  priority              String    @default("normal")
+  category              String?
+  assignedTo            String?   @map("assigned_to")
+  reviewerId            String?   @map("reviewer_id")
+  dueDate               DateTime? @map("due_date")
+  completedAt           DateTime? @map("completed_at")
+  relatedScheduleTaskId String?   @map("related_schedule_task_id")
+  relatedClaimId        String?   @map("related_claim_id")
+  relatedChangeId       String?   @map("related_change_id")
+  tags                  String[]
+  createdBy             String    @map("created_by")
+  createdAt             DateTime  @default(now()) @map("created_at")
+
+  @@index([projectId, status, dueDate])
+  @@map("project_tasks")
+}
+
+model TaskComment {
+  id          String   @id @default(cuid())
+  taskId      String   @map("task_id")
+  userId      String   @map("user_id")
+  content     String   @db.Text
+  attachments String[]
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([taskId, createdAt])
+  @@map("task_comments")
+}
+
 model ProjectSchedule {
   id        String         @id @default(uuid()) @db.Uuid
   projectId String         @map("project_id")
