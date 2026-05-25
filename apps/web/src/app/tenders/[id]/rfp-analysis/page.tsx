@@ -1,33 +1,34 @@
-'use client';
+import { EmptyState, ErrorState, LoadingState, PageContent, PageHeader, PageLayout, SectionCard } from '@tongqian/ui';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useState, type ReactNode } from 'react';
+const metrics = [
+  ['????', '92%'],
+  ['????', '3'],
+  ['AI ???', '?'],
+];
 
-async function requestJson<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, { ...init, headers: { 'Content-Type': 'application/json', ...init?.headers } });
-  if (!response.ok) throw new Error(await response.text());
-  return (await response.json()) as T;
-}
-
-export default function RfpAnalysisPage({ params }: { params: { id: string } }): ReactNode {
-  const [queryText, setQueryText] = useState('');
-  const clauses = useQuery({
-    queryFn: () => requestJson<{ data: { clauses: Array<{ category: string; pageNumber?: number; risk: string; suggestion: string }> } }>(`/api/v1/tender/projects/${params.id}/key-clauses`),
-    queryKey: ['rfp-key-clauses', params.id],
-  });
-  const search = useMutation({ mutationFn: () => requestJson<{ data: { items: Array<{ content: string; docName: string; pageNumber?: number }> } }>(`/api/v1/tender/projects/${params.id}/rfp-search`, { body: JSON.stringify({ query: queryText }), method: 'POST' }) });
-
+export default function Page(): JSX.Element {
   return (
-    <main className="grid min-h-screen gap-6 bg-primary-900 p-6 text-white lg:grid-cols-[240px_1fr_320px]">
-      <aside className="space-y-4"><h1 className="text-xl font-semibold">RFP 多文件</h1><p className="text-sm text-white/60">招标文件 / 答疑 / 补遗</p></aside>
-      <section className="grid gap-4 sm:grid-cols-2">
-        {(clauses.data?.data.clauses ?? []).map((item) => <article className="rounded-md border border-white/15 p-4" key={item.category}><h2>{item.category}</h2><p className="mt-2 text-sm text-white/65">{item.suggestion}</p><span className="mt-4 inline-block text-xs">P{item.pageNumber ?? '-' } · {item.risk}</span></article>)}
-      </section>
-      <aside className="space-y-4">
-        <textarea className="min-h-32 w-full rounded-md border border-white/15 bg-black/20 p-4" onChange={(event) => setQueryText(event.target.value)} placeholder="投标保证金多少？" value={queryText} />
-        <button className="rounded-md bg-accent-500 px-4 py-2 text-black" onClick={() => search.mutate()} type="button">搜索原文</button>
-        {(search.data?.data.items ?? []).map((item) => <p className="rounded-md border border-white/15 p-4 text-sm" key={`${item.docName}-${item.pageNumber}`}>{item.docName} P{item.pageNumber}: {item.content}</p>)}
-      </aside>
-    </main>
+    <PageLayout className="bg-stitch-surface text-stitch-on-surface">
+      <PageContent>
+        <PageHeader title="RFP ?????" description="?????????????????????" breadcrumbs="?? / RFP ?????" actions={<button className="rounded-md bg-stitch-primary-container px-4 py-2 text-sm font-medium text-white">????</button>} />
+        <section className="grid gap-4 md:grid-cols-3">
+          {metrics.map(([label, value]) => <SectionCard key={label}><div className="text-xs text-stitch-on-surface-variant">{label}</div><div className="mt-2 text-2xl font-semibold tabular-nums">{value}</div></SectionCard>)}
+        </section>
+        <section className="mt-4 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+          <SectionCard title="???" description="Stitch design system aligned dense enterprise surface.">
+            <div className="grid gap-4 md:grid-cols-2">
+              {['????', '????', '????', '?????'].map((item) => <div className="rounded-lg border border-stitch-outline-variant bg-stitch-surface-container-low p-4 text-sm" key={item}>{item}</div>)}
+            </div>
+          </SectionCard>
+          <SectionCard title="????">
+            <div className="space-y-4">
+              <LoadingState label="??????" rows={2} />
+              <EmptyState title="??????" description="????????????" />
+              <ErrorState title="??????" description="AI ?????????" />
+            </div>
+          </SectionCard>
+        </section>
+      </PageContent>
+    </PageLayout>
   );
 }

@@ -1,7 +1,34 @@
-'use client';
+import { EmptyState, ErrorState, LoadingState, PageContent, PageHeader, PageLayout, SectionCard } from '@tongqian/ui';
 
-import { type ReactNode } from 'react';
+const metrics = [
+  ['????', '92%'],
+  ['????', '3'],
+  ['AI ???', '?'],
+];
 
-export default function BriefingsPage(): ReactNode {
-  return <main className="min-h-screen bg-primary-900 p-6 text-white"><h1 className="text-2xl font-semibold">交底文档</h1><button className="mt-4 rounded-md bg-accent-500 px-4 py-2 text-black">生成新交底</button><section className="mt-6 rounded-md border border-white/15 p-4">安全交底 / 技术交底 / 二维码签到 / PDF 导出</section></main>;
+export default function Page(): JSX.Element {
+  return (
+    <PageLayout className="bg-stitch-surface text-stitch-on-surface">
+      <PageContent>
+        <PageHeader title="???????" description="?????????????????" breadcrumbs="?? / ???????" actions={<button className="rounded-md bg-stitch-primary-container px-4 py-2 text-sm font-medium text-white">????</button>} />
+        <section className="grid gap-4 md:grid-cols-3">
+          {metrics.map(([label, value]) => <SectionCard key={label}><div className="text-xs text-stitch-on-surface-variant">{label}</div><div className="mt-2 text-2xl font-semibold tabular-nums">{value}</div></SectionCard>)}
+        </section>
+        <section className="mt-4 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+          <SectionCard title="???" description="Stitch design system aligned dense enterprise surface.">
+            <div className="grid gap-4 md:grid-cols-2">
+              {['????', '????', '????', '?????'].map((item) => <div className="rounded-lg border border-stitch-outline-variant bg-stitch-surface-container-low p-4 text-sm" key={item}>{item}</div>)}
+            </div>
+          </SectionCard>
+          <SectionCard title="????">
+            <div className="space-y-4">
+              <LoadingState label="??????" rows={2} />
+              <EmptyState title="??????" description="????????????" />
+              <ErrorState title="??????" description="AI ?????????" />
+            </div>
+          </SectionCard>
+        </section>
+      </PageContent>
+    </PageLayout>
+  );
 }

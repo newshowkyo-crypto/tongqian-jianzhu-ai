@@ -1,29 +1,34 @@
-const summary = [
-  ['已签合同', 12800000],
-  ['已完工', 7600000],
-  ['已开票', 5200000],
-  ['已收款', 4100000],
-  ['滞收', 1100000],
+import { EmptyState, ErrorState, LoadingState, PageContent, PageHeader, PageLayout, SectionCard } from '@tongqian/ui';
+
+const metrics = [
+  ['????', '92%'],
+  ['????', '3'],
+  ['AI ???', '?'],
 ];
 
-const rows = [
-  ['厂房一期', '2026-06', 'contract_signed', 6800000, 'confirmed'],
-  ['厂房一期', '2026-06', 'work_completed', 2600000, 'confirmed'],
-  ['厂房一期', '2026-06', 'invoice_issued', 1800000, 'pending'],
-  ['厂房一期', '2026-06', 'payment_received', 900000, 'confirmed'],
-  ['厂房一期', '2026-06', 'invoice_issued', 1100000, 'overdue'],
-];
-
-export default function LedgerPage(): JSX.Element {
+export default function Page(): JSX.Element {
   return (
-    <main className="min-h-screen bg-slate-50 p-6 text-slate-950">
-      <section className="mx-auto max-w-6xl">
-        <h1 className="mb-4 text-xl font-semibold">进度款与结算台账</h1>
-        <div className="grid gap-4 md:grid-cols-5">{summary.map(([label, value]) => <div className="rounded border bg-white p-4" key={label}><div className="text-xs text-slate-500">{label}</div><div className="mt-1 text-lg font-semibold">{Number(value).toLocaleString()}</div></div>)}</div>
-        <table className="mt-4 w-full rounded border bg-white text-sm">
-          <tbody>{rows.map((row) => <tr className="border-b" key={row.join('-')}><td className="p-4">{row[0]}</td><td>{row[1]}</td><td>{row[2]}</td><td>{Number(row[3]).toLocaleString()}</td><td className={row[4] === 'overdue' ? 'text-red-600' : ''}>{row[4]}</td></tr>)}</tbody>
-        </table>
-      </section>
-    </main>
+    <PageLayout className="bg-stitch-surface text-stitch-on-surface">
+      <PageContent>
+        <PageHeader title="????????" description="???????????????????" breadcrumbs="?? / ????????" actions={<button className="rounded-md bg-stitch-primary-container px-4 py-2 text-sm font-medium text-white">?????</button>} />
+        <section className="grid gap-4 md:grid-cols-3">
+          {metrics.map(([label, value]) => <SectionCard key={label}><div className="text-xs text-stitch-on-surface-variant">{label}</div><div className="mt-2 text-2xl font-semibold tabular-nums">{value}</div></SectionCard>)}
+        </section>
+        <section className="mt-4 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+          <SectionCard title="???" description="Stitch design system aligned dense enterprise surface.">
+            <div className="grid gap-4 md:grid-cols-2">
+              {['????', '????', '????', '?????'].map((item) => <div className="rounded-lg border border-stitch-outline-variant bg-stitch-surface-container-low p-4 text-sm" key={item}>{item}</div>)}
+            </div>
+          </SectionCard>
+          <SectionCard title="????">
+            <div className="space-y-4">
+              <LoadingState label="??????" rows={2} />
+              <EmptyState title="??????" description="????????????" />
+              <ErrorState title="??????" description="AI ?????????" />
+            </div>
+          </SectionCard>
+        </section>
+      </PageContent>
+    </PageLayout>
   );
 }

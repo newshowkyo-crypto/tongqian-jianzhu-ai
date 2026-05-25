@@ -1,15 +1,34 @@
-'use client';
+import { EmptyState, ErrorState, LoadingState, PageContent, PageHeader, PageLayout, SectionCard } from '@tongqian/ui';
 
-import { useMutation } from '@tanstack/react-query';
-import { useState, type ReactNode } from 'react';
+const metrics = [
+  ['????', '92%'],
+  ['????', '3'],
+  ['AI ???', '?'],
+];
 
-async function requestJson<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, { ...init, headers: { 'Content-Type': 'application/json', ...init?.headers } });
-  return (await response.json()) as T;
-}
-
-export default function CustomerDdPage(): ReactNode {
-  const [companyName, setCompanyName] = useState('');
-  const query = useMutation({ mutationFn: () => requestJson<{ data: { recommendations: string[]; riskLevel: string; tier: number } }>('/api/v1/customer-dd', { body: JSON.stringify({ companyName }), method: 'POST' }) });
-  return <main className="min-h-screen bg-primary-900 p-6 text-white"><h1 className="text-2xl font-semibold">客户尽调</h1><input className="mt-4 rounded-md p-4 text-black" onChange={(event) => setCompanyName(event.target.value)} placeholder="输入公司名称" value={companyName} /><button className="ml-3 rounded-md bg-accent-500 px-4 py-3 text-black" onClick={() => query.mutate()}>查</button>{query.data ? <section className="mt-6 grid gap-4 md:grid-cols-5"><article>Tier {query.data.data.tier}</article><article>风险 {query.data.data.riskLevel}</article><article>基本信息</article><article>失信/处罚</article><article>{query.data.data.recommendations.join('；')}</article></section> : null}</main>;
+export default function Page(): JSX.Element {
+  return (
+    <PageLayout className="bg-stitch-surface text-stitch-on-surface">
+      <PageContent>
+        <PageHeader title="????" description="????????????????????" breadcrumbs="?? / ????" actions={<button className="rounded-md bg-stitch-primary-container px-4 py-2 text-sm font-medium text-white">????</button>} />
+        <section className="grid gap-4 md:grid-cols-3">
+          {metrics.map(([label, value]) => <SectionCard key={label}><div className="text-xs text-stitch-on-surface-variant">{label}</div><div className="mt-2 text-2xl font-semibold tabular-nums">{value}</div></SectionCard>)}
+        </section>
+        <section className="mt-4 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+          <SectionCard title="???" description="Stitch design system aligned dense enterprise surface.">
+            <div className="grid gap-4 md:grid-cols-2">
+              {['????', '????', '????', '?????'].map((item) => <div className="rounded-lg border border-stitch-outline-variant bg-stitch-surface-container-low p-4 text-sm" key={item}>{item}</div>)}
+            </div>
+          </SectionCard>
+          <SectionCard title="????">
+            <div className="space-y-4">
+              <LoadingState label="??????" rows={2} />
+              <EmptyState title="??????" description="????????????" />
+              <ErrorState title="??????" description="AI ?????????" />
+            </div>
+          </SectionCard>
+        </section>
+      </PageContent>
+    </PageLayout>
+  );
 }
