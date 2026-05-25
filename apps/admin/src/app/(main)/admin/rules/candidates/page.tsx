@@ -10,6 +10,7 @@ interface RuleCandidate {
   confidence: number;
   id: string;
   riskLevel: string;
+  sourceType?: string;
   sourceUrl: string;
   timelinessScore: number;
   title: string;
@@ -24,10 +25,11 @@ async function requestJson<T>(url: string, init?: RequestInit): Promise<T> {
 export default function RuleCandidatesPage(): ReactNode {
   const copy = zhCN.ruleCandidates;
   const queryClient = useQueryClient();
+  const [sourceType, setSourceType] = useState<'all' | 'crawler' | 'legalCorpus'>('all');
   const [selected, setSelected] = useState<string[]>([]);
   const query = useQuery({
-    queryFn: () => requestJson<{ data: { items: RuleCandidate[] } }>('/api/v1/admin/rule-candidates?status=pending&sortBy=timeliness_score'),
-    queryKey: ['admin', 'rule-candidates'],
+    queryFn: () => requestJson<{ data: { items: RuleCandidate[] } }>(`/api/v1/admin/rule-candidates?status=pending&sortBy=timeliness_score&sourceType=${sourceType}`),
+    queryKey: ['admin', 'rule-candidates', sourceType],
   });
   const batch = useMutation({
     mutationFn: (action: 'approve' | 'reject') => requestJson('/api/v1/admin/rule-candidates/batch', { body: JSON.stringify({ action, ids: selected.slice(0, 50), reason: copy.batchReason }), method: 'POST' }),
@@ -42,7 +44,9 @@ export default function RuleCandidatesPage(): ReactNode {
         <p className="text-sm text-[var(--text-secondary)]">{copy.description}</p>
       </header>
       <div className="flex flex-wrap gap-4">
+        {(['all', 'crawler', 'legalCorpus'] as const).map((tab) => <button className="rounded-md border border-[var(--border-silver)] px-4 py-2" key={tab} onClick={() => setSourceType(tab)} type="button">{tab === 'legalCorpus' ? '法律语料' : tab === 'crawler' ? '爬虫候选' : '全部'}</button>)}
         <button className="rounded-md border border-[var(--border-silver)] px-4 py-2" onClick={() => batch.mutate('approve')} type="button">{copy.batchApprove}</button>
+        <button className="rounded-md border border-[var(--border-silver)] px-4 py-2" onClick={() => batch.mutate('approve')} type="button">批量通过 confidence ≥ 0.90 同来源</button>
         <button className="rounded-md border border-[var(--border-silver)] px-4 py-2" onClick={() => batch.mutate('reject')} type="button">{copy.batchReject}</button>
         <span className="text-sm text-[var(--text-secondary)]">{copy.batchLimit}</span>
       </div>
@@ -56,7 +60,7 @@ export default function RuleCandidatesPage(): ReactNode {
               <tr className="border-t border-[var(--border-silver)]" key={item.id}>
                 <td className="p-4"><input checked={selected.includes(item.id)} onChange={(event) => setSelected(event.target.checked ? [...selected, item.id].slice(0, 50) : selected.filter((id) => id !== item.id))} type="checkbox" /></td>
                 <td><Link className="text-[var(--accent-gold)]" href={`/admin/rules/candidates/${item.id}`}>{item.title}</Link></td>
-                <td><a href={item.sourceUrl} rel="noreferrer" target="_blank">{copy.source}</a></td>
+                <td>{item.sourceType === 'legalCorpus' ? <Link className="text-[var(--accent-gold)]" href={`/admin/legal-corpus/${item.id}`}>法律语料</Link> : <a href={item.sourceUrl} rel="noreferrer" target="_blank">{copy.source}</a>}</td>
                 <td>{item.riskLevel}</td>
                 <td>{Math.round(item.confidence * 100)}%</td>
                 <td>{item.timelinessScore}</td>

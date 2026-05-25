@@ -167,6 +167,7 @@ export const zhCN = {
     generateAll: '批量生成规则',
     generateOne: '生成规则',
     generated: '已抽规则',
+    job: '任务',
     parsed: '已解析',
     parse: '上传并解析',
     progress: '生成进度',
@@ -181,6 +182,7 @@ export const zhCN = {
     upload: '上传文件',
     version: '版本',
     viewClauses: '查看条款',
+    waiting: '等待触发',
   },
   navigation: {
     current: '当前页面',

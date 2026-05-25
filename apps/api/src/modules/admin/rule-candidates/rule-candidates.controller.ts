@@ -8,11 +8,12 @@ export class RuleCandidatesController {
   constructor(private readonly rules: RulesService, private readonly security: SecurityComplianceService) {}
 
   @Get()
-  list(@Query('status') status?: 'approved' | 'pending' | 'rejected') {
-    const items = this.rules.listCandidates(status).map((item) => ({
+  list(@Query('status') status?: 'approved' | 'pending' | 'rejected', @Query('sourceType') sourceType?: string) {
+    const items = this.rules.listCandidates(status).filter((item) => !sourceType || sourceType === 'all' || item.ruleStruct.sourceType === sourceType).map((item) => ({
       ...item,
       extractTraceId: item.ruleStruct.extract_trace_id ?? item.id,
       riskLevel: item.ruleStruct.riskLevel ?? 'yellow',
+      sourceType: item.ruleStruct.sourceType ?? 'crawler',
       sourceUrl: item.ruleStruct.source_url ?? 'https://public-source.local',
       timelinessScore: item.ruleStruct.timeliness_score ?? 80,
       title: item.ruleStruct.title ?? item.sourceName,

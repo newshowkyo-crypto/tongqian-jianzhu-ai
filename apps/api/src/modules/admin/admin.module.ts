@@ -4,6 +4,7 @@ import { TenantContextService } from '../../common/context/tenant-context.servic
 import { JwtGuard } from '../../common/guards/jwt.guard.js';
 import { PermissionGuard } from '../../common/guards/permission.guard.js';
 import { LegalCorpusModule } from '../legal-corpus/legal-corpus.module.js';
+import { RuleExtractionModule } from '../rule-extraction/rule-extraction.module.js';
 import { SecurityComplianceService } from '../security-compliance/security-compliance.service.js';
 import { SystemConfigService } from '../system-config/system-config.service.js';
 
@@ -55,7 +56,7 @@ import { UsersAdminController } from './users/users-admin.controller.js';
 @Module({
   controllers: [AddictionConfigAdminController, AgentsAdminController, ApprovalsAdminController, AuditAdminController, BillingAdminController, CaseMarketAdminController, ConfigAdminController, CredentialsAdminController, CredentialsController, CreditsAdminController, DataExportsAdminController, FeatureFlagsAdminController, GovAdminController, IcpController, IngestAdminController, IncidentsAdminController, JobsAdminController, LegalCorpusAdminController, ModelsAdminController, NotificationsAdminController, OnboardingController, OperationsAdminController, OpportunitiesAdminController, OrdersAdminController, PolicyFundsAdminController, PromptTestsAdminController, PromptsAdminController, RefundsAdminController, ReportsAdminController, RewardClaimsAdminController, RiskAdminController, RulesAdminController, SecurityAdminController, ServicesAdminController, SubscriptionsAdminController, SystemConfigAdminController, TenantsAdminController, UsersAdminController],
   exports: [AdminResourceService],
-  imports: [FuelProgressModule, LegalCorpusModule, RuleCandidatesModule],
+  imports: [FuelProgressModule, LegalCorpusModule, RuleCandidatesModule, RuleExtractionModule],
   providers: [AdminResourceService, CredentialsService, IcpService, OnboardingService, SecurityComplianceService, SystemConfigService, TenantContextService, JwtGuard, PermissionGuard],
 })
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
