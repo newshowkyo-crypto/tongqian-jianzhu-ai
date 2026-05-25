@@ -1,4 +1,5 @@
 import { tongqianTailwindPreset } from '@tongqian/ui/tailwind-preset';
+import { stitchColors } from '@tongqian/ui/tokens';
 import type { Config } from 'tailwindcss';
 
 const config = {
@@ -7,6 +8,7 @@ const config = {
   theme: {
     extend: {
       colors: {
+        stitch: stitchColors,
         accent: {
           50: '#f4f4f5',
           500: '#52525b',

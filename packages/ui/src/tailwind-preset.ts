@@ -1,6 +1,7 @@
 import animate from 'tailwindcss-animate';
 
 import { designTokens } from './tokens.js';
+import { stitchColors, stitchFontFamily, stitchRounded, stitchShadows, stitchSpacing, stitchTypography } from './tokens/stitch-tokens.js';
 
 type TailwindPresetConfig = {
   darkMode?: string[];
@@ -41,24 +42,30 @@ export const tongqianTailwindPreset = {
         danger: designTokens.colors.danger,
         info: designTokens.colors.info,
         neutral: designTokens.colors.neutral,
+        stitch: stitchColors,
       },
       borderRadius: {
         ...designTokens.radius,
+        ...stitchRounded,
       },
       boxShadow: {
         ...designTokens.shadows,
+        ...stitchShadows,
       },
       fontFamily: {
         ...fontFamily,
+        ...stitchFontFamily,
       },
       fontSize: {
         ...fontSize,
+        ...stitchTypography,
       },
       fontWeight: {
         ...designTokens.typography.fontWeight,
       },
       spacing: {
         ...designTokens.spacing,
+        ...stitchSpacing,
       },
     },
   },

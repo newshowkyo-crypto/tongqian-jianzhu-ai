@@ -1,0 +1,91 @@
+export const stitchColors = {
+  'surface': '#f9f9ff',
+  'surface-dim': '#d9d9e2',
+  'surface-bright': '#f9f9ff',
+  'surface-container-lowest': '#ffffff',
+  'surface-container-low': '#f3f3fc',
+  'surface-container': '#ededf6',
+  'surface-container-high': '#e7e7f0',
+  'surface-container-highest': '#e1e2ea',
+  'on-surface': '#191b22',
+  'on-surface-variant': '#424752',
+  'inverse-surface': '#2e3037',
+  'inverse-on-surface': '#f0f0f9',
+  'outline': '#737784',
+  'outline-variant': '#c2c6d4',
+  'surface-tint': '#175bbb',
+  'primary': '#00479b',
+  'on-primary': '#ffffff',
+  'primary-container': '#1e5fbf',
+  'on-primary-container': '#d2deff',
+  'inverse-primary': '#adc6ff',
+  'secondary': '#86513d',
+  'on-secondary': '#ffffff',
+  'secondary-container': '#ffb9a0',
+  'on-secondary-container': '#7a4734',
+  'tertiary': '#7c3600',
+  'on-tertiary': '#ffffff',
+  'tertiary-container': '#a14800',
+  'on-tertiary-container': '#ffd6c1',
+  'error': '#ba1a1a',
+  'on-error': '#ffffff',
+  'error-container': '#ffdad6',
+  'on-error-container': '#93000a',
+  'primary-fixed': '#d8e2ff',
+  'primary-fixed-dim': '#adc6ff',
+  'on-primary-fixed': '#001a42',
+  'on-primary-fixed-variant': '#004494',
+  'secondary-fixed': '#ffdbce',
+  'secondary-fixed-dim': '#fcb69d',
+  'on-secondary-fixed': '#351003',
+  'on-secondary-fixed-variant': '#6a3a27',
+  'tertiary-fixed': '#ffdbc9',
+  'tertiary-fixed-dim': '#ffb68e',
+  'on-tertiary-fixed': '#331200',
+  'on-tertiary-fixed-variant': '#763300',
+  'background': '#f9f9ff',
+  'on-background': '#191b22',
+  'surface-variant': '#e1e2ea',
+  'rose-gold': '#d99880',
+} as const;
+
+export const stitchTypography = {
+  'display-lg': ['30px', { fontWeight: '600', lineHeight: '38px' }],
+  'display-md': ['24px', { fontWeight: '600', lineHeight: '32px' }],
+  'title-lg': ['20px', { fontWeight: '600', lineHeight: '28px' }],
+  'title-md': ['18px', { fontWeight: '600', lineHeight: '26px' }],
+  'body-lg': ['16px', { fontWeight: '400', lineHeight: '24px' }],
+  'body-md': ['14px', { fontWeight: '400', lineHeight: '20px' }],
+  'label-md': ['13px', { fontWeight: '500', lineHeight: '18px' }],
+  'label-sm': ['12px', { fontWeight: '500', lineHeight: '16px' }],
+} as const;
+
+export const stitchSpacing = {
+  base: '4px',
+  xs: '4px',
+  sm: '8px',
+  md: '12px',
+  lg: '16px',
+  xl: '24px',
+  xxl: '32px',
+  xxxl: '48px',
+} as const;
+
+export const stitchRounded = {
+  sm: '0.125rem',
+  DEFAULT: '0.25rem',
+  md: '0.375rem',
+  lg: '0.5rem',
+  xl: '0.75rem',
+  full: '9999px',
+} as const;
+
+export const stitchShadows = {
+  level1: '0 1px 2px rgb(25 27 34 / 0.06)',
+  level2: '0 8px 18px -14px rgb(25 27 34 / 0.25)',
+  level3: '0 16px 36px -20px rgb(25 27 34 / 0.32)',
+} as const;
+
+export const stitchFontFamily = {
+  stitch: ['Inter', 'PingFang SC', 'Microsoft YaHei', 'sans-serif'],
+} as const;
