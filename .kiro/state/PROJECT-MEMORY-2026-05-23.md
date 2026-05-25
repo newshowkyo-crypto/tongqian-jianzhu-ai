@@ -20,11 +20,11 @@
 
 ## 0. 一句话状态
 
-代码层 M0-M27 全部收口，M24 + M25 + M26 + M27 已合并 main。3 件待办事项现状已变化：DeepSeek 真付费 key ✓，ICP 备案审核中尾声，业务底料策略已落地为 M26 全网采集 + M27 权威文本灌入（真爬虫 + AI 自写规则候选 + 律师只审不录）。VPS 已备好（华东 1），但 SSH 同步此前超时，需人工网络/SSH 复跑。
+代码层 M0-M28 全部收口，M24-M28 已合并 main。3 件待办事项现状已变化：DeepSeek 真付费 key ✓，ICP 备案审核中尾声，业务底料策略已落地为 M26 全网采集 + M27 权威文本灌入 + M28 OSS 经验吸收（造价库骨架、RFP RAG、red flag、17 工具、报告导出）。VPS 已备好（华东 1），但 SSH 同步此前超时，需人工网络/SSH 复跑。
 
-## 1. 最新里程碑（M0-M27 全部 done）
+## 1. 最新里程碑（M0-M28 全部 done）
 
-M5-M13 完成产品骨架、视觉系统、登录、Dashboard 和 Stitch 集成；M14 完成合同审查业务闭环范本。M15-M22 完成招标、资质、机会、报告、派单、AI 聊天、现金流、项目现场等业务闭环，verify 均已通过。M23 完成上线准备，M24 完成可视化上线引导，verify-m24 10/10 PASS；M25 完成桌面封装、Docker 镜像、VPS 部署演练和 CI/CD，verify-m25 12/12 PASS；M26 完成全网爬虫 + AI 规则候选抽取 + 律师只审不录，verify-m26 12/12 PASS，typecheck 22/22 PASS；M27 完成法律语料 + AI 自写规则，verify-m27 12/12 PASS，typecheck 22/22 PASS。
+M5-M13 完成产品骨架、视觉系统、登录、Dashboard 和 Stitch 集成；M14 完成合同审查业务闭环范本。M15-M22 完成招标、资质、机会、报告、派单、AI 聊天、现金流、项目现场等业务闭环，verify 均已通过。M23 完成上线准备，M24 完成可视化上线引导，verify-m24 10/10 PASS；M25 完成桌面封装、Docker 镜像、VPS 部署演练和 CI/CD，verify-m25 12/12 PASS；M26 完成全网爬虫 + AI 规则候选抽取 + 律师只审不录，verify-m26 12/12 PASS，typecheck 22/22 PASS；M27 完成法律语料 + AI 自写规则，verify-m27 12/12 PASS，typecheck 22/22 PASS；M28 完成 GitHub 热门建筑 AI 吸收落地，verify-m28 12/12 PASS，typecheck 22/22 PASS。
 
 ## 2. M24 关键交付（凭证 + ICP + 业务底料 + 顶层向导）
 
