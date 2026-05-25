@@ -10,8 +10,8 @@ import type {
   RoughEstimateView,
 } from '@tongqian/types';
 
-import { AiGatewayService } from '../../ai-gateway/ai-gateway.service.js';
-import { CostCatalogService } from '../cost-catalog/cost-catalog.service.js';
+import type { AiGatewayService } from '../../ai-gateway/ai-gateway.service.js';
+import type { CostCatalogService } from '../cost-catalog/cost-catalog.service.js';
 
 const BASE_PER_SQM: Record<string, number> = {
   civil: 3100,

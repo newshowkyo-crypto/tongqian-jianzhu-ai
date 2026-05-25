@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 
-import { DueDiligenceService } from './due-diligence.service.js';
+import type { DueDiligenceService } from './due-diligence.service.js';
 
 @Controller('api/v1/customer-dd')
 export class DueDiligenceController {

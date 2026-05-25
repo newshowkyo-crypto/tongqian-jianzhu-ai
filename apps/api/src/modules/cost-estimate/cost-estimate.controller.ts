@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Headers, Inject, Post, Query } from '@nestjs/common';
 
+import type { BudgetEstimatorService } from './budget-estimator.service.js';
+import type { CarbonEstimatorService } from './carbon-estimator.service.js';
 import { CostEstimateService } from './cost-estimate.service.js';
-import { BudgetEstimatorService } from './budget-estimator.service.js';
-import { CarbonEstimatorService } from './carbon-estimator.service.js';
-import { RoughQuantityService } from './rough-quantity.service.js';
+import type { RoughQuantityService } from './rough-quantity.service.js';
 
 @Controller('api/v1/cost')
 export class CostEstimateController {

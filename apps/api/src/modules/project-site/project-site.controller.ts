@@ -1,12 +1,12 @@
 import { Body, Controller, Get, Headers, Inject, Param, Post, Query } from '@nestjs/common';
 
-import { PhotoService } from './photo.service.js';
-import { PaymentLedgerService } from './payment-ledger.service.js';
-import { ChangeOrderService } from './change-order.service.js';
-import { ClaimRecordService } from './claim-record.service.js';
-import { TaskBoardService } from './task-board.service.js';
+import type { ChangeOrderService } from './change-order.service.js';
+import type { ClaimRecordService } from './claim-record.service.js';
+import type { PaymentLedgerService } from './payment-ledger.service.js';
+import type { PhotoService } from './photo.service.js';
 import { ProjectSiteService } from './project-site.service.js';
-import { ScheduleService } from './schedule.service.js';
+import type { ScheduleService } from './schedule.service.js';
+import type { TaskBoardService } from './task-board.service.js';
 
 @Controller('api/v1/projects')
 export class ProjectSiteController {

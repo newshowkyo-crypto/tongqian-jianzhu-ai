@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 
-import { OnboardingService } from './onboarding.service.js';
+import type { OnboardingService } from './onboarding.service.js';
 
 @Controller('api/v1/admin/onboarding')
 export class OnboardingController {

@@ -2,7 +2,7 @@ import { createCipheriv, createHash, randomBytes } from 'node:crypto';
 
 import { Injectable } from '@nestjs/common';
 
-import { SystemConfigService } from '../../system-config/system-config.service.js';
+import type { SystemConfigService } from '../../system-config/system-config.service.js';
 
 type CredentialMode = 'mock' | 'real';
 

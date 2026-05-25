@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 
-import { CostCatalogService } from '../../cost-catalog/cost-catalog.service.js';
+import type { CostCatalogService } from '../../cost-catalog/cost-catalog.service.js';
 
 @Controller('api/v1/admin/cost-catalogs')
 export class CostCatalogAdminController {

@@ -1,5 +1,6 @@
 import { AiCacheStrategy, AiOutputTier, AiTaskType, type PromptTemplate } from '@tongqian/types';
 import { z } from 'zod';
+
 import { summaryOutputSchema } from './daily-summary.prompt.js';
 
 export const weeklySummaryInputSchema = z.object({ dataPoints: z.record(z.unknown()), tenantId: z.string(), week: z.string() });

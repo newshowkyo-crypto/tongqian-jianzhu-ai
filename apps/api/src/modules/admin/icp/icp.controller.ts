@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
-import { IcpService } from './icp.service.js';
+import type { IcpService } from './icp.service.js';
 
 @Controller('api/v1/admin/icp')
 export class IcpController {

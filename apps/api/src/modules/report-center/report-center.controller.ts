@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Headers, Inject, Param, Post, Put } from '@nestjs/common';
 import type { AiAudienceRole } from '@tongqian/types';
 
+import type { AutoSummaryService } from './auto-summary.service.js';
+import type { QualityCheckService } from './quality-check.service.js';
 import { ReportCenterService } from './report-center.service.js';
-import { AutoSummaryService } from './auto-summary.service.js';
-import { ReportExportService, type ExportFormat } from './report-export.service.js';
-import { QualityCheckService } from './quality-check.service.js';
+import type { ExportFormat, ReportExportService } from './report-export.service.js';
 
 @Controller('api/v1')
 export class ReportCenterController {
