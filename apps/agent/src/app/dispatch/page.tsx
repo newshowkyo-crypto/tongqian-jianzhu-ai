@@ -19,14 +19,14 @@ export default function Page(): JSX.Element {
         <section className="grid gap-4 md:grid-cols-3">
           {orders.map(([customer, need, quote]) => (
             <SectionCard className="border-white/20 bg-white/10 text-white" key={customer}>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 <div className="grid h-10 w-10 place-items-center rounded-full bg-white/20 text-sm font-semibold">{customer.slice(0, 1)}</div>
                 <div>
                   <div className="text-sm font-semibold">{customer}</div>
                   <div className="text-xs text-white/75">{need}</div>
                 </div>
               </div>
-              <div className="mt-4 rounded-md border border-white/20 bg-white/10 p-3">
+              <div className="mt-4 rounded-md border border-white/20 bg-white/10 p-4">
                 <div className="text-xs text-white/70">建议报价</div>
                 <div className="mt-1 text-2xl font-semibold tabular-nums">¥{quote}</div>
               </div>
