@@ -17,21 +17,21 @@ export default function BudgetEstimatePage(): JSX.Element {
     <main className="min-h-screen bg-slate-50 p-6 text-slate-950">
       <section className="mx-auto grid max-w-6xl gap-4 lg:grid-cols-[360px_1fr]">
         <form className="rounded border bg-white p-4">
-          <div className="mb-3 flex items-center justify-between">
+          <div className="mb-4 flex items-center justify-between">
             <h1 className="text-lg font-semibold">概算引擎</h1>
             <span className="rounded bg-emerald-50 px-2 py-1 text-xs text-emerald-700">Tier 2</span>
           </div>
           <label className="block text-sm">建筑面积</label>
           <input className="mt-1 w-full rounded border px-3 py-2" type="number" value={area} onChange={(event) => setArea(Number(event.target.value))} />
-          {['厂房', '钢结构', '省会', '标准装修', '2026-06'].map((item) => <div className="mt-3 rounded border px-3 py-2 text-sm" key={item}>{item}</div>)}
+          {['厂房', '钢结构', '省会', '标准装修', '2026-06'].map((item) => <div className="mt-4 rounded border px-3 py-2 text-sm" key={item}>{item}</div>)}
         </form>
         <section className="rounded border bg-white p-4">
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-3">
             <Stat label="下限" value={result.low} />
             <Stat label="中值" value={result.mid} />
             <Stat label="上限" value={result.high} />
           </div>
-          <div className="mt-4 grid gap-3 sm:grid-cols-5">
+          <div className="mt-4 grid gap-4 sm:grid-cols-5">
             {Object.entries(coefficients).map(([name, value]) => <Stat key={name} label={name} value={value} />)}
           </div>
           <div className="mt-4 rounded border p-4 text-sm">AI概算仅作经营辅助，不替代造价师正式成果或审计结论。</div>
@@ -45,5 +45,5 @@ export default function BudgetEstimatePage(): JSX.Element {
 }
 
 function Stat({ label, value }: { label: string; value: number | string }): JSX.Element {
-  return <div className="rounded border p-3"><div className="text-xs text-slate-500">{label}</div><div className="mt-1 text-xl font-semibold">{value}</div></div>;
+  return <div className="rounded border p-4"><div className="text-xs text-slate-500">{label}</div><div className="mt-1 text-xl font-semibold">{value}</div></div>;
 }

@@ -17,12 +17,12 @@ export default function ProjectTasksPage(): JSX.Element {
     <main className="min-h-screen bg-slate-50 p-6 text-slate-950">
       <section className="mx-auto max-w-7xl">
         <div className="mb-4 flex items-center justify-between"><h1 className="text-xl font-semibold">项目任务</h1><div className="rounded border bg-white p-1 text-sm">看板 / 列表 / 时间线</div></div>
-        <div className="grid gap-3 lg:grid-cols-4">
+        <div className="grid gap-4 lg:grid-cols-4">
           {columns.map(([key, label]) => (
-            <div className="min-h-[420px] rounded border bg-white p-3" key={key}>
-              <div className="mb-3 font-medium">{label}</div>
+            <div className="min-h-[420px] rounded border bg-white p-4" key={key}>
+              <div className="mb-4 font-medium">{label}</div>
               {cards.filter((card) => card.column === key).map((card) => (
-                <article className="mb-3 rounded border p-3" draggable key={card.title}>
+                <article className="mb-4 rounded border p-4" draggable key={card.title}>
                   <div className="font-medium">{card.title}</div>
                   <div className="mt-2 flex items-center justify-between text-xs text-slate-500"><span>{card.priority}</span><span>{card.due}</span></div>
                   <div className="mt-2 text-xs text-slate-500">关联进度 / 索赔 / 变更</div>

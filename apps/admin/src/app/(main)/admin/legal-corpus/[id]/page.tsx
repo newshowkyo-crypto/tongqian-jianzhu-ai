@@ -35,11 +35,11 @@ export default function LegalCorpusDetailPage({ params }: { params: { id: string
         <button className="rounded-md bg-[var(--accent-gold)] px-4 py-2 text-black" onClick={() => generateAll.mutate()} type="button">{copy.generateAll}</button>
       </header>
       <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-        <article className="space-y-3">
+        <article className="space-y-4">
           {clauses.map((clause) => (
             <details className="rounded-md border border-[var(--border-silver)] bg-white/5 p-4" key={clause.id}>
               <summary className="cursor-pointer font-semibold">{clause.clauseNumber}</summary>
-              <p className="mt-3 whitespace-pre-wrap text-sm text-[var(--text-secondary)]">{clause.clauseText}</p>
+              <p className="mt-4 whitespace-pre-wrap text-sm text-[var(--text-secondary)]">{clause.clauseText}</p>
               <button className="mt-4 rounded-md border border-[var(--border-silver)] px-4 py-2" onClick={() => generate.mutate(clause.id)} type="button">{copy.generateOne}</button>
             </details>
           ))}
