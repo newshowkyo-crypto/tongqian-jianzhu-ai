@@ -6,6 +6,14 @@ type ToolDef = { description: string; handler: (params: unknown, ctx: ToolContex
 
 @Injectable()
 export class ToolRegistryService {
+  private readonly toolManifest = [
+    { name: 'list_my_tenders' }, { name: 'list_my_contracts_by_status' }, { name: 'query_qualification' }, { name: 'query_cashflow_overview' },
+    { name: 'query_aging_analysis' }, { name: 'query_top_risks' }, { name: 'query_ai_reports_recent' }, { name: 'query_dispatch_orders' },
+    { name: 'query_agent_payouts' }, { name: 'query_credit_balance' }, { name: 'search_rules' }, { name: 'search_cost_catalog' },
+    { name: 'search_rfp_chunks' }, { name: 'query_project_progress' }, { name: 'query_kpi_dashboard' }, { name: 'query_red_flags_pending' },
+    { name: 'query_credentials_status' },
+  ];
+
   private readonly tools: ToolDef[] = [
     this.tool('list_my_tenders', '我的在投项目', z.object({ status: z.string().optional() })),
     this.tool('list_my_contracts_by_status', '按状态查合同', z.object({ status: z.string() })),
