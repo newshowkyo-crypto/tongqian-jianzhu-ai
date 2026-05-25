@@ -1754,6 +1754,51 @@ model PaymentLedger {
   @@map("payment_ledgers")
 }
 
+model ChangeOrder {
+  id                     String    @id @default(cuid())
+  tenantId               String    @map("tenant_id")
+  projectId              String    @map("project_id")
+  contractId             String    @map("contract_id")
+  orderType              String    @map("order_type")
+  title                  String
+  description            String    @db.Text
+  estimatedCostImpactCny Decimal?  @map("estimated_cost_impact_cny") @db.Decimal(20, 2)
+  estimatedTimeImpactDays Int?     @map("estimated_time_impact_days")
+  status                 String
+  evidenceFiles          String[]  @map("evidence_files")
+  submittedAt            DateTime? @map("submitted_at")
+  approvedAt             DateTime? @map("approved_at")
+  finalCostCny           Decimal?  @map("final_cost_cny") @db.Decimal(20, 2)
+  finalTimeDays          Int?      @map("final_time_days")
+  aiRiskAnalysis         String?   @map("ai_risk_analysis") @db.Text
+
+  @@index([tenantId, projectId, status])
+  @@map("change_orders")
+}
+
+model ClaimRecord {
+  id               String    @id @default(cuid())
+  tenantId         String    @map("tenant_id")
+  projectId        String    @map("project_id")
+  contractId       String    @map("contract_id")
+  claimType        String    @map("claim_type")
+  title            String
+  description      String    @db.Text
+  claimedAmountCny Decimal?  @map("claimed_amount_cny") @db.Decimal(20, 2)
+  claimedTimeDays  Int?      @map("claimed_time_days")
+  submitDeadline   DateTime? @map("submit_deadline")
+  submittedAt      DateTime? @map("submitted_at")
+  status           String
+  evidenceFiles    String[]  @map("evidence_files")
+  finalAmountCny   Decimal?  @map("final_amount_cny") @db.Decimal(20, 2)
+  finalTimeDays    Int?      @map("final_time_days")
+  aiSuccessScore   Float?    @map("ai_success_score")
+  aiAnalysis       String?   @map("ai_analysis") @db.Text
+
+  @@index([tenantId, projectId, submitDeadline])
+  @@map("claim_records")
+}
+
 model ProjectSchedule {
   id        String         @id @default(uuid()) @db.Uuid
   projectId String         @map("project_id")
