@@ -82,6 +82,10 @@ M31 上线灰度（5% -> 25% -> 50% -> 100% 真用户切流量）。
 ## 7. 给下一会话的 Codex / 接班人
 
 读完 1-6 节即可接手。常用命令：`pwsh scripts/verify-m{NN}.ps1`、`pnpm --config.engine-strict=false typecheck`、`node scripts/visual-lint.mjs`、`pnpm gen:api`、`git log --oneline -20`。注意本机 Node v25 会触发 engine warning，验证时用 `--config.engine-strict=false`。
+## 10. M31 Audit Fix Closeout (2026-05-25)
+
+M31 done and merged to main. Completed admin lint import ordering, visual-lint cleanup, 8 service specs, M28-M30 tenant defaults/indices, ToolRegistry 17 handlers, and `scripts/verify-m31.ps1`. Final checks: verify-m31 12/12 PASS, lint 16/16 PASS, typecheck 22/22 PASS, test 22/22 PASS, visual-lint no violations.
+
 ## 9. M30 Core Cost Project Closeout (2026-05-25)
 
 M30 done and merged to main. Completed budget estimator, rough quantity estimator, payment ledger, change/claim ledger, carbon rough estimator, and project task board. `scripts/verify-m30.ps1` passed 14/14; `pnpm --config.engine-strict=false typecheck` passed 22/22 cached. No heavy dependencies added: puppeteer, playwright, tensorflow, cesium, forge-viewer, n8n, revit, autocad.
