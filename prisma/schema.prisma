@@ -1638,6 +1638,19 @@ model CostItem {
   @@map("cost_items")
 }
 
+model RfpChunk {
+  id         String  @id @default(uuid()) @db.Uuid
+  tenderId   String  @map("tender_id")
+  docName    String  @map("doc_name")
+  pageNumber Int?    @map("page_number")
+  content    String  @db.Text
+  keywords   String[]
+  embedding  Bytes?
+
+  @@index([tenderId])
+  @@map("rfp_chunks")
+}
+
 model AgentProfile {
   id             String    @id @default(uuid()) @db.Uuid
   userId         String    @unique @map("user_id")
