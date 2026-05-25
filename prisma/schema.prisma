@@ -1706,6 +1706,33 @@ model BudgetEstimate {
   @@map("budget_estimates")
 }
 
+model QuantityIndicator {
+  id            String  @id @default(cuid())
+  projectType   String  @map("project_type")
+  structureType String  @map("structure_type")
+  workItem      String  @map("work_item")
+  unit          String
+  coefficient   Decimal @db.Decimal(20, 6)
+  sourceNotes   String? @map("source_notes") @db.Text
+
+  @@unique([projectType, structureType, workItem])
+  @@map("quantity_indicators")
+}
+
+model RoughQuantityEstimate {
+  id            String  @id @default(cuid())
+  tenantId      String  @map("tenant_id")
+  projectName   String  @map("project_name")
+  areaSqm       Float   @map("area_sqm")
+  projectType   String  @map("project_type")
+  structureType String  @map("structure_type")
+  items         Json
+  totalCny      Decimal @map("total_cny") @db.Decimal(20, 2)
+  aiAnalysis    String? @map("ai_analysis") @db.Text
+
+  @@map("rough_quantity_estimates")
+}
+
 model ProjectSchedule {
   id        String         @id @default(uuid()) @db.Uuid
   projectId String         @map("project_id")
