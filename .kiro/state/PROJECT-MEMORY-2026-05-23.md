@@ -82,6 +82,10 @@ M31 上线灰度（5% -> 25% -> 50% -> 100% 真用户切流量）。
 ## 7. 给下一会话的 Codex / 接班人
 
 读完 1-6 节即可接手。常用命令：`pwsh scripts/verify-m{NN}.ps1`、`pnpm --config.engine-strict=false typecheck`、`node scripts/visual-lint.mjs`、`pnpm gen:api`、`git log --oneline -20`。注意本机 Node v25 会触发 engine warning，验证时用 `--config.engine-strict=false`。
+## 9. M30 Core Cost Project Closeout (2026-05-25)
+
+M30 done and merged to main. Completed budget estimator, rough quantity estimator, payment ledger, change/claim ledger, carbon rough estimator, and project task board. `scripts/verify-m30.ps1` passed 14/14; `pnpm --config.engine-strict=false typecheck` passed 22/22 cached. No heavy dependencies added: puppeteer, playwright, tensorflow, cesium, forge-viewer, n8n, revit, autocad.
+
 ## 8. M29 Lightweight Closeout (2026-05-25)
 
 M29 done and merged to main. Lightweight absorption completed for schedule Gantt/CPM, historical cost comparison, safety and technical briefing, daily/weekly/monthly summaries, customer due diligence, and site photo classifier. `scripts/verify-m29.ps1` passed 12/12; `pnpm --config.engine-strict=false typecheck` passed 22/22 cached. Heavy dependencies remain forbidden and absent: puppeteer, playwright, tensorflow, cesium, forge-viewer, n8n.
