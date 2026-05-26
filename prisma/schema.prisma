@@ -2497,6 +2497,44 @@ model GovDocumentDraft {
   @@map("gov_document_drafts")
 }
 
+model GovDocument {
+  id              String   @id @default(uuid()) @db.Uuid
+  tenantId        String   @map("tenant_id") @db.Uuid
+  userId          String   @map("user_id") @db.Uuid
+  docType         String   @map("doc_type")
+  title           String
+  subject         String?
+  body            String   @db.Text
+  attachments     Json?
+  docNumber       String?  @map("doc_number")
+  issuer          String?
+  watermark       String
+  generatorIp     String   @map("generator_ip")
+  generatorUserId String   @map("generator_user_id") @db.Uuid
+  creditsCost     Int      @map("credits_cost")
+  aiConfidence    String   @default("medium") @map("ai_confidence")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, userId, docType, createdAt])
+  @@map("gov_documents")
+}
+
+model MeetingMinuteAsr {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  userId           String   @map("user_id") @db.Uuid
+  audioUrl         String   @map("audio_url")
+  transcript       String   @db.Text
+  structuredMinute Json     @map("structured_minute")
+  watermark        String
+  generatorIp      String   @map("generator_ip")
+  creditsCost      Int      @default(300) @map("credits_cost")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, userId, createdAt])
+  @@map("meeting_minutes_asr")
+}
+
 model GovConsultIntent {
   id                String   @id @default(uuid()) @db.Uuid
   tenantId          String   @map("tenant_id")
