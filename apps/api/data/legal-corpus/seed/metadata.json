@@ -58,5 +58,85 @@
     "sourceUrl": "https://www.court.gov.cn/（待补全司法解释页）",
     "expectedClauseCount": 50,
     "filePath": "SPC-CONTRACT-2020-25.placeholder"
+  },
+  {
+    "code": "GB50010-2010",
+    "docType": "standard",
+    "expectedClauseCount": 120,
+    "filePath": "GB50010-2010.placeholder",
+    "issuer": "SAMR + MOHURD",
+    "sourceUrl": "https://openstd.samr.gov.cn/",
+    "title": "Concrete structure design code",
+    "version": "2010"
+  },
+  {
+    "code": "GB50011-2010",
+    "docType": "standard",
+    "expectedClauseCount": 120,
+    "filePath": "GB50011-2010.placeholder",
+    "issuer": "SAMR + MOHURD",
+    "sourceUrl": "https://openstd.samr.gov.cn/",
+    "title": "Seismic design code for buildings",
+    "version": "2010"
+  },
+  {
+    "code": "GB50016-2014",
+    "docType": "standard",
+    "expectedClauseCount": 120,
+    "filePath": "GB50016-2014.placeholder",
+    "issuer": "SAMR + MOHURD",
+    "sourceUrl": "https://openstd.samr.gov.cn/",
+    "title": "Fire protection code of buildings",
+    "version": "2014"
+  },
+  {
+    "code": "GB50204-2015",
+    "docType": "standard",
+    "expectedClauseCount": 120,
+    "filePath": "GB50204-2015.placeholder",
+    "issuer": "SAMR + MOHURD",
+    "sourceUrl": "https://openstd.samr.gov.cn/",
+    "title": "Concrete structure construction quality acceptance",
+    "version": "2015"
+  },
+  {
+    "code": "GB50202-2018",
+    "docType": "standard",
+    "expectedClauseCount": 120,
+    "filePath": "GB50202-2018.placeholder",
+    "issuer": "SAMR + MOHURD",
+    "sourceUrl": "https://openstd.samr.gov.cn/",
+    "title": "Building foundation construction quality acceptance",
+    "version": "2018"
+  },
+  {
+    "code": "GB50203-2011",
+    "docType": "standard",
+    "expectedClauseCount": 120,
+    "filePath": "GB50203-2011.placeholder",
+    "issuer": "SAMR + MOHURD",
+    "sourceUrl": "https://openstd.samr.gov.cn/",
+    "title": "Masonry structure construction quality acceptance",
+    "version": "2011"
+  },
+  {
+    "code": "GB50720-2011",
+    "docType": "standard",
+    "expectedClauseCount": 120,
+    "filePath": "GB50720-2011.placeholder",
+    "issuer": "SAMR + MOHURD",
+    "sourceUrl": "https://openstd.samr.gov.cn/",
+    "title": "Fire safety technical code for construction site",
+    "version": "2011"
+  },
+  {
+    "code": "GB55032-2022",
+    "docType": "standard",
+    "expectedClauseCount": 120,
+    "filePath": "GB55032-2022.placeholder",
+    "issuer": "SAMR + MOHURD",
+    "sourceUrl": "https://openstd.samr.gov.cn/",
+    "title": "Building and municipal construction general quality code",
+    "version": "2022"
   }
 ]
