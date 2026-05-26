@@ -832,6 +832,21 @@ model BidSection {
   @@map("bid_sections")
 }
 
+model AgentFollowupReminder {
+  id         String   @id @default(uuid()) @db.Uuid
+  tenantId   String   @map("tenant_id")
+  agentId    String   @map("agent_id")
+  customerId String   @map("customer_id")
+  scenario   String
+  status     String   @default("pending")
+  script     String?  @db.Text
+  dueAt      DateTime @map("due_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, agentId, status, dueAt])
+  @@map("agent_followup_reminders")
+}
+
 model TenderPackage {
   id           String   @id @default(uuid()) @db.Uuid
   projectId    String   @unique @map("project_id") @db.Uuid
