@@ -412,8 +412,8 @@ const traceHeader = 'x-trace-id';
 const credentialFixtures: CredentialRecord[] = [
   { approval: 'active', key: 'DEEPSEEK_API_KEY', lastPingAt: '2026-05-20 10:00', mode: 'real', provider: 'deepseek', updatedAt: 'DeepSeek active' },
   { approval: 'active', key: 'ALIYUN_DASHSCOPE_API_KEY', lastPingAt: '2026-05-21 09:00', mode: 'real', provider: 'dashscope', updatedAt: 'M3.12 qwen3-max/qwen3-vl-max active' },
-  { approval: 'enabled', key: 'MIDLAYER_API_KEY', mode: 'mock', provider: 'midlayer', updatedAt: 'mock-ready' },
-  { approval: 'enabled', key: 'MIDLAYER_BASE_URL', mode: 'mock', provider: 'midlayer', updatedAt: 'mock-ready' },
+  { approval: 'active', key: 'MIDLAYER_API_KEY', mode: 'mock', provider: 'midlayer', updatedAt: 'mock-ready' },
+  { approval: 'active', key: 'MIDLAYER_BASE_URL', mode: 'mock', provider: 'midlayer', updatedAt: 'mock-ready' },
   { approval: 'pending_approval', key: 'WECHAT_PAY_*', mode: 'mock', provider: 'wechat_pay', updatedAt: 'P1 mock provider' },
   { approval: 'pending_approval', key: 'ALIYUN_OSS_*', mode: 'mock', provider: 'aliyun_oss', updatedAt: 'P1 mock provider' },
 ];
