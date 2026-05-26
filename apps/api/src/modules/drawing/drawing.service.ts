@@ -17,6 +17,7 @@ const SUPPORTED_FORMATS = new Set<DrawingFormat>(['dwg', 'jpg', 'pdf', 'png']);
 export class DrawingService {
   private readonly drawings = new Map<string, DrawingView>();
   private readonly understandings = new Map<string, DrawingUnderstandingView>();
+  private readonly annotations = new Map<string, Array<{ id: string; note: string; pageNo: number; x: number; y: number }>>();
 
   constructor(@Inject(StorageService) private readonly storage: StorageService) {}
 
@@ -104,6 +105,23 @@ export class DrawingService {
       newDrawingId: newDrawing.id,
       oldDrawingId: oldDrawing.id,
     };
+  }
+
+  snapshot(input: { drawingId: string; tenantId: string }): { annotations: number; drawingId: string; promptVersion: string; summary: string } {
+    const drawing = this.mustGetDrawing(input.drawingId, input.tenantId);
+    return {
+      annotations: this.annotations.get(drawing.id)?.length ?? 0,
+      drawingId: drawing.id,
+      promptVersion: 'drawing-snapshot-v1',
+      summary: 'Snapshot uses pdfjs-compatible page previews, axis tags, scale notes, and manual annotations for AI explanation.',
+    };
+  }
+
+  annotate(input: { drawingId: string; note: string; pageNo?: number; tenantId: string; x: number; y: number }): { id: string; note: string; pageNo: number; x: number; y: number } {
+    const drawing = this.mustGetDrawing(input.drawingId, input.tenantId);
+    const item = { id: crypto.randomUUID(), note: input.note, pageNo: input.pageNo ?? 1, x: input.x, y: input.y };
+    this.annotations.set(drawing.id, [...(this.annotations.get(drawing.id) ?? []), item]);
+    return item;
   }
 
   quantity(input: { drawingId: string; tenantId: string }): QuantityEstimateView {

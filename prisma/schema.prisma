@@ -1278,6 +1278,21 @@ model Drawing {
   @@map("drawings")
 }
 
+model DrawingAnnotation {
+  id        String   @id @default(uuid()) @db.Uuid
+  drawingId String   @map("drawing_id") @db.Uuid
+  tenantId  String   @map("tenant_id")
+  pageNo    Int      @default(1) @map("page_no")
+  x         Decimal  @db.Decimal(8, 4)
+  y         Decimal  @db.Decimal(8, 4)
+  note      String
+  authorId  String?  @map("author_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, drawingId, pageNo])
+  @@map("drawing_annotations")
+}
+
 model DrawingUnderstanding {
   id             String @id @default(uuid()) @db.Uuid
   drawingId      String @unique @map("drawing_id") @db.Uuid
@@ -1337,6 +1352,20 @@ model Receivable {
 
   @@index([tenantId, dueDate])
   @@map("receivables")
+}
+
+model ReminderSend {
+  id           String   @id @default(uuid()) @db.Uuid
+  tenantId     String   @map("tenant_id")
+  receivableId String   @map("receivable_id") @db.Uuid
+  channel      String
+  level        String
+  status       String
+  content      Json
+  sentAt       DateTime @default(now()) @map("sent_at")
+
+  @@index([tenantId, receivableId, sentAt])
+  @@map("reminder_sends")
 }
 
 model AgingAnalysis {

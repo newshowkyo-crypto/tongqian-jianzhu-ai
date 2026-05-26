@@ -16,6 +16,7 @@ const rules = [
   { id: 'R9', label: 'low-contrast gray text', pattern: /\btext-(?:neutral-200|neutral-300|gray-200|gray-300)\b/ },
   { id: 'R9', label: 'low-contrast translucent text', pattern: /\btext-(?:white|on-surface-variant)\/[0-3]0\b/ },
   { id: 'R8', label: 'inline color style', pattern: /style=\{\{[^}]*\b(?:color|background)\b/ },
+  { id: 'R10', label: 'gibberish question marks', pattern: /['"`][^'"`]*\?{4,}[^'"`]*['"`]/ },
 ];
 
 const hits = [];
