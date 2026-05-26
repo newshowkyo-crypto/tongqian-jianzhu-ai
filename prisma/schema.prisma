@@ -2526,6 +2526,83 @@ model AgentScript {
   @@map("agent_scripts")
 }
 
+model AgentCustomerBinding {
+  id               String   @id @default(uuid()) @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String   @unique @map("customer_tenant_id") @db.Uuid
+  referralCode     String   @map("referral_code")
+  bindSourceType   String   @map("bind_source_type")
+  boundAt          DateTime @default(now()) @map("bound_at")
+  isPermanent      Boolean  @default(true) @map("is_permanent")
+  transferReason   String?  @map("transfer_reason")
+  transferredAt    DateTime? @map("transferred_at")
+
+  healthScore      AgentCustomerHealthScore?
+  commissions      AgentCommissionLedger[]
+  @@index([agentId, boundAt])
+  @@map("agent_customer_bindings")
+}
+
+model AgentCommissionLedger {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String   @map("customer_tenant_id") @db.Uuid
+  bindingId        String   @map("binding_id") @db.Uuid
+  sourceType       String   @map("source_type")
+  sourceOrderId    String?  @map("source_order_id") @db.Uuid
+  grossAmount      Decimal  @map("gross_amount") @db.Decimal(18, 2)
+  commissionRate   Decimal  @map("commission_rate") @db.Decimal(5, 4)
+  commissionAmount Decimal  @map("commission_amount") @db.Decimal(18, 2)
+  status           String   @default("frozen")
+  frozenUntil      DateTime? @map("frozen_until")
+  settledAt        DateTime? @map("settled_at")
+  paidAt           DateTime? @map("paid_at")
+  clawbackReason   String?  @map("clawback_reason")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  binding          AgentCustomerBinding @relation(fields: [bindingId], references: [id])
+  @@index([agentId, status, createdAt])
+  @@index([customerTenantId, sourceType])
+  @@map("agent_commission_ledger")
+}
+
+model AgentCustomerHealthScore {
+  id               String   @id @default(uuid()) @db.Uuid
+  bindingId        String   @unique @map("binding_id") @db.Uuid
+  score            Int      @default(70)
+  lastInteractedAt DateTime? @map("last_interacted_at")
+  lastOrderAt      DateTime? @map("last_order_at")
+  nextRenewalDate  DateTime? @map("next_renewal_date")
+  renewalType      String?  @map("renewal_type")
+  riskLevel        String   @default("low")
+  riskReasons      Json?    @map("risk_reasons")
+  aiSuggestion     String?  @map("ai_suggestion") @db.Text
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  binding          AgentCustomerBinding @relation(fields: [bindingId], references: [id])
+  @@index([nextRenewalDate, riskLevel])
+  @@map("agent_customer_health_scores")
+}
+
+model AgentKnowledgeArticle {
+  id           String   @id @default(uuid()) @db.Uuid
+  category     String
+  agentSubtype String?  @map("agent_subtype")
+  region       String?
+  title        String
+  content      String   @db.Text
+  sourceUrl    String?  @map("source_url")
+  publishedAt  DateTime? @map("published_at")
+  aiGenerated  Boolean  @default(false) @map("ai_generated")
+  upvotes      Int      @default(0)
+  views        Int      @default(0)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@index([category, agentSubtype, region, publishedAt])
+  @@map("agent_knowledge_articles")
+}
+
 model GovProjectSourcing {
   id                String   @id @default(uuid()) @db.Uuid
   publisherTenantId String   @map("publisher_tenant_id")
