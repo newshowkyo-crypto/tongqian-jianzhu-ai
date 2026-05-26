@@ -355,3 +355,42 @@ Rollback anchor before M40 remains `v0.1.4-pre-launch`; M40 launch anchor is `v0
 | Tag | Scope | Verify |
 |---|---|---|
 | v0.1.5 | M40 v4 gov truth fix, policy fund battle map, gov doc AI matrix, policy learning, two-way sanitized sourcing, web-only building modules, gov compliance, agent opportunity scanner, agent CRM/binding/ledger/health/knowledge, midlayer routing, and 9 real agent toolkit business tools | verify-m40.ps1 40/40 PASS |
+
+
+---
+
+## D. 永久资产  海报母版 V4(2026-05-27)
+
+### D.1 母版位置
+`design/posters/v4-cyber-final/` 目录下:
+- `README.md`  母版总入口 + 视觉 DNA 锁死
+- `poster-A-company.md`  公司宣传海报(双业务并展)
+- `poster-B-saas-launch.md`  软件公测海报(6 大功能)
+- `poster-C-premium-consulting.md`  高端咨询海报(10 大服务)
+- `poster-D-omnichannel-matrix.md`  全媒体矩阵海报(7 大平台)
+
+### D.2 视觉 DNA 锁死(SHALL NOT 修改,除非创始人审核)
+- 三层渐变背景:#061029  #0a1c3a  #050b1a
+- 双色弧形扫光:cyan #4da6ff + violet #7b6cff
+- 古建+城市 hero 场景(故宫金边 + 城市冷蓝 + 水面倒影)
+- 品牌主金 #d4953a / 高光金 #f4c46b / 峰值金 #ffd97a
+- 思源宋体 Heavy(标题)/ 思源黑体 Heavy(副标)
+- 玻璃拟态卡片 + 圆角 12px + 铜金顶边
+- 极简铜金线性图标(类 Lucide) **禁 3D 水晶发光球**
+
+### D.3 SHALL NOT(防再次走偏)
+- ❌ 任何海报不得擅自修改视觉 DNA(必须经过创始人审核)
+- ❌ 不得使用 3D 水晶玻璃发光球图标(V1-V2 失败教训)
+- ❌ 不得在海报中出现"中介"二字(必用"智能管家")
+- ❌ 不得使用过饱和消费色(红/橙/粉/紫)作为主色
+- ❌ 不得使用倒计时 / 限时大促 banner(电商感)
+- ❌ 不得使用密集粒子风暴(V1 AI 味元凶)
+- ❌ 不得使用老气死板的企业风(V3 极简留白失败教训)
+
+### D.4 标准工作流
+1. 选 Ideogram 3.0(中文最准)
+2. 跑 6-8 张挑文字最准的 1 张
+3. PS 文字层 100% 校正所有中文(必做)
+4. 颜色精校(暖金 #d4953a / 深蓝 #0a1c3a)
+5. Topaz Photo AI 4K 放大(印刷级)
+6. 二维码替换占位框
