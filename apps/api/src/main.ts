@@ -11,6 +11,7 @@ import { AdminOpsModule } from './modules/admin-ops/admin-ops.module.js';
 import { AgentWorkspaceModule } from './modules/agent-workspace/agent-workspace.module.js';
 import { ApprovalModule } from './modules/approval/approval.module.js';
 import { AuthModule } from './modules/auth/auth.module.js';
+import { BiModule } from './modules/bi/bi.module.js';
 import { CashflowFinanceModule } from './modules/cashflow-finance/cashflow-finance.module.js';
 import { ChatHubModule } from './modules/chat-hub/chat-hub.module.js';
 import { CostCatalogModule } from './modules/cost-catalog/cost-catalog.module.js';
@@ -67,6 +68,7 @@ class HealthController {
     AdminOpsModule,
     ApprovalModule,
     AuthModule,
+    BiModule,
     CashflowFinanceModule,
     ChatHubModule,
     CostCatalogModule,
