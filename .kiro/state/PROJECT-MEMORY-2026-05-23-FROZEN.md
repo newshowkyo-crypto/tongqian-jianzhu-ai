@@ -197,3 +197,13 @@ git log --oneline -20
 ```bash
 git checkout v0.1.0-pre-launch
 ```
+
+---
+
+## M40 Snapshot Anchor - 2026-05-26
+
+| Tag | Scope | Verify |
+|---|---|---|
+| v0.1.5-pre-launch | M0-M40 mainstream construction SaaS modules: material ledger, subcontract evaluation, actual cost variance, meeting OA, quality closure | verify-m40.ps1 16/16 PASS |
+
+Rollback anchor before M40 remains `v0.1.4-pre-launch`; M40 launch anchor is `v0.1.5-pre-launch`.
