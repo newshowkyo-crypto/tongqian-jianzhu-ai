@@ -1354,6 +1354,20 @@ model Receivable {
   @@map("receivables")
 }
 
+model ReminderSend {
+  id           String   @id @default(uuid()) @db.Uuid
+  tenantId     String   @map("tenant_id")
+  receivableId String   @map("receivable_id") @db.Uuid
+  channel      String
+  level        String
+  status       String
+  content      Json
+  sentAt       DateTime @default(now()) @map("sent_at")
+
+  @@index([tenantId, receivableId, sentAt])
+  @@map("reminder_sends")
+}
+
 model AgingAnalysis {
   id            String   @id @default(uuid()) @db.Uuid
   tenantId      String   @map("tenant_id")

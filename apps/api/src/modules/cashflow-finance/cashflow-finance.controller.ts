@@ -1,10 +1,14 @@
 import { Body, Controller, Get, Headers, Inject, Post } from '@nestjs/common';
 
 import { CashflowFinanceService } from './cashflow-finance.service.js';
+import { MultiChannelReminderService } from './multi-channel-reminder.service.js';
 
 @Controller('api/v1')
 export class CashflowFinanceController {
-  constructor(@Inject(CashflowFinanceService) private readonly finance: CashflowFinanceService) {}
+  constructor(
+    @Inject(CashflowFinanceService) private readonly finance: CashflowFinanceService,
+    @Inject(MultiChannelReminderService) private readonly reminders: MultiChannelReminderService,
+  ) {}
 
   @Post('receivables/import')
   importReceivables(@Body() body: { items: Array<{ amountCny: number; debtorName: string; dueDate: string; invoiceDate: string }> }, @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
@@ -27,8 +31,14 @@ export class CashflowFinanceController {
   }
 
   @Post('cashflow/receivables/:id/reminders')
-  generateReminder(): unknown {
-    return { code: 'OK', data: { reminderId: 'rem-formal' }, message: 'Reminder generated', traceId: crypto.randomUUID() };
+  generateReminder(@Body() body: { amountCny?: number; debtorName?: string; receivableId?: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
+    const receivableId = body.receivableId ?? 'mock-receivable';
+    return {
+      code: 'OK',
+      data: this.reminders.send({ amountCny: body.amountCny ?? 1280000, debtorName: body.debtorName ?? '重点业主', receivableId, tenantId }),
+      message: 'Reminder generated',
+      traceId: crypto.randomUUID(),
+    };
   }
 
   @Get('cashflow/reminders/:id')
