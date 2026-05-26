@@ -1,13 +1,12 @@
 import { Body, Controller, Get, Headers, Inject, Post, Query } from '@nestjs/common';
 
 import type { BudgetEstimatorService } from './budget-estimator.service.js';
-import type { CarbonEstimatorService } from './carbon-estimator.service.js';
 import { CostEstimateService } from './cost-estimate.service.js';
 import type { RoughQuantityService } from './rough-quantity.service.js';
 
 @Controller('api/v1/cost')
 export class CostEstimateController {
-  constructor(@Inject(CostEstimateService) private readonly costs: CostEstimateService, private readonly budgets: BudgetEstimatorService, private readonly roughQuantities: RoughQuantityService, private readonly carbon: CarbonEstimatorService) {}
+  constructor(@Inject(CostEstimateService) private readonly costs: CostEstimateService, private readonly budgets: BudgetEstimatorService, private readonly roughQuantities: RoughQuantityService) {}
 
   @Post('budget')
   budget(@Body() body: { areaSqm: number; plannedStart?: string; projectName: string; projectType: string; qualityLevel: string; region: string; structureType: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant', @Headers('x-user-id') createdBy = 'mock-user'): unknown {
@@ -17,11 +16,6 @@ export class CostEstimateController {
   @Post('rough-quantity')
   roughQuantity(@Body() body: { areaSqm: number; projectName: string; projectType: string; structureType: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
     return { code: 'OK', data: this.roughQuantities.estimate({ ...body, tenantId }), message: 'Rough quantity estimate created', traceId: crypto.randomUUID() };
-  }
-
-  @Post('carbon')
-  carbonEstimate(@Body() body: { areaSqm: number; materialItems: Array<{ material: string; qty: number; unit: string }>; projectName: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
-    return { code: 'OK', data: this.carbon.estimate({ ...body, tenantId }), message: 'Carbon estimate created', traceId: crypto.randomUUID() };
   }
 
   @Post('rough-estimate')
