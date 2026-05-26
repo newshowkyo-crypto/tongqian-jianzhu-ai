@@ -1,0 +1,211 @@
+{
+  "taskType": "CONTRACT_REVIEW_PRO",
+  "version": "v1",
+  "cases": [
+    {
+      "id": "case-01-contract-review",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Desensitized construction contract fragment: progress payment is linked to upstream receipt, final-account audit deadline is missing, and late claim notice is deemed waiver. Case 1: amount 800w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "pay-02",
+        "pay-03"
+      ],
+      "forbiddenSignals": [
+        "forbidden-contract-review-1"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-02-contract-review",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Desensitized construction contract fragment: progress payment is linked to upstream receipt, final-account audit deadline is missing, and late claim notice is deemed waiver. Case 2: amount 920w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "pay-02",
+        "pay-03",
+        "claim-02"
+      ],
+      "forbiddenSignals": [
+        "forbidden-contract-review-2"
+      ],
+      "minConfidence": 0.81,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-03-contract-review",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Desensitized construction contract fragment: progress payment is linked to upstream receipt, final-account audit deadline is missing, and late claim notice is deemed waiver. Case 3: amount 1040w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "pay-02",
+        "pay-03"
+      ],
+      "forbiddenSignals": [
+        "forbidden-contract-review-3"
+      ],
+      "minConfidence": 0.84,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-04-contract-review",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Desensitized construction contract fragment: progress payment is linked to upstream receipt, final-account audit deadline is missing, and late claim notice is deemed waiver. Case 4: amount 1160w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "pay-02",
+        "pay-03",
+        "claim-02"
+      ],
+      "forbiddenSignals": [
+        "forbidden-contract-review-4"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-05-contract-review",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Desensitized construction contract fragment: progress payment is linked to upstream receipt, final-account audit deadline is missing, and late claim notice is deemed waiver. Case 5: amount 1280w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "pay-02",
+        "pay-03"
+      ],
+      "forbiddenSignals": [
+        "forbidden-contract-review-5"
+      ],
+      "minConfidence": 0.81,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-06-contract-review",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Desensitized construction contract fragment: progress payment is linked to upstream receipt, final-account audit deadline is missing, and late claim notice is deemed waiver. Case 6: amount 1400w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "pay-02",
+        "pay-03",
+        "claim-02"
+      ],
+      "forbiddenSignals": [
+        "forbidden-contract-review-6"
+      ],
+      "minConfidence": 0.84,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-07-contract-review",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Desensitized construction contract fragment: progress payment is linked to upstream receipt, final-account audit deadline is missing, and late claim notice is deemed waiver. Case 7: amount 1520w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "pay-02",
+        "pay-03"
+      ],
+      "forbiddenSignals": [
+        "forbidden-contract-review-7"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-08-contract-review",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Desensitized construction contract fragment: progress payment is linked to upstream receipt, final-account audit deadline is missing, and late claim notice is deemed waiver. Case 8: amount 1640w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "pay-02",
+        "pay-03",
+        "claim-02"
+      ],
+      "forbiddenSignals": [
+        "forbidden-contract-review-8"
+      ],
+      "minConfidence": 0.81,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-09-contract-review",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Desensitized construction contract fragment: progress payment is linked to upstream receipt, final-account audit deadline is missing, and late claim notice is deemed waiver. Case 9: amount 1760w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "pay-02",
+        "pay-03"
+      ],
+      "forbiddenSignals": [
+        "forbidden-contract-review-9"
+      ],
+      "minConfidence": 0.84,
+      "expectedTier": 3
+    },
+    {
+      "id": "case-10-contract-review",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Desensitized construction contract fragment: progress payment is linked to upstream receipt, final-account audit deadline is missing, and late claim notice is deemed waiver. Case 10: amount 1880w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "pay-02",
+        "pay-03",
+        "claim-02"
+      ],
+      "forbiddenSignals": [
+        "forbidden-contract-review-10"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    }
+  ]
+}

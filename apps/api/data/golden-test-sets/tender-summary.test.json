@@ -1,0 +1,211 @@
+{
+  "taskType": "TENDER_SUMMARY",
+  "version": "v1",
+  "cases": [
+    {
+      "id": "case-01-tender-summary",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Public tender sample rewritten: addendum changes opening time, adds similar-performance threshold, and changes site visit from optional to mandatory. Case 1: amount 800w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "tender-deadline",
+        "tender-qualification"
+      ],
+      "forbiddenSignals": [
+        "forbidden-tender-summary-1"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-02-tender-summary",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Public tender sample rewritten: addendum changes opening time, adds similar-performance threshold, and changes site visit from optional to mandatory. Case 2: amount 920w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "tender-deadline",
+        "tender-qualification",
+        "tender-change"
+      ],
+      "forbiddenSignals": [
+        "forbidden-tender-summary-2"
+      ],
+      "minConfidence": 0.81,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-03-tender-summary",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Public tender sample rewritten: addendum changes opening time, adds similar-performance threshold, and changes site visit from optional to mandatory. Case 3: amount 1040w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "tender-deadline",
+        "tender-qualification"
+      ],
+      "forbiddenSignals": [
+        "forbidden-tender-summary-3"
+      ],
+      "minConfidence": 0.84,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-04-tender-summary",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Public tender sample rewritten: addendum changes opening time, adds similar-performance threshold, and changes site visit from optional to mandatory. Case 4: amount 1160w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "tender-deadline",
+        "tender-qualification",
+        "tender-change"
+      ],
+      "forbiddenSignals": [
+        "forbidden-tender-summary-4"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-05-tender-summary",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Public tender sample rewritten: addendum changes opening time, adds similar-performance threshold, and changes site visit from optional to mandatory. Case 5: amount 1280w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "tender-deadline",
+        "tender-qualification"
+      ],
+      "forbiddenSignals": [
+        "forbidden-tender-summary-5"
+      ],
+      "minConfidence": 0.81,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-06-tender-summary",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Public tender sample rewritten: addendum changes opening time, adds similar-performance threshold, and changes site visit from optional to mandatory. Case 6: amount 1400w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "tender-deadline",
+        "tender-qualification",
+        "tender-change"
+      ],
+      "forbiddenSignals": [
+        "forbidden-tender-summary-6"
+      ],
+      "minConfidence": 0.84,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-07-tender-summary",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Public tender sample rewritten: addendum changes opening time, adds similar-performance threshold, and changes site visit from optional to mandatory. Case 7: amount 1520w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "tender-deadline",
+        "tender-qualification"
+      ],
+      "forbiddenSignals": [
+        "forbidden-tender-summary-7"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-08-tender-summary",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Public tender sample rewritten: addendum changes opening time, adds similar-performance threshold, and changes site visit from optional to mandatory. Case 8: amount 1640w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "tender-deadline",
+        "tender-qualification",
+        "tender-change"
+      ],
+      "forbiddenSignals": [
+        "forbidden-tender-summary-8"
+      ],
+      "minConfidence": 0.81,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-09-tender-summary",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Public tender sample rewritten: addendum changes opening time, adds similar-performance threshold, and changes site visit from optional to mandatory. Case 9: amount 1760w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "tender-deadline",
+        "tender-qualification"
+      ],
+      "forbiddenSignals": [
+        "forbidden-tender-summary-9"
+      ],
+      "minConfidence": 0.84,
+      "expectedTier": 3
+    },
+    {
+      "id": "case-10-tender-summary",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Public tender sample rewritten: addendum changes opening time, adds similar-performance threshold, and changes site visit from optional to mandatory. Case 10: amount 1880w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "tender-deadline",
+        "tender-qualification",
+        "tender-change"
+      ],
+      "forbiddenSignals": [
+        "forbidden-tender-summary-10"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    }
+  ]
+}

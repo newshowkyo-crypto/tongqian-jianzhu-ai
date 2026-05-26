@@ -1,0 +1,211 @@
+{
+  "taskType": "REPORT_QUALITY",
+  "version": "v1",
+  "cases": [
+    {
+      "id": "case-01-report-quality",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Management report sample: cashflow, project risk and tender opportunity are listed, but evidence source, disclaimer, Tier and action owner are missing. Case 1: amount 800w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "quality-disclaimer",
+        "quality-evidence"
+      ],
+      "forbiddenSignals": [
+        "forbidden-report-quality-1"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-02-report-quality",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Management report sample: cashflow, project risk and tender opportunity are listed, but evidence source, disclaimer, Tier and action owner are missing. Case 2: amount 920w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "quality-disclaimer",
+        "quality-evidence",
+        "quality-action"
+      ],
+      "forbiddenSignals": [
+        "forbidden-report-quality-2"
+      ],
+      "minConfidence": 0.81,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-03-report-quality",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Management report sample: cashflow, project risk and tender opportunity are listed, but evidence source, disclaimer, Tier and action owner are missing. Case 3: amount 1040w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "quality-disclaimer",
+        "quality-evidence"
+      ],
+      "forbiddenSignals": [
+        "forbidden-report-quality-3"
+      ],
+      "minConfidence": 0.84,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-04-report-quality",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Management report sample: cashflow, project risk and tender opportunity are listed, but evidence source, disclaimer, Tier and action owner are missing. Case 4: amount 1160w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "quality-disclaimer",
+        "quality-evidence",
+        "quality-action"
+      ],
+      "forbiddenSignals": [
+        "forbidden-report-quality-4"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-05-report-quality",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Management report sample: cashflow, project risk and tender opportunity are listed, but evidence source, disclaimer, Tier and action owner are missing. Case 5: amount 1280w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "quality-disclaimer",
+        "quality-evidence"
+      ],
+      "forbiddenSignals": [
+        "forbidden-report-quality-5"
+      ],
+      "minConfidence": 0.81,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-06-report-quality",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Management report sample: cashflow, project risk and tender opportunity are listed, but evidence source, disclaimer, Tier and action owner are missing. Case 6: amount 1400w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "quality-disclaimer",
+        "quality-evidence",
+        "quality-action"
+      ],
+      "forbiddenSignals": [
+        "forbidden-report-quality-6"
+      ],
+      "minConfidence": 0.84,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-07-report-quality",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Management report sample: cashflow, project risk and tender opportunity are listed, but evidence source, disclaimer, Tier and action owner are missing. Case 7: amount 1520w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "quality-disclaimer",
+        "quality-evidence"
+      ],
+      "forbiddenSignals": [
+        "forbidden-report-quality-7"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-08-report-quality",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Management report sample: cashflow, project risk and tender opportunity are listed, but evidence source, disclaimer, Tier and action owner are missing. Case 8: amount 1640w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "quality-disclaimer",
+        "quality-evidence",
+        "quality-action"
+      ],
+      "forbiddenSignals": [
+        "forbidden-report-quality-8"
+      ],
+      "minConfidence": 0.81,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-09-report-quality",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Management report sample: cashflow, project risk and tender opportunity are listed, but evidence source, disclaimer, Tier and action owner are missing. Case 9: amount 1760w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "quality-disclaimer",
+        "quality-evidence"
+      ],
+      "forbiddenSignals": [
+        "forbidden-report-quality-9"
+      ],
+      "minConfidence": 0.84,
+      "expectedTier": 3
+    },
+    {
+      "id": "case-10-report-quality",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Management report sample: cashflow, project risk and tender opportunity are listed, but evidence source, disclaimer, Tier and action owner are missing. Case 10: amount 1880w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "quality-disclaimer",
+        "quality-evidence",
+        "quality-action"
+      ],
+      "forbiddenSignals": [
+        "forbidden-report-quality-10"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    }
+  ]
+}

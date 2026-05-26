@@ -1,0 +1,211 @@
+{
+  "taskType": "QUALIFICATION_CHECKUP",
+  "version": "v1",
+  "cases": [
+    {
+      "id": "case-01-qualification-checkup",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Local contractor profile rewritten: safety permit expires in 28 days, registered builders are below upgrade path, and recent school renovation records exist. Case 1: amount 800w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "qual-expiry",
+        "qual-personnel"
+      ],
+      "forbiddenSignals": [
+        "forbidden-qualification-checkup-1"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-02-qualification-checkup",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Local contractor profile rewritten: safety permit expires in 28 days, registered builders are below upgrade path, and recent school renovation records exist. Case 2: amount 920w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "qual-expiry",
+        "qual-personnel",
+        "qual-upgrade"
+      ],
+      "forbiddenSignals": [
+        "forbidden-qualification-checkup-2"
+      ],
+      "minConfidence": 0.81,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-03-qualification-checkup",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Local contractor profile rewritten: safety permit expires in 28 days, registered builders are below upgrade path, and recent school renovation records exist. Case 3: amount 1040w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "qual-expiry",
+        "qual-personnel"
+      ],
+      "forbiddenSignals": [
+        "forbidden-qualification-checkup-3"
+      ],
+      "minConfidence": 0.84,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-04-qualification-checkup",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Local contractor profile rewritten: safety permit expires in 28 days, registered builders are below upgrade path, and recent school renovation records exist. Case 4: amount 1160w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "qual-expiry",
+        "qual-personnel",
+        "qual-upgrade"
+      ],
+      "forbiddenSignals": [
+        "forbidden-qualification-checkup-4"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-05-qualification-checkup",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Local contractor profile rewritten: safety permit expires in 28 days, registered builders are below upgrade path, and recent school renovation records exist. Case 5: amount 1280w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "qual-expiry",
+        "qual-personnel"
+      ],
+      "forbiddenSignals": [
+        "forbidden-qualification-checkup-5"
+      ],
+      "minConfidence": 0.81,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-06-qualification-checkup",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Local contractor profile rewritten: safety permit expires in 28 days, registered builders are below upgrade path, and recent school renovation records exist. Case 6: amount 1400w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "qual-expiry",
+        "qual-personnel",
+        "qual-upgrade"
+      ],
+      "forbiddenSignals": [
+        "forbidden-qualification-checkup-6"
+      ],
+      "minConfidence": 0.84,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-07-qualification-checkup",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Local contractor profile rewritten: safety permit expires in 28 days, registered builders are below upgrade path, and recent school renovation records exist. Case 7: amount 1520w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "qual-expiry",
+        "qual-personnel"
+      ],
+      "forbiddenSignals": [
+        "forbidden-qualification-checkup-7"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-08-qualification-checkup",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Local contractor profile rewritten: safety permit expires in 28 days, registered builders are below upgrade path, and recent school renovation records exist. Case 8: amount 1640w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "qual-expiry",
+        "qual-personnel",
+        "qual-upgrade"
+      ],
+      "forbiddenSignals": [
+        "forbidden-qualification-checkup-8"
+      ],
+      "minConfidence": 0.81,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-09-qualification-checkup",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Local contractor profile rewritten: safety permit expires in 28 days, registered builders are below upgrade path, and recent school renovation records exist. Case 9: amount 1760w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "qual-expiry",
+        "qual-personnel"
+      ],
+      "forbiddenSignals": [
+        "forbidden-qualification-checkup-9"
+      ],
+      "minConfidence": 0.84,
+      "expectedTier": 3
+    },
+    {
+      "id": "case-10-qualification-checkup",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Local contractor profile rewritten: safety permit expires in 28 days, registered builders are below upgrade path, and recent school renovation records exist. Case 10: amount 1880w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "qual-expiry",
+        "qual-personnel",
+        "qual-upgrade"
+      ],
+      "forbiddenSignals": [
+        "forbidden-qualification-checkup-10"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    }
+  ]
+}

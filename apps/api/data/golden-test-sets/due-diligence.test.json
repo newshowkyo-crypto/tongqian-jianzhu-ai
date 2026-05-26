@@ -1,0 +1,211 @@
+{
+  "taskType": "DUE_DILIGENCE",
+  "version": "v1",
+  "cases": [
+    {
+      "id": "case-01-due-diligence",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Counterparty diligence sample: construction disputes appear in public records, qualification is valid but safety permit is near expiry, payment history is delayed. Case 1: amount 800w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "dd-litigation",
+        "dd-qualification"
+      ],
+      "forbiddenSignals": [
+        "forbidden-due-diligence-1"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-02-due-diligence",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Counterparty diligence sample: construction disputes appear in public records, qualification is valid but safety permit is near expiry, payment history is delayed. Case 2: amount 920w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "dd-litigation",
+        "dd-qualification",
+        "dd-payment"
+      ],
+      "forbiddenSignals": [
+        "forbidden-due-diligence-2"
+      ],
+      "minConfidence": 0.81,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-03-due-diligence",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Counterparty diligence sample: construction disputes appear in public records, qualification is valid but safety permit is near expiry, payment history is delayed. Case 3: amount 1040w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "dd-litigation",
+        "dd-qualification"
+      ],
+      "forbiddenSignals": [
+        "forbidden-due-diligence-3"
+      ],
+      "minConfidence": 0.84,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-04-due-diligence",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Counterparty diligence sample: construction disputes appear in public records, qualification is valid but safety permit is near expiry, payment history is delayed. Case 4: amount 1160w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "dd-litigation",
+        "dd-qualification",
+        "dd-payment"
+      ],
+      "forbiddenSignals": [
+        "forbidden-due-diligence-4"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-05-due-diligence",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Counterparty diligence sample: construction disputes appear in public records, qualification is valid but safety permit is near expiry, payment history is delayed. Case 5: amount 1280w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "dd-litigation",
+        "dd-qualification"
+      ],
+      "forbiddenSignals": [
+        "forbidden-due-diligence-5"
+      ],
+      "minConfidence": 0.81,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-06-due-diligence",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Counterparty diligence sample: construction disputes appear in public records, qualification is valid but safety permit is near expiry, payment history is delayed. Case 6: amount 1400w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "dd-litigation",
+        "dd-qualification",
+        "dd-payment"
+      ],
+      "forbiddenSignals": [
+        "forbidden-due-diligence-6"
+      ],
+      "minConfidence": 0.84,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-07-due-diligence",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Counterparty diligence sample: construction disputes appear in public records, qualification is valid but safety permit is near expiry, payment history is delayed. Case 7: amount 1520w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "dd-litigation",
+        "dd-qualification"
+      ],
+      "forbiddenSignals": [
+        "forbidden-due-diligence-7"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-08-due-diligence",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Counterparty diligence sample: construction disputes appear in public records, qualification is valid but safety permit is near expiry, payment history is delayed. Case 8: amount 1640w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "dd-litigation",
+        "dd-qualification",
+        "dd-payment"
+      ],
+      "forbiddenSignals": [
+        "forbidden-due-diligence-8"
+      ],
+      "minConfidence": 0.81,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-09-due-diligence",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Counterparty diligence sample: construction disputes appear in public records, qualification is valid but safety permit is near expiry, payment history is delayed. Case 9: amount 1760w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "dd-litigation",
+        "dd-qualification"
+      ],
+      "forbiddenSignals": [
+        "forbidden-due-diligence-9"
+      ],
+      "minConfidence": 0.84,
+      "expectedTier": 3
+    },
+    {
+      "id": "case-10-due-diligence",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Counterparty diligence sample: construction disputes appear in public records, qualification is valid but safety permit is near expiry, payment history is delayed. Case 10: amount 1880w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "dd-litigation",
+        "dd-qualification",
+        "dd-payment"
+      ],
+      "forbiddenSignals": [
+        "forbidden-due-diligence-10"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    }
+  ]
+}

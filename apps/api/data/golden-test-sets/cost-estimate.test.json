@@ -1,0 +1,211 @@
+{
+  "taskType": "COST_ROUGH_ESTIMATE",
+  "version": "v1",
+  "cases": [
+    {
+      "id": "case-01-cost-estimate",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Cost text fragment rewritten: classroom repainting includes base repair, measure scaffold, material unit ambiguity, and unit price deviates from local baseline. Case 1: amount 800w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "cost-cwicr",
+        "cost-deviation"
+      ],
+      "forbiddenSignals": [
+        "forbidden-cost-estimate-1"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-02-cost-estimate",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Cost text fragment rewritten: classroom repainting includes base repair, measure scaffold, material unit ambiguity, and unit price deviates from local baseline. Case 2: amount 920w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "cost-cwicr",
+        "cost-deviation",
+        "cost-unit"
+      ],
+      "forbiddenSignals": [
+        "forbidden-cost-estimate-2"
+      ],
+      "minConfidence": 0.81,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-03-cost-estimate",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Cost text fragment rewritten: classroom repainting includes base repair, measure scaffold, material unit ambiguity, and unit price deviates from local baseline. Case 3: amount 1040w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "cost-cwicr",
+        "cost-deviation"
+      ],
+      "forbiddenSignals": [
+        "forbidden-cost-estimate-3"
+      ],
+      "minConfidence": 0.84,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-04-cost-estimate",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Cost text fragment rewritten: classroom repainting includes base repair, measure scaffold, material unit ambiguity, and unit price deviates from local baseline. Case 4: amount 1160w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "cost-cwicr",
+        "cost-deviation",
+        "cost-unit"
+      ],
+      "forbiddenSignals": [
+        "forbidden-cost-estimate-4"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-05-cost-estimate",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Cost text fragment rewritten: classroom repainting includes base repair, measure scaffold, material unit ambiguity, and unit price deviates from local baseline. Case 5: amount 1280w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "cost-cwicr",
+        "cost-deviation"
+      ],
+      "forbiddenSignals": [
+        "forbidden-cost-estimate-5"
+      ],
+      "minConfidence": 0.81,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-06-cost-estimate",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Cost text fragment rewritten: classroom repainting includes base repair, measure scaffold, material unit ambiguity, and unit price deviates from local baseline. Case 6: amount 1400w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "cost-cwicr",
+        "cost-deviation",
+        "cost-unit"
+      ],
+      "forbiddenSignals": [
+        "forbidden-cost-estimate-6"
+      ],
+      "minConfidence": 0.84,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-07-cost-estimate",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Cost text fragment rewritten: classroom repainting includes base repair, measure scaffold, material unit ambiguity, and unit price deviates from local baseline. Case 7: amount 1520w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "cost-cwicr",
+        "cost-deviation"
+      ],
+      "forbiddenSignals": [
+        "forbidden-cost-estimate-7"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-08-cost-estimate",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Cost text fragment rewritten: classroom repainting includes base repair, measure scaffold, material unit ambiguity, and unit price deviates from local baseline. Case 8: amount 1640w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "cost-cwicr",
+        "cost-deviation",
+        "cost-unit"
+      ],
+      "forbiddenSignals": [
+        "forbidden-cost-estimate-8"
+      ],
+      "minConfidence": 0.81,
+      "expectedTier": 2
+    },
+    {
+      "id": "case-09-cost-estimate",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Cost text fragment rewritten: classroom repainting includes base repair, measure scaffold, material unit ambiguity, and unit price deviates from local baseline. Case 9: amount 1760w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main",
+          "qa-or-addendum",
+          "ledger"
+        ]
+      },
+      "expectedSignals": [
+        "cost-cwicr",
+        "cost-deviation"
+      ],
+      "forbiddenSignals": [
+        "forbidden-cost-estimate-9"
+      ],
+      "minConfidence": 0.84,
+      "expectedTier": 3
+    },
+    {
+      "id": "case-10-cost-estimate",
+      "source": "Rewritten from public model text, public tender examples or public judgment facts; no licensed code or restricted text copied.",
+      "input": {
+        "text": "Cost text fragment rewritten: classroom repainting includes base repair, measure scaffold, material unit ambiguity, and unit price deviates from local baseline. Case 10: amount 1880w, central China region, desensitized materials, output executable audit conclusion.",
+        "documents": [
+          "main"
+        ]
+      },
+      "expectedSignals": [
+        "cost-cwicr",
+        "cost-deviation",
+        "cost-unit"
+      ],
+      "forbiddenSignals": [
+        "forbidden-cost-estimate-10"
+      ],
+      "minConfidence": 0.78,
+      "expectedTier": 2
+    }
+  ]
+}

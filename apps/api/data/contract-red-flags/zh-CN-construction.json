@@ -1,40 +1,1202 @@
 [
-  {"id":"pay-01","category":"付款","title":"付款节点不清","keywords":["付款节点","进度款"],"riskLevel":"yellow","defaultBenchmark":"按月或节点明确","suggestion":"建议关注付款节点、验收条件和付款资料清单。"},
-  {"id":"pay-02","category":"付款","title":"逾期付款无责任","keywords":["逾期","付款","不承担"],"riskLevel":"red","defaultBenchmark":"逾期应有违约责任","suggestion":"建议关注逾期付款利息和停工权。"},
-  {"id":"pay-03","category":"付款","title":"结算审计无期限","keywords":["审计","结算","无期限"],"riskLevel":"red","defaultBenchmark":"约定审核期限","suggestion":"建议补充逾期视为认可。"},
-  {"id":"pay-04","category":"付款","title":"背靠背付款","keywords":["业主付款后","收到款项后"],"riskLevel":"yellow","defaultBenchmark":"谨慎接受背靠背","suggestion":"建议关注上游付款风险。"},
-  {"id":"pay-05","category":"付款","title":"质保金比例过高","keywords":["质保金","10%"],"riskLevel":"yellow","defaultBenchmark":"通常不宜过高","suggestion":"建议关注返还节点。"},
-  {"id":"time-01","category":"工期","title":"开工条件不明","keywords":["开工日期","以通知为准"],"riskLevel":"yellow","defaultBenchmark":"明确开工条件","suggestion":"建议关注场地、图纸、许可条件。"},
-  {"id":"time-02","category":"工期","title":"顺延条件过窄","keywords":["不得顺延","工期不予顺延"],"riskLevel":"red","defaultBenchmark":"合理顺延","suggestion":"建议保留不可归责顺延。"},
-  {"id":"time-03","category":"工期","title":"赶工费缺失","keywords":["赶工","费用自理"],"riskLevel":"yellow","defaultBenchmark":"赶工应协商费用","suggestion":"建议约定赶工签证。"},
-  {"id":"time-04","category":"工期","title":"停工权受限","keywords":["不得停工","无权停工"],"riskLevel":"red","defaultBenchmark":"重大违约可停工","suggestion":"建议关注欠款停工条件。"},
-  {"id":"time-05","category":"工期","title":"节点罚款叠加","keywords":["每逾期一日","另行处罚"],"riskLevel":"yellow","defaultBenchmark":"罚款应封顶","suggestion":"建议设置累计上限。"},
-  {"id":"breach-01","category":"违约","title":"无限违约责任","keywords":["全部损失","不限于"],"riskLevel":"red","defaultBenchmark":"责任应合理限额","suggestion":"建议设置责任上限。"},
-  {"id":"breach-02","category":"违约","title":"单方解除过宽","keywords":["单方解除","无需理由"],"riskLevel":"red","defaultBenchmark":"解除需重大违约","suggestion":"建议明确解除触发条件。"},
-  {"id":"breach-03","category":"违约","title":"罚款无上限","keywords":["罚款","不设上限"],"riskLevel":"red","defaultBenchmark":"违约金应封顶","suggestion":"建议总额封顶。"},
-  {"id":"breach-04","category":"违约","title":"间接损失承担","keywords":["间接损失","预期利益"],"riskLevel":"yellow","defaultBenchmark":"谨慎承担间接损失","suggestion":"建议排除间接损失。"},
-  {"id":"breach-05","category":"违约","title":"业主免责过宽","keywords":["发包人不承担","甲方免责"],"riskLevel":"yellow","defaultBenchmark":"双方责任对等","suggestion":"建议关注责任对等。"},
-  {"id":"bond-01","category":"担保","title":"无限连带担保","keywords":["无限连带","连带保证"],"riskLevel":"red","defaultBenchmark":"限定担保范围期限","suggestion":"建议限定金额和期限。"},
-  {"id":"bond-02","category":"担保","title":"保函见索即付","keywords":["见索即付","无条件支付"],"riskLevel":"yellow","defaultBenchmark":"明确索赔条件","suggestion":"建议关注保函触发条件。"},
-  {"id":"bond-03","category":"担保","title":"保证金返还不明","keywords":["保证金","返还"],"riskLevel":"yellow","defaultBenchmark":"明确返还节点","suggestion":"建议补充返还期限。"},
-  {"id":"bond-04","category":"担保","title":"担保期限过长","keywords":["担保期限","长期"],"riskLevel":"yellow","defaultBenchmark":"与义务期限匹配","suggestion":"建议缩短担保期限。"},
-  {"id":"claim-01","category":"索赔","title":"签证期限过短","keywords":["签证","24小时"],"riskLevel":"red","defaultBenchmark":"留合理申报期","suggestion":"建议关注签证时限。"},
-  {"id":"claim-02","category":"索赔","title":"逾期视为放弃","keywords":["逾期视为放弃","不予认可"],"riskLevel":"red","defaultBenchmark":"不宜当然失权","suggestion":"建议增加例外情形。"},
-  {"id":"claim-03","category":"索赔","title":"变更价款不明","keywords":["变更","价款另行确定"],"riskLevel":"yellow","defaultBenchmark":"明确计价规则","suggestion":"建议约定变更计价。"},
-  {"id":"claim-04","category":"索赔","title":"资料原件单方保管","keywords":["原件","甲方保管"],"riskLevel":"yellow","defaultBenchmark":"双方留痕","suggestion":"建议保留扫描件和签收。"},
-  {"id":"force-01","category":"不可抗力","title":"不可抗力排除疫情","keywords":["不可抗力","疫情除外"],"riskLevel":"yellow","defaultBenchmark":"合理列明范围","suggestion":"建议关注政策停工情形。"},
-  {"id":"force-02","category":"不可抗力","title":"费用全由承包人承担","keywords":["不可抗力","承包人承担全部"],"riskLevel":"red","defaultBenchmark":"按规则分担","suggestion":"建议按示范文本分担。"},
-  {"id":"force-03","category":"不可抗力","title":"通知义务过严","keywords":["不可抗力","立即通知"],"riskLevel":"yellow","defaultBenchmark":"合理通知期限","suggestion":"建议保留补充通知。"},
-  {"id":"ip-01","category":"知识产权","title":"成果无限授权","keywords":["永久","全球","免费许可"],"riskLevel":"yellow","defaultBenchmark":"授权范围匹配项目","suggestion":"建议限定使用范围。"},
-  {"id":"ip-02","category":"知识产权","title":"图纸二次使用风险","keywords":["图纸","二次使用"],"riskLevel":"yellow","defaultBenchmark":"需权利来源","suggestion":"建议确认设计授权。"},
-  {"id":"ip-03","category":"知识产权","title":"保密期限过长","keywords":["保密","永久"],"riskLevel":"yellow","defaultBenchmark":"期限合理","suggestion":"建议限定保密期限。"},
-  {"id":"dispute-01","category":"争议解决","title":"管辖地不利","keywords":["管辖","发包人所在地"],"riskLevel":"yellow","defaultBenchmark":"选择中立管辖","suggestion":"建议关注诉讼成本。"},
-  {"id":"dispute-02","category":"争议解决","title":"仲裁机构不明","keywords":["仲裁","另行确定"],"riskLevel":"yellow","defaultBenchmark":"明确机构","suggestion":"建议明确仲裁委员会。"},
-  {"id":"dispute-03","category":"争议解决","title":"先履行后争议","keywords":["不得停工","争议期间继续施工"],"riskLevel":"yellow","defaultBenchmark":"结合付款风险","suggestion":"建议增加重大违约例外。"},
-  {"id":"dispute-04","category":"争议解决","title":"证据形式限制","keywords":["仅以甲方确认为准"],"riskLevel":"red","defaultBenchmark":"多种证据可采","suggestion":"建议保留多源证据。"},
-  {"id":"scope-01","category":"付款","title":"总价合同无调价","keywords":["总价包干","不予调整"],"riskLevel":"red","defaultBenchmark":"重大变更可调整","suggestion":"建议明确调价例外。"},
-  {"id":"scope-02","category":"索赔","title":"工程范围兜底过宽","keywords":["包括但不限于","所有相关工作"],"riskLevel":"yellow","defaultBenchmark":"范围清晰","suggestion":"建议列明边界。"},
-  {"id":"scope-03","category":"违约","title":"审计结果单方最终","keywords":["审计结果为准","最终结算"],"riskLevel":"red","defaultBenchmark":"保留异议机制","suggestion":"建议约定异议期。"},
-  {"id":"scope-04","category":"工期","title":"甲供材延误不顺延","keywords":["甲供材","不顺延"],"riskLevel":"red","defaultBenchmark":"非承包人原因应顺延","suggestion":"建议补充顺延和费用。"},
-  {"id":"scope-05","category":"争议解决","title":"律师费全部承担","keywords":["律师费","全部承担"],"riskLevel":"yellow","defaultBenchmark":"按责任或裁判确定","suggestion":"建议关注费用范围。"}
+  {
+    "id": "pay-01",
+    "category": "payment",
+    "title": "unclear payment milestone",
+    "keywords": [
+      "unclear",
+      "payment",
+      "deadline"
+    ],
+    "regex": "(unclear|payment).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "payment clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for unclear payment milestone.",
+    "legalBasis": "GF-2017-0201 12.4"
+  },
+  {
+    "id": "pay-02",
+    "category": "payment",
+    "title": "late payment without liability",
+    "keywords": [
+      "late",
+      "payment",
+      "liability"
+    ],
+    "regex": "(late|payment).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "payment clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for late payment without liability.",
+    "legalBasis": "GF-2017-0201 12.4"
+  },
+  {
+    "id": "pay-03",
+    "category": "payment",
+    "title": "settlement audit has no deadline",
+    "keywords": [
+      "settlement",
+      "payment",
+      "deadline"
+    ],
+    "regex": "(settlement|payment).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "payment clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for settlement audit has no deadline.",
+    "legalBasis": "GF-2017-0201 12.4"
+  },
+  {
+    "id": "pay-04",
+    "category": "payment",
+    "title": "pay-when-paid transfer risk",
+    "keywords": [
+      "pay-when-paid",
+      "payment",
+      "liability"
+    ],
+    "regex": "(pay-when-paid|payment).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "payment clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for pay-when-paid transfer risk.",
+    "legalBasis": "GF-2017-0201 12.4"
+  },
+  {
+    "id": "pay-05",
+    "category": "payment",
+    "title": "retention ratio too high",
+    "keywords": [
+      "retention",
+      "payment",
+      "deadline"
+    ],
+    "regex": "(retention|payment).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "payment clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for retention ratio too high.",
+    "legalBasis": "GF-2017-0201 12.4"
+  },
+  {
+    "id": "pay-06",
+    "category": "payment",
+    "title": "tax and fee exclusion unclear",
+    "keywords": [
+      "tax",
+      "payment",
+      "liability"
+    ],
+    "regex": "(tax|payment).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "payment clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for tax and fee exclusion unclear.",
+    "legalBasis": "GF-2017-0201 12.4"
+  },
+  {
+    "id": "pay-07",
+    "category": "payment",
+    "title": "progress payment ratio too low",
+    "keywords": [
+      "progress",
+      "payment",
+      "deadline"
+    ],
+    "regex": "(progress|payment).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "payment clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for progress payment ratio too low.",
+    "legalBasis": "GF-2017-0201 12.4"
+  },
+  {
+    "id": "pay-08",
+    "category": "payment",
+    "title": "final account review period missing",
+    "keywords": [
+      "final",
+      "payment",
+      "liability"
+    ],
+    "regex": "(final|payment).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "payment clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for final account review period missing.",
+    "legalBasis": "GF-2017-0201 12.4"
+  },
+  {
+    "id": "pay-09",
+    "category": "payment",
+    "title": "lump-sum hidden variation risk",
+    "keywords": [
+      "lump-sum",
+      "payment",
+      "deadline"
+    ],
+    "regex": "(lump-sum|payment).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "payment clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for lump-sum hidden variation risk.",
+    "legalBasis": "GF-2017-0201 12.4"
+  },
+  {
+    "id": "pay-10",
+    "category": "payment",
+    "title": "migrant-worker wage account missing",
+    "keywords": [
+      "migrant-worker",
+      "payment",
+      "liability"
+    ],
+    "regex": "(migrant-worker|payment).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "payment clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for migrant-worker wage account missing.",
+    "legalBasis": "GF-2017-0201 12.4"
+  },
+  {
+    "id": "time-01",
+    "category": "schedule",
+    "title": "commencement condition unclear",
+    "keywords": [
+      "commencement",
+      "schedule",
+      "deadline"
+    ],
+    "regex": "(commencement|schedule).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "schedule clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for commencement condition unclear.",
+    "legalBasis": "GF-2017-0201 7.5"
+  },
+  {
+    "id": "time-02",
+    "category": "schedule",
+    "title": "extension condition too narrow",
+    "keywords": [
+      "extension",
+      "schedule",
+      "liability"
+    ],
+    "regex": "(extension|schedule).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "schedule clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for extension condition too narrow.",
+    "legalBasis": "GF-2017-0201 7.5"
+  },
+  {
+    "id": "time-03",
+    "category": "schedule",
+    "title": "acceleration cost missing",
+    "keywords": [
+      "acceleration",
+      "schedule",
+      "deadline"
+    ],
+    "regex": "(acceleration|schedule).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "schedule clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for acceleration cost missing.",
+    "legalBasis": "GF-2017-0201 7.5"
+  },
+  {
+    "id": "time-04",
+    "category": "schedule",
+    "title": "suspension right restricted",
+    "keywords": [
+      "suspension",
+      "schedule",
+      "liability"
+    ],
+    "regex": "(suspension|schedule).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "schedule clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for suspension right restricted.",
+    "legalBasis": "GF-2017-0201 7.5"
+  },
+  {
+    "id": "time-05",
+    "category": "schedule",
+    "title": "milestone penalties stack",
+    "keywords": [
+      "milestone",
+      "schedule",
+      "deadline"
+    ],
+    "regex": "(milestone|schedule).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "schedule clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for milestone penalties stack.",
+    "legalBasis": "GF-2017-0201 7.5"
+  },
+  {
+    "id": "time-06",
+    "category": "schedule",
+    "title": "start and completion date ambiguous",
+    "keywords": [
+      "start",
+      "schedule",
+      "liability"
+    ],
+    "regex": "(start|schedule).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "schedule clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for start and completion date ambiguous.",
+    "legalBasis": "GF-2017-0201 7.5"
+  },
+  {
+    "id": "time-07",
+    "category": "schedule",
+    "title": "holiday work responsibility unclear",
+    "keywords": [
+      "holiday",
+      "schedule",
+      "deadline"
+    ],
+    "regex": "(holiday|schedule).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "schedule clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for holiday work responsibility unclear.",
+    "legalBasis": "GF-2017-0201 7.5"
+  },
+  {
+    "id": "time-08",
+    "category": "schedule",
+    "title": "policy shutdown not extendable",
+    "keywords": [
+      "policy",
+      "schedule",
+      "liability"
+    ],
+    "regex": "(policy|schedule).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "schedule clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for policy shutdown not extendable.",
+    "legalBasis": "GF-2017-0201 7.5"
+  },
+  {
+    "id": "time-09",
+    "category": "schedule",
+    "title": "force-majeure schedule treatment missing",
+    "keywords": [
+      "force-majeure",
+      "schedule",
+      "deadline"
+    ],
+    "regex": "(force-majeure|schedule).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "schedule clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for force-majeure schedule treatment missing.",
+    "legalBasis": "GF-2017-0201 7.5"
+  },
+  {
+    "id": "time-10",
+    "category": "schedule",
+    "title": "acceptance timing unclear",
+    "keywords": [
+      "acceptance",
+      "schedule",
+      "liability"
+    ],
+    "regex": "(acceptance|schedule).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "schedule clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for acceptance timing unclear.",
+    "legalBasis": "GF-2017-0201 7.5"
+  },
+  {
+    "id": "breach-01",
+    "category": "breach",
+    "title": "unlimited liability",
+    "keywords": [
+      "unlimited",
+      "breach",
+      "deadline"
+    ],
+    "regex": "(unlimited|breach).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "breach clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for unlimited liability.",
+    "legalBasis": "GF-2017-0201 16.2"
+  },
+  {
+    "id": "breach-02",
+    "category": "breach",
+    "title": "unilateral termination too broad",
+    "keywords": [
+      "unilateral",
+      "breach",
+      "liability"
+    ],
+    "regex": "(unilateral|breach).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "breach clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for unilateral termination too broad.",
+    "legalBasis": "GF-2017-0201 16.2"
+  },
+  {
+    "id": "breach-03",
+    "category": "breach",
+    "title": "penalty has no cap",
+    "keywords": [
+      "penalty",
+      "breach",
+      "deadline"
+    ],
+    "regex": "(penalty|breach).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "breach clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for penalty has no cap.",
+    "legalBasis": "GF-2017-0201 16.2"
+  },
+  {
+    "id": "breach-04",
+    "category": "breach",
+    "title": "indirect loss shifted",
+    "keywords": [
+      "indirect",
+      "breach",
+      "liability"
+    ],
+    "regex": "(indirect|breach).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "breach clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for indirect loss shifted.",
+    "legalBasis": "GF-2017-0201 16.2"
+  },
+  {
+    "id": "breach-05",
+    "category": "breach",
+    "title": "employer exemption too broad",
+    "keywords": [
+      "employer",
+      "breach",
+      "deadline"
+    ],
+    "regex": "(employer|breach).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "breach clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for employer exemption too broad.",
+    "legalBasis": "GF-2017-0201 16.2"
+  },
+  {
+    "id": "breach-06",
+    "category": "breach",
+    "title": "daily liquidated damages too high",
+    "keywords": [
+      "daily",
+      "breach",
+      "liability"
+    ],
+    "regex": "(daily|breach).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "breach clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for daily liquidated damages too high.",
+    "legalBasis": "GF-2017-0201 16.2"
+  },
+  {
+    "id": "breach-07",
+    "category": "breach",
+    "title": "defect liability double counted",
+    "keywords": [
+      "defect",
+      "breach",
+      "deadline"
+    ],
+    "regex": "(defect|breach).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "breach clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for defect liability double counted.",
+    "legalBasis": "GF-2017-0201 16.2"
+  },
+  {
+    "id": "breach-08",
+    "category": "breach",
+    "title": "delay damages stacked",
+    "keywords": [
+      "delay",
+      "breach",
+      "liability"
+    ],
+    "regex": "(delay|breach).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "breach clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for delay damages stacked.",
+    "legalBasis": "GF-2017-0201 16.2"
+  },
+  {
+    "id": "breach-09",
+    "category": "breach",
+    "title": "minor breach triggers termination",
+    "keywords": [
+      "minor",
+      "breach",
+      "deadline"
+    ],
+    "regex": "(minor|breach).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "breach clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for minor breach triggers termination.",
+    "legalBasis": "GF-2017-0201 16.2"
+  },
+  {
+    "id": "breach-10",
+    "category": "breach",
+    "title": "third-party cause fully shifted",
+    "keywords": [
+      "third-party",
+      "breach",
+      "liability"
+    ],
+    "regex": "(third-party|breach).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "breach clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for third-party cause fully shifted.",
+    "legalBasis": "GF-2017-0201 16.2"
+  },
+  {
+    "id": "bond-01",
+    "category": "bond",
+    "title": "unlimited joint guarantee",
+    "keywords": [
+      "unlimited",
+      "bond",
+      "deadline"
+    ],
+    "regex": "(unlimited|bond).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "bond clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for unlimited joint guarantee.",
+    "legalBasis": "GF-2017-0201 3.7"
+  },
+  {
+    "id": "bond-02",
+    "category": "bond",
+    "title": "on-demand bond",
+    "keywords": [
+      "on-demand",
+      "bond",
+      "liability"
+    ],
+    "regex": "(on-demand|bond).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "bond clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for on-demand bond.",
+    "legalBasis": "GF-2017-0201 3.7"
+  },
+  {
+    "id": "bond-03",
+    "category": "bond",
+    "title": "deposit return unclear",
+    "keywords": [
+      "deposit",
+      "bond",
+      "deadline"
+    ],
+    "regex": "(deposit|bond).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "bond clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for deposit return unclear.",
+    "legalBasis": "GF-2017-0201 3.7"
+  },
+  {
+    "id": "bond-04",
+    "category": "bond",
+    "title": "guarantee period too long",
+    "keywords": [
+      "guarantee",
+      "bond",
+      "liability"
+    ],
+    "regex": "(guarantee|bond).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "bond clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for guarantee period too long.",
+    "legalBasis": "GF-2017-0201 3.7"
+  },
+  {
+    "id": "bond-05",
+    "category": "bond",
+    "title": "performance bond ratio high",
+    "keywords": [
+      "performance",
+      "bond",
+      "deadline"
+    ],
+    "regex": "(performance|bond).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "bond clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for performance bond ratio high.",
+    "legalBasis": "GF-2017-0201 3.7"
+  },
+  {
+    "id": "bond-06",
+    "category": "bond",
+    "title": "advance bond release missing",
+    "keywords": [
+      "advance",
+      "bond",
+      "liability"
+    ],
+    "regex": "(advance|bond).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "bond clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for advance bond release missing.",
+    "legalBasis": "GF-2017-0201 3.7"
+  },
+  {
+    "id": "bond-07",
+    "category": "bond",
+    "title": "bond claim proof unilateral",
+    "keywords": [
+      "bond",
+      "bond",
+      "deadline"
+    ],
+    "regex": "(bond|bond).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "bond clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for bond claim proof unilateral.",
+    "legalBasis": "GF-2017-0201 3.7"
+  },
+  {
+    "id": "bond-08",
+    "category": "bond",
+    "title": "bond covers non-contract debt",
+    "keywords": [
+      "bond",
+      "bond",
+      "liability"
+    ],
+    "regex": "(bond|bond).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "bond clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for bond covers non-contract debt.",
+    "legalBasis": "GF-2017-0201 3.7"
+  },
+  {
+    "id": "bond-09",
+    "category": "bond",
+    "title": "cash deposit interest missing",
+    "keywords": [
+      "cash",
+      "bond",
+      "deadline"
+    ],
+    "regex": "(cash|bond).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "bond clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for cash deposit interest missing.",
+    "legalBasis": "GF-2017-0201 3.7"
+  },
+  {
+    "id": "bond-10",
+    "category": "bond",
+    "title": "multiple guarantees duplicate",
+    "keywords": [
+      "multiple",
+      "bond",
+      "liability"
+    ],
+    "regex": "(multiple|bond).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "bond clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for multiple guarantees duplicate.",
+    "legalBasis": "GF-2017-0201 3.7"
+  },
+  {
+    "id": "claim-01",
+    "category": "claim",
+    "title": "notice period too short",
+    "keywords": [
+      "notice",
+      "claim",
+      "deadline"
+    ],
+    "regex": "(notice|claim).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "claim clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for notice period too short.",
+    "legalBasis": "GF-2017-0201 19.1"
+  },
+  {
+    "id": "claim-02",
+    "category": "claim",
+    "title": "late notice deemed waiver",
+    "keywords": [
+      "late",
+      "claim",
+      "liability"
+    ],
+    "regex": "(late|claim).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "claim clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for late notice deemed waiver.",
+    "legalBasis": "GF-2017-0201 19.1"
+  },
+  {
+    "id": "claim-03",
+    "category": "claim",
+    "title": "variation pricing unclear",
+    "keywords": [
+      "variation",
+      "claim",
+      "deadline"
+    ],
+    "regex": "(variation|claim).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "claim clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for variation pricing unclear.",
+    "legalBasis": "GF-2017-0201 19.1"
+  },
+  {
+    "id": "claim-04",
+    "category": "claim",
+    "title": "original evidence held by one side",
+    "keywords": [
+      "original",
+      "claim",
+      "liability"
+    ],
+    "regex": "(original|claim).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "claim clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for original evidence held by one side.",
+    "legalBasis": "GF-2017-0201 19.1"
+  },
+  {
+    "id": "claim-05",
+    "category": "claim",
+    "title": "evidence form too narrow",
+    "keywords": [
+      "evidence",
+      "claim",
+      "deadline"
+    ],
+    "regex": "(evidence|claim).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "claim clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for evidence form too narrow.",
+    "legalBasis": "GF-2017-0201 19.1"
+  },
+  {
+    "id": "claim-06",
+    "category": "claim",
+    "title": "site instruction not signable",
+    "keywords": [
+      "site",
+      "claim",
+      "liability"
+    ],
+    "regex": "(site|claim).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "claim clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for site instruction not signable.",
+    "legalBasis": "GF-2017-0201 19.1"
+  },
+  {
+    "id": "claim-07",
+    "category": "claim",
+    "title": "quantity confirmed by owner only",
+    "keywords": [
+      "quantity",
+      "claim",
+      "deadline"
+    ],
+    "regex": "(quantity|claim).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "claim clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for quantity confirmed by owner only.",
+    "legalBasis": "GF-2017-0201 19.1"
+  },
+  {
+    "id": "claim-08",
+    "category": "claim",
+    "title": "idle cost excluded",
+    "keywords": [
+      "idle",
+      "claim",
+      "liability"
+    ],
+    "regex": "(idle|claim).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "claim clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for idle cost excluded.",
+    "legalBasis": "GF-2017-0201 19.1"
+  },
+  {
+    "id": "claim-09",
+    "category": "claim",
+    "title": "material price adjustment excluded",
+    "keywords": [
+      "material",
+      "claim",
+      "deadline"
+    ],
+    "regex": "(material|claim).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "claim clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for material price adjustment excluded.",
+    "legalBasis": "GF-2017-0201 19.1"
+  },
+  {
+    "id": "claim-10",
+    "category": "claim",
+    "title": "variation approval chain too long",
+    "keywords": [
+      "variation",
+      "claim",
+      "liability"
+    ],
+    "regex": "(variation|claim).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "claim clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for variation approval chain too long.",
+    "legalBasis": "GF-2017-0201 19.1"
+  },
+  {
+    "id": "force-01",
+    "category": "force-majeure",
+    "title": "epidemic excluded",
+    "keywords": [
+      "epidemic",
+      "force-majeure",
+      "deadline"
+    ],
+    "regex": "(epidemic|force-majeure).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "force-majeure clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for epidemic excluded.",
+    "legalBasis": "GF-2017-0201 17.3"
+  },
+  {
+    "id": "force-02",
+    "category": "force-majeure",
+    "title": "all cost shifted to contractor",
+    "keywords": [
+      "all",
+      "force-majeure",
+      "liability"
+    ],
+    "regex": "(all|force-majeure).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "force-majeure clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for all cost shifted to contractor.",
+    "legalBasis": "GF-2017-0201 17.3"
+  },
+  {
+    "id": "force-03",
+    "category": "force-majeure",
+    "title": "notice duty too strict",
+    "keywords": [
+      "notice",
+      "force-majeure",
+      "deadline"
+    ],
+    "regex": "(notice|force-majeure).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "force-majeure clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for notice duty too strict.",
+    "legalBasis": "GF-2017-0201 17.3"
+  },
+  {
+    "id": "force-04",
+    "category": "force-majeure",
+    "title": "policy shutdown excluded",
+    "keywords": [
+      "policy",
+      "force-majeure",
+      "liability"
+    ],
+    "regex": "(policy|force-majeure).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "force-majeure clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for policy shutdown excluded.",
+    "legalBasis": "GF-2017-0201 17.3"
+  },
+  {
+    "id": "force-05",
+    "category": "force-majeure",
+    "title": "extreme weather scope missing",
+    "keywords": [
+      "extreme",
+      "force-majeure",
+      "deadline"
+    ],
+    "regex": "(extreme|force-majeure).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "force-majeure clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for extreme weather scope missing.",
+    "legalBasis": "GF-2017-0201 17.3"
+  },
+  {
+    "id": "force-06",
+    "category": "force-majeure",
+    "title": "proof standard too high",
+    "keywords": [
+      "proof",
+      "force-majeure",
+      "liability"
+    ],
+    "regex": "(proof|force-majeure).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "force-majeure clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for proof standard too high.",
+    "legalBasis": "GF-2017-0201 17.3"
+  },
+  {
+    "id": "force-07",
+    "category": "force-majeure",
+    "title": "post-disaster cost split missing",
+    "keywords": [
+      "post-disaster",
+      "force-majeure",
+      "deadline"
+    ],
+    "regex": "(post-disaster|force-majeure).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "force-majeure clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for post-disaster cost split missing.",
+    "legalBasis": "GF-2017-0201 17.3"
+  },
+  {
+    "id": "force-08",
+    "category": "force-majeure",
+    "title": "termination right imbalanced",
+    "keywords": [
+      "termination",
+      "force-majeure",
+      "liability"
+    ],
+    "regex": "(termination|force-majeure).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "force-majeure clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for termination right imbalanced.",
+    "legalBasis": "GF-2017-0201 17.3"
+  },
+  {
+    "id": "force-09",
+    "category": "force-majeure",
+    "title": "epidemic control cost missing",
+    "keywords": [
+      "epidemic",
+      "force-majeure",
+      "deadline"
+    ],
+    "regex": "(epidemic|force-majeure).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "force-majeure clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for epidemic control cost missing.",
+    "legalBasis": "GF-2017-0201 17.3"
+  },
+  {
+    "id": "force-10",
+    "category": "force-majeure",
+    "title": "supply-chain interruption unclear",
+    "keywords": [
+      "supply-chain",
+      "force-majeure",
+      "liability"
+    ],
+    "regex": "(supply-chain|force-majeure).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "force-majeure clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for supply-chain interruption unclear.",
+    "legalBasis": "GF-2017-0201 17.3"
+  },
+  {
+    "id": "ip-01",
+    "category": "intellectual-property",
+    "title": "unlimited result license",
+    "keywords": [
+      "unlimited",
+      "intellectual-property",
+      "deadline"
+    ],
+    "regex": "(unlimited|intellectual-property).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "intellectual-property clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for unlimited result license.",
+    "legalBasis": "GF-2017-0201 1.11"
+  },
+  {
+    "id": "ip-02",
+    "category": "intellectual-property",
+    "title": "drawing reuse risk",
+    "keywords": [
+      "drawing",
+      "intellectual-property",
+      "liability"
+    ],
+    "regex": "(drawing|intellectual-property).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "intellectual-property clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for drawing reuse risk.",
+    "legalBasis": "GF-2017-0201 1.11"
+  },
+  {
+    "id": "ip-03",
+    "category": "intellectual-property",
+    "title": "confidentiality period too long",
+    "keywords": [
+      "confidentiality",
+      "intellectual-property",
+      "deadline"
+    ],
+    "regex": "(confidentiality|intellectual-property).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "intellectual-property clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for confidentiality period too long.",
+    "legalBasis": "GF-2017-0201 1.11"
+  },
+  {
+    "id": "ip-04",
+    "category": "intellectual-property",
+    "title": "BIM model ownership unclear",
+    "keywords": [
+      "BIM",
+      "intellectual-property",
+      "liability"
+    ],
+    "regex": "(BIM|intellectual-property).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "intellectual-property clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for BIM model ownership unclear.",
+    "legalBasis": "GF-2017-0201 1.11"
+  },
+  {
+    "id": "ip-05",
+    "category": "intellectual-property",
+    "title": "method statement reused free",
+    "keywords": [
+      "method",
+      "intellectual-property",
+      "deadline"
+    ],
+    "regex": "(method|intellectual-property).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "intellectual-property clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for method statement reused free.",
+    "legalBasis": "GF-2017-0201 1.11"
+  },
+  {
+    "id": "ip-06",
+    "category": "intellectual-property",
+    "title": "third-party software license missing",
+    "keywords": [
+      "third-party",
+      "intellectual-property",
+      "liability"
+    ],
+    "regex": "(third-party|intellectual-property).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "intellectual-property clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for third-party software license missing.",
+    "legalBasis": "GF-2017-0201 1.11"
+  },
+  {
+    "id": "ip-07",
+    "category": "intellectual-property",
+    "title": "site media publishing unclear",
+    "keywords": [
+      "site",
+      "intellectual-property",
+      "deadline"
+    ],
+    "regex": "(site|intellectual-property).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "intellectual-property clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for site media publishing unclear.",
+    "legalBasis": "GF-2017-0201 1.11"
+  },
+  {
+    "id": "ip-08",
+    "category": "intellectual-property",
+    "title": "design-change copyright dispute",
+    "keywords": [
+      "design-change",
+      "intellectual-property",
+      "liability"
+    ],
+    "regex": "(design-change|intellectual-property).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "intellectual-property clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for design-change copyright dispute.",
+    "legalBasis": "GF-2017-0201 1.11"
+  },
+  {
+    "id": "ip-09",
+    "category": "intellectual-property",
+    "title": "data interface ownership missing",
+    "keywords": [
+      "data",
+      "intellectual-property",
+      "deadline"
+    ],
+    "regex": "(data|intellectual-property).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "intellectual-property clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for data interface ownership missing.",
+    "legalBasis": "GF-2017-0201 1.11"
+  },
+  {
+    "id": "ip-10",
+    "category": "intellectual-property",
+    "title": "confidentiality damages uncapped",
+    "keywords": [
+      "confidentiality",
+      "intellectual-property",
+      "liability"
+    ],
+    "regex": "(confidentiality|intellectual-property).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "intellectual-property clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for confidentiality damages uncapped.",
+    "legalBasis": "GF-2017-0201 1.11"
+  },
+  {
+    "id": "dispute-01",
+    "category": "dispute-resolution",
+    "title": "unfavorable jurisdiction",
+    "keywords": [
+      "unfavorable",
+      "dispute-resolution",
+      "deadline"
+    ],
+    "regex": "(unfavorable|dispute-resolution).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "dispute-resolution clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for unfavorable jurisdiction.",
+    "legalBasis": "GF-2017-0201 20.4"
+  },
+  {
+    "id": "dispute-02",
+    "category": "dispute-resolution",
+    "title": "arbitration body unclear",
+    "keywords": [
+      "arbitration",
+      "dispute-resolution",
+      "liability"
+    ],
+    "regex": "(arbitration|dispute-resolution).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "dispute-resolution clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for arbitration body unclear.",
+    "legalBasis": "GF-2017-0201 20.4"
+  },
+  {
+    "id": "dispute-03",
+    "category": "dispute-resolution",
+    "title": "perform first dispute later",
+    "keywords": [
+      "perform",
+      "dispute-resolution",
+      "deadline"
+    ],
+    "regex": "(perform|dispute-resolution).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "dispute-resolution clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for perform first dispute later.",
+    "legalBasis": "GF-2017-0201 20.4"
+  },
+  {
+    "id": "dispute-04",
+    "category": "dispute-resolution",
+    "title": "evidence form restricted",
+    "keywords": [
+      "evidence",
+      "dispute-resolution",
+      "liability"
+    ],
+    "regex": "(evidence|dispute-resolution).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "dispute-resolution clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for evidence form restricted.",
+    "legalBasis": "GF-2017-0201 20.4"
+  },
+  {
+    "id": "dispute-05",
+    "category": "dispute-resolution",
+    "title": "all lawyer fee shifted",
+    "keywords": [
+      "all",
+      "dispute-resolution",
+      "deadline"
+    ],
+    "regex": "(all|dispute-resolution).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "dispute-resolution clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for all lawyer fee shifted.",
+    "legalBasis": "GF-2017-0201 20.4"
+  },
+  {
+    "id": "dispute-06",
+    "category": "dispute-resolution",
+    "title": "continue work no exception",
+    "keywords": [
+      "continue",
+      "dispute-resolution",
+      "liability"
+    ],
+    "regex": "(continue|dispute-resolution).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "dispute-resolution clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for continue work no exception.",
+    "legalBasis": "GF-2017-0201 20.4"
+  },
+  {
+    "id": "dispute-07",
+    "category": "dispute-resolution",
+    "title": "appraisal body unilateral",
+    "keywords": [
+      "appraisal",
+      "dispute-resolution",
+      "deadline"
+    ],
+    "regex": "(appraisal|dispute-resolution).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "dispute-resolution clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for appraisal body unilateral.",
+    "legalBasis": "GF-2017-0201 20.4"
+  },
+  {
+    "id": "dispute-08",
+    "category": "dispute-resolution",
+    "title": "payment dispute no defense",
+    "keywords": [
+      "payment",
+      "dispute-resolution",
+      "liability"
+    ],
+    "regex": "(payment|dispute-resolution).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "red",
+    "defaultBenchmark": "dispute-resolution clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for payment dispute no defense.",
+    "legalBasis": "GF-2017-0201 20.4"
+  },
+  {
+    "id": "dispute-09",
+    "category": "dispute-resolution",
+    "title": "preservation bond unclear",
+    "keywords": [
+      "preservation",
+      "dispute-resolution",
+      "deadline"
+    ],
+    "regex": "(preservation|dispute-resolution).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "green",
+    "defaultBenchmark": "dispute-resolution clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for preservation bond unclear.",
+    "legalBasis": "GF-2017-0201 20.4"
+  },
+  {
+    "id": "dispute-10",
+    "category": "dispute-resolution",
+    "title": "related contracts split",
+    "keywords": [
+      "related",
+      "dispute-resolution",
+      "liability"
+    ],
+    "regex": "(related|dispute-resolution).{0,40}(unclear|missing|unlimited|unilateral|excluded|too high)",
+    "riskLevel": "yellow",
+    "defaultBenchmark": "dispute-resolution clause should define trigger, deadline, evidence and liability boundary.",
+    "suggestion": "Add scope, approval node, evidence checklist and responsibility split for related contracts split.",
+    "legalBasis": "GF-2017-0201 20.4"
+  }
 ]

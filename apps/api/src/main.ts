@@ -33,6 +33,7 @@ import { OpsToolkitModule } from './modules/ops-toolkit/ops-toolkit.module.js';
 import { PaymentModule } from './modules/payment/payment.module.js';
 import { ProjectSiteModule } from './modules/project-site/project-site.module.js';
 import { PromptTestingCurationModule } from './modules/prompt-testing-curation/prompt-testing-curation.module.js';
+import { PromptTestingModule } from './modules/prompt-testing/prompt-testing.module.js';
 import { QualificationModule } from './modules/qualification/qualification.module.js';
 import { ReportCenterModule } from './modules/report-center/report-center.module.js';
 import { RiskReviewModule } from './modules/risk-review/risk-review.module.js';
@@ -87,6 +88,7 @@ class HealthController {
     OpsToolkitModule,
     PaymentModule,
     PromptTestingCurationModule,
+    PromptTestingModule,
     QualificationModule,
     ProjectSiteModule,
     ReportCenterModule,
