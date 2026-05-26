@@ -1,11 +1,16 @@
 import { Body, Controller, Get, Headers, Inject, Param, Post } from '@nestjs/common';
 
 import type { RfpRagService } from './rfp-rag.service.js';
+import { BidProposalService } from './bid-proposal.service.js';
 import { TenderService } from './tender.service.js';
 
 @Controller('api/v1')
 export class TenderController {
-  constructor(@Inject(TenderService) private readonly tender: TenderService, private readonly rfpRag: RfpRagService) {}
+  constructor(
+    @Inject(TenderService) private readonly tender: TenderService,
+    @Inject(BidProposalService) private readonly bidProposal: BidProposalService,
+    private readonly rfpRag: RfpRagService,
+  ) {}
 
   @Get('tenders')
   list(): unknown {
@@ -86,6 +91,16 @@ export class TenderController {
   @Post('tender/projects/:id/rfp-ingest')
   async rfpIngest(@Param('id') id: string, @Body() body: { docs: Array<{ name: string; ossUrl: string }> }): Promise<unknown> {
     return { code: 'OK', data: await this.rfpRag.ingestRfpDocs(id, body.docs), message: 'RFP docs ingested', traceId: crypto.randomUUID() };
+  }
+
+  @Post('tender/projects/:id/bid-proposals')
+  createBidProposal(@Param('id') id: string, @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
+    return { code: 'OK', data: this.bidProposal.create(id, tenantId), message: 'Bid proposal created', traceId: crypto.randomUUID() };
+  }
+
+  @Post('tender/bid-proposals/:proposalId/export-docx')
+  exportBidProposal(@Param('proposalId') proposalId: string): unknown {
+    return { code: 'OK', data: this.bidProposal.exportDocx(proposalId), message: 'Bid proposal docx exported', traceId: crypto.randomUUID() };
   }
 
   @Post('tender/projects/:id/rfp-search')

@@ -805,6 +805,33 @@ model TenderSectionDraft {
   @@map("tender_section_drafts")
 }
 
+model BidProposal {
+  id              String   @id @default(uuid()) @db.Uuid
+  tenantId        String   @map("tenant_id")
+  tenderId        String   @map("tender_id")
+  scoringCriteria Json     @map("scoring_criteria")
+  tierBadge       Int      @default(3) @map("tier_badge")
+  confidence      String   @default("medium")
+  status          String   @default("draft")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, tenderId])
+  @@map("bid_proposals")
+}
+
+model BidSection {
+  id            String   @id @default(uuid()) @db.Uuid
+  proposalId    String   @map("proposal_id") @db.Uuid
+  key           String
+  title         String
+  content       String   @db.Text
+  qualityIssues Json     @map("quality_issues")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([proposalId, key])
+  @@map("bid_sections")
+}
+
 model TenderPackage {
   id           String   @id @default(uuid()) @db.Uuid
   projectId    String   @unique @map("project_id") @db.Uuid
