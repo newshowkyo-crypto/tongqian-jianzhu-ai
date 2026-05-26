@@ -2422,6 +2422,60 @@ model AgentConsent {
   @@map("agent_consents")
 }
 
+model AgentOpportunitySource {
+  id            String   @id @default(uuid()) @db.Uuid
+  code          String   @unique
+  agentSubtype  String   @map("agent_subtype")
+  name          String
+  sourceUrl     String?  @map("source_url")
+  region        String
+  crawlInterval Int      @default(86400) @map("crawl_interval")
+  enabled       Boolean  @default(true)
+  lastCrawledAt DateTime? @map("last_crawled_at")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([agentSubtype, region, enabled])
+  @@map("agent_opportunity_sources")
+}
+
+model AgentOpportunity {
+  id             String   @id @default(uuid()) @db.Uuid
+  sourceId       String   @map("source_id") @db.Uuid
+  agentSubtype   String   @map("agent_subtype")
+  region         String
+  targetCompany  String?  @map("target_company")
+  targetUSCC     String?  @map("target_uscc")
+  eventType      String   @map("event_type")
+  summary        String   @db.Text
+  rawData        Json?    @map("raw_data")
+  discoveredAt   DateTime @default(now()) @map("discovered_at")
+  deadline       DateTime?
+  aiScore        Decimal? @map("ai_score") @db.Decimal(5, 2)
+
+  matches        AgentOpportunityMatch[]
+  @@index([agentSubtype, region, discoveredAt])
+  @@index([targetUSCC])
+  @@map("agent_opportunities")
+}
+
+model AgentOpportunityMatch {
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @map("tenant_id") @db.Uuid
+  agentId       String   @map("agent_id") @db.Uuid
+  opportunityId String   @map("opportunity_id") @db.Uuid
+  matchScore    Decimal  @map("match_score") @db.Decimal(5, 2)
+  aiPitch       String?  @map("ai_pitch") @db.Text
+  status        String   @default("new")
+  contactedAt   DateTime? @map("contacted_at")
+  wonAt         DateTime? @map("won_at")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  opportunity   AgentOpportunity @relation(fields: [opportunityId], references: [id])
+  @@unique([agentId, opportunityId])
+  @@index([tenantId, agentId, status])
+  @@map("agent_opportunity_matches")
+}
+
 model GovProjectSourcing {
   id                String   @id @default(uuid()) @db.Uuid
   publisherTenantId String   @map("publisher_tenant_id")
