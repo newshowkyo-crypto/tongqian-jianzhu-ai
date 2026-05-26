@@ -13,6 +13,8 @@
   --border-silver: #e2e7f0;
   --accent: #1e5fbf;
   --accent-rose: #d99880;
+  --gov-serious-bg: #f6f8fb;
+  --gov-readable-step: 1px;
 }
 
 [data-theme='dark'] {
@@ -25,6 +27,8 @@
   --border-silver: #b5bcc8;
   --accent: #4a8eff;
   --accent-rose: #d99880;
+  --gov-serious-bg: #0a1d3d;
+  --gov-readable-step: 1px;
 }
 
 body {
@@ -36,4 +40,11 @@ body {
 code,
 pre {
   font-family: var(--font-mono);
+}
+
+.gov-official-surface {
+  background: var(--gov-serious-bg);
+  border-color: var(--border-silver);
+  color: var(--text-primary);
+  font-size: calc(1rem + var(--gov-readable-step));
 }

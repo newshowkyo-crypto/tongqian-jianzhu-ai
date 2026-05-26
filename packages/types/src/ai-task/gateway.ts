@@ -6,6 +6,7 @@ import type { AiOutputTier } from './tier.js';
 
 export enum AiProviderCode {
   ALIYUN_DASHSCOPE = 'aliyun_dashscope',
+  MIDLAYER = 'midlayer',
   /** @deprecated M3.12 removed OpenRouter/Claude/GPT from callable routing. Keep only for old audit records. */
   OPENROUTER = 'openrouter',
   DEEPSEEK_DIRECT = 'deepseek_direct',

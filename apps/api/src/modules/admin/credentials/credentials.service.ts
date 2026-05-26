@@ -47,7 +47,8 @@ const definitions: CredentialDefinition[] = [
   { group: 'collector', key: 'TIANYANCHA_API_KEY', provider: 'tianyancha' },
   { group: 'storage', key: 'ICP_RECORD_NO', provider: 'miit' },
   { group: 'ai', key: 'ALIYUN_DASHSCOPE_API_KEY', provider: 'dashscope' },
-  { group: 'ai', key: 'OPENROUTER_API_KEY', provider: 'openrouter' },
+  { group: 'ai', key: 'MIDLAYER_API_KEY', provider: 'midlayer' },
+  { group: 'ai', key: 'MIDLAYER_BASE_URL', provider: 'midlayer' },
   { group: 'ai', key: 'DEEPSEEK_API_KEY', provider: 'deepseek' },
 ];
 
@@ -132,7 +133,8 @@ export class CredentialsService {
     if (!token) return { ok: false, reason: `${key}_missing` };
     try {
       if (key === 'DEEPSEEK_API_KEY') await fetch('https://api.deepseek.com/v1/models', { headers: { Authorization: `Bearer ${token}` } });
-      else if (key === 'OPENROUTER_API_KEY') await fetch('https://openrouter.ai/api/v1/models', { headers: { Authorization: `Bearer ${token}` } });
+      else if (key === 'MIDLAYER_API_KEY') await fetch(`${process.env.MIDLAYER_BASE_URL ?? 'https://midlayer.invalid'}/models`, { headers: { Authorization: `Bearer ${token}` } });
+      else if (key === 'MIDLAYER_BASE_URL') return { ok: token.startsWith('https://') };
       else if (key === 'ALIYUN_DASHSCOPE_API_KEY') await fetch('https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation', { headers: { Authorization: `Bearer ${token}` } });
       else if (key.includes('WECHAT_MP')) await fetch('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=placeholder&secret=placeholder');
       else return { ok: false, reason: 'provider_requires_full_credential_pair' };

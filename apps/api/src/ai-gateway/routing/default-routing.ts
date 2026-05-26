@@ -59,9 +59,9 @@ function routeFor(taskType: AiTaskType): AiRouteConfig {
     return buildRoute(taskType, AiProviderCode.ALIYUN_DASHSCOPE, M312_MODELS.dashscopeText, 'daily_text', 220);
   }
   if (REASONING_TASKS.has(taskType)) {
-    return buildRoute(taskType, AiProviderCode.DEEPSEEK_DIRECT, M312_MODELS.deepseekReasoner, 'reasoning', taskType.includes('pro') ? 800 : 360);
+    return buildRoute(taskType, AiProviderCode.MIDLAYER, M312_MODELS.deepseekReasoner, 'reasoning', taskType.includes('pro') ? 800 : 360);
   }
-  return buildRoute(taskType, AiProviderCode.ALIYUN_DASHSCOPE, M312_MODELS.dashscopeText, 'daily_text', 120);
+  return buildRoute(taskType, AiProviderCode.MIDLAYER, M312_MODELS.deepseekReasoner, 'daily_text', 120);
 }
 
 function buildRoute(taskType: AiTaskType, provider: AiProviderCode, model: string, routeClass: AiRouteConfig['routeClass'], costCredits: number): AiRouteConfig {
@@ -83,5 +83,5 @@ export const defaultAiRouting: Record<AiTaskType, AiRouteConfig> = Object.fromEn
 ) as Record<AiTaskType, AiRouteConfig>;
 
 export function isM312DomesticProvider(provider: AiProviderCode): boolean {
-  return provider === AiProviderCode.DEEPSEEK_DIRECT || provider === AiProviderCode.ALIYUN_DASHSCOPE;
+  return provider === AiProviderCode.DEEPSEEK_DIRECT || provider === AiProviderCode.ALIYUN_DASHSCOPE || provider === AiProviderCode.MIDLAYER;
 }

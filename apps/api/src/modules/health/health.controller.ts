@@ -16,7 +16,7 @@ export class HealthController {
         aliyunDashscope: this.dashscopeReady() ? 'ready:qwen3-max/qwen3-vl-max/text-embedding-v3' : 'mock-ready:qwen3-max/qwen3-vl-max',
         dashvector: this.envReady('DASHVECTOR_API_KEY') ? 'ready' : 'deferred:mock-semantic-cache',
         deepseekReasoner: process.env.DEEPSEEK_API_KEY ? 'ready:deepseek-reasoner' : 'mock-ready:deepseek-reasoner',
-        openrouter: 'DEPRECATED_DO_NOT_USE',
+        midlayer: this.midlayerReady() ? 'ready' : 'mock-ready',
       },
       db: this.envReady('DATABASE_URL') ? 'ready' : 'mock-ready',
       redis: this.envReady('REDIS_URL') ? 'ready' : 'mock-ready',
@@ -52,5 +52,9 @@ export class HealthController {
 
   private dashscopeReady(): boolean {
     return this.envReady('ALIYUN_DASHSCOPE_API_KEY') || this.envReady('DASHSCOPE_API_KEY');
+  }
+
+  private midlayerReady(): boolean {
+    return this.envReady('MIDLAYER_API_KEY') && this.envReady('MIDLAYER_BASE_URL');
   }
 }

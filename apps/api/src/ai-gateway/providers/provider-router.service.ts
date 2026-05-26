@@ -3,15 +3,19 @@ import { AiProviderCode } from '@tongqian/types';
 
 import type { AiProvider, AiProviderInvokeRequest, AiRawResponse } from './ai-provider.interface.js';
 import { DeepSeekProvider } from './deepseek-provider.js';
+import { MidlayerProvider } from './midlayer-provider.js';
 import { MockAiProvider } from './mock-provider.js';
 
 @Injectable()
 export class ProviderRouterService {
   private readonly unhealthyUntil = new Map<AiProviderCode, number>();
   private readonly providers: AiProvider[] = [
+    process.env.MIDLAYER_API_KEY
+      ? new MidlayerProvider()
+      : new MockAiProvider(AiProviderCode.MIDLAYER, 1, ['deepseek-reasoner', 'deepseek-chat', 'qwen3-max'], isMidlayerAvailable()),
     process.env.DEEPSEEK_API_KEY
-      ? new DeepSeekProvider(AiProviderCode.DEEPSEEK_DIRECT, 1, ['deepseek-reasoner', 'deepseek-chat'])
-      : new MockAiProvider(AiProviderCode.DEEPSEEK_DIRECT, 1, ['deepseek-reasoner'], isDeepSeekAvailable()),
+      ? new DeepSeekProvider(AiProviderCode.DEEPSEEK_DIRECT, 99, ['deepseek-reasoner', 'deepseek-chat'])
+      : new MockAiProvider(AiProviderCode.DEEPSEEK_DIRECT, 99, ['deepseek-reasoner'], isDeepSeekAvailable()),
     new MockAiProvider(AiProviderCode.ALIYUN_DASHSCOPE, 2, ['qwen3-max', 'qwen3-vl-max', 'text-embedding-v3'], isDashScopeAvailable()),
   ];
 
@@ -102,4 +106,8 @@ function isDeepSeekAvailable(): boolean {
 
 function isDashScopeAvailable(): boolean {
   return isConfigured('ALIYUN_DASHSCOPE_API_KEY') || isConfigured('DASHSCOPE_API_KEY') || process.env.DISABLE_DASHSCOPE_LOCAL_MOCK !== 'true';
+}
+
+function isMidlayerAvailable(): boolean {
+  return (isConfigured('MIDLAYER_API_KEY') && isConfigured('MIDLAYER_BASE_URL')) || process.env.DISABLE_MIDLAYER_LOCAL_MOCK !== 'true';
 }

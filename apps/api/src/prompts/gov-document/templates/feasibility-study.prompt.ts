@@ -1,0 +1,1 @@
+export const feasibilityStudyPrompt = { creditsCost: 1500, docType: 'feasibility_study', provider: 'aliyun-bailian', sections: ['overview', 'necessity', 'market', 'construction', 'technology', 'site', 'organization', 'investment', 'funding', 'benefit', 'risk', 'conclusion'] };

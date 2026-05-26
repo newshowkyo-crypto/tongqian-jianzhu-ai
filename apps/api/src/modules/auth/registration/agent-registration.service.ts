@@ -6,35 +6,13 @@ import type { RegistrationInput, RegistrationResult } from './registration-types
 
 @Injectable()
 export class AgentRegistrationService {
-  /**
-   * Creates an agent registration application with review and training gates.
-   *
-   * @param input Registration input.
-   * @returns Registration result.
-   */
   register(input: RegistrationInput): RegistrationResult {
     this.validate(input);
     return { approvalRequired: true, defaultDashboard: 'agent', status: 'pending_review', tenantId: crypto.randomUUID(), userId: crypto.randomUUID() };
   }
 
-  /**
-   * Marks training passed and initializes LV2 / 500 reputation baseline.
-   *
-   * @param agentId Agent id.
-   * @returns Active training result.
-   */
-  passTraining(agentId: string): { agentId: string; reputationLevel: 'LV2'; score: 500; status: 'active' } {
-    if (!agentId) throw new BusinessError({ code: ErrorCodes.AGENT_PROFILE_INCOMPLETE.code, message: 'Agent training requires agent id.' });
-    return { agentId, reputationLevel: 'LV2', score: 500, status: 'active' };
-  }
-
-  /**
-   * Builds the five compliance commitments required before agent review.
-   *
-   * @returns Commitment keys.
-   */
   complianceCommitments(): string[] {
-    return ['real-name-verified', 'no-private-deal', 'no-b-class-private-service', 'training-required', 'audit-accepted'];
+    return ['real-name-verified', 'no-private-deal', 'no-b-class-private-service', 'business-tool-ready', 'audit-accepted'];
   }
 
   /**
@@ -57,12 +35,11 @@ export class AgentRegistrationService {
   /**
    * Checks whether the applicant can enter dispatch after review.
    *
-   * @param input Training and review state.
+   * @param input Review state.
    * @returns Decision with reason.
    */
-  canActivate(input: { reviewApproved: boolean; trainingPassed: boolean }): { allowed: boolean; reason: string } {
+  canActivate(input: { reviewApproved: boolean }): { allowed: boolean; reason: string } {
     if (!input.reviewApproved) return { allowed: false, reason: 'review-pending' };
-    if (!input.trainingPassed) return { allowed: false, reason: 'training-required' };
     return { allowed: true, reason: 'lv2-baseline-ready' };
   }
 

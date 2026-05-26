@@ -1513,51 +1513,6 @@ model CostBudgetVariance {
   @@map("cost_budget_variances")
 }
 
-model Meeting {
-  id          String   @id @default(uuid()) @db.Uuid
-  tenantId    String   @map("tenant_id") @db.Uuid
-  projectId   String?  @map("project_id") @db.Uuid
-  ownerId     String?  @map("owner_id") @db.Uuid
-  title       String
-  transcript  String   @db.Text
-  status      String   @default("draft")
-  createdAt   DateTime @default(now()) @map("created_at")
-
-  minute      MeetingMinute?
-  todos       Todo[]
-  @@index([tenantId, projectId, ownerId])
-  @@map("meetings")
-}
-
-model MeetingMinute {
-  id          String   @id @default(uuid()) @db.Uuid
-  tenantId    String   @map("tenant_id") @db.Uuid
-  meetingId   String   @unique @map("meeting_id") @db.Uuid
-  summary     String   @db.Text
-  decisions   Json
-  actionItems Json     @map("action_items")
-  aiTaskId    String?  @map("ai_task_id")
-  createdAt   DateTime @default(now()) @map("created_at")
-
-  meeting     Meeting  @relation(fields: [meetingId], references: [id])
-  @@map("meeting_minutes")
-}
-
-model Todo {
-  id          String   @id @default(uuid()) @db.Uuid
-  tenantId    String   @map("tenant_id") @db.Uuid
-  meetingId   String?  @map("meeting_id") @db.Uuid
-  assigneeId  String?  @map("assignee_id") @db.Uuid
-  title       String
-  dueAt       DateTime? @map("due_at")
-  status      String   @default("open")
-  createdAt   DateTime @default(now()) @map("created_at")
-
-  meeting     Meeting? @relation(fields: [meetingId], references: [id])
-  @@index([tenantId, assigneeId, status])
-  @@map("todos")
-}
-
 model QualityCheckpoint {
   id          String   @id @default(uuid()) @db.Uuid
   tenantId    String   @map("tenant_id") @db.Uuid
@@ -2467,6 +2422,338 @@ model AgentConsent {
   @@map("agent_consents")
 }
 
+model AgentOpportunitySource {
+  id            String   @id @default(uuid()) @db.Uuid
+  code          String   @unique
+  agentSubtype  String   @map("agent_subtype")
+  name          String
+  sourceUrl     String?  @map("source_url")
+  region        String
+  crawlInterval Int      @default(86400) @map("crawl_interval")
+  enabled       Boolean  @default(true)
+  lastCrawledAt DateTime? @map("last_crawled_at")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([agentSubtype, region, enabled])
+  @@map("agent_opportunity_sources")
+}
+
+model AgentOpportunity {
+  id             String   @id @default(uuid()) @db.Uuid
+  sourceId       String   @map("source_id") @db.Uuid
+  agentSubtype   String   @map("agent_subtype")
+  region         String
+  targetCompany  String?  @map("target_company")
+  targetUSCC     String?  @map("target_uscc")
+  eventType      String   @map("event_type")
+  summary        String   @db.Text
+  rawData        Json?    @map("raw_data")
+  discoveredAt   DateTime @default(now()) @map("discovered_at")
+  deadline       DateTime?
+  aiScore        Decimal? @map("ai_score") @db.Decimal(5, 2)
+
+  matches        AgentOpportunityMatch[]
+  @@index([agentSubtype, region, discoveredAt])
+  @@index([targetUSCC])
+  @@map("agent_opportunities")
+}
+
+model AgentOpportunityMatch {
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @map("tenant_id") @db.Uuid
+  agentId       String   @map("agent_id") @db.Uuid
+  opportunityId String   @map("opportunity_id") @db.Uuid
+  matchScore    Decimal  @map("match_score") @db.Decimal(5, 2)
+  aiPitch       String?  @map("ai_pitch") @db.Text
+  status        String   @default("new")
+  contactedAt   DateTime? @map("contacted_at")
+  wonAt         DateTime? @map("won_at")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  opportunity   AgentOpportunity @relation(fields: [opportunityId], references: [id])
+  @@unique([agentId, opportunityId])
+  @@index([tenantId, agentId, status])
+  @@map("agent_opportunity_matches")
+}
+
+model AgentCustomerNote {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String   @map("customer_tenant_id") @db.Uuid
+  noteType         String   @map("note_type")
+  content          String   @db.Text
+  nextActionDate   DateTime? @map("next_action_date")
+  nextActionDesc   String?  @map("next_action_desc")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId, createdAt])
+  @@map("agent_customer_notes")
+}
+
+model AgentDeal {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String   @map("customer_tenant_id") @db.Uuid
+  sourceType       String   @map("source_type")
+  sourceId         String?  @map("source_id") @db.Uuid
+  title            String
+  serviceType      String   @map("service_type")
+  estimateAmount   Decimal? @map("estimate_amount") @db.Decimal(18, 2)
+  stage            String   @default("lead")
+  probability      Int      @default(20)
+  expectCloseDate  DateTime? @map("expect_close_date")
+  lostReason       String?  @map("lost_reason")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@index([agentId, stage, createdAt])
+  @@map("agent_deals")
+}
+
+model AgentScript {
+  id          String   @id @default(uuid()) @db.Uuid
+  category    String
+  serviceType String   @map("service_type")
+  title       String
+  content     String   @db.Text
+  aiGenerated Boolean  @default(false) @map("ai_generated")
+  upvotes     Int      @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([category, serviceType])
+  @@map("agent_scripts")
+}
+
+model AgentCustomerBinding {
+  id               String   @id @default(uuid()) @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String   @unique @map("customer_tenant_id") @db.Uuid
+  referralCode     String   @map("referral_code")
+  bindSourceType   String   @map("bind_source_type")
+  boundAt          DateTime @default(now()) @map("bound_at")
+  isPermanent      Boolean  @default(true) @map("is_permanent")
+  transferReason   String?  @map("transfer_reason")
+  transferredAt    DateTime? @map("transferred_at")
+
+  healthScore      AgentCustomerHealthScore?
+  commissions      AgentCommissionLedger[]
+  @@index([agentId, boundAt])
+  @@map("agent_customer_bindings")
+}
+
+model AgentCommissionLedger {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String   @map("customer_tenant_id") @db.Uuid
+  bindingId        String   @map("binding_id") @db.Uuid
+  sourceType       String   @map("source_type")
+  sourceOrderId    String?  @map("source_order_id") @db.Uuid
+  grossAmount      Decimal  @map("gross_amount") @db.Decimal(18, 2)
+  commissionRate   Decimal  @map("commission_rate") @db.Decimal(5, 4)
+  commissionAmount Decimal  @map("commission_amount") @db.Decimal(18, 2)
+  status           String   @default("frozen")
+  frozenUntil      DateTime? @map("frozen_until")
+  settledAt        DateTime? @map("settled_at")
+  paidAt           DateTime? @map("paid_at")
+  clawbackReason   String?  @map("clawback_reason")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  binding          AgentCustomerBinding @relation(fields: [bindingId], references: [id])
+  @@index([agentId, status, createdAt])
+  @@index([customerTenantId, sourceType])
+  @@map("agent_commission_ledger")
+}
+
+model AgentCustomerHealthScore {
+  id               String   @id @default(uuid()) @db.Uuid
+  bindingId        String   @unique @map("binding_id") @db.Uuid
+  score            Int      @default(70)
+  lastInteractedAt DateTime? @map("last_interacted_at")
+  lastOrderAt      DateTime? @map("last_order_at")
+  nextRenewalDate  DateTime? @map("next_renewal_date")
+  renewalType      String?  @map("renewal_type")
+  riskLevel        String   @default("low")
+  riskReasons      Json?    @map("risk_reasons")
+  aiSuggestion     String?  @map("ai_suggestion") @db.Text
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  binding          AgentCustomerBinding @relation(fields: [bindingId], references: [id])
+  @@index([nextRenewalDate, riskLevel])
+  @@map("agent_customer_health_scores")
+}
+
+model AgentKnowledgeArticle {
+  id           String   @id @default(uuid()) @db.Uuid
+  category     String
+  agentSubtype String?  @map("agent_subtype")
+  region       String?
+  title        String
+  content      String   @db.Text
+  sourceUrl    String?  @map("source_url")
+  publishedAt  DateTime? @map("published_at")
+  aiGenerated  Boolean  @default(false) @map("ai_generated")
+  upvotes      Int      @default(0)
+  views        Int      @default(0)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@index([category, agentSubtype, region, publishedAt])
+  @@map("agent_knowledge_articles")
+}
+
+model AgentQualMaterialCheck {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String?  @map("customer_tenant_id") @db.Uuid
+  targetQual       String   @map("target_qual")
+  uploadedFiles    Json     @map("uploaded_files")
+  missingItems     Json?    @map("missing_items")
+  notMeetItems     Json?    @map("not_meet_items")
+  completePct      Decimal? @map("complete_pct") @db.Decimal(5, 2)
+  aiConfidence     String   @default("medium") @map("ai_confidence")
+  creditsCost      Int      @default(200) @map("credits_cost")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId, createdAt])
+  @@map("agent_qual_material_checks")
+}
+
+model AgentQualPerformanceArchive {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String?  @map("customer_tenant_id") @db.Uuid
+  rawFileCount     Int      @map("raw_file_count")
+  classifiedItems  Json     @map("classified_items")
+  packageZipUrl    String?  @map("package_zip_url")
+  creditsCost      Int      @default(300) @map("credits_cost")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId, createdAt])
+  @@map("agent_qual_performance_archives")
+}
+
+model AgentQualPersonnelGap {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String?  @map("customer_tenant_id") @db.Uuid
+  targetQual       String   @map("target_qual")
+  currentPersonnel Json     @map("current_personnel")
+  requiredPersonnel Json    @map("required_personnel")
+  gapList          Json     @map("gap_list")
+  creditsCost      Int      @default(100) @map("credits_cost")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId])
+  @@map("agent_qual_personnel_gaps")
+}
+
+model AgentTenderQualifyMatch {
+  id                 String   @id @default(uuid()) @db.Uuid
+  tenantId           String   @map("tenant_id") @db.Uuid
+  agentId            String   @map("agent_id") @db.Uuid
+  customerTenantId   String?  @map("customer_tenant_id") @db.Uuid
+  tenderFileUrl      String   @map("tender_file_url")
+  extractedCriteria  Json     @map("extracted_criteria")
+  customerMatchResult Json?   @map("customer_match_result")
+  creditsCost        Int      @default(150) @map("credits_cost")
+  createdAt          DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId, createdAt])
+  @@map("agent_tender_qualify_matches")
+}
+
+model AgentTenderProposalDraft {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String?  @map("customer_tenant_id") @db.Uuid
+  tenderFileUrl    String   @map("tender_file_url")
+  scoringPoints    Json     @map("scoring_points")
+  chapterDrafts    Json     @map("chapter_drafts")
+  docxUrl          String?  @map("docx_url")
+  progressPct      Int      @default(0) @map("progress_pct")
+  creditsCost      Int      @map("credits_cost")
+  aiConfidence     String   @default("medium") @map("ai_confidence")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId, createdAt])
+  @@map("agent_tender_proposal_drafts")
+}
+
+model AgentTenderQaResponse {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String?  @map("customer_tenant_id") @db.Uuid
+  qaFileUrl        String   @map("qa_file_url")
+  favorableChanges Json     @map("favorable_changes")
+  unfavorableChanges Json   @map("unfavorable_changes")
+  suggestedActions Json     @map("suggested_actions")
+  affectedProposalChapters Json? @map("affected_proposal_chapters")
+  creditsCost      Int      @default(100) @map("credits_cost")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId, createdAt])
+  @@map("agent_tender_qa_responses")
+}
+
+model AgentFinFinancingProposal {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String?  @map("customer_tenant_id") @db.Uuid
+  customerProfile  Json     @map("customer_profile")
+  financingNeed    Json     @map("financing_need")
+  proposalSections Json     @map("proposal_sections")
+  financialModel   Json?    @map("financial_model")
+  docxUrl          String?  @map("docx_url")
+  creditsCost      Int      @default(1000) @map("credits_cost")
+  aiConfidence     String   @default("medium") @map("ai_confidence")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId, createdAt])
+  @@map("agent_fin_financing_proposals")
+}
+
+model AgentFinCreditReport {
+  id                     String   @id @default(uuid()) @db.Uuid
+  tenantId               String   @map("tenant_id") @db.Uuid
+  agentId                String   @map("agent_id") @db.Uuid
+  customerTenantId       String?  @map("customer_tenant_id") @db.Uuid
+  reportSourceFiles      Json     @map("report_source_files")
+  redLineItems           Json     @map("red_line_items")
+  yellowLineItems        Json     @map("yellow_line_items")
+  improvementSuggestions Json     @map("improvement_suggestions")
+  overallRiskLevel       String   @map("overall_risk_level")
+  creditsCost            Int      @default(200) @map("credits_cost")
+  aiConfidence           String   @default("medium") @map("ai_confidence")
+  createdAt              DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId, createdAt])
+  @@map("agent_fin_credit_reports")
+}
+
+model AgentQuickReplySession {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String?  @map("customer_tenant_id") @db.Uuid
+  customerQuestion String   @map("customer_question") @db.Text
+  aiReply          String   @db.Text
+  replyTone        String   @default("professional") @map("reply_tone")
+  copiedAt         DateTime? @map("copied_at")
+  creditsCost      Int      @default(50) @map("credits_cost")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId, createdAt])
+  @@map("agent_quick_reply_sessions")
+}
+
 model GovProjectSourcing {
   id                String   @id @default(uuid()) @db.Uuid
   publisherTenantId String   @map("publisher_tenant_id")
@@ -2495,6 +2782,44 @@ model GovDocumentDraft {
 
   @@index([tenantId, createdAt])
   @@map("gov_document_drafts")
+}
+
+model GovDocument {
+  id              String   @id @default(uuid()) @db.Uuid
+  tenantId        String   @map("tenant_id") @db.Uuid
+  userId          String   @map("user_id") @db.Uuid
+  docType         String   @map("doc_type")
+  title           String
+  subject         String?
+  body            String   @db.Text
+  attachments     Json?
+  docNumber       String?  @map("doc_number")
+  issuer          String?
+  watermark       String
+  generatorIp     String   @map("generator_ip")
+  generatorUserId String   @map("generator_user_id") @db.Uuid
+  creditsCost     Int      @map("credits_cost")
+  aiConfidence    String   @default("medium") @map("ai_confidence")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, userId, docType, createdAt])
+  @@map("gov_documents")
+}
+
+model MeetingMinuteAsr {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  userId           String   @map("user_id") @db.Uuid
+  audioUrl         String   @map("audio_url")
+  transcript       String   @db.Text
+  structuredMinute Json     @map("structured_minute")
+  watermark        String
+  generatorIp      String   @map("generator_ip")
+  creditsCost      Int      @default(300) @map("credits_cost")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, userId, createdAt])
+  @@map("meeting_minutes_asr")
 }
 
 model GovConsultIntent {
@@ -2537,6 +2862,127 @@ model PolicyFund {
   @@index([category, status])
   @@index([province, status])
   @@map("policy_funds")
+}
+
+model PolicyFundMatch {
+  id                 String   @id @default(uuid()) @db.Uuid
+  tenantId           String   @map("tenant_id") @db.Uuid
+  userId             String   @map("user_id") @db.Uuid
+  fundId             String   @map("fund_id") @db.Uuid
+  projectFeature     Json     @map("project_feature")
+  matchScore         Decimal  @map("match_score") @db.Decimal(5, 2)
+  successProbability Decimal? @map("success_probability") @db.Decimal(5, 2)
+  applyPath          Json?    @map("apply_path")
+  aiConfidence       String   @default("medium") @map("ai_confidence")
+  creditsCost        Int      @default(500) @map("credits_cost")
+  createdAt          DateTime @default(now()) @map("created_at")
+
+  fund               PolicyFund @relation(fields: [fundId], references: [id])
+  @@index([tenantId, userId, createdAt])
+  @@map("policy_fund_matches")
+}
+
+model PolicyFundSubscription {
+  id             String   @id @default(uuid()) @db.Uuid
+  tenantId       String   @map("tenant_id") @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+  fundId         String   @map("fund_id") @db.Uuid
+  notifyChannels Json     @map("notify_channels")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  fund           PolicyFund @relation(fields: [fundId], references: [id])
+  @@unique([userId, fundId])
+  @@map("policy_fund_subscriptions")
+}
+
+model PolicyFundApplication {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  fundId      String   @map("fund_id") @db.Uuid
+  projectName String   @map("project_name")
+  status      String   @default("draft")
+  submittedAt DateTime? @map("submitted_at")
+  resultAt    DateTime? @map("result_at")
+  failReason  String?  @map("fail_reason") @db.Text
+  aiAnalysis  String?  @map("ai_analysis") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([tenantId, userId, status])
+  @@map("policy_fund_applications")
+}
+
+model PolicyDoc {
+  id          String   @id @default(uuid()) @db.Uuid
+  level       String
+  topic       String
+  title       String
+  sourceUrl   String?  @map("source_url")
+  body        String   @db.Text
+  publishedAt DateTime? @map("published_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  impacts     PolicyImpactInterpretation[]
+  @@index([level, topic, publishedAt])
+  @@map("policy_docs")
+}
+
+model PolicyImpactInterpretation {
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @map("tenant_id") @db.Uuid
+  policyDocId   String   @map("policy_doc_id") @db.Uuid
+  impactSummary String   @map("impact_summary") @db.Text
+  aiConfidence  String   @default("medium") @map("ai_confidence")
+  creditsCost   Int      @default(100) @map("credits_cost")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  policyDoc     PolicyDoc @relation(fields: [policyDocId], references: [id])
+  @@index([tenantId, policyDocId])
+  @@map("policy_impact_interpretations")
+}
+
+model SourcingProject {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  direction        String
+  title            String
+  sanitizedSummary String   @map("sanitized_summary") @db.Text
+  region           String
+  estimateBudget   String?  @map("estimate_budget")
+  status           String   @default("open")
+  createdAt        DateTime @default(now()) @map("created_at")
+  deletedAt        DateTime? @map("deleted_at")
+
+  chats            SourcingChat[]
+  @@index([direction, region, status])
+  @@map("sourcing_projects")
+}
+
+model SourcingChat {
+  id                String   @id @default(uuid()) @db.Uuid
+  sourcingProjectId String   @map("sourcing_project_id") @db.Uuid
+  fromTenantId      String   @map("from_tenant_id") @db.Uuid
+  toTenantId        String   @map("to_tenant_id") @db.Uuid
+  sanitizedContent  String   @map("sanitized_content") @db.Text
+  intentConfirmed   Boolean  @default(false) @map("intent_confirmed")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  sourcingProject   SourcingProject @relation(fields: [sourcingProjectId], references: [id])
+  @@index([sourcingProjectId, createdAt])
+  @@map("sourcing_chats")
+}
+
+model AiRoutingMode {
+  id              Int      @id @default(1)
+  nonGovProvider  String   @default("midlayer") @map("non_gov_provider")
+  midlayerBaseUrl String?  @map("midlayer_base_url")
+  midlayerEnabled Boolean  @default(true) @map("midlayer_enabled")
+  lastSwitchedAt  DateTime? @map("last_switched_at")
+  lastSwitchedBy  String?  @map("last_switched_by") @db.Uuid
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("ai_routing_mode")
 }
 
 model Regulation {
