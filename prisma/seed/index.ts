@@ -52,7 +52,8 @@ const credentialSeeds = [
   ['TIANYANCHA_API_KEY', 'tianyancha', 'data_collection'],
   ['ICP_RECORD_NO', 'icp', 'compliance'],
   ['ALIYUN_DASHSCOPE_API_KEY', 'dashscope', 'ai_model'],
-  ['OPENROUTER_API_KEY', 'openrouter', 'ai_model'],
+  ['MIDLAYER_API_KEY', 'midlayer', 'ai_model'],
+  ['MIDLAYER_BASE_URL', 'midlayer', 'ai_model'],
   ['DEEPSEEK_API_KEY', 'deepseek', 'ai_model'],
 ] as const;
 
