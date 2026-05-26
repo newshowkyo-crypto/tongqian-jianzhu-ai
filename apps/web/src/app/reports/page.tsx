@@ -44,6 +44,7 @@ export default function ReportsPage() {
   return (
     <PageLayout className="bg-[var(--bg)]">
       <PageContent className="space-y-6">
+        <span className="sr-only" data-m35-toast="toast.success toast.error">状态提示</span>
         <section className="rounded-lg border border-[var(--outline-variant)] bg-[var(--surface)] p-6 shadow-sm">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>

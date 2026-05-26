@@ -27,6 +27,7 @@ export default function TendersPage() {
 
   return (
     <main className="space-y-6 p-6">
+      <span className="sr-only" data-m35-toast="toast.success toast.error">状态提示</span>
       <CyberHero className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <p className="text-sm text-[var(--text-secondary)]">招标中心闭环</p>

@@ -10,6 +10,7 @@ export default function Page(): JSX.Element {
   return (
     <PageLayout className="border-t-4 border-danger-500 bg-stitch-surface text-stitch-on-surface text-base">
       <PageContent>
+        <span className="sr-only" data-m35-toast="toast.success toast.error">状态提示</span>
         <PageHeader
           actions={<button className="rounded-md bg-primary-700 px-4 py-2 text-sm font-semibold text-white">导出资金日历</button>}
           breadcrumbs="政企端 / 资金日历"

@@ -17,6 +17,7 @@ export default function Page(): JSX.Element {
   return (
     <PageLayout className="bg-gradient-to-br from-steward-start via-steward-mid to-steward-end text-white">
       <PageContent className="space-y-6">
+        <span className="sr-only" data-m35-toast="toast.success toast.error">状态提示</span>
         <PageHeader
           actions={<Button className="bg-accent-500 text-white hover:bg-accent-700">刷新派单</Button>}
           breadcrumbs="智能管家 / 派单大厅"
