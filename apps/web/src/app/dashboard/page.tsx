@@ -159,6 +159,16 @@ export default function DashboardPage() {
                 ))}
               </div>
             </SectionCard>
+            <SectionCard className="border-[var(--outline-variant)] bg-[var(--surface)]" title="Cross-project alerts">
+              <div className="grid gap-4 md:grid-cols-3">
+                {['Overdue receivable', 'License expiry', 'Drawing change'].map((alert) => (
+                  <article key={alert} className="rounded-lg border border-[var(--outline-variant)] bg-[var(--surface-container-low)] p-4 text-sm text-[var(--text-primary)]">
+                    {alert}
+                  </article>
+                ))}
+              </div>
+            </SectionCard>
+
           </>
         ) : null}
 
