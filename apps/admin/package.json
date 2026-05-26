@@ -5,7 +5,8 @@
   "description": "Next.js admin console for platform operations.",
   "type": "module",
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": "node ../../scripts/run-dev.mjs admin",
+    "dev:fixed": "next dev -p 3010",
     "build": "next build",
     "start": "next start -p 3001",
     "lint": "eslint src --ext .ts,.tsx --no-error-on-unmatched-pattern",
