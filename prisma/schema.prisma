@@ -900,6 +900,21 @@ model WorkflowStep {
   @@map("workflow_steps")
 }
 
+model ShareLink {
+  id           String   @id @default(cuid())
+  token        String   @unique
+  resourceType String   @map("resource_type")
+  resourceId   String   @map("resource_id")
+  expiresAt    DateTime @map("expires_at")
+  maxReads     Int?     @map("max_reads")
+  readCount    Int      @default(0) @map("read_count")
+  auditLog     Json     @map("audit_log")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@index([resourceType, resourceId])
+  @@map("share_links")
+}
+
 model TenderPackage {
   id           String   @id @default(uuid()) @db.Uuid
   projectId    String   @unique @map("project_id") @db.Uuid
