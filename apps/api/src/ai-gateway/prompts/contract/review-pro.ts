@@ -20,6 +20,8 @@ const findingSchema = z.object({
   type: z.string(),
 });
 
+const m36ContractPrecisionPack = "M36 precision audit: run against 80 construction red flags, not the old 38. Each finding must include legalBasis and clauseRef; legalBasis may cite GF-2017-0201 ?12.4?, ?16.2?, ?19.1?, ??????, ??????????32?, or ???????????, but must not invent article numbers. Few-shot additions: red payment delay, yellow audit-period ambiguity, green balanced warranty, foreign FIDIC notice window, government procurement addendum conflict, wage account missing, unilateral evidence rule, excessive liquidated damages.";
+
 export const outputSchema = z.object({
   confidence: z.enum(['high', 'medium', 'low']),
   disclaimer: z.string(),
@@ -36,7 +38,7 @@ export const contractReviewProPrompt = createConstructionPrompt({
   description: 'contract review pro prompt template with M3.7 construction controls, M3.12 domestic flagship routing, JSON schema output, and value-density audit.',
   fallbackModel: 'qwen3-max',
   governmentOnly: false,
-  knowledge: promptAuditPack,
+  knowledge: `${promptAuditPack} ${m36ContractPrecisionPack}`,
   primaryModel: 'deepseek-reasoner',
   taskType: AiTaskType.CONTRACT_REVIEW_PRO,
   title: 'contract review pro',
