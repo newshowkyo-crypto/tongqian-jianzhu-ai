@@ -2702,6 +2702,58 @@ model AgentTenderQaResponse {
   @@map("agent_tender_qa_responses")
 }
 
+model AgentFinFinancingProposal {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String?  @map("customer_tenant_id") @db.Uuid
+  customerProfile  Json     @map("customer_profile")
+  financingNeed    Json     @map("financing_need")
+  proposalSections Json     @map("proposal_sections")
+  financialModel   Json?    @map("financial_model")
+  docxUrl          String?  @map("docx_url")
+  creditsCost      Int      @default(1000) @map("credits_cost")
+  aiConfidence     String   @default("medium") @map("ai_confidence")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId, createdAt])
+  @@map("agent_fin_financing_proposals")
+}
+
+model AgentFinCreditReport {
+  id                     String   @id @default(uuid()) @db.Uuid
+  tenantId               String   @map("tenant_id") @db.Uuid
+  agentId                String   @map("agent_id") @db.Uuid
+  customerTenantId       String?  @map("customer_tenant_id") @db.Uuid
+  reportSourceFiles      Json     @map("report_source_files")
+  redLineItems           Json     @map("red_line_items")
+  yellowLineItems        Json     @map("yellow_line_items")
+  improvementSuggestions Json     @map("improvement_suggestions")
+  overallRiskLevel       String   @map("overall_risk_level")
+  creditsCost            Int      @default(200) @map("credits_cost")
+  aiConfidence           String   @default("medium") @map("ai_confidence")
+  createdAt              DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId, createdAt])
+  @@map("agent_fin_credit_reports")
+}
+
+model AgentQuickReplySession {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String?  @map("customer_tenant_id") @db.Uuid
+  customerQuestion String   @map("customer_question") @db.Text
+  aiReply          String   @db.Text
+  replyTone        String   @default("professional") @map("reply_tone")
+  copiedAt         DateTime? @map("copied_at")
+  creditsCost      Int      @default(50) @map("credits_cost")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId, createdAt])
+  @@map("agent_quick_reply_sessions")
+}
+
 model GovProjectSourcing {
   id                String   @id @default(uuid()) @db.Uuid
   publisherTenantId String   @map("publisher_tenant_id")
