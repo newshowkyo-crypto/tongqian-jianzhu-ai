@@ -5,7 +5,8 @@
   "description": "Next.js web application for building company users.",
   "type": "module",
   "scripts": {
-    "dev": "next dev -p 3000",
+    "dev": "node ../../scripts/run-dev.mjs web",
+    "dev:fixed": "next dev -p 3000",
     "build": "next build",
     "start": "next start -p 3000",
     "lint": "eslint src --ext .ts,.tsx --no-error-on-unmatched-pattern",
