@@ -21,6 +21,7 @@ import { CustomerDueDiligenceModule } from './modules/customer-due-diligence/cus
 import { DashboardModule } from './modules/dashboard/dashboard.module.js';
 import { DataCurationModule } from './modules/data-curation/data-curation.module.js';
 import { DataExportModule } from './modules/data-export/data-export.module.js';
+import { DecisionModule } from './modules/decision/decision.module.js';
 import { DrawingModule } from './modules/drawing/drawing.module.js';
 import { ExternalApiModule } from './modules/external-api/external-api.module.js';
 import { GovSoeModule } from './modules/gov-soe/gov-soe.module.js';
@@ -78,6 +79,7 @@ class HealthController {
     DashboardModule,
     DataCurationModule,
     DataExportModule,
+    DecisionModule,
     DrawingModule,
     ExternalApiModule,
     GovSoeModule,
