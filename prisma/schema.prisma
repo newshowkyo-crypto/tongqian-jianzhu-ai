@@ -847,6 +847,24 @@ model AgentFollowupReminder {
   @@map("agent_followup_reminders")
 }
 
+model PredictiveAlert {
+  id               String    @id @default(cuid())
+  tenantId         String    @map("tenant_id")
+  userId           String    @map("user_id")
+  category         String
+  timeWindow       String    @map("time_window")
+  severity         String
+  title            String
+  prediction       String    @db.Text
+  actionSuggestion String    @map("action_suggestion") @db.Text
+  confidence       Float
+  triggeredAt      DateTime  @default(now()) @map("triggered_at")
+  dismissedAt      DateTime? @map("dismissed_at")
+
+  @@index([tenantId, userId, triggeredAt])
+  @@map("predictive_alerts")
+}
+
 model TenderPackage {
   id           String   @id @default(uuid()) @db.Uuid
   projectId    String   @unique @map("project_id") @db.Uuid
