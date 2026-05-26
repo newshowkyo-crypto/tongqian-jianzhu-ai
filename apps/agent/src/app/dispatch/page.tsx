@@ -40,7 +40,7 @@ export default function Page(): JSX.Element {
                 </div>
               </div>
 
-              <div className="mt-4 space-y-3">
+              <div className="mt-4 space-y-4">
                 {['距离', '资质', '经验', '报价'].map((label, index) => (
                   <div className="space-y-1" key={label}>
                     <div className="flex justify-between text-xs text-neutral-500">

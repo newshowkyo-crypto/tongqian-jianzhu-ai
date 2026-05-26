@@ -42,7 +42,7 @@ export default function ReportDetailPage(): JSX.Element {
         </section>
 
         <SectionCard title="AI 信心度">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <span className="text-sm text-stitch-on-surface-variant">中高</span>
             <span className="flex gap-2" aria-label="AI 信心度 3/4">
               <span className="h-3 w-3 rounded-full bg-primary-500" />
