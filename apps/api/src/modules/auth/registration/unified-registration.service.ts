@@ -47,7 +47,7 @@ export class UnifiedRegistrationService {
     const conflict = this.conflictDetector.check(input.phone, role, this.extractSignals(input));
     return {
       conflict: conflict.ok ? undefined : conflict.reason,
-      dashboard: role === 'AGENT' ? '/agent/training' : role === 'GOV_USER' ? '/gov/funds' : '/dashboard',
+      dashboard: role === 'AGENT' ? '/agent/dashboard' : role === 'GOV_USER' ? '/gov/funds' : '/dashboard',
       role,
       source: this.domainRouter.resolve(input.domain) ? 'domain' : 'form',
     };
