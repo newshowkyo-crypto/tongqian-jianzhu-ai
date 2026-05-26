@@ -1513,51 +1513,6 @@ model CostBudgetVariance {
   @@map("cost_budget_variances")
 }
 
-model Meeting {
-  id          String   @id @default(uuid()) @db.Uuid
-  tenantId    String   @map("tenant_id") @db.Uuid
-  projectId   String?  @map("project_id") @db.Uuid
-  ownerId     String?  @map("owner_id") @db.Uuid
-  title       String
-  transcript  String   @db.Text
-  status      String   @default("draft")
-  createdAt   DateTime @default(now()) @map("created_at")
-
-  minute      MeetingMinute?
-  todos       Todo[]
-  @@index([tenantId, projectId, ownerId])
-  @@map("meetings")
-}
-
-model MeetingMinute {
-  id          String   @id @default(uuid()) @db.Uuid
-  tenantId    String   @map("tenant_id") @db.Uuid
-  meetingId   String   @unique @map("meeting_id") @db.Uuid
-  summary     String   @db.Text
-  decisions   Json
-  actionItems Json     @map("action_items")
-  aiTaskId    String?  @map("ai_task_id")
-  createdAt   DateTime @default(now()) @map("created_at")
-
-  meeting     Meeting  @relation(fields: [meetingId], references: [id])
-  @@map("meeting_minutes")
-}
-
-model Todo {
-  id          String   @id @default(uuid()) @db.Uuid
-  tenantId    String   @map("tenant_id") @db.Uuid
-  meetingId   String?  @map("meeting_id") @db.Uuid
-  assigneeId  String?  @map("assignee_id") @db.Uuid
-  title       String
-  dueAt       DateTime? @map("due_at")
-  status      String   @default("open")
-  createdAt   DateTime @default(now()) @map("created_at")
-
-  meeting     Meeting? @relation(fields: [meetingId], references: [id])
-  @@index([tenantId, assigneeId, status])
-  @@map("todos")
-}
-
 model QualityCheckpoint {
   id          String   @id @default(uuid()) @db.Uuid
   tenantId    String   @map("tenant_id") @db.Uuid
