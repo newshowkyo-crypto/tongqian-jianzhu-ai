@@ -4,8 +4,8 @@ export default function Page() {
   const modules = [
     { key: 'policy', title: zhCN.home.modules.policy, meta: zhCN.home.meta.policy },
     { key: 'docs', title: zhCN.home.modules.docs, meta: zhCN.home.meta.docs },
+    { key: 'projects', title: zhCN.home.modules.projects, meta: zhCN.home.meta.projects },
     { key: 'sourcing', title: zhCN.home.modules.sourcing, meta: zhCN.home.meta.sourcing },
-    { key: 'funds', title: zhCN.home.modules.funds, meta: zhCN.home.meta.funds },
     { key: 'consult', title: zhCN.home.modules.consult, meta: zhCN.home.meta.consult },
   ];
 

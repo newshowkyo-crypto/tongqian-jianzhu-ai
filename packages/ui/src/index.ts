@@ -62,6 +62,7 @@ export {
 export { fontCssVariables, fontFamilies } from './fonts/index.js';
 export { FormErrorMessage, FormField, FormGuard, FormSection, FormShell, SubmitButton, type FormFieldProps, type FormSectionProps, type FormShellProps } from './forms/index.js';
 export { AiDisclaimer } from './feedback/ai-disclaimer.js';
+export { SuperInput } from './feedback/super-input.js';
 export * from './icons/index.js';
 export { FunctionZoneIcons } from './icons/function-zones.js';
 export {
@@ -218,6 +219,7 @@ export {
   type SwitchProps,
   type TextareaProps,
 } from './primitives/form.js';
+export { VoiceInputButton } from './primitives/voice-input-button.js';
 export {
   badgeVariants,
   buttonVariants,

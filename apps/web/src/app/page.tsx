@@ -2,6 +2,7 @@
 
 import { useMutation } from '@tanstack/react-query';
 import { apiClient, type AiChatMessage } from '@tongqian/api-client';
+import { SuperInput } from '@tongqian/ui';
 import { useState } from 'react';
 
 const labels = {
@@ -101,6 +102,9 @@ export default function Page() {
                   {message.content}
                 </article>
               ))}
+            </div>
+            <div className="mt-4">
+              <SuperInput onSubmit={(items) => setToast(`Super input submitted: ${items.length} items`)} />
             </div>
           </section>
         </div>

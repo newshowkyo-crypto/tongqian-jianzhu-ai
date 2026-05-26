@@ -51,7 +51,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     const reply = await apiClient.aiGateway.invoke({ taskType: 'chat.policy', context: { ...input.context, recentMessages: input.messages.slice(-3) }, userInput: input.userInput });
     return {
       confidence: 'medium' as const,
-      content: reply.text ?? reply.summary ?? '已读取政企上下文。',
+      content: reply.text ?? reply.summary ?? '已读取个人办公上下文。',
       tier: 2 as const,
     };
   }

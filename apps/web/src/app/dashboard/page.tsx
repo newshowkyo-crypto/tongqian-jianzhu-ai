@@ -20,6 +20,7 @@ import {
   SectionCard,
   StatCard,
   Wallet,
+  AiDisclaimer,
 } from '@tongqian/ui';
 import Link from 'next/link';
 
@@ -67,6 +68,15 @@ export default function DashboardPage() {
             </div>
           </div>
         </section>
+
+        <SectionCard className="border-[var(--outline-variant)] bg-[var(--surface)]" title="Proactive predictive alerts">
+          <div className="grid gap-4 md:grid-cols-5">
+            {['cashflow_gap', 'qualification_expire', 'project_overrun', 'agent_score_drop', 'customer_churn'].map((item) => (
+              <article key={item} className="rounded-lg border border-[var(--outline-variant)] bg-[var(--surface-container-low)] p-4 text-sm text-[var(--text-primary)]">{item}</article>
+            ))}
+          </div>
+          <AiDisclaimer variant="footer" />
+        </SectionCard>
 
         {query.isLoading ? <LoadingState label="正在载入经营数据" /> : null}
         {query.isError ? <ErrorState actionLabel="重试" description="dashboard API 暂时不可用。" title="载入失败" /> : null}

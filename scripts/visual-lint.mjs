@@ -1,10 +1,10 @@
 import { execSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 
 const files = execSync('git ls-files apps', { encoding: 'utf8' })
   .trim()
   .split(/\r?\n/)
-  .filter((file) => /\.(tsx|ts)$/.test(file) && !file.includes('/.next/') && !file.includes('/node_modules/'));
+  .filter((file) => /\.(tsx|ts)$/.test(file) && existsSync(file) && !file.includes('/.next/') && !file.includes('/node_modules/'));
 
 const rules = [
   { id: 'R1', label: 'hardcode hex', pattern: /(text|bg|border|from|via|to|stroke|fill|border-l)-\[#(?:[0-9a-fA-F]{3,8})\]/ },
