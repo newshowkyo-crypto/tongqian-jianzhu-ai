@@ -1,7 +1,11 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Inject } from '@nestjs/common';
+
+import { CrossProjectAlertsService } from './cross-project-alerts.service.js';
 
 @Controller('api/v1/dashboard')
 export class OwnerDashboardController {
+  constructor(@Inject(CrossProjectAlertsService) private readonly alerts: CrossProjectAlertsService) {}
+
   @Get('owner-kpi')
   ownerKpi(): Record<string, unknown> {
     return {
@@ -33,5 +37,10 @@ export class OwnerDashboardController {
       message: 'owner dashboard mock data',
       traceId: crypto.randomUUID(),
     };
+  }
+
+  @Get('cross-project-alerts')
+  crossProjectAlerts(): Record<string, unknown> {
+    return { code: 'OK', data: this.alerts.list(), message: 'Cross project alerts', traceId: crypto.randomUUID() };
   }
 }
