@@ -1478,6 +1478,41 @@ model SubcontractorBlacklist {
   @@map("subcontractor_blacklist")
 }
 
+model ActualCost {
+  id           String   @id @default(uuid()) @db.Uuid
+  tenantId     String   @map("tenant_id") @db.Uuid
+  projectId    String   @map("project_id") @db.Uuid
+  period       String
+  laborCost    Decimal  @map("labor_cost") @db.Decimal(18, 2)
+  materialCost Decimal  @map("material_cost") @db.Decimal(18, 2)
+  machineCost  Decimal  @map("machine_cost") @db.Decimal(18, 2)
+  mgmtCost     Decimal  @map("mgmt_cost") @db.Decimal(18, 2)
+  profit       Decimal  @db.Decimal(18, 2)
+  totalCost    Decimal  @map("total_cost") @db.Decimal(18, 2)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  variances    CostBudgetVariance[]
+  @@unique([projectId, period])
+  @@map("actual_costs")
+}
+
+model CostBudgetVariance {
+  id              String   @id @default(uuid()) @db.Uuid
+  tenantId        String   @map("tenant_id") @db.Uuid
+  projectId       String   @map("project_id") @db.Uuid
+  actualCostId    String   @map("actual_cost_id") @db.Uuid
+  category        String
+  budgetAmount    Decimal  @map("budget_amount") @db.Decimal(18, 2)
+  actualAmount    Decimal  @map("actual_amount") @db.Decimal(18, 2)
+  varianceAmount  Decimal  @map("variance_amount") @db.Decimal(18, 2)
+  varianceRate    Decimal  @map("variance_rate") @db.Decimal(8, 4)
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  actualCost      ActualCost @relation(fields: [actualCostId], references: [id])
+  @@index([projectId, category, createdAt])
+  @@map("cost_budget_variances")
+}
+
 model Drawing {
   id          String   @id @default(uuid()) @db.Uuid
   tenantId    String   @map("tenant_id")

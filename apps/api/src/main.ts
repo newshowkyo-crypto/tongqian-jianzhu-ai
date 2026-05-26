@@ -6,6 +6,7 @@ import { ExpressAdapter } from '@nestjs/platform-express';
 
 import { AiGatewayModule } from './ai-gateway/ai-gateway.module.js';
 import { AddictionModule } from './modules/addiction/addiction.module.js';
+import { ActualCostModule } from './modules/actual-cost/actual-cost.module.js';
 import { AdminModule } from './modules/admin/admin.module.js';
 import { AdminOpsModule } from './modules/admin-ops/admin-ops.module.js';
 import { AgentWorkspaceModule } from './modules/agent-workspace/agent-workspace.module.js';
@@ -64,6 +65,7 @@ class HealthController {
   controllers: [HealthController],
   imports: [
     AddictionModule,
+    ActualCostModule,
     AiGatewayModule,
     AdminModule,
     AgentWorkspaceModule,
