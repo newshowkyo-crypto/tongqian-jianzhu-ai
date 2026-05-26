@@ -1,0 +1,9 @@
+{
+  "name": "Tongqian PM H5",
+  "short_name": "PM H5",
+  "display": "standalone",
+  "start_url": "/m",
+  "background_color": "#ffffff",
+  "theme_color": "#1f6feb",
+  "icons": []
+}
