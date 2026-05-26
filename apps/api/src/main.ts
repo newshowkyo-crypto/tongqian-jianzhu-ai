@@ -11,6 +11,7 @@ import { AdminOpsModule } from './modules/admin-ops/admin-ops.module.js';
 import { AgentWorkspaceModule } from './modules/agent-workspace/agent-workspace.module.js';
 import { ApprovalModule } from './modules/approval/approval.module.js';
 import { AuthModule } from './modules/auth/auth.module.js';
+import { BiModule } from './modules/bi/bi.module.js';
 import { CashflowFinanceModule } from './modules/cashflow-finance/cashflow-finance.module.js';
 import { ChatHubModule } from './modules/chat-hub/chat-hub.module.js';
 import { CostCatalogModule } from './modules/cost-catalog/cost-catalog.module.js';
@@ -20,6 +21,7 @@ import { CustomerDueDiligenceModule } from './modules/customer-due-diligence/cus
 import { DashboardModule } from './modules/dashboard/dashboard.module.js';
 import { DataCurationModule } from './modules/data-curation/data-curation.module.js';
 import { DataExportModule } from './modules/data-export/data-export.module.js';
+import { DecisionModule } from './modules/decision/decision.module.js';
 import { DrawingModule } from './modules/drawing/drawing.module.js';
 import { ExternalApiModule } from './modules/external-api/external-api.module.js';
 import { GovSoeModule } from './modules/gov-soe/gov-soe.module.js';
@@ -32,8 +34,8 @@ import { OpportunityModule } from './modules/opportunity/opportunity.module.js';
 import { OpsToolkitModule } from './modules/ops-toolkit/ops-toolkit.module.js';
 import { PaymentModule } from './modules/payment/payment.module.js';
 import { ProjectSiteModule } from './modules/project-site/project-site.module.js';
-import { PromptTestingCurationModule } from './modules/prompt-testing-curation/prompt-testing-curation.module.js';
 import { PromptTestingModule } from './modules/prompt-testing/prompt-testing.module.js';
+import { PromptTestingCurationModule } from './modules/prompt-testing-curation/prompt-testing-curation.module.js';
 import { QualificationModule } from './modules/qualification/qualification.module.js';
 import { ReportCenterModule } from './modules/report-center/report-center.module.js';
 import { RiskReviewModule } from './modules/risk-review/risk-review.module.js';
@@ -67,6 +69,7 @@ class HealthController {
     AdminOpsModule,
     ApprovalModule,
     AuthModule,
+    BiModule,
     CashflowFinanceModule,
     ChatHubModule,
     CostCatalogModule,
@@ -76,6 +79,7 @@ class HealthController {
     DashboardModule,
     DataCurationModule,
     DataExportModule,
+    DecisionModule,
     DrawingModule,
     ExternalApiModule,
     GovSoeModule,

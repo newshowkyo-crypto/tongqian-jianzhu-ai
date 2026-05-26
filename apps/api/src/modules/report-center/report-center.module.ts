@@ -10,7 +10,7 @@ import { ReportExportService } from './report-export.service.js';
 
 @Module({
   controllers: [ReportCenterController],
-  exports: [ReportCenterService],
+  exports: [QualityCheckService, ReportCenterService, ReportExportService],
   imports: [StorageModule],
   providers: [AutoSummaryService, QualityCheckService, ReportCenterService, ReportExportService],
 })

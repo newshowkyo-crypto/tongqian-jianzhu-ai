@@ -61,6 +61,7 @@ export {
 } from './domain/index.js';
 export { fontCssVariables, fontFamilies } from './fonts/index.js';
 export { FormErrorMessage, FormField, FormGuard, FormSection, FormShell, SubmitButton, type FormFieldProps, type FormSectionProps, type FormShellProps } from './forms/index.js';
+export { AiDisclaimer } from './feedback/ai-disclaimer.js';
 export * from './icons/index.js';
 export { FunctionZoneIcons } from './icons/function-zones.js';
 export {

@@ -1,0 +1,157 @@
+[
+  {
+    "province": "Beijing",
+    "url": "https://www.beijing.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Tianjin",
+    "url": "https://www.tianjin.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Hebei",
+    "url": "https://www.hebei.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Shanxi",
+    "url": "https://www.shanxi.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Inner Mongolia",
+    "url": "https://www.innermongolia.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Liaoning",
+    "url": "https://www.liaoning.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Jilin",
+    "url": "https://www.jilin.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Heilongjiang",
+    "url": "https://www.heilongjiang.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Shanghai",
+    "url": "https://www.shanghai.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Jiangsu",
+    "url": "https://www.jiangsu.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Zhejiang",
+    "url": "https://www.zhejiang.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Anhui",
+    "url": "https://www.anhui.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Fujian",
+    "url": "https://www.fujian.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Jiangxi",
+    "url": "https://www.jiangxi.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Shandong",
+    "url": "https://www.shandong.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Henan",
+    "url": "https://www.henan.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Hubei",
+    "url": "https://www.hubei.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Hunan",
+    "url": "https://www.hunan.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Guangdong",
+    "url": "https://www.guangdong.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Guangxi",
+    "url": "https://www.guangxi.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Hainan",
+    "url": "https://www.hainan.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Chongqing",
+    "url": "https://www.chongqing.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Sichuan",
+    "url": "https://www.sichuan.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Guizhou",
+    "url": "https://www.guizhou.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Yunnan",
+    "url": "https://www.yunnan.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Tibet",
+    "url": "https://www.tibet.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Shaanxi",
+    "url": "https://www.shaanxi.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Gansu",
+    "url": "https://www.gansu.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Qinghai",
+    "url": "https://www.qinghai.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Ningxia",
+    "url": "https://www.ningxia.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  },
+  {
+    "province": "Xinjiang",
+    "url": "https://www.xinjiang.gov.cn/policy/",
+    "cadence": "scan 5 provinces per day"
+  }
+]
