@@ -218,6 +218,7 @@ export {
   type SwitchProps,
   type TextareaProps,
 } from './primitives/form.js';
+export { VoiceInputButton } from './primitives/voice-input-button.js';
 export {
   badgeVariants,
   buttonVariants,

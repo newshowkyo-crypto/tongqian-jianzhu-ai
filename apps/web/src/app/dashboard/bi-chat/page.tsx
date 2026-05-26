@@ -1,4 +1,4 @@
-import { AiDisclaimer, PageContent, PageHeader, PageLayout, SectionCard } from '@tongqian/ui';
+import { AiDisclaimer, VoiceInputButton, PageContent, PageHeader, PageLayout, SectionCard } from '@tongqian/ui';
 
 const chips = ['Last month profit', 'Province peer rank', 'Cash inflow trend', 'Renewal risk accounts'];
 const rows = [
@@ -12,7 +12,8 @@ export default function BiChatPage(): JSX.Element {
       <PageContent>
         <PageHeader breadcrumbs="Dashboard / BI chat" description="Ask business questions through approved SQL templates with tenant guard." title="Conversational BI" />
         <SectionCard title="Ask data">
-          <input className="w-full rounded-md border border-stitch-outline-variant bg-transparent px-4 py-3 text-sm" placeholder="Ask profit, cashflow, ranking, renewal risk..." />
+          <VoiceInputButton className="mb-4" />
+        <input className="w-full rounded-md border border-stitch-outline-variant bg-transparent px-4 py-3 text-sm" placeholder="Ask profit, cashflow, ranking, renewal risk..." />
           <div className="mt-4 flex flex-wrap gap-2">
             {chips.map((chip) => <button className="rounded-md border border-stitch-outline-variant px-3 py-2 text-xs" key={chip}>{chip}</button>)}
           </div>
