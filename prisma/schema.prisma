@@ -851,7 +851,7 @@ model PredictiveAlert {
   id               String    @id @default(cuid())
   tenantId         String    @map("tenant_id")
   userId           String    @map("user_id")
-  category         String
+  category         String // cashflow_gap | qualification_expire | project_overrun | agent_score_drop | customer_churn
   timeWindow       String    @map("time_window")
   severity         String
   title            String

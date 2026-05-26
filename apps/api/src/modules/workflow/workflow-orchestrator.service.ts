@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { ToolRegistryService } from '../chat-hub/tool-registry.service.js';
+import type { ToolRegistryService } from '../chat-hub/tool-registry.service.js';
 
 const templates = {
   bid_prep: ['list_my_tenders', 'search_rfp_chunks', 'query_qualification'],
