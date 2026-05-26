@@ -1558,6 +1558,54 @@ model Todo {
   @@map("todos")
 }
 
+model QualityCheckpoint {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  projectId   String   @map("project_id") @db.Uuid
+  standardRef String   @map("standard_ref")
+  location    String
+  result      String
+  photoUrls   Json     @map("photo_urls")
+  checkedBy   String?  @map("checked_by") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  orders      RectificationOrder[]
+  @@index([tenantId, projectId, createdAt])
+  @@map("quality_checkpoints")
+}
+
+model RectificationOrder {
+  id           String   @id @default(uuid()) @db.Uuid
+  tenantId     String   @map("tenant_id") @db.Uuid
+  projectId    String   @map("project_id") @db.Uuid
+  checkpointId String   @map("checkpoint_id") @db.Uuid
+  description  String   @db.Text
+  responsibleId String? @map("responsible_id") @db.Uuid
+  dueAt        DateTime? @map("due_at")
+  status       String   @default("open")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  checkpoint   QualityCheckpoint @relation(fields: [checkpointId], references: [id])
+  closures     HazardClosure[]
+  @@index([tenantId, projectId, status])
+  @@map("rectification_orders")
+}
+
+model HazardClosure {
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @map("tenant_id") @db.Uuid
+  orderId       String   @map("order_id") @db.Uuid
+  verifierId    String?  @map("verifier_id") @db.Uuid
+  verifyResult  String   @map("verify_result")
+  evidenceUrls  Json     @map("evidence_urls")
+  note          String?
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  order         RectificationOrder @relation(fields: [orderId], references: [id])
+  @@index([tenantId, orderId])
+  @@map("hazard_closures")
+}
+
 model Drawing {
   id          String   @id @default(uuid()) @db.Uuid
   tenantId    String   @map("tenant_id")
