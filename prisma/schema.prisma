@@ -2822,6 +2822,18 @@ model SourcingChat {
   @@map("sourcing_chats")
 }
 
+model AiRoutingMode {
+  id              Int      @id @default(1)
+  nonGovProvider  String   @default("midlayer") @map("non_gov_provider")
+  midlayerBaseUrl String?  @map("midlayer_base_url")
+  midlayerEnabled Boolean  @default(true) @map("midlayer_enabled")
+  lastSwitchedAt  DateTime? @map("last_switched_at")
+  lastSwitchedBy  String?  @map("last_switched_by") @db.Uuid
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("ai_routing_mode")
+}
+
 model Regulation {
   id          String   @id @default(uuid()) @db.Uuid
   sourceKey   String   @unique @map("source_key")
