@@ -1373,6 +1373,57 @@ model MaterialPriceAlert {
   @@map("material_price_alerts")
 }
 
+model Material {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  projectId   String   @map("project_id") @db.Uuid
+  name        String
+  spec        String?
+  unit        String
+  plannedQty  Decimal  @map("planned_qty") @db.Decimal(18, 3)
+  actualQty   Decimal  @default(0) @map("actual_qty") @db.Decimal(18, 3)
+  lossRate    Decimal  @default(0) @map("loss_rate") @db.Decimal(8, 4)
+  avgUnitCost Decimal  @default(0) @map("avg_unit_cost") @db.Decimal(18, 4)
+  createdAt   DateTime @default(now()) @map("created_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  movements   StockMovement[]
+  stocks      Stock[]
+  @@index([tenantId, projectId])
+  @@map("materials")
+}
+
+model Stock {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  projectId   String   @map("project_id") @db.Uuid
+  materialId  String   @map("material_id") @db.Uuid
+  onHandQty   Decimal  @default(0) @map("on_hand_qty") @db.Decimal(18, 3)
+  lastCheckAt DateTime? @map("last_check_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  material    Material @relation(fields: [materialId], references: [id])
+  @@unique([projectId, materialId])
+  @@map("stocks")
+}
+
+model StockMovement {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  projectId   String   @map("project_id") @db.Uuid
+  materialId  String   @map("material_id") @db.Uuid
+  type        String
+  qty         Decimal  @db.Decimal(18, 3)
+  unitPrice   Decimal? @db.Decimal(18, 4)
+  note        String?
+  operatorId  String?  @map("operator_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  material    Material @relation(fields: [materialId], references: [id])
+  @@index([projectId, materialId, createdAt])
+  @@map("stock_movements")
+}
+
 model Drawing {
   id          String   @id @default(uuid()) @db.Uuid
   tenantId    String   @map("tenant_id")

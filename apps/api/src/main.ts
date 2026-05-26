@@ -29,6 +29,7 @@ import { HealthModule } from './modules/health/health.module.js';
 import { KnowledgeModule } from './modules/knowledge/knowledge.module.js';
 import { KnowledgeCurationModule } from './modules/knowledge-curation/knowledge-curation.module.js';
 import { LegalCorpusModule } from './modules/legal-corpus/legal-corpus.module.js';
+import { MaterialModule } from './modules/material/material.module.js';
 import { NotificationModule } from './modules/notification/notification.module.js';
 import { OpportunityModule } from './modules/opportunity/opportunity.module.js';
 import { OpsToolkitModule } from './modules/ops-toolkit/ops-toolkit.module.js';
@@ -87,6 +88,7 @@ class HealthController {
     KnowledgeModule,
     KnowledgeCurationModule,
     LegalCorpusModule,
+    MaterialModule,
     NotificationModule,
     OpportunityModule,
     OpsToolkitModule,
