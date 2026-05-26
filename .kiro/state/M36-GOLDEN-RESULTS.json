@@ -1,0 +1,75 @@
+{
+  "generatedAt": "2026-05-26T04:56:16.371Z",
+  "results": [
+    {
+      "f1": 0.84,
+      "file": "contract-review.test.json",
+      "mode": "mock-provider",
+      "passed": 8,
+      "precision": 0.87,
+      "recall": 0.82,
+      "taskType": "CONTRACT_REVIEW_PRO",
+      "total": 10
+    },
+    {
+      "f1": 0.76,
+      "file": "cost-estimate.test.json",
+      "mode": "mock-provider",
+      "passed": 7,
+      "precision": 0.78,
+      "recall": 0.74,
+      "taskType": "COST_ROUGH_ESTIMATE",
+      "total": 10
+    },
+    {
+      "f1": 0.81,
+      "file": "due-diligence.test.json",
+      "mode": "mock-provider",
+      "passed": 8,
+      "precision": 0.83,
+      "recall": 0.79,
+      "taskType": "DUE_DILIGENCE",
+      "total": 10
+    },
+    {
+      "f1": 0.91,
+      "file": "qualification-checkup.test.json",
+      "mode": "mock-provider",
+      "passed": 9,
+      "precision": 0.92,
+      "recall": 0.9,
+      "taskType": "QUALIFICATION_CHECKUP",
+      "total": 10
+    },
+    {
+      "f1": 0.93,
+      "file": "red-flag-scan.test.json",
+      "mode": "mock-provider",
+      "passed": 9,
+      "precision": 0.94,
+      "recall": 0.92,
+      "taskType": "RED_FLAG_SCAN",
+      "total": 10
+    },
+    {
+      "f1": 0.85,
+      "file": "report-quality.test.json",
+      "mode": "mock-provider",
+      "passed": 8,
+      "precision": 0.86,
+      "recall": 0.84,
+      "taskType": "REPORT_QUALITY",
+      "total": 10
+    },
+    {
+      "f1": 0.79,
+      "file": "tender-summary.test.json",
+      "mode": "mock-provider",
+      "passed": 7,
+      "precision": 0.82,
+      "recall": 0.76,
+      "taskType": "TENDER_SUMMARY",
+      "total": 10
+    }
+  ]
+}
