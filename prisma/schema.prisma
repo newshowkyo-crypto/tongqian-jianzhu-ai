@@ -2603,6 +2603,105 @@ model AgentKnowledgeArticle {
   @@map("agent_knowledge_articles")
 }
 
+model AgentQualMaterialCheck {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String?  @map("customer_tenant_id") @db.Uuid
+  targetQual       String   @map("target_qual")
+  uploadedFiles    Json     @map("uploaded_files")
+  missingItems     Json?    @map("missing_items")
+  notMeetItems     Json?    @map("not_meet_items")
+  completePct      Decimal? @map("complete_pct") @db.Decimal(5, 2)
+  aiConfidence     String   @default("medium") @map("ai_confidence")
+  creditsCost      Int      @default(200) @map("credits_cost")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId, createdAt])
+  @@map("agent_qual_material_checks")
+}
+
+model AgentQualPerformanceArchive {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String?  @map("customer_tenant_id") @db.Uuid
+  rawFileCount     Int      @map("raw_file_count")
+  classifiedItems  Json     @map("classified_items")
+  packageZipUrl    String?  @map("package_zip_url")
+  creditsCost      Int      @default(300) @map("credits_cost")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId, createdAt])
+  @@map("agent_qual_performance_archives")
+}
+
+model AgentQualPersonnelGap {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String?  @map("customer_tenant_id") @db.Uuid
+  targetQual       String   @map("target_qual")
+  currentPersonnel Json     @map("current_personnel")
+  requiredPersonnel Json    @map("required_personnel")
+  gapList          Json     @map("gap_list")
+  creditsCost      Int      @default(100) @map("credits_cost")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId])
+  @@map("agent_qual_personnel_gaps")
+}
+
+model AgentTenderQualifyMatch {
+  id                 String   @id @default(uuid()) @db.Uuid
+  tenantId           String   @map("tenant_id") @db.Uuid
+  agentId            String   @map("agent_id") @db.Uuid
+  customerTenantId   String?  @map("customer_tenant_id") @db.Uuid
+  tenderFileUrl      String   @map("tender_file_url")
+  extractedCriteria  Json     @map("extracted_criteria")
+  customerMatchResult Json?   @map("customer_match_result")
+  creditsCost        Int      @default(150) @map("credits_cost")
+  createdAt          DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId, createdAt])
+  @@map("agent_tender_qualify_matches")
+}
+
+model AgentTenderProposalDraft {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String?  @map("customer_tenant_id") @db.Uuid
+  tenderFileUrl    String   @map("tender_file_url")
+  scoringPoints    Json     @map("scoring_points")
+  chapterDrafts    Json     @map("chapter_drafts")
+  docxUrl          String?  @map("docx_url")
+  progressPct      Int      @default(0) @map("progress_pct")
+  creditsCost      Int      @map("credits_cost")
+  aiConfidence     String   @default("medium") @map("ai_confidence")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId, createdAt])
+  @@map("agent_tender_proposal_drafts")
+}
+
+model AgentTenderQaResponse {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  agentId          String   @map("agent_id") @db.Uuid
+  customerTenantId String?  @map("customer_tenant_id") @db.Uuid
+  qaFileUrl        String   @map("qa_file_url")
+  favorableChanges Json     @map("favorable_changes")
+  unfavorableChanges Json   @map("unfavorable_changes")
+  suggestedActions Json     @map("suggested_actions")
+  affectedProposalChapters Json? @map("affected_proposal_chapters")
+  creditsCost      Int      @default(100) @map("credits_cost")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([agentId, customerTenantId, createdAt])
+  @@map("agent_tender_qa_responses")
+}
+
 model GovProjectSourcing {
   id                String   @id @default(uuid()) @db.Uuid
   publisherTenantId String   @map("publisher_tenant_id")
