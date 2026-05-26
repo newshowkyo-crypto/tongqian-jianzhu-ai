@@ -2539,6 +2539,55 @@ model PolicyFund {
   @@map("policy_funds")
 }
 
+model PolicyFundMatch {
+  id                 String   @id @default(uuid()) @db.Uuid
+  tenantId           String   @map("tenant_id") @db.Uuid
+  userId             String   @map("user_id") @db.Uuid
+  fundId             String   @map("fund_id") @db.Uuid
+  projectFeature     Json     @map("project_feature")
+  matchScore         Decimal  @map("match_score") @db.Decimal(5, 2)
+  successProbability Decimal? @map("success_probability") @db.Decimal(5, 2)
+  applyPath          Json?    @map("apply_path")
+  aiConfidence       String   @default("medium") @map("ai_confidence")
+  creditsCost        Int      @default(500) @map("credits_cost")
+  createdAt          DateTime @default(now()) @map("created_at")
+
+  fund               PolicyFund @relation(fields: [fundId], references: [id])
+  @@index([tenantId, userId, createdAt])
+  @@map("policy_fund_matches")
+}
+
+model PolicyFundSubscription {
+  id             String   @id @default(uuid()) @db.Uuid
+  tenantId       String   @map("tenant_id") @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+  fundId         String   @map("fund_id") @db.Uuid
+  notifyChannels Json     @map("notify_channels")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  fund           PolicyFund @relation(fields: [fundId], references: [id])
+  @@unique([userId, fundId])
+  @@map("policy_fund_subscriptions")
+}
+
+model PolicyFundApplication {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  fundId      String   @map("fund_id") @db.Uuid
+  projectName String   @map("project_name")
+  status      String   @default("draft")
+  submittedAt DateTime? @map("submitted_at")
+  resultAt    DateTime? @map("result_at")
+  failReason  String?  @map("fail_reason") @db.Text
+  aiAnalysis  String?  @map("ai_analysis") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([tenantId, userId, status])
+  @@map("policy_fund_applications")
+}
+
 model Regulation {
   id          String   @id @default(uuid()) @db.Uuid
   sourceKey   String   @unique @map("source_key")
