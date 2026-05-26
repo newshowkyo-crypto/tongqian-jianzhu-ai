@@ -1424,6 +1424,60 @@ model StockMovement {
   @@map("stock_movements")
 }
 
+model Subcontract {
+  id                 String   @id @default(uuid()) @db.Uuid
+  tenantId           String   @map("tenant_id") @db.Uuid
+  projectId          String   @map("project_id") @db.Uuid
+  subcontractorName  String   @map("subcontractor_name")
+  subcontractorPhone String?  @map("subcontractor_phone")
+  workScope          String   @map("work_scope")
+  contractAmount     Decimal  @map("contract_amount") @db.Decimal(18, 2)
+  paidAmount         Decimal  @default(0) @map("paid_amount") @db.Decimal(18, 2)
+  contractFileId     String?  @map("contract_file_id")
+  contractReviewId   String?  @map("contract_review_id")
+  startDate          DateTime? @map("start_date") @db.Date
+  endDate            DateTime? @map("end_date") @db.Date
+  status             String   @default("active")
+  createdAt          DateTime @default(now()) @map("created_at")
+  deletedAt          DateTime? @map("deleted_at")
+
+  evaluations        SubcontractEvaluation[]
+  @@index([tenantId, projectId, status])
+  @@map("subcontracts")
+}
+
+model SubcontractEvaluation {
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @map("tenant_id") @db.Uuid
+  subcontractId String   @map("subcontract_id") @db.Uuid
+  quality       Int
+  schedule      Int
+  safety        Int
+  cooperation   Int
+  settlement    Int
+  overall       Decimal  @db.Decimal(4, 2)
+  note          String?
+  evaluatorId   String?  @map("evaluator_id") @db.Uuid
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  subcontract   Subcontract @relation(fields: [subcontractId], references: [id])
+  @@index([subcontractId, createdAt])
+  @@map("subcontract_evaluations")
+}
+
+model SubcontractorBlacklist {
+  id                 String   @id @default(uuid()) @db.Uuid
+  tenantId           String   @map("tenant_id") @db.Uuid
+  subcontractorName  String   @map("subcontractor_name")
+  reason             String   @db.Text
+  avgScore           Decimal? @map("avg_score") @db.Decimal(4, 2)
+  addedAt            DateTime @default(now()) @map("added_at")
+  addedBy            String?  @map("added_by") @db.Uuid
+
+  @@unique([tenantId, subcontractorName])
+  @@map("subcontractor_blacklist")
+}
+
 model Drawing {
   id          String   @id @default(uuid()) @db.Uuid
   tenantId    String   @map("tenant_id")
