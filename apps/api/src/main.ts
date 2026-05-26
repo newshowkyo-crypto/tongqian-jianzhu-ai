@@ -6,6 +6,7 @@ import { ExpressAdapter } from '@nestjs/platform-express';
 
 import { AiGatewayModule } from './ai-gateway/ai-gateway.module.js';
 import { AddictionModule } from './modules/addiction/addiction.module.js';
+import { ActualCostModule } from './modules/actual-cost/actual-cost.module.js';
 import { AdminModule } from './modules/admin/admin.module.js';
 import { AdminOpsModule } from './modules/admin-ops/admin-ops.module.js';
 import { AgentWorkspaceModule } from './modules/agent-workspace/agent-workspace.module.js';
@@ -29,6 +30,7 @@ import { HealthModule } from './modules/health/health.module.js';
 import { KnowledgeModule } from './modules/knowledge/knowledge.module.js';
 import { KnowledgeCurationModule } from './modules/knowledge-curation/knowledge-curation.module.js';
 import { LegalCorpusModule } from './modules/legal-corpus/legal-corpus.module.js';
+import { MaterialModule } from './modules/material/material.module.js';
 import { NotificationModule } from './modules/notification/notification.module.js';
 import { OpportunityModule } from './modules/opportunity/opportunity.module.js';
 import { OpsToolkitModule } from './modules/ops-toolkit/ops-toolkit.module.js';
@@ -63,6 +65,7 @@ class HealthController {
   controllers: [HealthController],
   imports: [
     AddictionModule,
+    ActualCostModule,
     AiGatewayModule,
     AdminModule,
     AgentWorkspaceModule,
@@ -87,6 +90,7 @@ class HealthController {
     KnowledgeModule,
     KnowledgeCurationModule,
     LegalCorpusModule,
+    MaterialModule,
     NotificationModule,
     OpportunityModule,
     OpsToolkitModule,

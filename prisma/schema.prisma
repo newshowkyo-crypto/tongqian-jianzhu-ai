@@ -1373,6 +1373,239 @@ model MaterialPriceAlert {
   @@map("material_price_alerts")
 }
 
+model Material {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  projectId   String   @map("project_id") @db.Uuid
+  name        String
+  spec        String?
+  unit        String
+  plannedQty  Decimal  @map("planned_qty") @db.Decimal(18, 3)
+  actualQty   Decimal  @default(0) @map("actual_qty") @db.Decimal(18, 3)
+  lossRate    Decimal  @default(0) @map("loss_rate") @db.Decimal(8, 4)
+  avgUnitCost Decimal  @default(0) @map("avg_unit_cost") @db.Decimal(18, 4)
+  createdAt   DateTime @default(now()) @map("created_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  movements   StockMovement[]
+  stocks      Stock[]
+  @@index([tenantId, projectId])
+  @@map("materials")
+}
+
+model Stock {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  projectId   String   @map("project_id") @db.Uuid
+  materialId  String   @map("material_id") @db.Uuid
+  onHandQty   Decimal  @default(0) @map("on_hand_qty") @db.Decimal(18, 3)
+  lastCheckAt DateTime? @map("last_check_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  material    Material @relation(fields: [materialId], references: [id])
+  @@unique([projectId, materialId])
+  @@map("stocks")
+}
+
+model StockMovement {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  projectId   String   @map("project_id") @db.Uuid
+  materialId  String   @map("material_id") @db.Uuid
+  type        String
+  qty         Decimal  @db.Decimal(18, 3)
+  unitPrice   Decimal? @db.Decimal(18, 4)
+  note        String?
+  operatorId  String?  @map("operator_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  material    Material @relation(fields: [materialId], references: [id])
+  @@index([projectId, materialId, createdAt])
+  @@map("stock_movements")
+}
+
+model Subcontract {
+  id                 String   @id @default(uuid()) @db.Uuid
+  tenantId           String   @map("tenant_id") @db.Uuid
+  projectId          String   @map("project_id") @db.Uuid
+  subcontractorName  String   @map("subcontractor_name")
+  subcontractorPhone String?  @map("subcontractor_phone")
+  workScope          String   @map("work_scope")
+  contractAmount     Decimal  @map("contract_amount") @db.Decimal(18, 2)
+  paidAmount         Decimal  @default(0) @map("paid_amount") @db.Decimal(18, 2)
+  contractFileId     String?  @map("contract_file_id")
+  contractReviewId   String?  @map("contract_review_id")
+  startDate          DateTime? @map("start_date") @db.Date
+  endDate            DateTime? @map("end_date") @db.Date
+  status             String   @default("active")
+  createdAt          DateTime @default(now()) @map("created_at")
+  deletedAt          DateTime? @map("deleted_at")
+
+  evaluations        SubcontractEvaluation[]
+  @@index([tenantId, projectId, status])
+  @@map("subcontracts")
+}
+
+model SubcontractEvaluation {
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @map("tenant_id") @db.Uuid
+  subcontractId String   @map("subcontract_id") @db.Uuid
+  quality       Int
+  schedule      Int
+  safety        Int
+  cooperation   Int
+  settlement    Int
+  overall       Decimal  @db.Decimal(4, 2)
+  note          String?
+  evaluatorId   String?  @map("evaluator_id") @db.Uuid
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  subcontract   Subcontract @relation(fields: [subcontractId], references: [id])
+  @@index([subcontractId, createdAt])
+  @@map("subcontract_evaluations")
+}
+
+model SubcontractorBlacklist {
+  id                 String   @id @default(uuid()) @db.Uuid
+  tenantId           String   @map("tenant_id") @db.Uuid
+  subcontractorName  String   @map("subcontractor_name")
+  reason             String   @db.Text
+  avgScore           Decimal? @map("avg_score") @db.Decimal(4, 2)
+  addedAt            DateTime @default(now()) @map("added_at")
+  addedBy            String?  @map("added_by") @db.Uuid
+
+  @@unique([tenantId, subcontractorName])
+  @@map("subcontractor_blacklist")
+}
+
+model ActualCost {
+  id           String   @id @default(uuid()) @db.Uuid
+  tenantId     String   @map("tenant_id") @db.Uuid
+  projectId    String   @map("project_id") @db.Uuid
+  period       String
+  laborCost    Decimal  @map("labor_cost") @db.Decimal(18, 2)
+  materialCost Decimal  @map("material_cost") @db.Decimal(18, 2)
+  machineCost  Decimal  @map("machine_cost") @db.Decimal(18, 2)
+  mgmtCost     Decimal  @map("mgmt_cost") @db.Decimal(18, 2)
+  profit       Decimal  @db.Decimal(18, 2)
+  totalCost    Decimal  @map("total_cost") @db.Decimal(18, 2)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  variances    CostBudgetVariance[]
+  @@unique([projectId, period])
+  @@map("actual_costs")
+}
+
+model CostBudgetVariance {
+  id              String   @id @default(uuid()) @db.Uuid
+  tenantId        String   @map("tenant_id") @db.Uuid
+  projectId       String   @map("project_id") @db.Uuid
+  actualCostId    String   @map("actual_cost_id") @db.Uuid
+  category        String
+  budgetAmount    Decimal  @map("budget_amount") @db.Decimal(18, 2)
+  actualAmount    Decimal  @map("actual_amount") @db.Decimal(18, 2)
+  varianceAmount  Decimal  @map("variance_amount") @db.Decimal(18, 2)
+  varianceRate    Decimal  @map("variance_rate") @db.Decimal(8, 4)
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  actualCost      ActualCost @relation(fields: [actualCostId], references: [id])
+  @@index([projectId, category, createdAt])
+  @@map("cost_budget_variances")
+}
+
+model Meeting {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  projectId   String?  @map("project_id") @db.Uuid
+  ownerId     String?  @map("owner_id") @db.Uuid
+  title       String
+  transcript  String   @db.Text
+  status      String   @default("draft")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  minute      MeetingMinute?
+  todos       Todo[]
+  @@index([tenantId, projectId, ownerId])
+  @@map("meetings")
+}
+
+model MeetingMinute {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  meetingId   String   @unique @map("meeting_id") @db.Uuid
+  summary     String   @db.Text
+  decisions   Json
+  actionItems Json     @map("action_items")
+  aiTaskId    String?  @map("ai_task_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  meeting     Meeting  @relation(fields: [meetingId], references: [id])
+  @@map("meeting_minutes")
+}
+
+model Todo {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  meetingId   String?  @map("meeting_id") @db.Uuid
+  assigneeId  String?  @map("assignee_id") @db.Uuid
+  title       String
+  dueAt       DateTime? @map("due_at")
+  status      String   @default("open")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  meeting     Meeting? @relation(fields: [meetingId], references: [id])
+  @@index([tenantId, assigneeId, status])
+  @@map("todos")
+}
+
+model QualityCheckpoint {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  projectId   String   @map("project_id") @db.Uuid
+  standardRef String   @map("standard_ref")
+  location    String
+  result      String
+  photoUrls   Json     @map("photo_urls")
+  checkedBy   String?  @map("checked_by") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  orders      RectificationOrder[]
+  @@index([tenantId, projectId, createdAt])
+  @@map("quality_checkpoints")
+}
+
+model RectificationOrder {
+  id           String   @id @default(uuid()) @db.Uuid
+  tenantId     String   @map("tenant_id") @db.Uuid
+  projectId    String   @map("project_id") @db.Uuid
+  checkpointId String   @map("checkpoint_id") @db.Uuid
+  description  String   @db.Text
+  responsibleId String? @map("responsible_id") @db.Uuid
+  dueAt        DateTime? @map("due_at")
+  status       String   @default("open")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  checkpoint   QualityCheckpoint @relation(fields: [checkpointId], references: [id])
+  closures     HazardClosure[]
+  @@index([tenantId, projectId, status])
+  @@map("rectification_orders")
+}
+
+model HazardClosure {
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @map("tenant_id") @db.Uuid
+  orderId       String   @map("order_id") @db.Uuid
+  verifierId    String?  @map("verifier_id") @db.Uuid
+  verifyResult  String   @map("verify_result")
+  evidenceUrls  Json     @map("evidence_urls")
+  note          String?
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  order         RectificationOrder @relation(fields: [orderId], references: [id])
+  @@index([tenantId, orderId])
+  @@map("hazard_closures")
+}
+
 model Drawing {
   id          String   @id @default(uuid()) @db.Uuid
   tenantId    String   @map("tenant_id")
