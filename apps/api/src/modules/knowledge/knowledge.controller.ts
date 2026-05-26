@@ -2,10 +2,14 @@ import { Body, Controller, Get, Inject, Post, Put, Query } from '@nestjs/common'
 import type { KnowledgeType } from '@tongqian/types';
 
 import { KnowledgeService } from './knowledge.service.js';
+import { RegulationRagService } from './regulation-rag.service.js';
 
 @Controller('api/v1')
 export class KnowledgeController {
-  constructor(@Inject(KnowledgeService) private readonly knowledge: KnowledgeService) {}
+  constructor(
+    @Inject(KnowledgeService) private readonly knowledge: KnowledgeService,
+    @Inject(RegulationRagService) private readonly regulations: RegulationRagService,
+  ) {}
 
   @Get('policies')
   policies(@Query('level') level?: string, @Query('topic') topic?: string): unknown {
@@ -35,6 +39,11 @@ export class KnowledgeController {
   @Post('knowledge/retrieve')
   retrieve(@Body() body: { query: string; topK?: number; type?: KnowledgeType }): unknown {
     return { code: 'OK', data: this.knowledge.retrieve(body), message: 'Knowledge retrieved', traceId: crypto.randomUUID() };
+  }
+
+  @Post('regulations/quick-query')
+  quickRegulationQuery(@Body() body: { query: string }): unknown {
+    return { code: 'OK', data: this.regulations.quickQuery(body.query), message: 'Regulations retrieved', traceId: crypto.randomUUID() };
   }
 
   @Post('admin/knowledge/review')
