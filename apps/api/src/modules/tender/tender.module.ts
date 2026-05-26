@@ -4,8 +4,8 @@ import { ReportCenterModule } from '../report-center/report-center.module.js';
 import { RuleCurationModule } from '../rule-curation/rule-curation.module.js';
 import { StorageModule } from '../storage/storage.module.js';
 
-import { RfpRagService } from './rfp-rag.service.js';
 import { BidProposalService } from './bid-proposal.service.js';
+import { RfpRagService } from './rfp-rag.service.js';
 import { TenderController } from './tender.controller.js';
 import { TenderService } from './tender.service.js';
 

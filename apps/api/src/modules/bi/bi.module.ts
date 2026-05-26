@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
-import { BiController } from './bi.controller.js';
 import { BiQueryService } from './bi-query.service.js';
+import { BiController } from './bi.controller.js';
 
 @Module({
   controllers: [BiController],

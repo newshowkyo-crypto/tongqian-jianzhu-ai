@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
-import { DecisionController } from './decision.controller.js';
 import { DecisionAdvisorService } from './decision-advisor.service.js';
+import { DecisionController } from './decision.controller.js';
 
 @Module({
   controllers: [DecisionController],

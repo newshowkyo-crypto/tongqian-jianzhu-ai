@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { PageContent, PageHeader, PageLayout, SectionCard } from '@tongqian/ui';
+import Link from 'next/link';
 
 export default function CustomerDetailPage({ params }: { params: { id: string } }): JSX.Element {
   return (
