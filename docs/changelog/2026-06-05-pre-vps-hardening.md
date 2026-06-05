@@ -142,5 +142,25 @@ OwnerRiskService 原有 8 个 Map：
 - 三端（PC/mobile/admin）owner-risk loading/empty/error 状态对齐；解锁/复核/报告按钮状态明确（无后端的标 disabled「即将上线」）。
 - ⚠️ web/admin 前端 typecheck/build 因本 shell 无 pnpm + Next 复杂 tsconfig 未跑（环境限制，非代码）；改动均使用 PC 参考页同款 apiClient 方法/类型与 @tongqian/ui 组件，import 一致。
 
+## 六、market-situation 真链路（#6）—— 已完成
+
+### spec 判定（docs/TONGQIAN_OWNER_RISK_AND_MARKET_SITUATION_DEV_TASK.md §8）
+spec 明确：所有 AI 调用必须经 AiGateway 完整闭环「点数检查→预扣→缓存→脱敏→模型路由→审计→实扣/回滚→返回」，且「AI 失败必须回滚点数」。原 `generateAnalysis` 只写 GenerationLog、不扣点不调 AI —— 违背 spec，非允许的 defer。
+
+### 处理（后端）
+- `generateAnalysis` 重写为完整闭环（对齐已验证的 owner-risk 模式）：preCharge → AiGateway.invoke → updateViewCount + createGenerationLog → commit；AI 失败 / DB 失败均 refund 并抛出。
+- 新增 `GENERATION_TYPE_TO_TASK_TYPE`（summary/impact_analysis/simulation/report → 对应 AiTaskType）+ `GENERATION_TYPE_TO_CREDITS_COST`。
+- module 引入 `AiGatewayModule`，service 注入 `AiGatewayService`。
+- unlock/simulation/report/feedback 已确认全部 tenant scoped（经 repo 带 tenantId；既有测试覆盖）。
+
+### 处理（前端，承接 #7）
+- web `/admin/market-situation`：mockSignals → 真 `apiClient.marketSituation.listSignals` + loading/empty/error，运营动作 disabled「即将上线」。
+- admin-app market-situation dashboard/logs/signals：fake 指标/信号/日志 → 「即将接入」EmptyState；删除随之失效的 helper。
+
+### 验证
+- market-situation 测试 12→16（新增：happy preCharge+commit 不重复扣、AI 失败 refund、DB 失败 refund、tenant scoped）。
+- tsc ✅ / eslint（api 改动文件）✅ / api 全量 **66 passed** ✅。
+- 全仓 app 页面 mock/TBD/乱码 终扫 = **0**。
+
 ## 进行中
-- #6 market-situation 真链路（含其 admin dashboard/logs 前端）→ #4（点数，待真库会话）/ #8 / #9。
+- #4（点数中心持久化，待可跑真库的专注会话）/ #8 契约一致性 / #9 部署一键 VPS。
