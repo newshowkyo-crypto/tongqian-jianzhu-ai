@@ -1,8 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BusinessError, ErrorCodes } from '@tongqian/errors';
 
-import { CreditLogService } from '../log/credit-log.service.js';
-import { LotService } from '../lot/lot.service.js';
+import { CreditRepository } from '../credit.repository.js';
 
 export interface ReactivationInput {
   readonly idempotencyKey?: string;
@@ -15,10 +14,7 @@ export interface ReactivationInput {
 
 @Injectable()
 export class CreditReactivationService {
-  constructor(
-    @Inject(LotService) private readonly lots: LotService,
-    @Inject(CreditLogService) private readonly logs: CreditLogService,
-  ) {}
+  constructor(@Inject(CreditRepository) private readonly repo: CreditRepository) {}
 
   /**
    * Freezes all lots for dormant accounts under BR-406 reactivation rules.
@@ -26,21 +22,10 @@ export class CreditReactivationService {
    * @param input Reactivation freeze request.
    * @returns Freeze window.
    */
-  freeze(input: ReactivationInput): { frozenUntil: string; frozen: true } {
+  async freeze(input: ReactivationInput): Promise<{ frozenUntil: string; frozen: true }> {
     this.validate(input);
-    const account = this.lots.account(input.userId, input.tenantId);
     const frozenUntil = new Date(Date.now() + 30 * 24 * 60 * 60_000).toISOString();
-    this.lots.freeze(account.id, frozenUntil);
-    this.logs.write({
-      accountId: account.id,
-      amount: 0,
-      balanceAfter: account.totalBalance,
-      idempotencyKey: input.idempotencyKey ? `${input.idempotencyKey}:freeze` : undefined,
-      sourceModule: 'credit-reactivation',
-      sourceResource: input.reason,
-      traceId: input.traceId ?? crypto.randomUUID(),
-      type: 'expire',
-    });
+    await this.repo.setFrozen(input.userId, input.tenantId, frozenUntil);
     return { frozen: true, frozenUntil };
   }
 
@@ -50,21 +35,11 @@ export class CreditReactivationService {
    * @param input Reactivation request.
    * @returns Reactivation result.
    */
-  reactivate(input: ReactivationInput): { balance: number; reactivated: true } {
+  async reactivate(input: ReactivationInput): Promise<{ balance: number; reactivated: true }> {
     this.validate(input);
-    const account = this.lots.account(input.userId, input.tenantId);
-    this.lots.unfreeze(account.id);
-    this.logs.write({
-      accountId: account.id,
-      amount: 0,
-      balanceAfter: account.totalBalance,
-      idempotencyKey: input.idempotencyKey ? `${input.idempotencyKey}:reactivate` : undefined,
-      sourceModule: 'credit-reactivation',
-      sourceResource: input.reason,
-      traceId: input.traceId ?? crypto.randomUUID(),
-      type: 'gift',
-    });
-    return { balance: account.totalBalance, reactivated: true };
+    await this.repo.setFrozen(input.userId, input.tenantId, null);
+    const balance = await this.repo.getBalance(input.userId, input.tenantId);
+    return { balance, reactivated: true };
   }
 
   /**

@@ -1,28 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { CreditLogService } from '../log/credit-log.service.js';
-import { LotService } from '../lot/lot.service.js';
+import { CreditRepository } from '../credit.repository.js';
 
+/**
+ * Expires lots whose expiry has passed and records the balance reduction.
+ * Persistent and idempotent at the lot level (already-zeroed lots are skipped).
+ */
 @Injectable()
 export class ExpiryWorker {
-  constructor(
-    @Inject(CreditLogService) private readonly logs: CreditLogService,
-    @Inject(LotService) private readonly lots: LotService,
-  ) {}
+  constructor(@Inject(CreditRepository) private readonly repo: CreditRepository) {}
 
-  expireAccount(userId: string, tenantId: string): { expired: number } {
-    const account = this.lots.account(userId, tenantId);
-    const expired = this.lots.expire(account.id);
-    if (expired > 0) {
-      this.logs.write({
-        accountId: account.id,
-        amount: -expired,
-        balanceAfter: account.totalBalance,
-        sourceModule: 'credit-expiry',
-        traceId: crypto.randomUUID(),
-        type: 'expire',
-      });
-    }
+  async expireAccount(userId: string, tenantId: string): Promise<{ expired: number }> {
+    const expired = await this.repo.expire(userId, tenantId);
     return { expired };
   }
 }

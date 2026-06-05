@@ -92,7 +92,7 @@
 ## 仍 defer / 待人工裁决
 - 残余破坏性 drift（见 §二）——需人工确认 carbon 废弃 / timestamp 语义 / audit 列变更。
 
-## 四、点数中心持久化（#4）—— 已暂缓（发现财务红线 bug，待真库会话）
+## 四、点数中心持久化（#4）—— 已完成（2026-06-06 续作；真库集成测试留人工）
 
 ### ⚠️ 发现：现有 preCharge→commit 双扣余额 bug
 - `pre-charge.service.ts:26` preCharge 扣 `account.totalBalance -= amount` 且消耗 lot。
@@ -103,7 +103,18 @@
 ### 决策（与用户确认）
 - 账本语义改为：**preCharge=预扣（消耗 lot + 占用余额 hold）→ commit=度金/确认（不再扣余额）→ refund=释放 hold**。修正双扣。
 - 持久化方案：accounts/lots/logs 落 Prisma；幂等用 `credit_logs.idempotency_key` 唯一约束；租户隔离用 account(userId+tenantId)；重启不丢靠 Postgres。
-- 节奏：本轮先做 #5/#7（无财务风险），#4 留待可跑真库集成测试的专注会话再实现（~17 文件 async 级联，财务红线，不在上下文紧张的尾段抢做）。
+- 节奏：本轮先做 #5/#7（无财务风险），#4 随后续作。
+
+### 落地（已完成）
+- 新增 `credit.repository.ts`（Prisma `$transaction` 事务，账本唯一真源）+ 导出 `CreditStore` 契约接口。
+- 语义修正：**preCharge=预扣**（FEFO 消耗 lot + 扣 `totalBalance`，唯一扣点点）→ **commit=度金**（只写审计 log，**不再动余额**）→ **refund=释放**（建退款 lot + 加回余额）。双扣 bug 消除。
+- 幂等：每操作 DB key 命名空间（`precharge:`/`commit:`/`refund:`/`gift:`/`topup:`）+ `credit_logs.idempotency_key` 唯一约束；重复 key 重放首结果。
+- 租户隔离：account 按 `userId+tenantId`；跨租户取不到余额。重启不丢：账户/批次/日志全落 Postgres。
+- 改造 async 走 repo：`pre-charge`/`commit`/`refund`/`gift`/`topup`/`credit.service`/`credit.controller`/`expiry.worker`/`reactivation`；**删除**被取代的 `lot.service`/`lot-allocator.service`/`credit-log.service`（无外部引用）。
+- 消费方 owner-risk/market-situation 的 credit 调用全部加 `await`（否则失败→退款路径会被跳过）。
+- 残留 Map：仅测试 fake + topup `orders` 付款前握手（无余额、无表，标注 ephemeral）。
+- 测试 `credit.service.spec.ts`（忠实内存 fake 实现 `CreditStore`，经真实服务驱动）：余额不足 / preCharge→commit 不双扣 / preCharge→refund / 重复 key 不重扣 / 租户隔离 / 金额校验 = **6 passed**；api 全量 **72 passed**，tsc+eslint ✅。
+- ⚠️ Prisma `$transaction` 在 Postgres 的真实并发/约束行为 = **人工最后一关**。
 
 ## 五、owner-risk 去 Map（#5）—— 已完成
 
@@ -201,4 +212,4 @@ docker compose -f infra/docker-compose.yml -f infra/docker-compose.f.yml config 
 - `worker` 镜像：构建中（与 api 同基座，复用缓存层）。
 - web/next：MANIFEST 既定由 CI/发布机构建；本机已证明 monorepo Docker 构建链（pnpm install + 编译 + prisma）端到端可用，非代码问题。
 
-## 已完成本轮收口（#1/#2/#3/#5/#6/#7/#8/#9）；#4 点数持久化按约定留待可跑真库集成测试的专注会话。
+## 已完成本轮收口（#1–#9 全部）；#4 点数持久化代码+单测完成，Prisma 事务真库集成测试留作人工最后一关。

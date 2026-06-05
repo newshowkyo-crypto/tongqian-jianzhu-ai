@@ -80,7 +80,7 @@ export class MarketSituationService {
 
     // Pre-charge credits (throws BusinessError if insufficient)
     try {
-      this.creditService.preCharge({
+      await this.creditService.preCharge({
         amount: signal.unlockCredits,
         idempotencyKey,
         tenantId,
@@ -100,7 +100,7 @@ export class MarketSituationService {
     } catch (err: unknown) {
       // Rollback pre-charge on DB failure
       try {
-        this.creditService.refund({
+        await this.creditService.refund({
           amount: signal.unlockCredits,
           idempotencyKey: `refund:${idempotencyKey}`,
           tenantId,
@@ -114,7 +114,7 @@ export class MarketSituationService {
     }
 
     // Commit credit transaction
-    this.creditService.commit({
+    await this.creditService.commit({
       amount: signal.unlockCredits,
       idempotencyKey,
       tenantId,
@@ -139,7 +139,7 @@ export class MarketSituationService {
     const creditsCost = GENERATION_TYPE_TO_CREDITS_COST[generationType];
 
     // 2. Pre-charge credits (throws BusinessError if insufficient)
-    this.creditService.preCharge({ amount: creditsCost, idempotencyKey, tenantId, traceId, userId });
+    await this.creditService.preCharge({ amount: creditsCost, idempotencyKey, tenantId, traceId, userId });
 
     // 3. Invoke AI Gateway (prompt assembly, sanitizer, safety filter handled inside)
     let aiResponse: AiResponse<Record<string, unknown>>;
@@ -155,7 +155,7 @@ export class MarketSituationService {
     } catch (err: unknown) {
       // AI failure → refund (spec §8: AI 失败必须回滚点数)
       try {
-        this.creditService.refund({ amount: creditsCost, idempotencyKey, tenantId, traceId, userId });
+        await this.creditService.refund({ amount: creditsCost, idempotencyKey, tenantId, traceId, userId });
       } catch (refundErr) {
         void refundErr;
       }
@@ -170,7 +170,7 @@ export class MarketSituationService {
     } catch (err: unknown) {
       // DB failure → refund
       try {
-        this.creditService.refund({ amount: creditsCost, idempotencyKey, tenantId, traceId, userId });
+        await this.creditService.refund({ amount: creditsCost, idempotencyKey, tenantId, traceId, userId });
       } catch (refundErr) {
         void refundErr;
       }
@@ -178,7 +178,7 @@ export class MarketSituationService {
     }
 
     // 5. Commit the credit charge
-    this.creditService.commit({ amount: creditsCost, idempotencyKey, sourceResource: `market-situation/signals/${signalId}/${generationType}`, tenantId, traceId, userId });
+    await this.creditService.commit({ amount: creditsCost, idempotencyKey, sourceResource: `market-situation/signals/${signalId}/${generationType}`, tenantId, traceId, userId });
 
     void aiResponse;
     return log;

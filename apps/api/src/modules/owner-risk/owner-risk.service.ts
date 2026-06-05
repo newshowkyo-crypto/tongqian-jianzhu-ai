@@ -90,7 +90,7 @@ export class OwnerRiskService {
     const traceId = crypto.randomUUID();
     const idempotencyKey = `unlock:${tenantId}:${cardId}`;
     try {
-      this.creditService.preCharge({
+      await this.creditService.preCharge({
         amount: card.unlockCredits,
         idempotencyKey,
         tenantId,
@@ -114,7 +114,7 @@ export class OwnerRiskService {
     } catch {
       // Rollback pre-charge on DB failure
       try {
-        this.creditService.refund({ amount: card.unlockCredits, idempotencyKey: `refund:${idempotencyKey}`, tenantId, traceId, userId });
+        await this.creditService.refund({ amount: card.unlockCredits, idempotencyKey: `refund:${idempotencyKey}`, tenantId, traceId, userId });
       } catch {
         // Log but swallow — refund failure should not break user-facing response
       }
@@ -144,7 +144,7 @@ export class OwnerRiskService {
 
     // 6. Commit credit deduction
     try {
-      this.creditService.commit({
+      await this.creditService.commit({
         amount: card.unlockCredits,
         idempotencyKey,
         sourceResource: `owner-risk/cards/${cardId}/unlock`,
@@ -156,7 +156,7 @@ export class OwnerRiskService {
       // Pre-charge was already deducted from balance; commit is the permanent record
       // If commit fails, refund is attempted
       try {
-        this.creditService.refund({ amount: card.unlockCredits, idempotencyKey: `refund-commit:${idempotencyKey}`, tenantId, traceId, userId });
+        await this.creditService.refund({ amount: card.unlockCredits, idempotencyKey: `refund-commit:${idempotencyKey}`, tenantId, traceId, userId });
         await this.repo.updateCardUnlock(tenantId, cardId, false);
       } catch {
         // Worst case: card stays unlocked but credits not committed; manual reconciliation needed
@@ -208,7 +208,7 @@ export class OwnerRiskService {
     const creditsCost = ANALYSIS_TYPE_TO_CREDITS_COST[analysisType];
 
     // 2. Pre-charge credits (throws BusinessError if insufficient)
-    this.creditService.preCharge({
+    await this.creditService.preCharge({
       amount: creditsCost,
       idempotencyKey,
       tenantId,
@@ -230,7 +230,7 @@ export class OwnerRiskService {
     } catch (err: unknown) {
       // Refund if AI Gateway fails
       try {
-        this.creditService.refund({
+        await this.creditService.refund({
           amount: creditsCost,
           idempotencyKey,
           tenantId,
@@ -258,7 +258,7 @@ export class OwnerRiskService {
     } catch (err: unknown) {
       // Refund if database save fails
       try {
-        this.creditService.refund({
+        await this.creditService.refund({
           amount: creditsCost,
           idempotencyKey,
           tenantId,
@@ -272,7 +272,7 @@ export class OwnerRiskService {
     }
 
     // 5. Commit transaction
-    this.creditService.commit({
+    await this.creditService.commit({
       amount: creditsCost,
       idempotencyKey,
       tenantId,

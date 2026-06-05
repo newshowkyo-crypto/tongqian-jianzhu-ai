@@ -11,18 +11,18 @@ export class CreditController {
   ) {}
 
   @Get('credits/balance')
-  balance(@Headers('x-user-id') userId = 'mock-user', @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
-    return { code: 'OK', data: this.credits.balance(userId, tenantId), message: 'Credit balance', traceId: crypto.randomUUID() };
+  async balance(@Headers('x-user-id') userId = 'mock-user', @Headers('x-tenant-id') tenantId = 'mock-tenant'): Promise<unknown> {
+    return { code: 'OK', data: await this.credits.balance(userId, tenantId), message: 'Credit balance', traceId: crypto.randomUUID() };
   }
 
   @Get('credits/lots')
-  lots(@Headers('x-user-id') userId = 'mock-user', @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
-    return { code: 'OK', data: this.credits.lotsFor(userId, tenantId), message: 'Credit lots', traceId: crypto.randomUUID() };
+  async lots(@Headers('x-user-id') userId = 'mock-user', @Headers('x-tenant-id') tenantId = 'mock-tenant'): Promise<unknown> {
+    return { code: 'OK', data: await this.credits.lotsFor(userId, tenantId), message: 'Credit lots', traceId: crypto.randomUUID() };
   }
 
   @Get('credits/logs')
-  logs(@Headers('x-user-id') userId = 'mock-user', @Headers('x-tenant-id') tenantId = 'mock-tenant'): unknown {
-    return { code: 'OK', data: this.credits.logsFor(userId, tenantId), message: 'Credit logs', traceId: crypto.randomUUID() };
+  async logs(@Headers('x-user-id') userId = 'mock-user', @Headers('x-tenant-id') tenantId = 'mock-tenant'): Promise<unknown> {
+    return { code: 'OK', data: await this.credits.logsFor(userId, tenantId), message: 'Credit logs', traceId: crypto.randomUUID() };
   }
 
   @Get('topup/packages')
@@ -31,14 +31,14 @@ export class CreditController {
   }
 
   @Post('topup')
-  topup(
+  async topup(
     @Body() body: { idempotencyKey?: string; packageCode: string; paymentId?: string },
     @Headers('x-user-id') userId = 'mock-user',
     @Headers('x-tenant-id') tenantId = 'mock-tenant',
-  ): unknown {
+  ): Promise<unknown> {
     return {
       code: 'OK',
-      data: this.credits.topup({
+      data: await this.credits.topup({
         idempotencyKey: body.idempotencyKey ?? crypto.randomUUID(),
         packageCode: body.packageCode,
         paymentId: body.paymentId ?? 'mock-payment',
