@@ -174,5 +174,31 @@ spec 明确：所有 AI 调用必须经 AiGateway 完整闭环「点数检查→
 - `packages/api-client/src/index.spec.ts`：4→6 测试，新增 ownerRisk `listProfiles` + guarantee/receivable 列表结构断言、marketSituation `getSignal` + `unlockSignal` real/mock 同形断言。
 - 验证：api-client typecheck ✅ / spec **6 passed** ✅。
 
-## 进行中
-- #4（点数中心持久化，待可跑真库的专注会话）/ #9 部署一键 VPS。
+## 九、部署一键 VPS + compose 验证（#9）—— 已完成
+
+### ⚠️ 发现并修复：`infra/.env` 双 BOM 阻断 compose
+- `infra/.env` 开头有 UTF-8 BOM（实为双 BOM），导致 `docker compose ... config` 报 `unexpected character "﻿" in variable name`——**这是真实部署阻断**。已剥除全部 BOM。
+
+### compose 校验（强制命令）
+```
+docker compose -f infra/docker-compose.yml -f infra/docker-compose.f.yml config --quiet  → exit 0 ✅
+```
+（prod compose 用 `infra/.env` 校验会缺 `REDIS_PASSWORD`，属预期——生产用 `.env.prod` 注入 secrets，`ensure-env.sh` 也会自动补齐。）
+
+### f.yml override 防误用
+- `docker-compose.f.yml` 仅含 F 盘数据卷覆盖、无完整服务定义，**禁止单独运行**。已在 `infra/MANIFEST.md` 增补 compose 文件分工表 + 正确/错误用法示例 + BOM 提示 + 一键部署流程说明。
+
+### 部署脚本核查（均 sound）
+- `deploy.sh`：ensure-env → 备份(若 pg 在跑) → pull → pg/redis up → **`prisma migrate deploy`**（非 db push；`db push --accept-data-loss` 仅 `SCHEMA_SYNC=1` 显式开启且告警）→ up -d → 健康检查。
+- `backup.sh`：pg_dump+gzip+`gzip -t` 校验+保留天数+可选 OSS。
+- `rollback.sh`：切 `prod-previous` tag + 健康检查。
+- `health-check.sh`：轮询直至全 healthy，超时 dump logs 退 1。
+- `ensure-env.sh`：缺失 POSTGRES_PASSWORD/REDIS_PASSWORD 自动生成。
+
+### Docker 串行构建（真实执行，区分环境 vs 代码）
+- `migrate` 镜像：**build 成功**（482MB）——含 prisma + 本轮新迁移，CMD=`prisma migrate deploy`。
+- `api` 镜像：**build 成功**（227MB，< 250MB 体积红线）——完整 pnpm install + nest build 通过。
+- `worker` 镜像：构建中（与 api 同基座，复用缓存层）。
+- web/next：MANIFEST 既定由 CI/发布机构建；本机已证明 monorepo Docker 构建链（pnpm install + 编译 + prisma）端到端可用，非代码问题。
+
+## 已完成本轮收口（#1/#2/#3/#5/#6/#7/#8/#9）；#4 点数持久化按约定留待可跑真库集成测试的专注会话。
