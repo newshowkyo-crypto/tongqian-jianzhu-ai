@@ -162,5 +162,17 @@ spec 明确：所有 AI 调用必须经 AiGateway 完整闭环「点数检查→
 - tsc ✅ / eslint（api 改动文件）✅ / api 全量 **66 passed** ✅。
 - 全仓 app 页面 mock/TBD/乱码 终扫 = **0**。
 
+## 八、契约一致性（#8）—— 已核验 + 强化
+
+### 核验结果（真实代码为准）
+- **`any` 返回类型 = 0**：api-client 全文 `Promise<any>`/`: any` 计数 0；仅 5 处 `unknown`，均在回调/helper（`onServerError`、`normalize*`），合规。
+- **无假路由**：api-client 所有 owner-risk / market-situation HTTP 路径逐一对应真实 Nest controller 路由（owner-risk 20 路由、market-situation 18 路由）。
+- **openapi 1:1**：`openapi.yaml` 含 owner-risk 14 path + market-situation 14 path（含 #6 新接的 `/signals/{id}/analyze`、`/owner-risk/profiles/{profileId}/analyze`），与 controller 对齐。
+- **real/mock 结构一致**：mock 与真实返回同形（spec 断言覆盖）。
+
+### 强化
+- `packages/api-client/src/index.spec.ts`：4→6 测试，新增 ownerRisk `listProfiles` + guarantee/receivable 列表结构断言、marketSituation `getSignal` + `unlockSignal` real/mock 同形断言。
+- 验证：api-client typecheck ✅ / spec **6 passed** ✅。
+
 ## 进行中
-- #4（点数中心持久化，待可跑真库的专注会话）/ #8 契约一致性 / #9 部署一键 VPS。
+- #4（点数中心持久化，待可跑真库的专注会话）/ #9 部署一键 VPS。
