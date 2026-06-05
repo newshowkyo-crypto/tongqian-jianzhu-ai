@@ -92,5 +92,35 @@
 ## 仍 defer / 待人工裁决
 - 残余破坏性 drift（见 §二）——需人工确认 carbon 废弃 / timestamp 语义 / audit 列变更。
 
+## 四、点数中心持久化（#4）—— 已暂缓（发现财务红线 bug，待真库会话）
+
+### ⚠️ 发现：现有 preCharge→commit 双扣余额 bug
+- `pre-charge.service.ts:26` preCharge 扣 `account.totalBalance -= amount` 且消耗 lot。
+- `commit.service.ts:38` commit 再次扣 `account.totalBalance -= amount`（不碰 lot）。
+- 结果：owner-risk 解锁走的 preCharge+commit 链**重复扣余额**，且 `totalBalance` 与 lot 余额之和不一致。
+- 无任何 credit 单测覆盖；owner-risk/market 测试注入的是 fake CreditService，未触发真实逻辑。
+
+### 决策（与用户确认）
+- 账本语义改为：**preCharge=预扣（消耗 lot + 占用余额 hold）→ commit=度金/确认（不再扣余额）→ refund=释放 hold**。修正双扣。
+- 持久化方案：accounts/lots/logs 落 Prisma；幂等用 `credit_logs.idempotency_key` 唯一约束；租户隔离用 account(userId+tenantId)；重启不丢靠 Postgres。
+- 节奏：本轮先做 #5/#7（无财务风险），#4 留待可跑真库集成测试的专注会话再实现（~17 文件 async 级联，财务红线，不在上下文紧张的尾段抢做）。
+
+## 五、owner-risk 去 Map（#5）—— 已完成
+
+### 真实代码核查（不凭记忆）
+OwnerRiskService 原有 8 个 Map：
+- **3 个死 Map**（`cards` / `reports` / `unlockLogs`）：声明了但所有读写早已走 repository，纯冗余。
+- **5 个"读但永不写"Map**（`guaranteeRecords` / `mixingRecords` / `watchlists` / `riskEvents` / `receivableRecords`）：从无 `.set()`，5 个 list 方法**恒返回 `[]`**（假空数据）。
+
+### 处理
+- 8 个 Map 全部删除。
+- 5 个 list 方法改走 `OwnerRiskRepository` 真实 Prisma 读（新增 `listGuaranteeRecords` / `listMixingRecords` / `listCounterpartyWatchlist` / `listCounterpartyRiskEvents` / `listReceivableRecords`，均带 tenantId/(profileId|counterpartyId) 4 层 scope + `deletedAt: null`，Decimal→Number 映射）。
+- 这 5 张表（owner_guarantee_records / owner_company_mixing_records / counterparty_watchlist / counterparty_risk_events / receivable_risk_records）已在 §二新迁移中创建，无需补 schema。
+
+### 验证
+- `grep new Map / : Map<` 于 owner-risk.service = 0。
+- tsc ✅ / eslint ✅。
+- owner-risk 测试 33→35（新增 2：guarantee 读经 repo + tenant/profile scope；其余 4 个 list 全部 delegate 验证）；api 全量 62 passed ✅。
+
 ## 进行中
-- #4 点数中心持久化 / #5 owner-risk 去 Map / #6 market-situation 真链路 / #7 前端 / #8 契约 / #9 部署。
+- #7 前端去 mock/乱码 → 然后回 #4（点数，待真库会话）/ #6 / #8 / #9。
