@@ -19,6 +19,8 @@ import { CaseMarketAdminController } from './case-market/case-market-admin.contr
 import { ConfigAdminController } from './config/config-admin.controller.js';
 import { CostCatalogAdminController } from './cost-catalog-admin/cost-catalog-admin.controller.js';
 import { CredentialsAdminController } from './credentials/credentials-admin.controller.js';
+import { CredentialsAdminRepository } from './credentials/credentials-admin.repository.js';
+import { CredentialsAdminService } from './credentials/credentials-admin.service.js';
 import { CredentialsController } from './credentials/credentials.controller.js';
 import { CredentialsService } from './credentials/credentials.service.js';
 import { CreditsAdminController } from './credits/credits-admin.controller.js';
@@ -30,6 +32,7 @@ import { IcpController } from './icp/icp.controller.js';
 import { IcpService } from './icp/icp.service.js';
 import { IncidentsAdminController } from './incidents/incidents-admin.controller.js';
 import { IngestAdminController } from './ingest/ingest-admin.controller.js';
+import { IngestAdminRepository } from './ingest/ingest-admin.repository.js';
 import { JobsAdminController } from './jobs/jobs-admin.controller.js';
 import { LegalCorpusAdminController } from './legal-corpus-admin/legal-corpus-admin.controller.js';
 import { ModelsAdminController } from './models/models-admin.controller.js';
@@ -59,7 +62,7 @@ import { UsersAdminController } from './users/users-admin.controller.js';
   controllers: [AddictionConfigAdminController, AgentsAdminController, ApprovalsAdminController, AuditAdminController, BillingAdminController, CaseMarketAdminController, ConfigAdminController, CostCatalogAdminController, CredentialsAdminController, CredentialsController, CreditsAdminController, DataExportsAdminController, FeatureFlagsAdminController, GovAdminController, IcpController, IngestAdminController, IncidentsAdminController, JobsAdminController, LegalCorpusAdminController, ModelsAdminController, NotificationsAdminController, OnboardingController, OperationsAdminController, OpportunitiesAdminController, OrdersAdminController, PolicyFundsAdminController, PromptTestsAdminController, PromptsAdminController, RefundsAdminController, ReportsAdminController, RewardClaimsAdminController, RiskAdminController, RulesAdminController, SecurityAdminController, ServicesAdminController, SubscriptionsAdminController, SystemConfigAdminController, TenantsAdminController, UsersAdminController],
   exports: [AdminResourceService],
   imports: [CostCatalogModule, FuelProgressModule, LegalCorpusModule, RuleCandidatesModule, RuleExtractionModule],
-  providers: [AdminResourceService, CredentialsService, IcpService, OnboardingService, SecurityComplianceService, SystemConfigService, TenantContextService, JwtGuard, PermissionGuard],
+  providers: [AdminResourceService, CredentialsAdminRepository, CredentialsAdminService, CredentialsService, IcpService, IngestAdminRepository, OnboardingService, SecurityComplianceService, SystemConfigService, TenantContextService, JwtGuard, PermissionGuard],
 })
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class AdminModule {}

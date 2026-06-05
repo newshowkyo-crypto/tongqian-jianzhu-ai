@@ -5,8 +5,9 @@ import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 
 import { AiGatewayModule } from './ai-gateway/ai-gateway.module.js';
-import { AddictionModule } from './modules/addiction/addiction.module.js';
+import { DatabaseModule } from './database/database.module.js';
 import { ActualCostModule } from './modules/actual-cost/actual-cost.module.js';
+import { AddictionModule } from './modules/addiction/addiction.module.js';
 import { AdminModule } from './modules/admin/admin.module.js';
 import { AdminOpsModule } from './modules/admin-ops/admin-ops.module.js';
 import { AgentWorkspaceModule } from './modules/agent-workspace/agent-workspace.module.js';
@@ -30,10 +31,12 @@ import { HealthModule } from './modules/health/health.module.js';
 import { KnowledgeModule } from './modules/knowledge/knowledge.module.js';
 import { KnowledgeCurationModule } from './modules/knowledge-curation/knowledge-curation.module.js';
 import { LegalCorpusModule } from './modules/legal-corpus/legal-corpus.module.js';
+import { MarketSituationModule } from './modules/market-situation/market-situation.module.js';
 import { MaterialModule } from './modules/material/material.module.js';
 import { NotificationModule } from './modules/notification/notification.module.js';
 import { OpportunityModule } from './modules/opportunity/opportunity.module.js';
 import { OpsToolkitModule } from './modules/ops-toolkit/ops-toolkit.module.js';
+import { OwnerRiskModule } from './modules/owner-risk/owner-risk.module.js';
 import { PaymentModule } from './modules/payment/payment.module.js';
 import { ProjectSiteModule } from './modules/project-site/project-site.module.js';
 import { PromptTestingModule } from './modules/prompt-testing/prompt-testing.module.js';
@@ -79,6 +82,7 @@ class HealthController {
     CostEstimateModule,
     CreditModule,
     CustomerDueDiligenceModule,
+    DatabaseModule,
     DashboardModule,
     DataCurationModule,
     DataExportModule,
@@ -91,8 +95,10 @@ class HealthController {
     KnowledgeCurationModule,
     LegalCorpusModule,
     MaterialModule,
+    MarketSituationModule,
     NotificationModule,
     OpportunityModule,
+    OwnerRiskModule,
     OpsToolkitModule,
     PaymentModule,
     PromptTestingCurationModule,

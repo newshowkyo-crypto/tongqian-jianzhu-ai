@@ -65,13 +65,32 @@
 
 ---
 
-## 三~九、代码层收口 —— 进行中（见各自小节）
+## 三、Prisma 使用边界（#3）—— 已完成
 
-> 本文件随收口推进持续更新。
+### 问题
+- `credentials-admin.controller.ts`、`ingest-admin.controller.ts`：模块级 `new PrismaClient()` + controller 内直接 `$queryRaw`/`$executeRaw`。
+- `owner-risk.module.ts`、`market-situation.module.ts`：各自 `{ provide: PrismaClient, useValue: new PrismaClient() }`（每模块独立连接池）。
+
+### 处理
+- 新增共享 `PrismaService`（`database/prisma/prisma.service.ts`，extends PrismaClient + onModuleInit/onModuleDestroy 连接生命周期）。
+- 新增全局 `DatabaseModule`（`@Global`，提供 `PrismaService` 并把 `PrismaClient` token `useExisting` 指向它，repository 注入 `@Inject(PrismaClient)` 不变即可复用）。`main.ts` AppModule 注册。
+- owner-risk / market-situation module 去掉各自 `new PrismaClient()`，改走全局共享 provider。
+- credentials-admin：拆出 `CredentialsAdminRepository`（Prisma ORM，零裸 SQL，`secrets` + `audit_logs` 走 ORM）+ `CredentialsAdminService`（编排/脱敏/审计），controller 变薄；guard / `@RequirePermission` / 统一 response wrapper 全部保留。
+- ingest-admin：DB 访问下沉到 `IngestAdminRepository`（参数化 Prisma tagged template，留在数据层），controller 变薄。
+- DI 统一用项目既有约定 `@Inject(Token)`。
+
+### 验证
+- `grep new PrismaClient` 全仓仅剩 `prisma.service.ts` 注释；controller 层裸 SQL = 0。
+- `tsc --noEmit` ✅ / eslint（改动文件）✅。
+- api 测试 60 passed（含新增 `credentials-admin.service.spec.ts` 6 个：list/detail/upsert+审计/switch-mode/test/audit）。
 
 ## 已通过的 gate
 - `prisma validate` ✅
 - `prisma migrate deploy`（空库全链 44 条）✅
+- `apps/api` typecheck ✅ / eslint（改动文件）✅ / `node --test` 60 passed ✅
 
 ## 仍 defer / 待人工裁决
 - 残余破坏性 drift（见 §二）——需人工确认 carbon 废弃 / timestamp 语义 / audit 列变更。
+
+## 进行中
+- #4 点数中心持久化 / #5 owner-risk 去 Map / #6 market-situation 真链路 / #7 前端 / #8 契约 / #9 部署。
