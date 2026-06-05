@@ -14,10 +14,12 @@ target/
 
 # Environment files
 .env
+.env.*
 .env.local
 .env.*.local
 .env.production
 .env.development
+.env.prod
 *.env
 !.env.example
 !.env.dev.template
@@ -87,6 +89,7 @@ config/secrets/
 certs/
 .kiro/state/.tmp-*
 .kiro/state/.gen-*
+.kiro/state/_migration_work/
 BLOCKED.md
 
 # 创始人原始资料（防商业敏感泄漏）

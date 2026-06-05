@@ -1,0 +1,77 @@
+# 2026-06-05 上线前总收口 · Pre-VPS Hardening
+
+> 分支：`feature/m40-gov-truth-fix`
+> 目标：上线 VPS 前可验收收口（迁移可复现、扣点不丢账、核心页面无乱码无假数据、部署脚本可执行）。
+> 模式：standby（非 autopilot）→ 触及架构/安全级决策时按 AGENTS.md §14 停下报告。
+
+---
+
+## 一、工作区整理（#1）
+
+### 已做
+- `.gitignore`：补 `.env.*` / `.env.prod` 显式规则（原 `*.env` 仅匹配 `xxx.env`，不匹配 `.env.prod`）。保留 `!.env.example` / `!.env.dev.template` 白名单。已用 `git check-ignore -v` 验证 `.env.prod` / `.env.production` 现已被忽略。
+- `.gitignore`：新增 `.kiro/state/_migration_work/`（本轮迁移核对脚本与中间产物，不入库）。
+- 误删的 e2e 验收截图：worktree 中有 41 张已提交（历史验收证据，最早见 commit `e6d9842`）被删。**已 `git checkout -- tests/e2e/screenshots/` 全部恢复，未静默删除。**
+
+### 不动（属于用户在途改动，非误删）
+- `apps/web/src/app/projects/[id]/quality/rectifications/[id]/page.tsx`
+  `apps/web/src/app/projects/[id]/subcontracts/[id]/evaluation/page.tsx`
+  → 为 Next.js 动态路由参数重命名（`[id]` → `[rectificationId]` / `[subcontractId]`），已有未跟踪的新目录替换。保留不回滚。
+
+### 回滚点建议
+- 当前 dirty worktree 较大。建议在开始代码层修复前打 tag：
+  `git stash` 不适用（改动需保留）；改用 **commit 分段**：
+  1. 先单独提交「迁移 + 工作区整理」：`git add prisma/migrations/20260605000000_* .gitignore docs/changelog/2026-06-05-pre-vps-hardening.md && git commit`
+  2. 该 commit 即为稳定回滚点（仅含可复现迁移 + 整理，可独立通过 gate）。
+  3. 回滚用 `git revert <commit>`，**禁止** `git reset --hard` / `git push -f`（git-workflow.md §7）。
+
+---
+
+## 二、数据库迁移链修复（#2，最高优先级）—— 已完成且验证
+
+### 根因
+- `prisma/schema.prisma` 含 251 个 model（含 `owner_risk_*` / `market_signal_*` / credit 相关表）。
+- `prisma/migrations` 正式迁移最新只到 `20260525120000_m31_add_tenant_defaults`（43 个）。
+- dev 库（`tqj-postgres:25432/tongqian_dev`）此前用 `prisma db push` 推过 75 张新表（`_prisma_migrations` 只记录 43 条，但物理表已存在）→ **生产部署路径缺这 75 张表的正式迁移**。
+
+### 处理
+- 用本地锁定版 **prisma 5.22.0**（非全局 7.8.0）+ 全新 shadow 库 `tongqian_shadow` 做非破坏性 `migrate diff`。
+- 生成的原始 diff 共 2117 行，**混入了破坏性语句**（见下「停下报告」）。按任务 #2 规则，**不强推破坏性 diff**。
+- 仅抽取 **75 张新表的 additive DDL**（211 条语句：75 CREATE TABLE + 107 INDEX + 29 FK），新表外键只引用已存在的 `policy_funds`（`20260518223000` 已建）。
+- 新迁移：`prisma/migrations/20260605000000_m40_owner_risk_market_situation_credit_tables/migration.sql`（1477 行）。
+
+### 验证（全新空 shadow 库）
+| 命令 | 结果 |
+|---|---|
+| `prisma migrate deploy`（44 条全链，从空库） | ✅ All migrations successfully applied |
+| `prisma validate` | ✅ schema is valid |
+| 新迁移 additive SQL 叠加在 43 链之上 | ✅ exit 0，`owner_risk_*`(8) + `market_signal_*`(9) 表全部创建 |
+| 迁移→schema 残余 drift 中 owner_risk/market_signal 引用数 | **0**（新表迁移完整无遗漏） |
+
+- **生产部署不依赖 `prisma db push --accept-data-loss`**：用 `prisma migrate deploy`。
+
+### ⚠️ 停下报告：残余破坏性 drift（pre-existing，非本轮引入）
+全链跑完后，`migrate diff (migrations → schema)` 仍有 428 行 drift，**全部是历史手改 schema 与旧迁移的偏移，且为破坏性**，按 §14 不自动应用：
+- `121 ×` `ALTER COLUMN "id" DROP DEFAULT`（schema 把 `@default` 去掉、迁移里仍有）—— 多为无害的元数据漂移。
+- `14 ×` `SET DATA TYPE TIMESTAMP(3)`（timestamptz → timestamp，**有时区语义变更风险**）。
+- `2 ×` `DROP TABLE "carbon_estimates" / "carbon_factors"`（schema 已移除这两个 model；若生产已有数据则丢数据）。
+- `3 ×` `DROP COLUMN`：`audit_logs` 的 id 漂移 + `gov_audit_logs.resource_id`。**`audit_logs` 触及审计日志红线（security-rules §13），严禁随意删列。**
+
+**建议（待人工裁决，不自动执行）**：
+1. carbon 两表：确认是否真的废弃。若废弃，单独写一支可逆迁移 + 数据迁出脚本，**不与本轮新表迁移混在一起**。
+2. timestamptz→timestamp：确认是否有意。若否，应改 schema 用 `@db.Timestamptz` 对齐，而不是降级列类型。
+3. `audit_logs` / `gov_audit_logs` 列变更：需法务/合规确认，默认**不动**。
+4. `id DROP DEFAULT`：低风险，可在后续单独「schema 对齐」迁移统一处理。
+
+---
+
+## 三~九、代码层收口 —— 进行中（见各自小节）
+
+> 本文件随收口推进持续更新。
+
+## 已通过的 gate
+- `prisma validate` ✅
+- `prisma migrate deploy`（空库全链 44 条）✅
+
+## 仍 defer / 待人工裁决
+- 残余破坏性 drift（见 §二）——需人工确认 carbon 废弃 / timestamp 语义 / audit 列变更。
