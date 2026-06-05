@@ -1,21 +1,14 @@
-import { EmptyState, ErrorState, LoadingState, PageContent, PageHeader, PageLayout, SectionCard } from '@tongqian/ui';
-
-const rows = ['???', '???', '???', '???'];
+import { EmptyState, PageContent, PageHeader, PageLayout, SectionCard } from '@tongqian/ui';
 
 export default function Page(): JSX.Element {
   return (
     <PageLayout className="bg-stitch-surface text-stitch-on-surface">
       <PageContent>
-        <PageHeader title="TBD_TEXT" description="TBD_TEXT" breadcrumbs="Admin / TBD_TEXT" />
-        <SectionCard className="border-stitch-outline-variant shadow-none" title="TBD_TEXT">
-          <table className="w-full text-sm">
-            <tbody>{rows.map((row, index) => <tr className="h-10 border-b border-stitch-outline-variant hover:bg-stitch-surface-container-low" key={row}><td className="px-4 text-xs text-stitch-on-surface-variant">{index + 1}</td><td className="px-4 text-stitch-on-surface">{row}</td><td className="px-4 text-right text-xs text-stitch-primary">conservative</td></tr>)}</tbody>
-          </table>
-        </SectionCard>
-        <section className="mt-4 grid gap-4 lg:grid-cols-3">
-          <LoadingState label="TBD_TEXT" rows={2} />
-          <EmptyState title="TBD_TEXT" description="TBD_TEXT" />
-          <ErrorState title="TBD_TEXT" description="TBD_TEXT" />
+        <PageHeader title="法规语料库" description="法律法规语料库的导入、版本与检索管理。" breadcrumbs="Admin / 法规语料库" />
+        <section className="mt-4">
+          <SectionCard title="功能即将上线">
+            <EmptyState title="法规语料库管理即将上线" description="该模块将提供法规语料库的导入、版本与检索管理。" />
+          </SectionCard>
         </section>
       </PageContent>
     </PageLayout>

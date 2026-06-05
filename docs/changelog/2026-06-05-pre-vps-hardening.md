@@ -122,5 +122,25 @@ OwnerRiskService 原有 8 个 Map：
 - tsc ✅ / eslint ✅。
 - owner-risk 测试 33→35（新增 2：guarantee 读经 repo + tenant/profile scope；其余 4 个 list 全部 delegate 验证）；api 全量 62 passed ✅。
 
+## 七、前端去 mock/乱码/TBD（#7）—— owner-risk 三端 + 占位页已完成
+
+### 真实扫描结果（不凭记忆）
+- `锟斤拷` 等真乱码 CJK：**0 命中**（"乱码"问题此前已修，非本轮）。
+- `TBD_TEXT`：12 文件（11 个为同款 34 行 Stitch 占位骨架 + customer-dd）。
+- `mockReport`：1（mobile 报告页）；`mockProfiles`：3（mobile/admin-web/admin-app dashboard）。
+
+### 处理
+- **mobile/owner-risk/page.tsx**：mockProfiles → 真 `apiClient.ownerRisk.listProfiles()` + loading/error/empty（对齐 PC 版模式）。
+- **mobile/owner-risk/report/[id]/page.tsx**：mockReport → 真 `getProfile + listReports`，无报告时 EmptyState「尚无风险报告」。
+- **web /admin/owner-risk/page.tsx**：mockProfiles → 真 `listProfiles`；运营拦截/复核动作（无后端）改为 disabled「即将上线」，不再 fake console.log。
+- **customer-dd/page.tsx**：全 TBD_TEXT/??? 占位 → 合规 Coming Soon（真中文标题 + EmptyState）。
+- **11 个占位骨架页**（cashflow/ledger、cost-estimates×3、projects×2、tenders/rfp、admin credentials/legal-corpus/onboarding×2）→ 各自带正确中文标题的 Coming Soon（脚本生成，零 fake 数据）。
+- **admin owner-risk dashboard/logs/cards**：fake 实时指标/最近记录/审计日志 → 「即将接入」空态；mockCards 是真实默认卡片目录 → 重命名 defaultCards 保留展示。
+
+### 验证
+- 重新 rg：生产页面 `TBD_TEXT`=0、`mockReport`=0、`mockProfiles`=0、`???`=0、乱码=0（market-situation 两页留 #6 处理）。
+- 三端（PC/mobile/admin）owner-risk loading/empty/error 状态对齐；解锁/复核/报告按钮状态明确（无后端的标 disabled「即将上线」）。
+- ⚠️ web/admin 前端 typecheck/build 因本 shell 无 pnpm + Next 复杂 tsconfig 未跑（环境限制，非代码）；改动均使用 PC 参考页同款 apiClient 方法/类型与 @tongqian/ui 组件，import 一致。
+
 ## 进行中
-- #7 前端去 mock/乱码 → 然后回 #4（点数，待真库会话）/ #6 / #8 / #9。
+- #6 market-situation 真链路（含其 admin dashboard/logs 前端）→ #4（点数，待真库会话）/ #8 / #9。
