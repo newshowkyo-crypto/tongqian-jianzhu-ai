@@ -19,7 +19,7 @@
     "build": "tsc --project tsconfig.json",
     "typecheck": "tsc --noEmit --project tsconfig.json",
     "lint": "eslint src --ext .ts --no-error-on-unmatched-pattern",
-    "test": "echo \"No tests yet for @tongqian/api-client\"",
+    "test": "pnpm build && node dist/index.spec.js",
     "clean": "rimraf dist tsconfig.tsbuildinfo"
   },
   "dependencies": {

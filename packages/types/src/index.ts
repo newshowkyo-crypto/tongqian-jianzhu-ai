@@ -26,6 +26,8 @@ export * from './knowledge/index.js';
 export * from './notification/index.js';
 export * from './opportunity/index.js';
 export * from './ops-toolkit/index.js';
+export * from './owner-risk/index.js';
+export * from './market-situation/index.js';
 export * from './payment/index.js';
 export * from './qualification/index.js';
 export * from './project-site/index.js';

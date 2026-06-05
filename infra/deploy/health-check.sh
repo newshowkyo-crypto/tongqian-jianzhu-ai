@@ -1,19 +1,33 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-endpoints=(
-  "http://127.0.0.1:4000/health"
-  "http://127.0.0.1:3000/api/health"
-  "http://127.0.0.1:3010/api/health"
-  "http://127.0.0.1:3011/api/health"
-  "http://127.0.0.1:3012/api/health"
-  "http://127.0.0.1/healthz"
-)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+COMPOSE_FILE="${COMPOSE_FILE:-infra/docker-compose.prod.yml}"
+ENV_FILE="${ENV_FILE:-.env.prod}"
+TIMEOUT_SECONDS="${HEALTH_TIMEOUT_SECONDS:-180}"
 
-for url in "${endpoints[@]}"; do
-  code=$(curl -sk -o /dev/null -w "%{http_code}" "$url" || echo "fail")
-  echo "$url -> $code"
-  [[ "$code" == "200" ]] || exit 1
+cd "$ROOT_DIR"
+
+compose() {
+  docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" "$@"
+}
+
+deadline=$((SECONDS + TIMEOUT_SECONDS))
+while [ "$SECONDS" -lt "$deadline" ]; do
+  unhealthy="$(compose ps --format json | jq -r 'select((.Health != "" and .Health != "healthy") or (.State != "running" and .State != "exited")) | .Name + ":" + .State + ":" + .Health' || true)"
+  if [ -z "$unhealthy" ]; then
+    compose ps
+    echo "ALL HEALTHY"
+    exit 0
+  fi
+
+  echo "Waiting for healthy services:"
+  echo "$unhealthy"
+  sleep 5
 done
 
-echo "ALL HEALTHY"
+compose ps
+compose logs --tail 120
+echo "Health check timed out after ${TIMEOUT_SECONDS}s" >&2
+exit 1

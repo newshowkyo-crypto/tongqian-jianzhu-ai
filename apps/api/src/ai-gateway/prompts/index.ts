@@ -35,6 +35,8 @@ import { safetyInspectionRecordPrompt } from './safety/inspection-record.js';
 import { cashAgingAnalysisPrompt } from './cash/aging-analysis.js';
 import { cashflowForecastPrompt } from './cash/cashflow-forecast.js';
 import { siteArchiveChecklistPrompt } from './site/archive-checklist.js';
+import { OWNER_RISK_ANALYSIS_PROMPT, OWNER_RISK_CARD_GENERATE_PROMPT, OWNER_RISK_REPORT_GENERATE_PROMPT } from './owner-risk/risk-analysis.js';
+import { MARKET_SIGNAL_ANALYSIS_PROMPT, MARKET_SIGNAL_SIMULATION_PROMPT, MARKET_SIGNAL_REPORT_GENERATE_PROMPT } from './market-situation/signal-analysis.js';
 
 export const allPromptTemplates = [
   chatGeneralPrompt,
@@ -73,6 +75,12 @@ export const allPromptTemplates = [
   cashAgingAnalysisPrompt,
   cashflowForecastPrompt,
   siteArchiveChecklistPrompt,
+  OWNER_RISK_ANALYSIS_PROMPT,
+  OWNER_RISK_CARD_GENERATE_PROMPT,
+  OWNER_RISK_REPORT_GENERATE_PROMPT,
+  MARKET_SIGNAL_ANALYSIS_PROMPT,
+  MARKET_SIGNAL_SIMULATION_PROMPT,
+  MARKET_SIGNAL_REPORT_GENERATE_PROMPT,
 ];
 
 export const promptTemplateByTaskType = new Map(allPromptTemplates.map((template) => [template.taskType, template]));

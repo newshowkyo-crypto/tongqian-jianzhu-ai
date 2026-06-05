@@ -32,8 +32,13 @@
       "../../../packages/ui/src/assets/app-icons/app-icon-1024.png",
       "icons/icon.ico"
     ],
-    "targets": ["msi", "nsis"],
-    "resources": ["../dist/web-standalone/**/*"],
+    "targets": [
+      "msi",
+      "nsis"
+    ],
+    "resources": [
+      "../dist/web-standalone/**/*"
+    ],
     "windows": {
       "signCommand": "signtool.exe sign /f $env:CERT_PATH /p $env:CERT_PASSWORD /t http://timestamp.digicert.com $TARGET",
       "wix": {
@@ -45,7 +50,9 @@
     "updater": {
       "active": true,
       "dialog": false,
-      "endpoints": ["https://download.tongqianjianzhu.com/desktop/latest.json"],
+      "endpoints": [
+        "https://download.tongqianjianzhu.com/desktop/latest.json"
+      ],
       "pubkey": "PLACEHOLDER_REPLACE_WITH_TAURI_SIGN_GENERATE"
     }
   }

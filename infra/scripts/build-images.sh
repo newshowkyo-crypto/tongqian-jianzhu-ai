@@ -6,6 +6,7 @@ REGISTRY=${ACR_REGISTRY:-registry.cn-hangzhou.aliyuncs.com/tongqian}
 
 docker build -f infra/docker/Dockerfile.api -t "$REGISTRY/api:$TAG" .
 docker build -f infra/docker/Dockerfile.worker -t "$REGISTRY/worker:$TAG" .
+docker build -f infra/docker/Dockerfile.migrate -t "$REGISTRY/migrate:$TAG" .
 
 for svc in web admin agent gov; do
   docker build \

@@ -1,12 +1,12 @@
 {
   "_doc": "Autopilot 进度追踪文件。Codex 每次会话首先读此文件找下一个 task。状态枚举：pending / in_progress / partial / done / blocked",
-  "mode": "autopilot",
+  "mode": "standby",
   "_mode_options": "standby（待启动） | autopilot（自治中） | paused（暂停） | done（全部完成）",
   "started_at": "2026-05-17T21:56:17.0002215+08:00",
-  "last_session_at": "2026-05-18T11:19:27.453Z",
-  "current_task": "M3.7-A",
-  "_current_task_format": "格式：'{spec_no}-{phase}{order}' 例如 '02-A1a' / '22-H3' / '99-FINAL-1'",
-  "phase": "M3.7-foundation-hardening",
+  "last_session_at": "2026-06-03T00:00:00+08:00",
+  "current_task": "progress-truth-reconcile",
+  "_current_task_format": "格式：'{spec_no}-{phase}{order}' 例如 '02-A1a' / '22-H3' / '99-FINAL-1'；当前为非任务态收口，用语义标识。",
+  "phase": "post-M40-truth-reconcile",
   "_phase_options": "0-pre-flight | 1-infra | 2-business-core | 3-killer-apps | 4-knowledge | 5-workspace | 6-horizontal | 7-compliance | 99-final | done",
   "milestones": {
     "_note": "Codex 跑到对应 trigger task 时必须写 .kiro/state/MILESTONE-{name}.md 提醒用户。详见 CODEX-PROMPTS.md 段 1 '里程碑主动提醒' 段。",
@@ -57,8 +57,10 @@
     }
   },
   "blocked_count": 0,
-  "done_count": 188,
-  "total_count": 230,
+  "done_count": 516,
+  "total_count": 600,
+  "_truth_note": "进度真实口径以 .kiro/specs/*/tasks.md 勾选为准，非本文件下方 tasks 映射。2026-06-03 收口实测：所有 spec tasks.md 合计 516/600 勾选；排除 00-project-overview 治理项（0/70，本就非实施任务）后约 516/530。仓库实际已推进到 M40（见 .kiro/state/M40-INCREMENTS.md 等里程碑文件）。详见 .kiro/state/PROGRESS-TRUTH-RECONCILE-2026-06-03.md。done_count/total_count 已改用 tasks.md 口径。",
+  "_legacy_tasks_note": "本文件下方 tasks 映射是早期 230-任务自治模型，与 tasks.md 不同源，已过期、仅留作历史；接力时不要据此判断进度，以 _truth_note 指向的 tasks.md 为准。",
   "credentials_check": {
     "_doc": "P0-real = 真凭证必填（启动前必须真实有效）；P1-placeholder = 占位即可，开发期 mock provider，admin 后台可视化替换；P2-auto = Codex 自动生成或 docker-compose 自带。",
     "P0_real": {

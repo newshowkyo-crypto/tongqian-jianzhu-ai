@@ -361,6 +361,142 @@ export interface ProjectDetail extends ProjectListItem {
   tier: 1 | 2 | 3 | 4;
 }
 
+export interface OwnerRiskProfileView {
+  id: string;
+  tenantId: string;
+  userId: string;
+  ownerName: string;
+  idCardMasked?: string;
+  creditCode?: string;
+  overallRiskLevel: 'low' | 'medium' | 'high' | 'critical';
+  guaranteeRiskLevel?: 'low' | 'medium' | 'high' | 'critical';
+  mixingRiskLevel?: 'low' | 'medium' | 'high' | 'critical';
+  counterpartyRiskLevel?: 'low' | 'medium' | 'high' | 'critical';
+  receivableRiskLevel?: 'low' | 'medium' | 'high' | 'critical';
+  riskScore: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface OwnerRiskCardView {
+  id: string;
+  profileId: string;
+  tenantId: string;
+  cardType: 'guarantee' | 'mixing' | 'counterparty' | 'receivable';
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  confidence?: 'high' | 'medium' | 'low';
+  isUnlocked: boolean;
+  unlockCredits: number;
+  title?: string;
+  summary?: string;
+  detail?: Record<string, unknown>;
+  createdAt: string;
+  unlockedAt?: string;
+}
+
+export interface OwnerRiskUnlockLogView {
+  id: string;
+  cardId: string;
+  tenantId: string;
+  userId: string;
+  creditsCharged: number;
+  status: string;
+  traceId: string;
+  createdAt: string;
+}
+
+export interface OwnerRiskGenerationLogView {
+  id: string;
+  profileId: string;
+  tenantId: string;
+  userId: string;
+  generationType: string;
+  creditsCost: number;
+  status: string;
+  traceId: string;
+  createdAt: string;
+}
+
+export interface OwnerRiskReportSectionView {
+  sectionKey: string;
+  title: string;
+  content: string;
+  riskLevel?: string;
+  tierBadge?: number;
+  confidence?: string;
+  suggestedActions?: string[];
+}
+
+export interface OwnerRiskGuaranteeRecord {
+  id: string;
+  guaranteedCompany: string;
+  guaranteeAmount: number;
+  guaranteeType: string;
+  status: string;
+  riskLevel: string;
+  endDate?: string;
+}
+
+export interface OwnerRiskMixingRecord {
+  id: string;
+  recordType: string;
+  summary: string;
+  riskLevel: string;
+  occurrences: number;
+  createdAt: string;
+}
+
+export interface OwnerRiskCounterpartyRecord {
+  id: string;
+  companyName: string;
+  associationType: string;
+  watchlistReason: string;
+  riskLevel: string;
+  createdAt: string;
+}
+
+export interface OwnerRiskReceivableRecord {
+  id: string;
+  debtorName: string;
+  overdueAmount: number;
+  agingDays: number;
+  recoveryProbability: number;
+  riskLevel: string;
+  isGuaranteed: boolean;
+}
+
+export interface OwnerRiskReportView {
+  id: string;
+  profileId: string;
+  tenantId: string;
+  userId: string;
+  reportType: string;
+  title: string;
+  tierBadge: number;
+  confidence: string;
+  riskLevel: string;
+  executiveSummary: string;
+  dataSnapshot?: Record<string, unknown>;
+  sections?: OwnerRiskReportSectionView[];
+  createdAt: string;
+  updatedAt?: string;
+  creditsCost: number;
+  disclaimer: string;
+}
+
+export interface OwnerRiskReviewRequestView {
+  id: string;
+  profileId: string;
+  tenantId: string;
+  userId: string;
+  reviewType: string;
+  status: 'pending' | 'in_progress' | 'completed' | 'rejected';
+  assignedAgentId?: string;
+  assignedExpertId?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface OwnerDashboardData {
   generatedAt: string;
   greeting: string;
@@ -373,6 +509,156 @@ export interface OwnerDashboardData {
   opportunities: Array<{ deadline: string; meta: string; title: string }>;
   reports: string[];
   risks: Array<{ detail: string; level: 'green' | 'red' | 'yellow'; title: string }>;
+}
+
+export type MarketSignalType = 'project_hot' | 'party_risk' | 'competitor_active' | 'qualification_dynamic' | 'policy_window' | 'judicial_risk';
+export type MarketSignalSourceType = 'tender_platform' | 'courtWebsite' | 'creditPlatform' | 'policyWebsite' | 'newsMedia' | 'internal';
+export type MarketSignalTagCategory = 'region' | 'industry' | 'risk_type' | 'opportunity_type';
+export type MarketSignalUnlockType = 'impact_analysis' | 'simulation' | 'report' | 'full';
+export type MarketSignalSimulationType = 'project_participation' | 'market_impact' | 'risk_spread' | 'opportunity_timing';
+export type MarketSignalReportType = 'situation_summary' | 'impact_analysis' | 'participation_recommendation';
+export type MarketSignalFeedbackType = 'accuracy' | 'relevance' | 'usefulness' | 'new_info';
+export type MarketSignalGenerationType = 'summary' | 'impact_analysis' | 'simulation' | 'report';
+
+export interface MarketSignalView {
+  id: string;
+  tenantId: string;
+  userId: string;
+  signalType: MarketSignalType;
+  title: string;
+  summary: string;
+  region: string;
+  businessLine?: string;
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  opportunityLevel: 'low' | 'medium' | 'high';
+  confidence: 'low' | 'medium' | 'high';
+  sourceId?: string;
+  sourceUrl?: string;
+  rawData?: Record<string, unknown>;
+  impactAnalysis?: MarketImpactAnalysisView;
+  isPublished: boolean;
+  isFeatured: boolean;
+  tierBadge: number;
+  unlockCredits: number;
+  viewCount: number;
+  feedbackCount: number;
+  tags: string[];
+  publishedAt: string;
+  createdAt: string;
+  updatedAt: string;
+  unlockedParts?: string[];
+}
+
+export interface MarketImpactAnalysisView {
+  affectedRegions: string[];
+  affectedIndustries: string[];
+  potentialOpportunities: string[];
+  potentialRisks: string[];
+  suggestedActions: string[];
+  confidence: 'low' | 'medium' | 'high';
+  tierBadge: number;
+}
+
+export interface MarketSignalSourceView {
+  id: string;
+  sourceName: string;
+  sourceType: MarketSignalSourceType;
+  sourceUrl?: string;
+  region: string;
+  dataTypes: string[];
+  crawlIntervalMin: number;
+  isActive: boolean;
+  lastCrawledAt?: string;
+  healthStatus: 'healthy' | 'degraded' | 'unknown';
+  createdAt: string;
+}
+
+export interface MarketSignalTagView {
+  id: string;
+  tagKey: string;
+  tagName: string;
+  tagCategory: MarketSignalTagCategory;
+  usageCount: number;
+  createdAt: string;
+}
+
+export interface MarketSignalUnlockLogView {
+  id: string;
+  signalId: string;
+  tenantId: string;
+  userId: string;
+  unlockType: MarketSignalUnlockType;
+  creditsCharged: number;
+  status: 'success' | 'failed' | 'refunded';
+  traceId: string;
+  createdAt: string;
+}
+
+export interface MarketSignalSimulationView {
+  id: string;
+  signalId: string;
+  tenantId: string;
+  userId: string;
+  simulationType: MarketSignalSimulationType;
+  inputParams: Record<string, unknown>;
+  simulationResult: Record<string, unknown>;
+  confidence: 'low' | 'medium' | 'high';
+  tierBadge: number;
+  aiTaskId?: string;
+  creditsCost: number;
+  createdAt: string;
+}
+
+export interface MarketSignalReportView {
+  id: string;
+  signalId: string;
+  tenantId: string;
+  userId: string;
+  reportType: MarketSignalReportType;
+  title: string;
+  tierBadge: number;
+  confidence: 'low' | 'medium' | 'high';
+  executiveSummary: string;
+  dataSnapshot: Record<string, unknown>;
+  h5Url?: string;
+  pdfUrl?: string;
+  aiTaskId?: string;
+  reportId?: string;
+  creditsCost: number;
+  disclaimer: string;
+  createdAt: string;
+}
+
+export interface MarketSignalFeedbackView {
+  id: string;
+  signalId: string;
+  tenantId: string;
+  userId: string;
+  feedbackType: MarketSignalFeedbackType;
+  rating: number;
+  comment?: string;
+  createdAt: string;
+}
+
+export interface MarketSignalGenerationLogView {
+  id: string;
+  signalId: string;
+  tenantId: string;
+  userId: string;
+  generationType: MarketSignalGenerationType;
+  aiTaskId?: string;
+  inputSnapshot: Record<string, unknown>;
+  outputSnapshot?: Record<string, unknown>;
+  creditsCost: number;
+  status: 'success' | 'failed' | 'partial';
+  errorCode?: string;
+  traceId: string;
+  createdAt: string;
+}
+
+export interface MarketSignalListResult {
+  list: MarketSignalView[];
+  total: number;
 }
 
 export interface AgentDashboardData {
@@ -412,8 +698,8 @@ const traceHeader = 'x-trace-id';
 const credentialFixtures: CredentialRecord[] = [
   { approval: 'active', key: 'DEEPSEEK_API_KEY', lastPingAt: '2026-05-20 10:00', mode: 'real', provider: 'deepseek', updatedAt: 'DeepSeek active' },
   { approval: 'active', key: 'ALIYUN_DASHSCOPE_API_KEY', lastPingAt: '2026-05-21 09:00', mode: 'real', provider: 'dashscope', updatedAt: 'M3.12 qwen3-max/qwen3-vl-max active' },
-  { approval: 'enabled', key: 'MIDLAYER_API_KEY', mode: 'mock', provider: 'midlayer', updatedAt: 'mock-ready' },
-  { approval: 'enabled', key: 'MIDLAYER_BASE_URL', mode: 'mock', provider: 'midlayer', updatedAt: 'mock-ready' },
+  { approval: 'active', key: 'MIDLAYER_API_KEY', mode: 'mock', provider: 'midlayer', updatedAt: 'mock-ready' },
+  { approval: 'active', key: 'MIDLAYER_BASE_URL', mode: 'mock', provider: 'midlayer', updatedAt: 'mock-ready' },
   { approval: 'pending_approval', key: 'WECHAT_PAY_*', mode: 'mock', provider: 'wechat_pay', updatedAt: 'P1 mock provider' },
   { approval: 'pending_approval', key: 'ALIYUN_OSS_*', mode: 'mock', provider: 'aliyun_oss', updatedAt: 'P1 mock provider' },
 ];
@@ -473,6 +759,8 @@ export function createApiClient(options: ApiClientOptions = {}) {
     qualification: createQualificationApi(http, mock),
     tender: createTenderApi(http, mock),
     projectSite: createProjectSiteApi(http, mock),
+    ownerRisk: createOwnerRiskApi(http, mock),
+    marketSituation: createMarketSituationApi(http, mock),
   };
 }
 
@@ -1430,4 +1718,607 @@ function normalizeText(value: unknown): string {
 
 function normalizeTier(value: unknown): AiChatResult['tier'] {
   return value === 1 || value === 2 || value === 3 || value === 4 ? value : 2;
+}
+
+function createOwnerRiskApi(http: AxiosInstance, mock: boolean) {
+  return {
+    async listProfiles(page = 1, pageSize = 20): Promise<OwnerRiskProfileView[]> {
+      if (mock) {
+        return delay([
+          { id: '1', tenantId: 'mock-tenant', userId: 'mock-user', ownerName: '张明', creditCode: '91110000******82X', overallRiskLevel: 'medium', riskScore: 58, createdAt: '2026-06-01T00:00:00.000Z', updatedAt: '2026-06-01T00:00:00.000Z' },
+          { id: '2', tenantId: 'mock-tenant', userId: 'mock-user', ownerName: '李华', creditCode: '91310000******15K', overallRiskLevel: 'high', riskScore: 76, createdAt: '2026-06-02T00:00:00.000Z', updatedAt: '2026-06-02T00:00:00.000Z' },
+          { id: '3', tenantId: 'mock-tenant', userId: 'mock-user', ownerName: '王强', creditCode: '92440000******33A', overallRiskLevel: 'low', riskScore: 32, createdAt: '2026-06-01T00:00:00.000Z', updatedAt: '2026-06-01T00:00:00.000Z' },
+        ]);
+      }
+      return unwrap(await http.get('/owner-risk/profiles', { params: { page, pageSize } }));
+    },
+
+    async createProfile(payload: { ownerName: string; idCardMasked?: string; creditCode?: string }): Promise<OwnerRiskProfileView> {
+      if (mock) {
+        return delay({
+          id: cryptoRandomId(),
+          tenantId: 'mock-tenant',
+          userId: 'mock-user',
+          ownerName: payload.ownerName,
+          creditCode: payload.creditCode,
+          overallRiskLevel: 'medium',
+          riskScore: 60,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        });
+      }
+      return unwrap(await http.post('/owner-risk/profiles', payload));
+    },
+
+    async getProfile(id: string): Promise<OwnerRiskProfileView> {
+      if (mock) {
+        return delay({ id, tenantId: 'mock-tenant', userId: 'mock-user', ownerName: '张明', creditCode: '91110000******82X', overallRiskLevel: 'medium', riskScore: 58, createdAt: '2026-06-01T00:00:00.000Z', updatedAt: '2026-06-01T00:00:00.000Z' });
+      }
+      return unwrap(await http.get(`/owner-risk/profiles/${id}`));
+    },
+
+    async listCards(profileId?: string): Promise<OwnerRiskCardView[]> {
+      if (mock) {
+        return delay([
+          { id: '1', profileId: profileId || '1', tenantId: 'mock-tenant', cardType: 'guarantee', title: '担保总览', riskLevel: 'medium', isUnlocked: true, unlockCredits: 50, summary: '担保总额 5000 万，涉及 3 家企业', createdAt: '2026-06-01T00:00:00.000Z' },
+          { id: '2', profileId: profileId || '1', tenantId: 'mock-tenant', cardType: 'mixing', title: '混同风险', riskLevel: 'high', isUnlocked: false, unlockCredits: 50, summary: '存在资金混同嫌疑', createdAt: '2026-06-01T00:00:00.000Z' },
+          { id: '3', profileId: profileId || '1', tenantId: 'mock-tenant', cardType: 'counterparty', title: '交易对手风险', riskLevel: 'medium', isUnlocked: true, unlockCredits: 50, summary: '涉及 5 家供应商， 2 家有风险记录', createdAt: '2026-06-01T00:00:00.000Z' },
+          { id: '4', profileId: profileId || '1', tenantId: 'mock-tenant', cardType: 'receivable', title: '应收账款账龄', riskLevel: 'low', isUnlocked: true, unlockCredits: 50, summary: '90 天以上应收 200 万', createdAt: '2026-06-01T00:00:00.000Z' },
+        ]);
+      }
+      return unwrap(await http.get('/owner-risk/cards'));
+    },
+
+    async listGuaranteeRecords(profileId: string): Promise<OwnerRiskGuaranteeRecord[]> {
+      if (mock) {
+        return delay([
+          { id: '1', guaranteedCompany: '北京某建筑公司', guaranteeAmount: 20000000, guaranteeType: '连带责任担保', status: 'active', riskLevel: 'medium', endDate: '2027-06-01' },
+          { id: '2', guaranteedCompany: '上海某贸易公司', guaranteeAmount: 15000000, guaranteeType: '抵押担保', status: 'active', riskLevel: 'low', endDate: '2026-12-31' },
+          { id: '3', guaranteedCompany: '深圳某地产公司', guaranteeAmount: 15000000, guaranteeType: '质押担保', status: 'released', riskLevel: 'low' },
+        ]);
+      }
+      return unwrap(await http.get(`/owner-risk/profiles/${profileId}/guarantees`));
+    },
+
+    async listMixingRecords(profileId: string): Promise<OwnerRiskMixingRecord[]> {
+      if (mock) {
+        return delay([
+          { id: '1', summary: '企业主个人关联账户频繁往来往公户注入大额资金', recordType: 'personal_to_corporate', riskLevel: 'high', occurrences: 12, createdAt: '2026-06-01' },
+          { id: '2', summary: '报销票据包含家庭奢侈消费和非商务餐费记录', recordType: 'expense_mixing', riskLevel: 'medium', occurrences: 4, createdAt: '2026-05-25' },
+        ]);
+      }
+      return unwrap(await http.get(`/owner-risk/profiles/${profileId}/mixing`));
+    },
+
+    async listCounterpartyWatchlist(): Promise<OwnerRiskCounterpartyRecord[]> {
+      if (mock) {
+        return delay([
+          { id: '1', companyName: '大连某钢铁物资商行', associationType: 'supplier', watchlistReason: '司法失信被执行人', riskLevel: 'high', createdAt: '2026-06-01' },
+          { id: '2', companyName: '河北某混凝土有限公司', associationType: 'supplier', watchlistReason: '股权多重质押与限制消费令', riskLevel: 'medium', createdAt: '2026-05-29' },
+          { id: '3', companyName: '南京某机械租赁部', associationType: 'customer', watchlistReason: '正常关联合作方', riskLevel: 'low', createdAt: '2026-06-02' },
+        ]);
+      }
+      return unwrap(await http.get('/owner-risk/counterparties'));
+    },
+
+    async listReceivableRecords(profileId: string): Promise<OwnerRiskReceivableRecord[]> {
+      if (mock) {
+        return delay([
+          { id: '1', debtorName: '中建某工程局分公司', overdueAmount: 1200000, agingDays: 120, recoveryProbability: 0.85, riskLevel: 'low', isGuaranteed: true },
+          { id: '2', debtorName: '某地方城投建设开发公司', overdueAmount: 800000, agingDays: 180, recoveryProbability: 0.65, riskLevel: 'medium', isGuaranteed: false },
+        ]);
+      }
+      return unwrap(await http.get(`/owner-risk/profiles/${profileId}/receivables`));
+    },
+
+    async listReports(profileId: string): Promise<OwnerRiskReportView[]> {
+      if (mock) {
+        return delay([
+          { id: '1', profileId, tenantId: 'mock-tenant', userId: 'mock-user', title: '张明 - 综合风险报告', reportType: 'overview', riskLevel: 'high', tierBadge: 3, confidence: 'high', createdAt: '2026-06-01T00:00:00.000Z', executiveSummary: '摘要', creditsCost: 50, disclaimer: 'AI免责' },
+          { id: '2', profileId, tenantId: 'mock-tenant', userId: 'mock-user', title: '张明 - 担保分析报告', reportType: 'guarantee', riskLevel: 'medium', tierBadge: 3, confidence: 'high', createdAt: '2026-05-28T00:00:00.000Z', executiveSummary: '摘要', creditsCost: 50, disclaimer: 'AI免责' },
+        ]);
+      }
+      return unwrap(await http.get(`/owner-risk/profiles/${profileId}/reports`));
+    },
+
+    async getReport(id: string): Promise<OwnerRiskReportView> {
+      if (mock) {
+        return delay({
+          id,
+          profileId: '1',
+          tenantId: 'mock-tenant',
+          userId: 'mock-user',
+          title: '张明 - 企业主综合风险深度研判报告',
+          reportType: 'overview',
+          riskLevel: 'high',
+          tierBadge: 3,
+          confidence: 'high',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          executiveSummary: '经系统全要素深度审计，该企业主在个人关联担保与交易对手合规层面存在一定的高危风险积聚。建议立即开展专家复核和专项债务防火墙切割。',
+          creditsCost: 50,
+          disclaimer: '本报告内容基于公开和授权数据经 AI 生成，仅供商业决策参考，不构成正式法律或审计意见。',
+          dataSnapshot: {
+            score: 72,
+            activeGuaranteesCount: 3,
+            mixingAlertsCount: 2,
+            watchlistHitsCount: 1,
+            agedReceivablesOver90d: 2000000,
+          },
+          sections: [
+            {
+              sectionKey: 'guarantees',
+              title: '关联担保与代偿风险审计',
+              content: '该企业主对外累计担保总额达 5000 万元。其中 2 笔担保（约 2000 万元）的被担保方出现诉讼及财务恶化，存在连带代偿风险。',
+              riskLevel: 'high',
+              tierBadge: 3,
+              confidence: 'high',
+              suggestedActions: ['核实代偿协议条款', '启动反担保资产抵押登记', '准备应急流动性']
+            },
+            {
+              sectionKey: 'mixing',
+              title: '个人与法人财务/资产混同审查',
+              content: '检测到 2 处明显的混同疑点：一是企业主名下个人账户频繁与企业公户发生无贸易背景的资金大额往来；二是部分家庭成员消费发票在企业进行报销。可能导致人格混同及连带无限债务。',
+              riskLevel: 'high',
+              tierBadge: 3,
+              confidence: 'medium',
+              suggestedActions: ['立即清退不合规往来挂账', '重新规范报销审批流']
+            },
+            {
+              sectionKey: 'counterparties',
+              title: '交易对手与供应链合规扫描',
+              content: '深度关联发现，上下游合作方中有 2 家被列入失信被执行人、限制高消费名单。这可能对项目合同的回款和垫资安全构成威胁。',
+              riskLevel: 'medium',
+              tierBadge: 2,
+              confidence: 'high',
+              suggestedActions: ['调整结算账期', '增设履约保证保险']
+            },
+            {
+              sectionKey: 'receivables',
+              title: '应收账款账龄与回款坏账概率推演',
+              content: '当前超 90 定以上应收账款达 200 万元。模型推演其最终坏账概率在 15% 左右，可能会阶段性影响现金流。',
+              riskLevel: 'low',
+              tierBadge: 2,
+              confidence: 'high',
+              suggestedActions: ['委派法务专员发送律师函催收', '考虑应收账款无追索权保理']
+            }
+          ]
+        });
+      }
+      return unwrap(await http.get(`/owner-risk/reports/${id}`));
+    },
+
+    async createReport(profileId: string, payload: { reportType: string }): Promise<OwnerRiskReportView> {
+      if (mock) {
+        const newId = cryptoRandomId();
+        return delay({
+          id: newId,
+          profileId,
+          tenantId: 'mock-tenant',
+          userId: 'mock-user',
+          title: `专项风险报告 - ${payload.reportType}`,
+          reportType: payload.reportType,
+          riskLevel: 'medium',
+          tierBadge: 2,
+          confidence: 'high',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          executiveSummary: 'AI专项分析启动成功，数据就绪。',
+          creditsCost: 50,
+          disclaimer: 'AI免责',
+        });
+      }
+      return unwrap(await http.post(`/owner-risk/profiles/${profileId}/reports`, payload));
+    },
+
+    async createReviewRequest(payload: { profileId: string; reviewType: string }): Promise<OwnerRiskReviewRequestView> {
+      if (mock) {
+        return delay({
+          id: cryptoRandomId(),
+          profileId: payload.profileId,
+          tenantId: 'mock-tenant',
+          userId: 'mock-user',
+          reviewType: payload.reviewType,
+          status: 'pending',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        });
+      }
+      return unwrap(await http.post('/owner-risk/reviews', payload));
+    },
+
+    async listReviewRequests(): Promise<OwnerRiskReviewRequestView[]> {
+      if (mock) {
+        return delay([
+          { id: '1', profileId: '1', tenantId: 'mock-tenant', userId: 'mock-user', reviewType: 'manual_review', status: 'pending', createdAt: '2026-06-01T00:00:00.000Z', updatedAt: '2026-06-01T00:00:00.000Z' }
+        ]);
+      }
+      return unwrap(await http.get('/owner-risk/reviews'));
+    },
+
+    async listUnlockLogs(): Promise<OwnerRiskUnlockLogView[]> {
+      if (mock) {
+        return delay([]);
+      }
+      return unwrap(await http.get('/owner-risk/unlock-logs'));
+    },
+
+    async listGenerationLogs(): Promise<OwnerRiskGenerationLogView[]> {
+      if (mock) {
+        return delay([]);
+      }
+      return unwrap(await http.get('/owner-risk/generation-logs'));
+    },
+
+    async generateAnalysis(profileId: string, payload: { analysisType: string }): Promise<{ taskId: string }> {
+      if (mock) {
+        return delay({ taskId: cryptoRandomId() });
+      }
+      return unwrap(await http.post(`/owner-risk/profiles/${profileId}/analyze`, payload));
+    },
+
+    async unlockCard(cardId: string): Promise<OwnerRiskCardView> {
+      if (mock) {
+        return delay({ id: cardId, profileId: '1', tenantId: 'mock-tenant', cardType: 'mixing', title: '混同风险', riskLevel: 'high', isUnlocked: true, unlockCredits: 50, summary: '存在资金混同嫌疑', createdAt: '2026-06-01T00:00:00.000Z' });
+      }
+      return unwrap(await http.post(`/owner-risk/cards/${cardId}/unlock`));
+    },
+  };
+}
+
+function createMarketSituationApi(http: AxiosInstance, mock: boolean) {
+  const mockSignals: MarketSignalView[] = [
+    {
+      id: '1',
+      tenantId: 'mock-tenant',
+      userId: 'mock-user',
+      signalType: 'project_hot',
+      title: '某市政道路项目即将招标',
+      summary: '某市中心道路改造项目预计下月招标，总投资约 2 亿元。',
+      region: '武汉',
+      riskLevel: 'low',
+      opportunityLevel: 'high',
+      confidence: 'high',
+      isPublished: true,
+      isFeatured: true,
+      tierBadge: 1,
+      unlockCredits: 50,
+      viewCount: 150,
+      feedbackCount: 2,
+      tags: ['市政', '道路', '招标'],
+      publishedAt: '2026-06-01T08:00:00.000Z',
+      createdAt: '2026-06-01T08:00:00.000Z',
+      updatedAt: '2026-06-01T08:00:00.000Z',
+      unlockedParts: ['impact_analysis'],
+    },
+    {
+      id: '2',
+      tenantId: 'mock-tenant',
+      userId: 'mock-user',
+      signalType: 'qualification_dynamic',
+      title: '某供应商被列入经营异常',
+      summary: '某长期合作供应商被市场监管部门列入经营异常名录。',
+      region: '全国',
+      riskLevel: 'high',
+      opportunityLevel: 'low',
+      confidence: 'medium',
+      isPublished: true,
+      isFeatured: false,
+      tierBadge: 2,
+      unlockCredits: 100,
+      viewCount: 85,
+      feedbackCount: 0,
+      tags: ['供应商', '风险'],
+      publishedAt: '2026-05-28T10:00:00.000Z',
+      createdAt: '2026-05-28T10:00:00.000Z',
+      updatedAt: '2026-05-28T10:00:00.000Z',
+      unlockedParts: [],
+    },
+    {
+      id: '3',
+      tenantId: 'mock-tenant',
+      userId: 'mock-user',
+      signalType: 'competitor_active',
+      title: '竞争对手近期连续中标',
+      summary: '某竞争对手在过去两周内连续中标 3 个项目。',
+      region: '华东',
+      riskLevel: 'medium',
+      opportunityLevel: 'medium',
+      confidence: 'high',
+      isPublished: true,
+      isFeatured: false,
+      tierBadge: 3,
+      unlockCredits: 80,
+      viewCount: 210,
+      feedbackCount: 5,
+      tags: ['竞争对手', '中标'],
+      publishedAt: '2026-05-25T14:30:00.000Z',
+      createdAt: '2026-05-25T14:30:00.000Z',
+      updatedAt: '2026-05-25T14:30:00.000Z',
+      unlockedParts: ['impact_analysis', 'simulation'],
+    },
+    {
+      id: '4',
+      tenantId: 'mock-tenant',
+      userId: 'mock-user',
+      signalType: 'policy_window',
+      title: '住建部发布新型建材政策',
+      summary: '住建部发布关于推广新型绿色建材的指导意见。',
+      region: '全国',
+      riskLevel: 'low',
+      opportunityLevel: 'high',
+      confidence: 'high',
+      isPublished: true,
+      isFeatured: true,
+      tierBadge: 4,
+      unlockCredits: 60,
+      viewCount: 135,
+      feedbackCount: 1,
+      tags: ['政策', '建材'],
+      publishedAt: '2026-05-20T09:15:00.000Z',
+      createdAt: '2026-05-20T09:15:00.000Z',
+      updatedAt: '2026-05-20T09:15:00.000Z',
+      unlockedParts: ['impact_analysis', 'simulation', 'report', 'full'],
+    },
+  ];
+
+  const mockSimulations: MarketSignalSimulationView[] = [
+    {
+      id: 'sim-1',
+      signalId: '1',
+      tenantId: 'mock-tenant',
+      userId: 'mock-user',
+      simulationType: 'project_participation',
+      inputParams: { targetMargin: 0.08, partnerCount: 2 },
+      simulationResult: { successRate: 0.75, marginRange: '6% - 9%', actionRecommendation: '建议以联合体形式参与' },
+      confidence: 'high',
+      tierBadge: 2,
+      creditsCost: 50,
+      createdAt: '2026-06-02T10:00:00.000Z',
+    },
+  ];
+
+  const mockReports: MarketSignalReportView[] = [
+    {
+      id: 'rep-1',
+      signalId: '1',
+      tenantId: 'mock-tenant',
+      userId: 'mock-user',
+      reportType: 'situation_summary',
+      title: '某市政道路项目即将招标分析报告',
+      tierBadge: 1,
+      confidence: 'high',
+      executiveSummary: '基于本项目即将招标的预警信号，进行了专项业务推演和资质匹配分析。结论认为该项目利润高、账期良，建议积极筹备投标。',
+      dataSnapshot: { totalInvestment: '2 亿元', mainWorks: '道路、排水及绿化' },
+      h5Url: '/h5/reports/rep-1',
+      pdfUrl: '/pdf/reports/rep-1',
+      creditsCost: 100,
+      disclaimer: 'AI 分析报告仅供商业决策参考，不作为法律承诺。',
+      createdAt: '2026-06-02T11:00:00.000Z',
+    },
+  ];
+
+  const mockFeedbacks: MarketSignalFeedbackView[] = [
+    {
+      id: 'fb-1',
+      signalId: '1',
+      tenantId: 'mock-tenant',
+      userId: 'mock-user',
+      feedbackType: 'usefulness',
+      rating: 5,
+      comment: '非常有价值，提前一个月得知信息！',
+      createdAt: '2026-06-02T12:00:00.000Z',
+    },
+  ];
+
+  const mockGenerationLogs: MarketSignalGenerationLogView[] = [
+    {
+      id: 'log-1',
+      signalId: '1',
+      tenantId: 'mock-tenant',
+      userId: 'mock-user',
+      generationType: 'summary',
+      creditsCost: 10,
+      status: 'success',
+      traceId: 'trace-mock-gen-1',
+      inputSnapshot: { signalId: '1' },
+      createdAt: '2026-06-01T08:00:00.000Z',
+    },
+  ];
+
+  return {
+    async listSignals(filters?: { region?: string; signalType?: string; riskLevel?: string; page?: number; pageSize?: number }): Promise<MarketSignalListResult> {
+      if (mock) {
+        const list = mockSignals.filter((s) => {
+          if (filters?.region && s.region !== filters.region) return false;
+          if (filters?.signalType && s.signalType !== filters.signalType) return false;
+          if (filters?.riskLevel && s.riskLevel !== filters.riskLevel) return false;
+          return true;
+        });
+        return delay({
+          list,
+          total: list.length,
+        });
+      }
+      return unwrap(await http.get('/market-situation/signals', { params: filters }));
+    },
+
+    async listFeaturedSignals(): Promise<MarketSignalView[]> {
+      if (mock) {
+        return delay(mockSignals.filter((s) => s.isFeatured));
+      }
+      return unwrap(await http.get('/market-situation/signals/featured'));
+    },
+
+    async getSignal(id: string): Promise<MarketSignalView> {
+      if (mock) {
+        const sig = mockSignals.find((s) => s.id === id);
+        if (!sig) throw new Error('Signal not found');
+        return delay(sig);
+      }
+      return unwrap(await http.get(`/market-situation/signals/${id}`));
+    },
+
+    async unlockSignal(id: string, payload: { unlockType: 'impact_analysis' | 'simulation' | 'report' | 'full' }): Promise<MarketSignalView> {
+      if (mock) {
+        const sig = mockSignals.find((s) => s.id === id);
+        if (!sig) throw new Error('Signal not found');
+        if (!sig.unlockedParts) sig.unlockedParts = [];
+        if (!sig.unlockedParts.includes(payload.unlockType)) {
+          sig.unlockedParts.push(payload.unlockType);
+        }
+        return delay(sig);
+      }
+      return unwrap(await http.post(`/market-situation/signals/${id}/unlock`, payload));
+    },
+
+    async createSimulation(payload: { signalId: string; simulationType: string; inputParams: Record<string, unknown> }): Promise<MarketSignalSimulationView> {
+      if (mock) {
+        const newSim: MarketSignalSimulationView = {
+          id: cryptoRandomId(),
+          signalId: payload.signalId,
+          tenantId: 'mock-tenant',
+          userId: 'mock-user',
+          simulationType: payload.simulationType as MarketSignalSimulationType,
+          inputParams: payload.inputParams,
+          simulationResult: { successRate: 0.82, marginRange: '5% - 8%', details: '模拟计算推演圆满成功。' },
+          confidence: 'high',
+          tierBadge: 3,
+          creditsCost: 50,
+          createdAt: new Date().toISOString(),
+        };
+        mockSimulations.push(newSim);
+        return delay(newSim);
+      }
+      return unwrap(await http.post('/market-situation/simulations', payload));
+    },
+
+    async listSimulations(signalId: string): Promise<MarketSignalSimulationView[]> {
+      if (mock) {
+        return delay(mockSimulations.filter((s) => s.signalId === signalId));
+      }
+      return unwrap(await http.get(`/market-situation/signals/${signalId}/simulations`));
+    },
+
+    async getSimulation(id: string): Promise<MarketSignalSimulationView> {
+      if (mock) {
+        const sim = mockSimulations.find((s) => s.id === id);
+        if (!sim) throw new Error('Simulation not found');
+        return delay(sim);
+      }
+      return unwrap(await http.get(`/market-situation/simulations/${id}`));
+    },
+
+    async createReport(payload: { signalId: string; reportType: string }): Promise<{ reportId: string }> {
+      if (mock) {
+        const newRep: MarketSignalReportView = {
+          id: cryptoRandomId(),
+          signalId: payload.signalId,
+          tenantId: 'mock-tenant',
+          userId: 'mock-user',
+          reportType: payload.reportType as MarketSignalReportType,
+          title: `专项分析报告 - ${payload.reportType}`,
+          tierBadge: 2,
+          confidence: 'high',
+          executiveSummary: 'AI 自动生成的专项推演研判报告，结论非常清晰。',
+          dataSnapshot: { computedAt: new Date().toISOString() },
+          creditsCost: 100,
+          disclaimer: '本报告内容为 AI 生成，仅供商业参考。',
+          createdAt: new Date().toISOString(),
+        };
+        mockReports.push(newRep);
+        return delay({ reportId: newRep.id });
+      }
+      return unwrap(await http.post('/market-situation/reports', payload));
+    },
+
+    async listReports(signalId: string): Promise<MarketSignalReportView[]> {
+      if (mock) {
+        return delay(mockReports.filter((r) => r.signalId === signalId));
+      }
+      return unwrap(await http.get(`/market-situation/signals/${signalId}/reports`));
+    },
+
+    async getReport(id: string): Promise<MarketSignalReportView> {
+      if (mock) {
+        const rep = mockReports.find((r) => r.id === id);
+        if (!rep) throw new Error('Report not found');
+        return delay(rep);
+      }
+      return unwrap(await http.get(`/market-situation/reports/${id}`));
+    },
+
+    async createFeedback(payload: { signalId: string; feedbackType: string; rating: number; comment?: string }): Promise<MarketSignalFeedbackView> {
+      if (mock) {
+        const newFb: MarketSignalFeedbackView = {
+          id: cryptoRandomId(),
+          signalId: payload.signalId,
+          tenantId: 'mock-tenant',
+          userId: 'mock-user',
+          feedbackType: payload.feedbackType as MarketSignalFeedbackType,
+          rating: payload.rating,
+          comment: payload.comment,
+          createdAt: new Date().toISOString(),
+        };
+        mockFeedbacks.push(newFb);
+        return delay(newFb);
+      }
+      return unwrap(await http.post('/market-situation/feedbacks', payload));
+    },
+
+    async listFeedbacks(signalId: string): Promise<MarketSignalFeedbackView[]> {
+      if (mock) {
+        return delay(mockFeedbacks.filter((f) => f.signalId === signalId));
+      }
+      return unwrap(await http.get(`/market-situation/signals/${signalId}/feedbacks`));
+    },
+
+    async listSources(): Promise<MarketSignalSourceView[]> {
+      if (mock) {
+        return delay([
+          { id: '1', sourceName: '各省招投标公共服务平台', sourceType: 'tender_platform', region: '全国', dataTypes: ['tender_info'], crawlIntervalMin: 60, isActive: true, healthStatus: 'healthy', createdAt: '2026-05-01' },
+          { id: '2', sourceName: '中国裁判文书网', sourceType: 'courtWebsite', region: '全国', dataTypes: ['judicial_records'], crawlIntervalMin: 120, isActive: true, healthStatus: 'healthy', createdAt: '2026-05-01' },
+        ]);
+      }
+      return unwrap(await http.get('/market-situation/sources'));
+    },
+
+    async listTags(): Promise<MarketSignalTagView[]> {
+      if (mock) {
+        return delay([
+          { id: '1', tagKey: 'municipal', tagName: '市政', tagCategory: 'industry', usageCount: 45, createdAt: '2026-05-01' },
+          { id: '2', tagKey: 'road', tagName: '道路', tagCategory: 'industry', usageCount: 30, createdAt: '2026-05-01' },
+          { id: '3', tagKey: 'tender', tagName: '招标', tagCategory: 'opportunity_type', usageCount: 88, createdAt: '2026-05-01' },
+        ]);
+      }
+      return unwrap(await http.get('/market-situation/tags'));
+    },
+
+    async generateAnalysis(payload: { signalId: string; analysisType: 'summary' | 'impact_analysis' | 'simulation' | 'report' }): Promise<MarketSignalGenerationLogView> {
+      if (mock) {
+        const newLog: MarketSignalGenerationLogView = {
+          id: cryptoRandomId(),
+          signalId: payload.signalId,
+          tenantId: 'mock-tenant',
+          userId: 'mock-user',
+          generationType: payload.analysisType as MarketSignalGenerationType,
+          creditsCost: 50,
+          status: 'success',
+          traceId: cryptoRandomId(),
+          inputSnapshot: { signalId: payload.signalId },
+          createdAt: new Date().toISOString(),
+        };
+        mockGenerationLogs.push(newLog);
+        return delay(newLog);
+      }
+      return unwrap(await http.post(`/market-situation/signals/${payload.signalId}/analyze`, payload));
+    },
+
+    async listGenerationLogs(): Promise<MarketSignalGenerationLogView[]> {
+      if (mock) {
+        return delay(mockGenerationLogs);
+      }
+      return unwrap(await http.get('/market-situation/generation-logs'));
+    },
+  };
 }

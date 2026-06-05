@@ -41,6 +41,31 @@ export const ErrorCodes = {
   EXPORT_APPROVAL_REQUIRED: { code: 'EXPORT.APPROVAL.REQUIRED', httpStatus: 202, message: 'Data export requires approval.', userActionable: true },
   AI_GATEWAY_UNAVAILABLE: { code: 'AI.GATEWAY.UNAVAILABLE', httpStatus: 503, message: 'AI service is temporarily unavailable and credits were refunded.', userActionable: true },
   AI_PROMPT_RED_LINE_VIOLATION: { code: 'AI.PROMPT.RED_LINE_VIOLATION', httpStatus: 422, message: 'Prompt contains red-line language.', userActionable: false },
+
+  // Owner Risk Radar
+  OWNER_RISK_PROFILE_NOT_FOUND: { code: 'OWNER_RISK.PROFILE.NOT_FOUND', httpStatus: 404, message: 'Owner risk profile not found.', userActionable: false },
+  OWNER_RISK_CARD_NOT_FOUND: { code: 'OWNER_RISK.CARD.NOT_FOUND', httpStatus: 404, message: 'Owner risk card not found.', userActionable: false },
+  OWNER_RISK_CARD_ALREADY_UNLOCKED: { code: 'OWNER_RISK.CARD.ALREADY_UNLOCKED', httpStatus: 409, message: 'Owner risk card is already unlocked.', userActionable: true },
+  OWNER_RISK_REPORT_NOT_FOUND: { code: 'OWNER_RISK.REPORT.NOT_FOUND', httpStatus: 404, message: 'Owner risk report not found.', userActionable: false },
+  OWNER_RISK_REVIEW_REQUEST_NOT_FOUND: { code: 'OWNER_RISK.REVIEW_REQUEST.NOT_FOUND', httpStatus: 404, message: 'Owner risk review request not found.', userActionable: false },
+  OWNER_RISK_INSUFFICIENT_CREDITS: { code: 'OWNER_RISK.CREDIT.INSUFFICIENT', httpStatus: 422, message: 'Insufficient credits for this operation.', userActionable: true },
+  OWNER_RISK_GENERATION_FAILED: { code: 'OWNER_RISK.GENERATION.FAILED', httpStatus: 500, message: 'Owner risk analysis generation failed.', userActionable: false },
+  OWNER_RISK_CREDIT_DEDUCT_FAILED: { code: 'OWNER_RISK.CREDIT.DEDUCT_FAILED', httpStatus: 500, message: 'Credit deduction failed.', userActionable: false },
+  OWNER_RISK_CREDIT_REFUND_FAILED: { code: 'OWNER_RISK.CREDIT.REFUND_FAILED', httpStatus: 500, message: 'Credit refund failed.', userActionable: false },
+
+  // Market Situation Radar
+  MARKET_SIGNAL_NOT_FOUND: { code: 'MARKET_SIGNAL.NOT_FOUND', httpStatus: 404, message: 'Market signal not found.', userActionable: false },
+  MARKET_SIGNAL_ALREADY_UNLOCKED: { code: 'MARKET_SIGNAL.ALREADY_UNLOCKED', httpStatus: 409, message: 'Market signal is already unlocked.', userActionable: true },
+  MARKET_SIGNAL_REPORT_NOT_FOUND: { code: 'MARKET_SIGNAL.REPORT.NOT_FOUND', httpStatus: 404, message: 'Market signal report not found.', userActionable: false },
+  MARKET_SIGNAL_SIMULATION_NOT_FOUND: { code: 'MARKET_SIGNAL.SIMULATION.NOT_FOUND', httpStatus: 404, message: 'Market signal simulation not found.', userActionable: false },
+  MARKET_SIGNAL_INSUFFICIENT_CREDITS: { code: 'MARKET_SIGNAL.CREDIT.INSUFFICIENT', httpStatus: 422, message: 'Insufficient credits for this operation.', userActionable: true },
+  MARKET_SIGNAL_GENERATION_FAILED: { code: 'MARKET_SIGNAL.GENERATION.FAILED', httpStatus: 500, message: 'Market signal analysis generation failed.', userActionable: false },
+  MARKET_SIGNAL_UNVERIFIED_SOURCE: { code: 'MARKET_SIGNAL.SOURCE.UNVERIFIED', httpStatus: 422, message: 'Market signal requires verified source.', userActionable: true },
+
+  // Compliance
+  COMPLIANCE_SENSITIVE_TERM_BLOCKED: { code: 'COMPLIANCE.SENSITIVE_TERM.BLOCKED', httpStatus: 422, message: 'Input contains sensitive terms that are not allowed.', userActionable: true },
+  COMPLIANCE_RED_LINE_VIOLATION: { code: 'COMPLIANCE.RED_LINE.VIOLATION', httpStatus: 403, message: 'Request violates compliance red lines.', userActionable: false },
+  COMPLIANCE_AUDIT_FLAGGED: { code: 'COMPLIANCE.AUDIT.FLAGGED', httpStatus: 422, message: 'AI output has been flagged for compliance review.', userActionable: false },
 } as const satisfies Record<string, ErrorCodeDef>;
 
 export type ErrorCodeKey = keyof typeof ErrorCodes;

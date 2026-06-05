@@ -12,6 +12,10 @@ servers:
 tags:
   - name: Health
     description: Service health endpoints.
+  - name: Owner Risk Radar
+    description: Owner risk assessment and analysis endpoints.
+  - name: Market Situation Radar
+    description: Market signal monitoring and analysis endpoints.
 paths:
   /health:
     get:
@@ -33,6 +37,1025 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+
+  /owner-risk/profiles:
+    get:
+      tags:
+        - Owner Risk Radar
+      operationId: listOwnerRiskProfiles
+      summary: List owner risk profiles
+      parameters:
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of owner risk profiles.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OwnerRiskProfileListResponse'
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - Owner Risk Radar
+      operationId: createOwnerRiskProfile
+      summary: Create a new owner risk profile
+      parameters:
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: x-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOwnerRiskProfileRequest'
+      responses:
+        '200':
+          description: Owner risk profile created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OwnerRiskProfileResponse'
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /owner-risk/profiles/{profileId}:
+    get:
+      tags:
+        - Owner Risk Radar
+      operationId: getOwnerRiskProfile
+      summary: Get owner risk profile by ID
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Owner risk profile details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OwnerRiskProfileResponse'
+        '404':
+          description: Owner risk profile not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /owner-risk/cards:
+    get:
+      tags:
+        - Owner Risk Radar
+      operationId: listOwnerRiskCards
+      summary: List owner risk cards for the tenant
+      parameters:
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of owner risk cards.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OwnerRiskCardListResponse'
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /owner-risk/cards/{cardId}/unlock:
+    post:
+      tags:
+        - Owner Risk Radar
+      operationId: unlockOwnerRiskCard
+      summary: Unlock owner risk card details
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: x-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Card unlocked successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OwnerRiskCardResponse'
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /owner-risk/reports/{id}:
+    get:
+      tags:
+        - Owner Risk Radar
+      operationId: getOwnerRiskReport
+      summary: Get owner risk report by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Report details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OwnerRiskReportResponse'
+
+  /owner-risk/profiles/{profileId}/guarantees:
+    get:
+      tags:
+        - Owner Risk Radar
+      operationId: listOwnerRiskGuarantees
+      summary: List guarantee records for a profile
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of guarantee records.
+
+  /owner-risk/profiles/{profileId}/mixing:
+    get:
+      tags:
+        - Owner Risk Radar
+      operationId: listOwnerRiskMixingRecords
+      summary: List mixing records for a profile
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of mixing records.
+
+  /owner-risk/counterparties:
+    get:
+      tags:
+        - Owner Risk Radar
+      operationId: listOwnerRiskCounterparties
+      summary: List counterparty watchlist for the tenant
+      parameters:
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of counterparty records.
+
+  /owner-risk/profiles/{profileId}/receivables:
+    get:
+      tags:
+        - Owner Risk Radar
+      operationId: listOwnerRiskReceivables
+      summary: List receivable records for a profile
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of receivable records.
+
+  /owner-risk/unlock-logs:
+    get:
+      tags:
+        - Owner Risk Radar
+      operationId: listOwnerRiskUnlockLogs
+      summary: List unlock logs for the tenant
+      parameters:
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of unlock logs.
+
+  /owner-risk/generation-logs:
+    get:
+      tags:
+        - Owner Risk Radar
+      operationId: listOwnerRiskGenerationLogs
+      summary: List generation logs for the tenant
+      parameters:
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of generation logs.
+
+  /owner-risk/profiles/{profileId}/reports:
+    get:
+      tags:
+        - Owner Risk Radar
+      operationId: listOwnerRiskReports
+      summary: List owner risk reports for a profile
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of reports.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OwnerRiskReportListResponse'
+    post:
+      tags:
+        - Owner Risk Radar
+      operationId: createOwnerRiskReport
+      summary: Create owner risk report
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: x-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOwnerRiskReportRequest'
+      responses:
+        '200':
+          description: Report created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OwnerRiskReportResponse'
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /owner-risk/profiles/{profileId}/analyze:
+    post:
+      tags:
+        - Owner Risk Radar
+      operationId: generateOwnerRiskAnalysis
+      summary: Generate owner risk analysis
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: x-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateAnalysisRequest'
+      responses:
+        '200':
+          description: Analysis started successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalysisResponse'
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /owner-risk/reviews:
+    get:
+      tags:
+        - Owner Risk Radar
+      operationId: listOwnerRiskReviewRequests
+      summary: List owner risk review requests
+      parameters:
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of review requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OwnerRiskReviewRequestListResponse'
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - Owner Risk Radar
+      operationId: createOwnerRiskReviewRequest
+      summary: Submit owner risk review request
+      parameters:
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: x-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReviewRequest'
+      responses:
+        '200':
+          description: Review request submitted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OwnerRiskReviewRequestResponse'
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      tags:
+        - Owner Risk Radar
+      operationId: listOwnerRiskReviewRequests
+      summary: List owner risk review requests
+      parameters:
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of review requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OwnerRiskReviewRequestListResponse'
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /market-situation/signals:
+    get:
+      tags:
+        - Market Situation Radar
+      operationId: listMarketSignals
+      summary: List market signals
+      parameters:
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: region
+          in: query
+          schema:
+            type: string
+        - name: businessLine
+          in: query
+          schema:
+            type: string
+        - name: signalType
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of market signals.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketSignalListResponse'
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - Market Situation Radar
+      operationId: createMarketSignal
+      summary: Create a new market signal
+      parameters:
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: x-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMarketSignalRequest'
+      responses:
+        '200':
+          description: Market signal created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketSignalResponse'
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /market-situation/signals/{id}:
+    get:
+      tags:
+        - Market Situation Radar
+      operationId: getMarketSignal
+      summary: Get market signal by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Market signal details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketSignalResponse'
+        '404':
+          description: Market signal not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /market-situation/signals/{id}/unlock:
+    post:
+      tags:
+        - Market Situation Radar
+      operationId: unlockMarketSignal
+      summary: Unlock market signal details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: x-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnlockRequest'
+      responses:
+        '200':
+          description: Signal unlocked successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketSignalResponse'
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /market-situation/signals/{id}/analyze:
+    post:
+      tags:
+        - Market Situation Radar
+      operationId: generateMarketSignalAnalysis
+      summary: Generate market signal analysis
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: x-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateAnalysisRequest'
+      responses:
+        '200':
+          description: Analysis started successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalysisResponse'
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /market-situation/simulations:
+    post:
+      tags:
+        - Market Situation Radar
+      operationId: createMarketSignalSimulation
+      summary: Create market signal simulation
+      parameters:
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: x-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSimulationRequest'
+      responses:
+        '200':
+          description: Simulation created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketSignalSimulationResponse'
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /market-situation/simulations/{id}:
+    get:
+      tags:
+        - Market Situation Radar
+      operationId: getMarketSignalSimulation
+      summary: Get market signal simulation by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Simulation details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketSignalSimulationResponse'
+        '404':
+          description: Simulation not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /market-situation/signals/{signalId}/reports:
+    get:
+      tags:
+        - Market Situation Radar
+      operationId: listMarketSignalReports
+      summary: List market signal reports
+      parameters:
+        - name: signalId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of reports.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketSignalReportListResponse'
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /market-situation/reports:
+    post:
+      tags:
+        - Market Situation Radar
+      operationId: createMarketSignalReport
+      summary: Create market signal report
+      parameters:
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: x-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMarketSignalReportRequest'
+      responses:
+        '200':
+          description: Report created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketSignalReportResponse'
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /market-situation/reports/{id}:
+    get:
+      tags:
+        - Market Situation Radar
+      operationId: getMarketSignalReport
+      summary: Get market signal report by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Report details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketSignalReportResponse'
+        '404':
+          description: Report not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /market-situation/feedbacks:
+    post:
+      tags:
+        - Market Situation Radar
+      operationId: createMarketSignalFeedback
+      summary: Submit market signal feedback
+      parameters:
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: x-user-id
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFeedbackRequest'
+      responses:
+        '200':
+          description: Feedback submitted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketSignalFeedbackResponse'
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /market-situation/sources:
+    get:
+      tags:
+        - Market Situation Radar
+      operationId: listMarketSignalSources
+      summary: List market signal sources
+      responses:
+        '200':
+          description: List of market signal sources.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - data
+                  - message
+                  - traceId
+                properties:
+                  code:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                  message:
+                    type: string
+                  traceId:
+                    type: string
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /market-situation/tags:
+    get:
+      tags:
+        - Market Situation Radar
+      operationId: listMarketSignalTags
+      summary: List market signal tags
+      responses:
+        '200':
+          description: List of market signal tags.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - data
+                  - message
+                  - traceId
+                properties:
+                  code:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                  message:
+                    type: string
+                  traceId:
+                    type: string
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /market-situation/unlock-logs:
+    get:
+      tags:
+        - Market Situation Radar
+      operationId: listMarketSignalUnlockLogs
+      summary: List market signal unlock logs
+      responses:
+        '200':
+          description: List of market signal unlock logs.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - data
+                  - message
+                  - traceId
+                properties:
+                  code:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                  message:
+                    type: string
+                  traceId:
+                    type: string
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /market-situation/generation-logs:
+    get:
+      tags:
+        - Market Situation Radar
+      operationId: listMarketSignalGenerationLogs
+      summary: List market signal generation logs
+      responses:
+        '200':
+          description: List of market signal generation logs.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - data
+                  - message
+                  - traceId
+                properties:
+                  code:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                  message:
+                    type: string
+                  traceId:
+                    type: string
+        '4XX':
+          description: Request failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
 components:
   schemas:
     HealthResponse:
@@ -83,3 +1106,902 @@ components:
         traceId:
           type: string
           example: trace_01JZ0000000000000000000000
+
+    CreateOwnerRiskProfileRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - ownerName
+      properties:
+        ownerName:
+          type: string
+        idCardMasked:
+          type: string
+        creditCode:
+          type: string
+
+    OwnerRiskProfileView:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - tenantId
+        - userId
+        - ownerName
+        - overallRiskLevel
+        - riskScore
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+        userId:
+          type: string
+        ownerName:
+          type: string
+        idCardMasked:
+          type: string
+        creditCode:
+          type: string
+        overallRiskLevel:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+            - critical
+        guaranteeRiskLevel:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+            - critical
+        mixingRiskLevel:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+            - critical
+        counterpartyRiskLevel:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+            - critical
+        receivableRiskLevel:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+            - critical
+        riskScore:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    OwnerRiskProfileResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - data
+        - message
+        - traceId
+      properties:
+        code:
+          type: string
+          example: OK
+        data:
+          $ref: '#/components/schemas/OwnerRiskProfileView'
+        message:
+          type: string
+          example: Profile created
+        traceId:
+          type: string
+
+    OwnerRiskProfileListResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - data
+        - message
+        - traceId
+      properties:
+        code:
+          type: string
+          example: OK
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/OwnerRiskProfileView'
+        message:
+          type: string
+          example: Profiles listed
+        traceId:
+          type: string
+
+    OwnerRiskCardView:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - profileId
+        - tenantId
+        - cardType
+        - riskLevel
+        - isUnlocked
+        - unlockCredits
+        - createdAt
+      properties:
+        id:
+          type: string
+        profileId:
+          type: string
+        tenantId:
+          type: string
+        cardType:
+          type: string
+          enum:
+            - guarantee
+            - mixing
+            - counterparty
+            - receivable
+        riskLevel:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+            - critical
+        confidence:
+          type: string
+          enum:
+            - high
+            - medium
+            - low
+        isUnlocked:
+          type: boolean
+        unlockCredits:
+          type: number
+        title:
+          type: string
+        summary:
+          type: string
+        detail:
+          type: object
+        createdAt:
+          type: string
+          format: date-time
+        unlockedAt:
+          type: string
+          format: date-time
+
+    OwnerRiskCardResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - data
+        - message
+        - traceId
+      properties:
+        code:
+          type: string
+          example: OK
+        data:
+          $ref: '#/components/schemas/OwnerRiskCardView'
+        message:
+          type: string
+          example: Card unlocked
+        traceId:
+          type: string
+
+    OwnerRiskCardListResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - data
+        - message
+        - traceId
+      properties:
+        code:
+          type: string
+          example: OK
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/OwnerRiskCardView'
+        message:
+          type: string
+          example: Cards listed
+        traceId:
+          type: string
+
+    CreateOwnerRiskReportRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - reportType
+      properties:
+        reportType:
+          type: string
+          enum:
+            - overview
+            - guarantee
+            - mixing
+            - counterparty
+            - receivable
+
+    OwnerRiskReportView:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - profileId
+        - tenantId
+        - userId
+        - reportType
+        - title
+        - tierBadge
+        - confidence
+        - riskLevel
+        - executiveSummary
+        - createdAt
+        - creditsCost
+        - disclaimer
+      properties:
+        id:
+          type: string
+        profileId:
+          type: string
+        tenantId:
+          type: string
+        userId:
+          type: string
+        reportType:
+          type: string
+        title:
+          type: string
+        tierBadge:
+          type: integer
+        confidence:
+          type: string
+        riskLevel:
+          type: string
+        executiveSummary:
+          type: string
+        dataSnapshot:
+          type: object
+        sections:
+          type: array
+          items:
+            type: object
+            properties:
+              sectionKey:
+                type: string
+              title:
+                type: string
+              content:
+                type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        creditsCost:
+          type: number
+        disclaimer:
+          type: string
+
+    OwnerRiskReportResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - data
+        - message
+        - traceId
+      properties:
+        code:
+          type: string
+          example: OK
+        data:
+          type: object
+          properties:
+            reportId:
+              type: string
+        message:
+          type: string
+          example: Report created
+        traceId:
+          type: string
+
+    UnlockRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - unlockType
+      properties:
+        unlockType:
+          type: string
+          enum:
+            - impact_analysis
+            - simulation
+            - report
+            - full
+
+    GenerateAnalysisRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - analysisType
+      properties:
+        analysisType:
+          type: string
+          enum:
+            - summary
+            - impact_analysis
+            - simulation
+            - report
+
+    AnalysisResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - data
+        - message
+        - traceId
+      properties:
+        code:
+          type: string
+          example: OK
+        data:
+          type: object
+          properties:
+            taskId:
+              type: string
+        message:
+          type: string
+          example: Analysis started
+        traceId:
+          type: string
+
+    CreateReviewRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - profileId
+        - reviewType
+      properties:
+        profileId:
+          type: string
+        reviewType:
+          type: string
+          enum:
+            - human_review
+            - expert_consulting
+
+    OwnerRiskReviewRequestView:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - profileId
+        - tenantId
+        - userId
+        - reviewType
+        - status
+        - createdAt
+      properties:
+        id:
+          type: string
+        profileId:
+          type: string
+        tenantId:
+          type: string
+        userId:
+          type: string
+        reviewType:
+          type: string
+        status:
+          type: string
+          enum:
+            - pending
+            - reviewing
+            - completed
+            - rejected
+        assignedTo:
+          type: string
+        reviewNotes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+
+    OwnerRiskReviewRequestResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - data
+        - message
+        - traceId
+      properties:
+        code:
+          type: string
+          example: OK
+        data:
+          $ref: '#/components/schemas/OwnerRiskReviewRequestView'
+        message:
+          type: string
+          example: Review submitted
+        traceId:
+          type: string
+
+    OwnerRiskReviewRequestListResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - data
+        - message
+        - traceId
+      properties:
+        code:
+          type: string
+          example: OK
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/OwnerRiskReviewRequestView'
+        message:
+          type: string
+          example: Reviews listed
+        traceId:
+          type: string
+
+    CreateMarketSignalRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - signalType
+        - title
+        - summary
+        - region
+      properties:
+        signalType:
+          type: string
+          enum:
+            - project_hot
+            - party_risk
+            - competitor_active
+            - qualification_dynamic
+            - policy_window
+            - judicial_risk
+        title:
+          type: string
+        summary:
+          type: string
+        region:
+          type: string
+        businessLine:
+          type: string
+        sourceUrl:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+
+    MarketSignalView:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - tenantId
+        - userId
+        - signalType
+        - title
+        - summary
+        - region
+        - riskLevel
+        - opportunityLevel
+        - confidence
+        - isPublished
+        - tierBadge
+        - unlockCredits
+        - createdAt
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+        userId:
+          type: string
+        signalType:
+          type: string
+        title:
+          type: string
+        summary:
+          type: string
+        region:
+          type: string
+        businessLine:
+          type: string
+        riskLevel:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+            - critical
+        opportunityLevel:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+        confidence:
+          type: string
+          enum:
+            - high
+            - medium
+            - low
+        sourceUrl:
+          type: string
+        rawData:
+          type: object
+        isPublished:
+          type: boolean
+        isFeatured:
+          type: boolean
+        tierBadge:
+          type: integer
+        unlockCredits:
+          type: number
+        viewCount:
+          type: integer
+        feedbackCount:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+        publishedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    MarketSignalResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - data
+        - message
+        - traceId
+      properties:
+        code:
+          type: string
+          example: OK
+        data:
+          $ref: '#/components/schemas/MarketSignalView'
+        message:
+          type: string
+          example: Signal created
+        traceId:
+          type: string
+
+    MarketSignalListResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - data
+        - message
+        - traceId
+      properties:
+        code:
+          type: string
+          example: OK
+        data:
+          type: object
+          required:
+            - list
+            - total
+          properties:
+            list:
+              type: array
+              items:
+                $ref: '#/components/schemas/MarketSignalView'
+            total:
+              type: integer
+        message:
+          type: string
+          example: Signals listed
+        traceId:
+          type: string
+
+    CreateSimulationRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - signalId
+        - simulationType
+        - inputParams
+      properties:
+        signalId:
+          type: string
+        simulationType:
+          type: string
+          enum:
+            - project_participation
+            - market_impact
+            - risk_spread
+            - opportunity_timing
+        inputParams:
+          type: object
+
+    MarketSignalSimulationView:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - signalId
+        - tenantId
+        - userId
+        - simulationType
+        - confidence
+        - tierBadge
+        - creditsCost
+        - createdAt
+      properties:
+        id:
+          type: string
+        signalId:
+          type: string
+        tenantId:
+          type: string
+        userId:
+          type: string
+        simulationType:
+          type: string
+        inputParams:
+          type: object
+        simulationResult:
+          type: object
+        confidence:
+          type: string
+        tierBadge:
+          type: integer
+        creditsCost:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+
+    MarketSignalSimulationResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - data
+        - message
+        - traceId
+      properties:
+        code:
+          type: string
+          example: OK
+        data:
+          $ref: '#/components/schemas/MarketSignalSimulationView'
+        message:
+          type: string
+          example: Simulation created
+        traceId:
+          type: string
+
+    CreateMarketSignalReportRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - signalId
+        - reportType
+      properties:
+        signalId:
+          type: string
+        reportType:
+          type: string
+          enum:
+            - situation_summary
+            - impact_analysis
+            - participation_recommendation
+
+    MarketSignalReportView:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - signalId
+        - tenantId
+        - userId
+        - reportType
+        - title
+        - tierBadge
+        - confidence
+        - executiveSummary
+        - creditsCost
+        - disclaimer
+        - createdAt
+      properties:
+        id:
+          type: string
+        signalId:
+          type: string
+        tenantId:
+          type: string
+        userId:
+          type: string
+        reportType:
+          type: string
+        title:
+          type: string
+        tierBadge:
+          type: integer
+        confidence:
+          type: string
+        executiveSummary:
+          type: string
+        dataSnapshot:
+          type: object
+        h5Url:
+          type: string
+        pdfUrl:
+          type: string
+        creditsCost:
+          type: number
+        disclaimer:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    MarketSignalReportResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - data
+        - message
+        - traceId
+      properties:
+        code:
+          type: string
+          example: OK
+        data:
+          type: object
+          properties:
+            reportId:
+              type: string
+        message:
+          type: string
+          example: Report created
+        traceId:
+          type: string
+
+    MarketSignalReportListResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - data
+        - message
+        - traceId
+      properties:
+        code:
+          type: string
+          example: OK
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MarketSignalReportView'
+        message:
+          type: string
+          example: Reports listed
+        traceId:
+          type: string
+
+    CreateFeedbackRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - signalId
+        - feedbackType
+        - rating
+      properties:
+        signalId:
+          type: string
+        feedbackType:
+          type: string
+          enum:
+            - accuracy
+            - relevance
+            - usefulness
+            - new_info
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        comment:
+          type: string
+
+    MarketSignalFeedbackView:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - signalId
+        - tenantId
+        - userId
+        - feedbackType
+        - rating
+        - createdAt
+      properties:
+        id:
+          type: string
+        signalId:
+          type: string
+        tenantId:
+          type: string
+        userId:
+          type: string
+        feedbackType:
+          type: string
+        rating:
+          type: integer
+        comment:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    MarketSignalFeedbackResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - data
+        - message
+        - traceId
+      properties:
+        code:
+          type: string
+          example: OK
+        data:
+          $ref: '#/components/schemas/MarketSignalFeedbackView'
+        message:
+          type: string
+          example: Feedback submitted
+        traceId:
+          type: string

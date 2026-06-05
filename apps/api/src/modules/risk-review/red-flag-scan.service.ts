@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 import { Injectable } from '@nestjs/common';
 
@@ -15,7 +16,12 @@ interface RedFlagRule {
 
 @Injectable()
 export class RedFlagScanService {
-  private readonly rules: RedFlagRule[] = JSON.parse(readFileSync('apps/api/data/contract-red-flags/zh-CN-construction.json', 'utf8')) as RedFlagRule[];
+  // Resolve the rule set relative to this source file so the path is independent
+  // of process.cwd(). The layout (apps/api/{src,dist}/modules/risk-review) keeps
+  // this offset valid for both tsx (src) and compiled (dist) execution.
+  private readonly rules: RedFlagRule[] = JSON.parse(
+    readFileSync(join(__dirname, '../../../data/contract-red-flags/zh-CN-construction.json'), 'utf8'),
+  ) as RedFlagRule[];
 
   scan(contractText: string): { flags: Array<{ evidence?: string; hit: boolean; id: string; location?: number; suggestion: string; title: string }> } {
     const flags = this.rules.map((rule) => {

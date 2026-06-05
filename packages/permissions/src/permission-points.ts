@@ -51,6 +51,22 @@ export const PermissionPoints = {
   TENANT_REVIEW: 'tenant:review',
   AUDIT_LOG_VIEW: 'audit-log:view',
   ADMIN_INGEST_RUN: 'admin:ingest:run',
+
+  // Owner Risk Radar
+  OWNER_RISK_VIEW: 'owner-risk:view',
+  OWNER_RISK_CREATE: 'owner-risk:create',
+  OWNER_RISK_ANALYZE: 'owner-risk:analyze',
+  OWNER_RISK_UNLOCK: 'owner-risk:unlock',
+  OWNER_RISK_EXPORT: 'owner-risk:export',
+  OWNER_RISK_SUBMIT_REVIEW: 'owner-risk:submit-review',
+  OWNER_RISK_ADMIN_MANAGE: 'owner-risk:admin-manage',
+
+  // Market Situation Radar
+  MARKET_SITUATION_VIEW: 'market-situation:view',
+  MARKET_SITUATION_UNLOCK: 'market-situation:unlock',
+  MARKET_SITUATION_SIMULATE: 'market-situation:simulate',
+  MARKET_SITUATION_CREATE_REPORT: 'market-situation:create-report',
+  MARKET_SITUATION_ADMIN_MANAGE: 'market-situation:admin-manage',
 } as const;
 
 export type PermissionPointKey = keyof typeof PermissionPoints;

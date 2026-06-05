@@ -4,6 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 COMPOSE_FILE="${COMPOSE_FILE:-infra/docker-compose.prod.yml}"
+ENV_FILE="${ENV_FILE:-.env.prod}"
 POSTGRES_SERVICE="${POSTGRES_SERVICE:-postgres}"
 POSTGRES_USER="${POSTGRES_USER:-postgres}"
 POSTGRES_DB="${POSTGRES_DB:-tongqian_prod}"
@@ -24,7 +25,7 @@ timestamp="$(date +%Y%m%d-%H%M%S)"
 backup_file="$BACKUP_DIR/pg-$timestamp.sql.gz"
 
 echo "Creating PostgreSQL backup: $backup_file"
-docker compose -f "$COMPOSE_FILE" exec -T "$POSTGRES_SERVICE" \
+docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" exec -T "$POSTGRES_SERVICE" \
   pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB" | gzip >"$backup_file"
 
 gzip -t "$backup_file"

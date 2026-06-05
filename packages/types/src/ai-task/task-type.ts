@@ -54,6 +54,19 @@ export enum AiTaskType {
   AGENT_ASSISTANT_REPLY = 'agent.assistant_reply',
   ADMIN_PROMPT_TEST = 'admin.prompt_test',
   RULE_EXTRACT = 'rule.extract',
+  // Owner Risk Radar
+  OWNER_RISK_SUMMARY = 'owner_risk.summary',
+  OWNER_GUARANTEE_RISK_ANALYSIS = 'owner_risk.guarantee_risk_analysis',
+  OWNER_COMPANY_MIXING_RISK_ANALYSIS = 'owner_risk.company_mixing_risk_analysis',
+  COUNTERPARTY_RISK_ANALYSIS = 'owner_risk.counterparty_risk_analysis',
+  RECEIVABLE_RISK_ANALYSIS = 'owner_risk.receivable_risk_analysis',
+  OWNER_RISK_REPORT_GENERATION = 'owner_risk.report_generation',
+  // Market Situation Radar
+  MARKET_SIGNAL_SUMMARY = 'market_signal.summary',
+  MARKET_SIGNAL_IMPACT_ANALYSIS = 'market_signal.impact_analysis',
+  MARKET_SIGNAL_SIMULATION = 'market_signal.simulation',
+  MARKET_SITUATION_REPORT = 'market_signal.situation_report',
+  MARKET_SIGNAL_COMPLIANCE_REWRITE = 'market_signal.compliance_rewrite',
 }
 
 export const AI_TASK_TYPE_VALUES = Object.values(AiTaskType);

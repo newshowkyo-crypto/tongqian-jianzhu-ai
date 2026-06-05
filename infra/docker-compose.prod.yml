@@ -87,6 +87,20 @@ services:
       retries: 5
       start_period: 20s
 
+  migrate:
+    image: ${ACR_REGISTRY:-registry.cn-hangzhou.aliyuncs.com/tongqian}/migrate:${TAG:-prod-latest}
+    container_name: tqj-prod-migrate
+    restart: 'no'
+    profiles:
+      - tools
+    environment:
+      NODE_ENV: production
+      TZ: ${TZ:-Asia/Shanghai}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-tongqian_prod}?schema=public
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   web:
     image: ${ACR_REGISTRY:-registry.cn-hangzhou.aliyuncs.com/tongqian}/web:${TAG:-prod-latest}
     container_name: tqj-prod-web

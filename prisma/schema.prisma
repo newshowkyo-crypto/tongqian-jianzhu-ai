@@ -2240,7 +2240,7 @@ model AgentProfile {
   subtype        String
   region         String
   /// deprecated 2026-05-16, kept nullable for legacy records
-  depositAmount  Decimal?  @default(null) @map("deposit_amount") @db.Decimal(10, 2)
+  depositAmount  Decimal?  @map("deposit_amount") @db.Decimal(10, 2)
   promoCode      String    @unique @map("promo_code")
   activityStatus String    @default("active") @map("activity_status")
   lastActiveAt   DateTime? @map("last_active_at")
@@ -2859,6 +2859,9 @@ model PolicyFund {
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
 
+  matches       PolicyFundMatch[]
+  subscriptions PolicyFundSubscription[]
+
   @@index([category, status])
   @@index([province, status])
   @@map("policy_funds")
@@ -3237,6 +3240,575 @@ model ConversationSummary {
   @@map("conversation_summaries")
 }
 
+// =============================================
+// Owner Risk Radar Models
+// =============================================
+
+model OwnerRiskProfile {
+  id                String   @id @default(uuid()) @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  userId            String   @map("user_id") @db.Uuid
+  ownerName         String   @map("owner_name")
+  idCardMasked      String?  @map("id_card_masked")
+  creditCode        String?  @map("credit_code")
+  overallRiskLevel  String   @default("medium") @map("overall_risk_level")
+  guaranteeRiskLevel String  @default("medium") @map("guarantee_risk_level")
+  mixingRiskLevel   String   @default("medium") @map("mixing_risk_level")
+  counterpartyRiskLevel String @default("medium") @map("counterparty_risk_level")
+  receivableRiskLevel String  @default("medium") @map("receivable_risk_level")
+  riskScore         Int      @default(50) @map("risk_score")
+  lastAnalyzedAt    DateTime? @map("last_analyzed_at")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  deletedAt         DateTime? @map("deleted_at")
+
+  guaranteeRecords   OwnerGuaranteeRecord[]
+  mixingRecords      OwnerCompanyMixingRecord[]
+  counterpartyRecords CounterpartyWatchlist[]
+  receivableRecords   ReceivableRiskRecord[]
+  reports            OwnerRiskReport[]
+  unlockLogs         OwnerRiskUnlockLog[]
+  reviewRequests     OwnerRiskReviewRequest[]
+  generationLogs     OwnerRiskGenerationLog[]
+
+  @@index([tenantId, userId])
+  @@index([creditCode])
+  @@map("owner_risk_profiles")
+}
+
+model OwnerRiskCard {
+  id              String   @id @default(uuid()) @db.Uuid
+  tenantId        String   @map("tenant_id") @db.Uuid
+  userId          String   @map("user_id") @db.Uuid
+  cardType        String   @map("card_type") // guarantee | mixing | counterparty | receivable
+  cardKey         String   @map("card_key")
+  title           String
+  summary         String   @db.Text
+  riskLevel       String   @map("risk_level")
+  tierBadge       Int      @default(3) @map("tier_badge")
+  confidence      String   @default("medium")
+  unlockCredits  Int      @default(50) @map("unlock_credits")
+  isUnlocked      Boolean  @default(false) @map("is_unlocked")
+  isAiGenerated   Boolean  @default(true) @map("is_ai_generated")
+  dataSnapshot    Json     @map("data_snapshot")
+  dataSource      String?  @map("data_source")
+  sourceUrl       String?  @map("source_url")
+  disclaimer      String   @default("report.disclaimer.ai_reference") @map("disclaimer")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  deletedAt       DateTime? @map("deleted_at")
+
+  @@index([tenantId, userId, cardType])
+  @@index([cardKey])
+  @@map("owner_risk_cards")
+}
+
+model OwnerGuaranteeRecord {
+  id                String   @id @default(uuid()) @db.Uuid
+  profileId         String   @map("profile_id") @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  guaranteedCompany String   @map("guaranteed_company")
+  guaranteeAmount   Decimal  @db.Decimal(18, 2) @map("guarantee_amount")
+  guaranteeType     String   @map("guarantee_type") // mortgage | pledge | joint_liability
+  startDate         DateTime? @map("start_date")
+  endDate           DateTime? @map("end_date")
+  status            String   @default("active") // active | released | defaulted
+  riskLevel         String   @map("risk_level")
+  aiAnalysis        String?  @map("ai_analysis") @db.Text
+  documentUrl      String?  @map("document_url")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  deletedAt         DateTime? @map("deleted_at")
+
+  profile          OwnerRiskProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId, status])
+  @@index([tenantId])
+  @@map("owner_guarantee_records")
+}
+
+model OwnerCompanyMixingRecord {
+  id                String   @id @default(uuid()) @db.Uuid
+  profileId         String   @map("profile_id") @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  mixingType        String   @map("mixing_type") // fund_mixing | asset_mixing | debt_mixing | equity_mixing
+  description       String   @db.Text
+  riskLevel         String   @map("risk_level")
+  evidence          Json
+  aiSuggestion      String?  @map("ai_suggestion") @db.Text
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  deletedAt         DateTime? @map("deleted_at")
+
+  profile          OwnerRiskProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@index([tenantId, mixingType])
+  @@map("owner_company_mixing_records")
+}
+
+model CounterpartyWatchlist {
+  id                String   @id @default(uuid()) @db.Uuid
+  profileId         String   @map("profile_id") @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  counterpartyName  String   @map("counterparty_name")
+  counterpartyCode  String?  @map("counterparty_code")
+  counterpartyType  String   @map("counterparty_type") // client | supplier | partner
+  riskLevel         String   @default("low") @map("risk_level")
+  riskEvents        Json     @default("[]") @map("risk_events")
+  lastEventAt       DateTime? @map("last_event_at")
+  aiAnalysis        String?  @map("ai_analysis") @db.Text
+  isWatched         Boolean  @default(true) @map("is_watched")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  deletedAt         DateTime? @map("deleted_at")
+
+  profile          OwnerRiskProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  riskEventsRelation CounterpartyRiskEvent[]
+
+  @@index([profileId, riskLevel])
+  @@index([tenantId, counterpartyType])
+  @@map("counterparty_watchlist")
+}
+
+model CounterpartyRiskEvent {
+  id               String   @id @default(uuid()) @db.Uuid
+  counterpartyId   String   @map("counterparty_id") @db.Uuid
+  tenantId         String   @map("tenant_id") @db.Uuid
+  eventType        String   @map("event_type") // court | credit | license | tax | safety
+  eventDate        DateTime @map("event_date")
+  eventSummary     String   @db.Text
+  severity         String   @default("low") // low | medium | high | critical
+  source           String
+  sourceUrl        String?  @map("source_url")
+  aiInterpretation String?  @map("ai_interpretation") @db.Text
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  counterparty     CounterpartyWatchlist @relation(fields: [counterpartyId], references: [id], onDelete: Cascade)
+
+  @@index([counterpartyId, eventDate])
+  @@index([tenantId, eventType, severity])
+  @@map("counterparty_risk_events")
+}
+
+model ReceivableRiskRecord {
+  id                String   @id @default(uuid()) @db.Uuid
+  profileId         String   @map("profile_id") @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  debtorName        String   @map("debtor_name")
+  debtorCode        String?  @map("debtor_code")
+  amount            Decimal  @db.Decimal(18, 2) @map("amount")
+  invoiceNo         String?  @map("invoice_no")
+  invoiceDate       DateTime? @map("invoice_date")
+  dueDate           DateTime? @map("due_date")
+  ageBucket         String   @map("age_bucket") // 0_30 | 30_60 | 60_90 | 90_180 | 180_plus
+  status            String   @default("normal") // normal | overdue | bad_debt
+  riskLevel         String   @map("risk_level")
+  aiAnalysis        String?  @map("ai_analysis") @db.Text
+  collectionSuggest String?  @map("collection_suggest") @db.Text
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  deletedAt         DateTime? @map("deleted_at")
+
+  profile          OwnerRiskProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId, status])
+  @@index([tenantId, ageBucket])
+  @@map("receivable_risk_records")
+}
+
+model OwnerRiskReport {
+  id                String   @id @default(uuid()) @db.Uuid
+  profileId         String   @map("profile_id") @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  userId            String   @map("user_id") @db.Uuid
+  reportType        String   @map("report_type") // overview | guarantee | mixing | counterparty | receivable
+  title             String
+  tierBadge         Int      @default(3) @map("tier_badge")
+  confidence        String   @default("medium")
+  riskLevel         String   @map("risk_level")
+  executiveSummary  String   @db.Text @map("executive_summary")
+  dataSnapshot      Json     @map("data_snapshot")
+  sections          Json     @default("[]") @map("sections")
+  h5Url             String?  @map("h5_url")
+  pdfUrl            String?  @map("pdf_url")
+  aiTaskId          String?  @map("ai_task_id") @db.Uuid
+  reportId          String?  @map("report_id") @db.Uuid // link to Report table
+  creditsCost       Int      @default(0) @map("credits_cost")
+  disclaimer        String   @default("report.disclaimer.ai_reference") @map("disclaimer")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  deletedAt         DateTime? @map("deleted_at")
+
+  profile          OwnerRiskProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, userId, createdAt])
+  @@index([profileId, reportType])
+  @@map("owner_risk_reports")
+}
+
+model OwnerRiskUnlockLog {
+  id                String   @id @default(uuid()) @db.Uuid
+  profileId         String   @map("profile_id") @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  userId            String   @map("user_id") @db.Uuid
+  cardId            String?  @map("card_id") @db.Uuid
+  cardKey           String?  @map("card_key")
+  creditsCharged    Int      @map("credits_charged")
+  status            String   @default("success") // success | failed | refunded
+  traceId           String   @map("trace_id")
+  idempotencyKey    String?  @map("idempotency_key")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  profile          OwnerRiskProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, userId, createdAt])
+  @@index([profileId])
+  @@map("owner_risk_unlock_logs")
+}
+
+model OwnerRiskReviewRequest {
+  id                String   @id @default(uuid()) @db.Uuid
+  profileId         String   @map("profile_id") @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  userId            String   @map("user_id") @db.Uuid
+  reportId          String?  @map("report_id") @db.Uuid
+  reviewType        String   @map("review_type") // human_review | tongqian_consult | expert_consult
+  status            String   @default("pending") // pending | reviewing | completed | rejected
+  ticketId          String?  @map("ticket_id")
+  assignedTo        String?  @map("assigned_to")
+  reviewResult      String?  @map("review_result") @db.Text
+  creditsCost       Int      @default(0) @map("credits_cost")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  completedAt       DateTime? @map("completed_at")
+
+  profile          OwnerRiskProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, status])
+  @@index([profileId])
+  @@map("owner_risk_review_requests")
+}
+
+model OwnerRiskGenerationLog {
+  id                String   @id @default(uuid()) @db.Uuid
+  profileId         String   @map("profile_id") @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  userId            String   @map("user_id") @db.Uuid
+  generationType     String   @map("generation_type") // overview | guarantee_analysis | mixing_analysis | counterparty_analysis | receivable_analysis | report
+  aiTaskId          String?  @map("ai_task_id") @db.Uuid
+  inputSnapshot     Json     @map("input_snapshot")
+  outputSnapshot    Json?    @map("output_snapshot")
+  creditsCost       Int      @map("credits_cost")
+  status            String   @default("success") // success | failed | partial
+  errorCode         String?  @map("error_code")
+  traceId           String   @map("trace_id")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  profile          OwnerRiskProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, userId, createdAt])
+  @@index([profileId])
+  @@map("owner_risk_generation_logs")
+}
+
+model OwnerRiskRuleConfig {
+  id                String   @id @default(uuid()) @db.Uuid
+  ruleKey           String   @unique @map("rule_key")
+  ruleName          String   @map("rule_name")
+  ruleType          String   @map("rule_type") // guarantee_threshold | mixing_indicator | counterparty_risk | receivable_aging
+  configJson        Json     @map("config_json")
+  isActive          Boolean  @default(true) @map("is_active")
+  version           Int      @default(1)
+  updatedBy         String?  @map("updated_by")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@index([ruleType, isActive])
+  @@map("owner_risk_rule_configs")
+}
+
+model OwnerRiskDisclaimer {
+  id                String   @id @default(uuid()) @db.Uuid
+  disclaimerKey     String   @unique @map("disclaimer_key")
+  disclaimerType    String   @map("disclaimer_type") // guarantee | mixing | counterparty | receivable | general
+  content           String   @db.Text
+  version           Int      @default(1)
+  isActive          Boolean  @default(true) @map("is_active")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@index([disclaimerType, isActive])
+  @@map("owner_risk_disclaimers")
+}
+
+// =============================================
+// Market Situation Radar Models
+// =============================================
+
+model MarketSignal {
+  id                String   @id @default(uuid()) @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  userId            String   @map("user_id") @db.Uuid
+  signalType        String   @map("signal_type") // project_hot | party_risk | competitor_active | qualification动态 | policy_window | judicial_risk
+  title             String
+  summary           String   @db.Text
+  region            String
+  businessLine      String?  @map("business_line")
+  riskLevel         String   @default("low") @map("risk_level") // low | medium | high | critical
+  opportunityLevel  String   @default("medium") @map("opportunity_level") // low | medium | high
+  confidence        String   @default("medium") // low | medium | high
+  sourceId          String?  @map("source_id") @db.Uuid
+  sourceUrl         String?  @map("source_url")
+  rawData           Json?    @map("raw_data")
+  impactAnalysis    Json?    @map("impact_analysis")
+  isPublished       Boolean  @default(true) @map("is_published")
+  isFeatured        Boolean  @default(false) @map("is_featured")
+  tierBadge         Int      @default(3) @map("tier_badge")
+  unlockCredits     Int      @default(50) @map("unlock_credits")
+  viewCount         Int      @default(0) @map("view_count")
+  feedbackCount     Int      @default(0) @map("feedback_count")
+  tags              Json     @default("[]") @map("tags")
+  publishedAt       DateTime @default(now()) @map("published_at")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  deletedAt         DateTime? @map("deleted_at")
+
+  source            MarketSignalSource? @relation(fields: [sourceId], references: [id])
+  unlockLogs        MarketSignalUnlockLog[]
+  simulations       MarketSignalSimulation[]
+  reports           MarketSignalReport[]
+  feedbacks         MarketSignalFeedback[]
+  generationLogs    MarketSignalGenerationLog[]
+
+  @@index([tenantId, userId, publishedAt])
+  @@index([region, riskLevel])
+  @@index([signalType, publishedAt])
+  @@map("market_signals")
+}
+
+model MarketSignalSource {
+  id                String   @id @default(uuid()) @db.Uuid
+  sourceName        String   @map("source_name")
+  sourceType        String   @map("source_type") // tender_platform | courtWebsite | creditPlatform | policyWebsite | newsMedia | internal
+  sourceUrl         String?  @map("source_url")
+  region            String
+  dataTypes         Json     @default("[]") @map("data_types")
+  crawlIntervalMin Int      @default(60) @map("crawl_interval_min")
+  isActive          Boolean  @default(true) @map("is_active")
+  lastCrawledAt     DateTime? @map("last_crawled_at")
+  healthStatus      String   @default("unknown") @map("health_status")
+  signals           MarketSignal[]
+
+  @@index([sourceType, isActive])
+  @@map("market_signal_sources")
+}
+
+model MarketSignalTag {
+  id                String   @id @default(uuid()) @db.Uuid
+  tagKey             String   @unique @map("tag_key")
+  tagName           String   @map("tag_name")
+  tagCategory       String   @map("tag_category") // region | industry | risk_type | opportunity_type
+  usageCount        Int      @default(0) @map("usage_count")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  @@index([tagCategory])
+  @@map("market_signal_tags")
+}
+
+model MarketSignalUnlockLog {
+  id                String   @id @default(uuid()) @db.Uuid
+  signalId          String   @map("signal_id") @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  userId            String   @map("user_id") @db.Uuid
+  unlockType        String   @map("unlock_type") // impact_analysis | simulation | report | full
+  creditsCharged    Int      @map("credits_charged")
+  status            String   @default("success") // success | failed | refunded
+  traceId           String   @map("trace_id")
+  idempotencyKey    String?  @map("idempotency_key")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  signal            MarketSignal @relation(fields: [signalId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, userId, createdAt])
+  @@index([signalId])
+  @@map("market_signal_unlock_logs")
+}
+
+model MarketSignalSimulation {
+  id                String   @id @default(uuid()) @db.Uuid
+  signalId          String   @map("signal_id") @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  userId            String   @map("user_id") @db.Uuid
+  simulationType    String   @map("simulation_type") // project_participation | market_impact | risk_spread | opportunity_timing
+  inputParams       Json     @map("input_params")
+  simulationResult  Json     @map("simulation_result")
+  confidence        String   @default("medium")
+  tierBadge         Int      @default(3) @map("tier_badge")
+  aiTaskId          String?  @map("ai_task_id") @db.Uuid
+  creditsCost       Int      @default(0) @map("credits_cost")
+  createdAt         DateTime @default(now()) @map("created_at")
+  deletedAt         DateTime? @map("deleted_at")
+
+  signal            MarketSignal @relation(fields: [signalId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, userId, createdAt])
+  @@index([signalId])
+  @@map("market_signal_simulations")
+}
+
+model MarketSignalReport {
+  id                String   @id @default(uuid()) @db.Uuid
+  signalId          String   @map("signal_id") @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  userId            String   @map("user_id") @db.Uuid
+  reportType        String   @map("report_type") // situation_summary | impact_analysis | participation_recommendation
+  title             String
+  tierBadge         Int      @default(3) @map("tier_badge")
+  confidence        String   @default("medium")
+  executiveSummary  String   @db.Text @map("executive_summary")
+  dataSnapshot      Json     @map("data_snapshot")
+  h5Url             String?  @map("h5_url")
+  pdfUrl            String?  @map("pdf_url")
+  aiTaskId          String?  @map("ai_task_id") @db.Uuid
+  reportId          String?  @map("report_id") @db.Uuid
+  creditsCost       Int      @default(0) @map("credits_cost")
+  disclaimer        String   @default("report.disclaimer.ai_reference") @map("disclaimer")
+  createdAt         DateTime @default(now()) @map("created_at")
+  deletedAt         DateTime? @map("deleted_at")
+
+  signal            MarketSignal @relation(fields: [signalId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, userId, createdAt])
+  @@index([signalId])
+  @@map("market_signal_reports")
+}
+
+model MarketSignalFeedback {
+  id                String   @id @default(uuid()) @db.Uuid
+  signalId          String   @map("signal_id") @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  userId            String   @map("user_id") @db.Uuid
+  feedbackType      String   @map("feedback_type") // accuracy | relevance | usefulness | new_info
+  rating            Int      // 1-5 stars
+  comment           String?  @db.Text
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  signal            MarketSignal @relation(fields: [signalId], references: [id], onDelete: Cascade)
+
+  @@index([signalId, feedbackType])
+  @@index([tenantId, createdAt])
+  @@map("market_signal_feedbacks")
+}
+
+model MarketSignalGenerationLog {
+  id                String   @id @default(uuid()) @db.Uuid
+  signalId          String   @map("signal_id") @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  userId            String   @map("user_id") @db.Uuid
+  generationType    String   @map("generation_type") // summary | impact_analysis | simulation | report
+  aiTaskId          String?  @map("ai_task_id") @db.Uuid
+  inputSnapshot     Json     @map("input_snapshot")
+  outputSnapshot    Json?    @map("output_snapshot")
+  creditsCost       Int      @map("credits_cost")
+  status            String   @default("success") // success | failed | partial
+  errorCode         String?  @map("error_code")
+  traceId           String   @map("trace_id")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  signal            MarketSignal @relation(fields: [signalId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, userId, createdAt])
+  @@index([signalId])
+  @@map("market_signal_generation_logs")
+}
+
+model MarketSignalRuleConfig {
+  id                String   @id @default(uuid()) @db.Uuid
+  ruleKey           String   @unique @map("rule_key")
+  ruleName          String   @map("rule_name")
+  ruleType          String   @map("rule_type") // signal_generation | risk_classification | opportunity_scoring
+  configJson        Json     @map("config_json")
+  isActive          Boolean  @default(true) @map("is_active")
+  version           Int      @default(1)
+  updatedBy         String?  @map("updated_by")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@index([ruleType, isActive])
+  @@map("market_signal_rule_configs")
+}
+
+// =============================================
+// Compliance Models
+// =============================================
+
+model ComplianceSensitiveTerm {
+  id                String   @id @default(uuid()) @db.Uuid
+  termKey           String   @unique @map("term_key")
+  termPattern       String   @map("term_pattern")
+  termCategory      String   @map("term_category") // illegal_activity | unethical | misleading | discriminatory | regulated_content
+  severityLevel     String   @default("medium") @map("severity_level") // low | medium | high | critical
+  description       String?  @db.Text
+  refusalTemplate   String?  @map("refusal_template") @db.Text
+  isActive          Boolean  @default(true) @map("is_active")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@index([termCategory, isActive])
+  @@map("compliance_sensitive_terms")
+}
+
+model ComplianceRefusalTemplate {
+  id                String   @id @default(uuid()) @db.Uuid
+  templateKey       String   @unique @map("template_key")
+  refusalType       String   @map("refusal_type") // red_line_violation | policy_violation |伦理_violation | unverified_claim
+  templateContent   String   @db.Text
+  version           Int      @default(1)
+  isActive          Boolean  @default(true) @map("is_active")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@index([refusalType, isActive])
+  @@map("compliance_refusal_templates")
+}
+
+model AiOutputAuditSample {
+  id                String   @id @default(uuid()) @db.Uuid
+  aiTaskId          String   @map("ai_task_id") @db.Uuid
+  taskType          String   @map("task_type")
+  inputHash         String   @map("input_hash")
+  outputSnapshot    Json     @map("output_snapshot")
+  auditResult       String   @map("audit_result") // approved | flagged | rejected
+  auditReason       String?  @db.Text
+  auditedBy         String?  @map("audited_by") // human | system
+  auditorId         String?  @map("auditor_id") @db.Uuid
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  @@index([taskType, auditResult])
+  @@index([aiTaskId])
+  @@map("ai_output_audit_samples")
+}
+
+model AiComplianceLog {
+  id                String   @id @default(uuid()) @db.Uuid
+  aiTaskId          String   @map("ai_task_id") @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  userId            String   @map("user_id") @db.Uuid
+  checkType         String   @map("check_type") // input_sanitization | output_filtering | red_line_detection | sensitive_term_check
+  checkResult       String   @map("check_result") // pass | block | rewrite | escalate
+  blockedContent    String?  @map("blocked_content") @db.Text
+  rewriteResult     String?  @map("rewrite_result") @db.Text
+  triggeredRules    Json?    @map("triggered_rules")
+  creditsCost       Int      @default(0) @map("credits_cost")
+  traceId           String   @map("trace_id")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, checkType, createdAt])
+  @@index([aiTaskId])
+  @@map("ai_compliance_logs")
+}
+
 model ChatChannelBinding {
   id         String   @id @default(uuid()) @db.Uuid
   userId     String   @map("user_id") @db.Uuid
@@ -3528,8 +4100,8 @@ model PromptGoldenTestRun {
   details       Json
   triggeredAt   DateTime @default(now()) @map("triggered_at")
 
-  @@index([promptName, promptVersion])
-  @@map("prompt_golden_test_runs")
+   @@index([promptName, promptVersion])
+   @@map("prompt_golden_test_runs")
 }
 
 model EmbeddingCache {

@@ -1,0 +1,12 @@
+services:
+  postgres:
+    volumes:
+      - F:/Docker/tongqian/data/pg:/var/lib/postgresql/data
+
+  redis:
+    volumes:
+      - F:/Docker/tongqian/data/redis:/data
+
+  minio:
+    volumes:
+      - F:/Docker/tongqian/data/minio:/data
