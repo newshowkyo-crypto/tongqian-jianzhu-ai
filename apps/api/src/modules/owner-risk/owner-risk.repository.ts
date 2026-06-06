@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import type { Prisma, PrismaClient } from '@prisma/client';
-import { NotFoundError, type ErrorCode } from '@tongqian/errors';
+import { BusinessError, NotFoundError, type ErrorCode } from '@tongqian/errors';
 import type { OwnerRiskCardView, OwnerRiskUnlockLogView, OwnerRiskReportView, CreateOwnerRiskProfileDto, UpdateOwnerRiskProfileDto, OwnerRiskProfileView, OwnerRiskReviewRequestView, ReviewType, OwnerRiskGenerationLogView, OwnerRiskGenerationType, OwnerGuaranteeRecordView, OwnerCompanyMixingRecordView, CounterpartyWatchlistView, CounterpartyRiskEventView, ReceivableRiskRecordView } from '@tongqian/types';
 
 import { BaseRepository } from '../../database/repository/base.repository.js';
@@ -264,7 +264,7 @@ export class OwnerRiskRepository extends BaseRepository {
 
   private toReviewRequestView(row: Awaited<ReturnType<typeof this.prisma.ownerRiskReviewRequest.findFirst>>): OwnerRiskReviewRequestView {
     if (!row) {
-      throw new Error('Review request row is required');
+      throw new BusinessError({ code: 'OWNER_RISK.REPOSITORY.INVALID_ROW' as ErrorCode, message: 'Review request row is required' });
     }
     return {
       id: row.id,
@@ -286,7 +286,7 @@ export class OwnerRiskRepository extends BaseRepository {
 
   private toGenerationLogView(row: Awaited<ReturnType<typeof this.prisma.ownerRiskGenerationLog.findFirst>>): OwnerRiskGenerationLogView {
     if (!row) {
-      throw new Error('Generation log row is required');
+      throw new BusinessError({ code: 'OWNER_RISK.REPOSITORY.INVALID_ROW' as ErrorCode, message: 'Generation log row is required' });
     }
     return {
       id: row.id,
@@ -307,7 +307,7 @@ export class OwnerRiskRepository extends BaseRepository {
 
   private toProfileView(row: Awaited<ReturnType<typeof this.prisma.ownerRiskProfile.findFirst>>): OwnerRiskProfileView {
     if (!row) {
-      throw new Error('Profile row is required');
+      throw new BusinessError({ code: 'OWNER_RISK.REPOSITORY.INVALID_ROW' as ErrorCode, message: 'Profile row is required' });
     }
     return {
       id: row.id,
@@ -330,7 +330,7 @@ export class OwnerRiskRepository extends BaseRepository {
 
   private toCardView(row: Awaited<ReturnType<typeof this.prisma.ownerRiskCard.findFirst>>): OwnerRiskCardView {
     if (!row) {
-      throw new Error('Card row is required');
+      throw new BusinessError({ code: 'OWNER_RISK.REPOSITORY.INVALID_ROW' as ErrorCode, message: 'Card row is required' });
     }
     return {
       cardKey: row.cardKey,
@@ -357,7 +357,7 @@ export class OwnerRiskRepository extends BaseRepository {
 
   private toReportView(row: Awaited<ReturnType<typeof this.prisma.ownerRiskReport.findFirst>>): OwnerRiskReportView {
     if (!row) {
-      throw new Error('Report row is required');
+      throw new BusinessError({ code: 'OWNER_RISK.REPOSITORY.INVALID_ROW' as ErrorCode, message: 'Report row is required' });
     }
     return {
       id: row.id,

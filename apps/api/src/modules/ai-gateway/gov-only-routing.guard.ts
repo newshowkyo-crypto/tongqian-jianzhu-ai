@@ -1,3 +1,5 @@
+import { BusinessError } from '@tongqian/errors';
+
 const chinaProviders = ['aliyun-bailian', 'qwen', 'deepseek'];
 
 export function enforceGovOnlyRouting(input: { isGovTenant: boolean; provider: string }): string {
@@ -8,6 +10,6 @@ export function enforceGovOnlyRouting(input: { isGovTenant: boolean; provider: s
 
 export function assertNoOverseasGovProvider(provider: string): void {
   if (provider.includes('openrouter') || provider.includes('claude') || provider.includes('gpt')) {
-    throw new Error('GOV_OVERSEAS_AI_PROVIDER_FORBIDDEN');
+    throw new BusinessError({ code: 'GOV.AI_PROVIDER.OVERSEAS_FORBIDDEN', httpStatus: 403, message: 'Government workspace cannot use overseas AI providers.' });
   }
 }
