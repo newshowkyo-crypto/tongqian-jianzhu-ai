@@ -1,15 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
-import type { KnowledgeCurationService } from '../../knowledge-curation/knowledge-curation.service.js';
-import type { PromptTestingCurationService } from '../../prompt-testing-curation/prompt-testing-curation.service.js';
-import type { RulesService } from '../../rule-curation/rules.service.js';
+import { KnowledgeCurationService } from '../../knowledge-curation/knowledge-curation.service.js';
+import { PromptTestingCurationService } from '../../prompt-testing-curation/prompt-testing-curation.service.js';
+import { RulesService } from '../../rule-curation/rules.service.js';
 
 @Injectable()
 export class FuelProgressService {
   constructor(
-    private readonly knowledgeService: KnowledgeCurationService,
-    private readonly promptTestingService: PromptTestingCurationService,
-    private readonly rulesService: RulesService,
+    @Inject(KnowledgeCurationService) private readonly knowledgeService: KnowledgeCurationService,
+    @Inject(PromptTestingCurationService) private readonly promptTestingService: PromptTestingCurationService,
+    @Inject(RulesService) private readonly rulesService: RulesService,
   ) {}
 
   get() {

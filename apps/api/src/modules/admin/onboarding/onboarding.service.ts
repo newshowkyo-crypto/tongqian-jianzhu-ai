@@ -1,15 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
-import type { CredentialsService } from '../credentials/credentials.service.js';
-import type { FuelProgressService } from '../fuel-progress/fuel-progress.service.js';
-import type { IcpService } from '../icp/icp.service.js';
+import { CredentialsService } from '../credentials/credentials.service.js';
+import { FuelProgressService } from '../fuel-progress/fuel-progress.service.js';
+import { IcpService } from '../icp/icp.service.js';
 
 @Injectable()
 export class OnboardingService {
   constructor(
-    private readonly credentials: CredentialsService,
-    private readonly fuel: FuelProgressService,
-    private readonly icp: IcpService,
+    @Inject(CredentialsService) private readonly credentials: CredentialsService,
+    @Inject(FuelProgressService) private readonly fuel: FuelProgressService,
+    @Inject(IcpService) private readonly icp: IcpService,
   ) {}
 
   async summary() {

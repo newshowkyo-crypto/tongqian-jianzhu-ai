@@ -1,10 +1,10 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Inject } from '@nestjs/common';
 
-import type { FuelProgressService } from './fuel-progress.service.js';
+import { FuelProgressService } from './fuel-progress.service.js';
 
 @Controller('api/v1/admin/fuel-progress')
 export class FuelProgressController {
-  constructor(private readonly fuelProgress: FuelProgressService) {}
+  constructor(@Inject(FuelProgressService) private readonly fuelProgress: FuelProgressService) {}
 
   @Get()
   get() {
