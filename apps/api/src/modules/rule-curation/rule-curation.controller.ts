@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Patch, Post, Query } from '@nestjs/common';
 
-import type { RulesService } from './rules.service.js';
+import { RulesService } from './rules.service.js';
 
 @Controller('api/v1/admin/rules')
 export class RuleCurationController {
-  constructor(private readonly rules: RulesService) {}
+  constructor(@Inject(RulesService) private readonly rules: RulesService) {}
 
   @Post('extract')
   extract(@Body() body: { files?: Array<{ name: string; text: string }> }) {

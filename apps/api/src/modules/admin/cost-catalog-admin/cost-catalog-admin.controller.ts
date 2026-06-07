@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post, Query } from '@nestjs/common';
 
-import type { CostCatalogService } from '../../cost-catalog/cost-catalog.service.js';
+import { CostCatalogService } from '../../cost-catalog/cost-catalog.service.js';
 
 @Controller('api/v1/admin/cost-catalogs')
 export class CostCatalogAdminController {
-  constructor(private readonly catalogs: CostCatalogService) {}
+  constructor(@Inject(CostCatalogService) private readonly catalogs: CostCatalogService) {}
 
   @Get()
   list() {

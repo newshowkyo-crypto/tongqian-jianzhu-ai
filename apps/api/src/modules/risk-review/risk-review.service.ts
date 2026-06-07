@@ -6,7 +6,7 @@ import { ReportCenterService } from '../report-center/report-center.service.js';
 import { RulesService } from '../rule-curation/rules.service.js';
 import { StorageService } from '../storage/storage.service.js';
 
-import type { RedFlagScanService } from './red-flag-scan.service.js';
+import { RedFlagScanService } from './red-flag-scan.service.js';
 
 interface ReviewInput {
   amountCny?: number;
@@ -27,7 +27,7 @@ export class RiskReviewService {
   constructor(
     @Inject(ReportCenterService) private readonly reportCenter: ReportCenterService,
     @Inject(RulesService) private readonly rules: RulesService,
-    private readonly redFlagScan: RedFlagScanService,
+    @Inject(RedFlagScanService) private readonly redFlagScan: RedFlagScanService,
     @Inject(StorageService) private readonly storage: StorageService,
   ) {}
 

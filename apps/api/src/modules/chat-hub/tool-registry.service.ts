@@ -1,15 +1,15 @@
-import { Injectable, Optional } from '@nestjs/common';
+import { Inject, Injectable, Optional } from '@nestjs/common';
 import { z } from 'zod';
 
-import type { CostCatalogService } from '../cost-catalog/cost-catalog.service.js';
-import type { CostEstimateService } from '../cost-estimate/cost-estimate.service.js';
-import type { PaymentLedgerService } from '../project-site/payment-ledger.service.js';
-import type { ProjectSiteService } from '../project-site/project-site.service.js';
-import type { QualificationService } from '../qualification/qualification.service.js';
-import type { RedFlagScanService } from '../risk-review/red-flag-scan.service.js';
-import type { RulesService } from '../rule-curation/rules.service.js';
-import type { RfpRagService } from '../tender/rfp-rag.service.js';
-import type { TenderService } from '../tender/tender.service.js';
+import { CostCatalogService } from '../cost-catalog/cost-catalog.service.js';
+import { CostEstimateService } from '../cost-estimate/cost-estimate.service.js';
+import { PaymentLedgerService } from '../project-site/payment-ledger.service.js';
+import { ProjectSiteService } from '../project-site/project-site.service.js';
+import { QualificationService } from '../qualification/qualification.service.js';
+import { RedFlagScanService } from '../risk-review/red-flag-scan.service.js';
+import { RulesService } from '../rule-curation/rules.service.js';
+import { RfpRagService } from '../tender/rfp-rag.service.js';
+import { TenderService } from '../tender/tender.service.js';
 
 type ToolContext = { tenantId: string; userId: string };
 type ToolDef = { description: string; handler: (params: unknown, ctx: ToolContext) => Promise<unknown>; name: string; parameters: z.ZodTypeAny };
@@ -17,15 +17,15 @@ type ToolDef = { description: string; handler: (params: unknown, ctx: ToolContex
 @Injectable()
 export class ToolRegistryService {
   constructor(
-    @Optional() private readonly tenderService?: TenderService,
-    @Optional() private readonly qualificationService?: QualificationService,
-    @Optional() private readonly costCatalogService?: CostCatalogService,
-    @Optional() private readonly costEstimateService?: CostEstimateService,
-    @Optional() private readonly rfpRagService?: RfpRagService,
-    @Optional() private readonly projectSiteService?: ProjectSiteService,
-    @Optional() private readonly paymentLedgerService?: PaymentLedgerService,
-    @Optional() private readonly redFlagScanService?: RedFlagScanService,
-    @Optional() private readonly rulesService?: RulesService,
+    @Optional() @Inject(TenderService) private readonly tenderService?: TenderService,
+    @Optional() @Inject(QualificationService) private readonly qualificationService?: QualificationService,
+    @Optional() @Inject(CostCatalogService) private readonly costCatalogService?: CostCatalogService,
+    @Optional() @Inject(CostEstimateService) private readonly costEstimateService?: CostEstimateService,
+    @Optional() @Inject(RfpRagService) private readonly rfpRagService?: RfpRagService,
+    @Optional() @Inject(ProjectSiteService) private readonly projectSiteService?: ProjectSiteService,
+    @Optional() @Inject(PaymentLedgerService) private readonly paymentLedgerService?: PaymentLedgerService,
+    @Optional() @Inject(RedFlagScanService) private readonly redFlagScanService?: RedFlagScanService,
+    @Optional() @Inject(RulesService) private readonly rulesService?: RulesService,
   ) {}
 
   private readonly tools: ToolDef[] = [

@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
-import type { ToolRegistryService } from '../chat-hub/tool-registry.service.js';
+import { ToolRegistryService } from '../chat-hub/tool-registry.service.js';
 
 const templates = {
   bid_prep: ['list_my_tenders', 'search_rfp_chunks', 'query_qualification'],
@@ -12,7 +12,7 @@ const templates = {
 
 @Injectable()
 export class WorkflowOrchestratorService {
-  constructor(private readonly tools: ToolRegistryService) {}
+  constructor(@Inject(ToolRegistryService) private readonly tools: ToolRegistryService) {}
 
   async run(input: { intent: string; tenantId: string; type: keyof typeof templates; userId: string }): Promise<Record<string, unknown>> {
     const steps = templates[input.type].map((toolName, index) => ({ orderIndex: index + 1, params: this.paramsFor(toolName), status: 'pending', toolName }));

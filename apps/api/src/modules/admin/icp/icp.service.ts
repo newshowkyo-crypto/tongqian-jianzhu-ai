@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
-import type { SystemConfigService } from '../../system-config/system-config.service.js';
+import { SystemConfigService } from '../../system-config/system-config.service.js';
 
 type IcpStatus = 'approved' | 'materials_uploaded' | 'not_started' | 'rejected' | 'reviewing' | 'submitted';
 
@@ -35,7 +35,7 @@ const checklist = [
 export class IcpService {
   private state: IcpState = { status: 'not_started', websiteDomains: [] };
 
-  constructor(private readonly configs: SystemConfigService) {}
+  constructor(@Inject(SystemConfigService) private readonly configs: SystemConfigService) {}
 
   get() {
     return { ...this.state, materialsChecklist: checklist };

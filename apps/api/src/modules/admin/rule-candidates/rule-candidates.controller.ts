@@ -1,11 +1,11 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post, Query } from '@nestjs/common';
 
-import type { RulesService } from '../../rule-curation/rules.service.js';
-import type { SecurityComplianceService } from '../../security-compliance/security-compliance.service.js';
+import { RulesService } from '../../rule-curation/rules.service.js';
+import { SecurityComplianceService } from '../../security-compliance/security-compliance.service.js';
 
 @Controller('api/v1/admin/rule-candidates')
 export class RuleCandidatesController {
-  constructor(private readonly rules: RulesService, private readonly security: SecurityComplianceService) {}
+  constructor(@Inject(RulesService) private readonly rules: RulesService, @Inject(SecurityComplianceService) private readonly security: SecurityComplianceService) {}
 
   @Get()
   list(@Query('status') status?: 'approved' | 'pending' | 'rejected', @Query('sourceType') sourceType?: string) {

@@ -1,10 +1,10 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Inject } from '@nestjs/common';
 
-import type { OnboardingService } from './onboarding.service.js';
+import { OnboardingService } from './onboarding.service.js';
 
 @Controller('api/v1/admin/onboarding')
 export class OnboardingController {
-  constructor(private readonly onboarding: OnboardingService) {}
+  constructor(@Inject(OnboardingService) private readonly onboarding: OnboardingService) {}
 
   @Get('summary')
   summary() {

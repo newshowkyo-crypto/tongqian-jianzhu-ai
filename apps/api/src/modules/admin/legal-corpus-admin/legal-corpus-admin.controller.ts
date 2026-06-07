@@ -1,10 +1,10 @@
 import { readFileSync } from 'node:fs';
 
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post, Query } from '@nestjs/common';
 
-import type { LegalCorpusService } from '../../legal-corpus/legal-corpus.service.js';
-import type { RuleFromClauseService } from '../../rule-extraction/rule-from-clause.service.js';
-import type { SecurityComplianceService } from '../../security-compliance/security-compliance.service.js';
+import { LegalCorpusService } from '../../legal-corpus/legal-corpus.service.js';
+import { RuleFromClauseService } from '../../rule-extraction/rule-from-clause.service.js';
+import { SecurityComplianceService } from '../../security-compliance/security-compliance.service.js';
 
 interface CorpusMetadata {
   code: string;
@@ -19,7 +19,7 @@ interface CorpusMetadata {
 
 @Controller('api/v1/admin/legal-corpus')
 export class LegalCorpusAdminController {
-  constructor(private readonly corpus: LegalCorpusService, private readonly generator: RuleFromClauseService, private readonly security: SecurityComplianceService) {}
+  constructor(@Inject(LegalCorpusService) private readonly corpus: LegalCorpusService, @Inject(RuleFromClauseService) private readonly generator: RuleFromClauseService, @Inject(SecurityComplianceService) private readonly security: SecurityComplianceService) {}
 
   @Get()
   list(@Query('status') status?: string, @Query('docType') docType?: string) {

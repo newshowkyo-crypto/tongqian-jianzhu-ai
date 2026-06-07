@@ -1,8 +1,8 @@
 import { createCipheriv, createHash, randomBytes } from 'node:crypto';
 
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
-import type { SystemConfigService } from '../../system-config/system-config.service.js';
+import { SystemConfigService } from '../../system-config/system-config.service.js';
 
 type CredentialMode = 'mock' | 'real';
 
@@ -58,7 +58,7 @@ export class CredentialsService {
   private readonly health = new Map<string, { lastTestAt?: string; latencyMs?: number; ok: boolean; reason?: string }>();
   private readonly modes = new Map<string, CredentialMode>();
 
-  constructor(private readonly configs: SystemConfigService) {}
+  constructor(@Inject(SystemConfigService) private readonly configs: SystemConfigService) {}
 
   async list(): Promise<Array<CredentialDefinition & { audit: CredentialAudit[]; healthCheck: { lastTestAt?: string; latencyMs?: number; ok: boolean; reason?: string }; lastSwitchAt?: string; mode: CredentialMode }>> {
     return definitions.map((item) => {

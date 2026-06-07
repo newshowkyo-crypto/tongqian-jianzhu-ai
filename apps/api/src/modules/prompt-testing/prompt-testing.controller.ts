@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Query } from '@nestjs/common';
+import { Controller, Get, Inject, Post, Query } from '@nestjs/common';
 
-import type { GoldenRunnerService } from './golden-runner.service.js';
+import { GoldenRunnerService } from './golden-runner.service.js';
 
 @Controller('api/v1/admin/prompt-testing')
 export class PromptTestingController {
-  constructor(private readonly goldenRunner: GoldenRunnerService) {}
+  constructor(@Inject(GoldenRunnerService) private readonly goldenRunner: GoldenRunnerService) {}
 
   @Get('golden-sets')
   listGoldenSets() {

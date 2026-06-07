@@ -1,10 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Query } from '@nestjs/common';
 
-import type { KnowledgeCurationService } from './knowledge-curation.service.js';
+import { KnowledgeCurationService } from './knowledge-curation.service.js';
 
 @Controller('api/v1/admin/knowledge')
 export class KnowledgeCurationController {
-  constructor(private readonly knowledge: KnowledgeCurationService) {}
+  constructor(@Inject(KnowledgeCurationService) private readonly knowledge: KnowledgeCurationService) {}
 
   @Post('upload')
   upload(@Body() body: { category: 'case' | 'policy' | 'regulation' | 'rfp' | 'standard' | 'template'; fileName?: string; tags?: string[]; text?: string; title?: string }) {

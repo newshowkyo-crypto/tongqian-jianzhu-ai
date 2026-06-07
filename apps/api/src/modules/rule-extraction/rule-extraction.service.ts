@@ -1,18 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AiCacheStrategy, AiTaskType } from '@tongqian/types';
 import { z } from 'zod';
 
-import type { AiGatewayService } from '../../ai-gateway/ai-gateway.service.js';
+import { AiGatewayService } from '../../ai-gateway/ai-gateway.service.js';
 import { ruleExtractOutputSchema, type RuleExtractInput, type RuleExtractOutput } from '../../prompts/rules/rule-extract.prompt.js';
-import type { RulesService } from '../rule-curation/rules.service.js';
-import type { SecurityComplianceService } from '../security-compliance/security-compliance.service.js';
+import { RulesService } from '../rule-curation/rules.service.js';
+import { SecurityComplianceService } from '../security-compliance/security-compliance.service.js';
 
 @Injectable()
 export class RuleExtractionService {
   constructor(
-    private readonly aiGateway: AiGatewayService,
-    private readonly rulesService: RulesService,
-    private readonly security: SecurityComplianceService,
+    @Inject(AiGatewayService) private readonly aiGateway: AiGatewayService,
+    @Inject(RulesService) private readonly rulesService: RulesService,
+    @Inject(SecurityComplianceService) private readonly security: SecurityComplianceService,
   ) {}
 
   async handleCrawlerCompleted(input: RuleExtractInput): Promise<{ candidates: Array<{ confidence: number; id: string; title: string }>; traceId: string }> {

@@ -1,16 +1,24 @@
 import { Body, Controller, Get, Headers, Inject, Param, Post, Query } from '@nestjs/common';
 
-import type { ChangeOrderService } from './change-order.service.js';
-import type { ClaimRecordService } from './claim-record.service.js';
-import type { PaymentLedgerService } from './payment-ledger.service.js';
-import type { PhotoService } from './photo.service.js';
+import { ChangeOrderService } from './change-order.service.js';
+import { ClaimRecordService } from './claim-record.service.js';
+import { PaymentLedgerService } from './payment-ledger.service.js';
+import { PhotoService } from './photo.service.js';
 import { ProjectSiteService } from './project-site.service.js';
-import type { ScheduleService } from './schedule.service.js';
-import type { TaskBoardService } from './task-board.service.js';
+import { ScheduleService } from './schedule.service.js';
+import { TaskBoardService } from './task-board.service.js';
 
 @Controller('api/v1/projects')
 export class ProjectSiteController {
-  constructor(@Inject(ProjectSiteService) private readonly sites: ProjectSiteService, private readonly schedules: ScheduleService, private readonly photos: PhotoService, private readonly ledgers: PaymentLedgerService, private readonly changes: ChangeOrderService, private readonly claims: ClaimRecordService, private readonly tasks: TaskBoardService) {}
+  constructor(
+    @Inject(ProjectSiteService) private readonly sites: ProjectSiteService,
+    @Inject(ScheduleService) private readonly schedules: ScheduleService,
+    @Inject(PhotoService) private readonly photos: PhotoService,
+    @Inject(PaymentLedgerService) private readonly ledgers: PaymentLedgerService,
+    @Inject(ChangeOrderService) private readonly changes: ChangeOrderService,
+    @Inject(ClaimRecordService) private readonly claims: ClaimRecordService,
+    @Inject(TaskBoardService) private readonly tasks: TaskBoardService,
+  ) {}
 
   @Post()
   create(@Body() body: { name: string; planCode?: string; region?: string; type?: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant', @Headers('x-user-id') userId = 'mock-user'): unknown {

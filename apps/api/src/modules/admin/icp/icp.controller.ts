@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 
-import type { IcpService } from './icp.service.js';
+import { IcpService } from './icp.service.js';
 
 @Controller('api/v1/admin/icp')
 export class IcpController {
-  constructor(private readonly icp: IcpService) {}
+  constructor(@Inject(IcpService) private readonly icp: IcpService) {}
 
   @Get()
   get() {

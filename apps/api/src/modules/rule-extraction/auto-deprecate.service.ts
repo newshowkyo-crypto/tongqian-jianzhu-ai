@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
-import type { SecurityComplianceService } from '../security-compliance/security-compliance.service.js';
+import { SecurityComplianceService } from '../security-compliance/security-compliance.service.js';
 
 export interface DeprecateInput {
   ageInDays: number;
@@ -12,7 +12,7 @@ export interface DeprecateInput {
 
 @Injectable()
 export class AutoDeprecateService {
-  constructor(private readonly security: SecurityComplianceService) {}
+  constructor(@Inject(SecurityComplianceService) private readonly security: SecurityComplianceService) {}
 
   evaluate(rule: DeprecateInput): DeprecateInput & { reason?: string; revertible: true } {
     const replaced = /废止|替代|失效|replaced|deprecated/i.test(rule.sourceText);

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Headers, Inject, Param, Post } from '@nestjs/common';
 
 import { BidProposalService } from './bid-proposal.service.js';
-import type { RfpRagService } from './rfp-rag.service.js';
+import { RfpRagService } from './rfp-rag.service.js';
 import { TenderService } from './tender.service.js';
 
 @Controller('api/v1')
@@ -9,7 +9,7 @@ export class TenderController {
   constructor(
     @Inject(TenderService) private readonly tender: TenderService,
     @Inject(BidProposalService) private readonly bidProposal: BidProposalService,
-    private readonly rfpRag: RfpRagService,
+    @Inject(RfpRagService) private readonly rfpRag: RfpRagService,
   ) {}
 
   @Get('tenders')

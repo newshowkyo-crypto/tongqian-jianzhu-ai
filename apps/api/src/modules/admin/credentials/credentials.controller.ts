@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post, Query } from '@nestjs/common';
 
-import type { CredentialsService } from './credentials.service.js';
+import { CredentialsService } from './credentials.service.js';
 
 @Controller('api/v1/admin/credentials')
 export class CredentialsController {
-  constructor(private readonly credentials: CredentialsService) {}
+  constructor(@Inject(CredentialsService) private readonly credentials: CredentialsService) {}
 
   @Get()
   list() {

@@ -1,10 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
 
-import type { DueDiligenceService } from './due-diligence.service.js';
+import { DueDiligenceService } from './due-diligence.service.js';
 
 @Controller('api/v1/customer-dd')
 export class DueDiligenceController {
-  constructor(private readonly service: DueDiligenceService) {}
+  constructor(@Inject(DueDiligenceService) private readonly service: DueDiligenceService) {}
 
   @Post()
   async run(@Body() body: { companyName: string }) {

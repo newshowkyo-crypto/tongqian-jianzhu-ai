@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Patch, Post, Query } from '@nestjs/common';
 
-import type { PromptTestingCurationService } from './prompt-testing-curation.service.js';
+import { PromptTestingCurationService } from './prompt-testing-curation.service.js';
 
 @Controller('api/v1/admin/golden-tests')
 export class PromptTestingCurationController {
-  constructor(private readonly goldenTests: PromptTestingCurationService) {}
+  constructor(@Inject(PromptTestingCurationService) private readonly goldenTests: PromptTestingCurationService) {}
 
   @Get()
   list(@Query('taskType') taskType?: string) {

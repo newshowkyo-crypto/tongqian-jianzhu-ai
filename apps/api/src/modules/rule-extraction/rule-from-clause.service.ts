@@ -1,23 +1,23 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AiCacheStrategy, AiTaskType } from '@tongqian/types';
 import { z } from 'zod';
 
-import type { AiGatewayService } from '../../ai-gateway/ai-gateway.service.js';
+import { AiGatewayService } from '../../ai-gateway/ai-gateway.service.js';
 import { ruleFromClauseOutputSchema, type RuleFromClauseOutput } from '../../prompts/rules/rule-from-clause.prompt.js';
-import type { LegalCorpusService } from '../legal-corpus/legal-corpus.service.js';
-import type { RuleCandidate, RulesService } from '../rule-curation/rules.service.js';
-import type { SecurityComplianceService } from '../security-compliance/security-compliance.service.js';
+import { LegalCorpusService } from '../legal-corpus/legal-corpus.service.js';
+import { type RuleCandidate, RulesService } from '../rule-curation/rules.service.js';
+import { SecurityComplianceService } from '../security-compliance/security-compliance.service.js';
 
-import type { DedupService } from './dedup.service.js';
+import { DedupService } from './dedup.service.js';
 
 @Injectable()
 export class RuleFromClauseService {
   constructor(
-    private readonly aiGateway: AiGatewayService,
-    private readonly corpusService: LegalCorpusService,
-    private readonly dedupService: DedupService,
-    private readonly rulesService: RulesService,
-    private readonly security: SecurityComplianceService,
+    @Inject(AiGatewayService) private readonly aiGateway: AiGatewayService,
+    @Inject(LegalCorpusService) private readonly corpusService: LegalCorpusService,
+    @Inject(DedupService) private readonly dedupService: DedupService,
+    @Inject(RulesService) private readonly rulesService: RulesService,
+    @Inject(SecurityComplianceService) private readonly security: SecurityComplianceService,
   ) {}
 
   async generateForClause(clauseId: string): Promise<RuleCandidate[]> {

@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post, Query } from '@nestjs/common';
 
-import type { WenshuCsvImporterService } from './wenshu-csv-importer.service.js';
+import { WenshuCsvImporterService } from './wenshu-csv-importer.service.js';
 
 @Controller('api/v1/admin/csv')
 export class GenericCsvImporterController {
-  constructor(private readonly importer: WenshuCsvImporterService) {}
+  constructor(@Inject(WenshuCsvImporterService) private readonly importer: WenshuCsvImporterService) {}
 
   @Post('import')
   async import(@Query('type') type = 'wenshu', @Body() body: Record<string, unknown>): Promise<Record<string, unknown>> {
