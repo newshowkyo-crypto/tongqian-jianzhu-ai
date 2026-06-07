@@ -5,6 +5,7 @@ import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 
 import { AiGatewayModule } from './ai-gateway/ai-gateway.module.js';
+import { TenantContextModule } from './common/context/tenant-context.module.js';
 import { DatabaseModule } from './database/database.module.js';
 import { ActualCostModule } from './modules/actual-cost/actual-cost.module.js';
 import { AddictionModule } from './modules/addiction/addiction.module.js';
@@ -71,8 +72,8 @@ class HealthController {
     ActualCostModule,
     AiGatewayModule,
     AdminModule,
-    AgentWorkspaceModule,
     AdminOpsModule,
+    AgentWorkspaceModule,
     ApprovalModule,
     AuthModule,
     BiModule,
@@ -116,6 +117,7 @@ class HealthController {
     SubscriptionModule,
     SystemConfigModule,
     TenderModule,
+    TenantContextModule,
     UserModule,
     WebhookModule,
   ],
