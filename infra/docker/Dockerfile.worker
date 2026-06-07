@@ -35,6 +35,7 @@ RUN pnpm --filter @tongqian/worker deploy --prod /prod-worker
 RUN src="$(find node_modules/.pnpm -path '*/node_modules/.prisma/client' -type d | head -n 1)" && \
     dest_pkg="$(find /prod-worker/node_modules/.pnpm -maxdepth 1 -type d -name '@prisma+client@*' | head -n 1)" && \
     test -n "$src" && test -n "$dest_pkg" && \
+    rm -rf "$dest_pkg/node_modules/.prisma/client" /prod-worker/node_modules/.prisma/client && \
     mkdir -p "$dest_pkg/node_modules/.prisma" /prod-worker/node_modules/.prisma && \
     cp -R "$src" "$dest_pkg/node_modules/.prisma/client" && \
     cp -R "$src" /prod-worker/node_modules/.prisma/client
