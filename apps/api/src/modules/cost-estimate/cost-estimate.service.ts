@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AiCacheStrategy, AiTaskType } from '@tongqian/types';
 import type {
   ChecklistReviewView,
@@ -10,8 +10,8 @@ import type {
   RoughEstimateView,
 } from '@tongqian/types';
 
-import type { AiGatewayService } from '../../ai-gateway/ai-gateway.service.js';
-import type { CostCatalogService } from '../cost-catalog/cost-catalog.service.js';
+import { AiGatewayService } from '../../ai-gateway/ai-gateway.service.js';
+import { CostCatalogService } from '../cost-catalog/cost-catalog.service.js';
 
 const BASE_PER_SQM: Record<string, number> = {
   civil: 3100,
@@ -32,7 +32,7 @@ export class CostEstimateService {
   private readonly checklistReviews = new Map<string, ChecklistReviewView>();
   private readonly estimates = new Map<string, RoughEstimateView & { tenantId: string }>();
 
-  constructor(private readonly aiGateway: AiGatewayService, private readonly costCatalogService: CostCatalogService) {}
+  constructor(@Inject(AiGatewayService) private readonly aiGateway: AiGatewayService, @Inject(CostCatalogService) private readonly costCatalogService: CostCatalogService) {}
 
   roughEstimate(input: RoughEstimateRequest & { tenantId: string }): RoughEstimateView {
     if (input.areaSqm <= 0) throw new Error('COST.INVALID_AREA');

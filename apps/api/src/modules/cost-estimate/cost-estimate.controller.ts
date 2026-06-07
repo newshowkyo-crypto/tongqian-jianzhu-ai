@@ -1,12 +1,16 @@
 import { Body, Controller, Get, Headers, Inject, Post, Query } from '@nestjs/common';
 
-import type { BudgetEstimatorService } from './budget-estimator.service.js';
+import { BudgetEstimatorService } from './budget-estimator.service.js';
 import { CostEstimateService } from './cost-estimate.service.js';
-import type { RoughQuantityService } from './rough-quantity.service.js';
+import { RoughQuantityService } from './rough-quantity.service.js';
 
 @Controller('api/v1/cost')
 export class CostEstimateController {
-  constructor(@Inject(CostEstimateService) private readonly costs: CostEstimateService, private readonly budgets: BudgetEstimatorService, private readonly roughQuantities: RoughQuantityService) {}
+  constructor(
+    @Inject(CostEstimateService) private readonly costs: CostEstimateService,
+    @Inject(BudgetEstimatorService) private readonly budgets: BudgetEstimatorService,
+    @Inject(RoughQuantityService) private readonly roughQuantities: RoughQuantityService,
+  ) {}
 
   @Post('budget')
   budget(@Body() body: { areaSqm: number; plannedStart?: string; projectName: string; projectType: string; qualityLevel: string; region: string; structureType: string }, @Headers('x-tenant-id') tenantId = 'mock-tenant', @Headers('x-user-id') createdBy = 'mock-user'): unknown {
