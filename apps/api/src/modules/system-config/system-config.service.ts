@@ -21,9 +21,8 @@ export class SystemConfigService {
 
   private readonly cache = new Map<string, unknown>();
   private readonly overrides = new Map<string, SystemConfigRecord>();
+  private readonly reader?: SystemConfigReader;
   private readonly versions = new Map<string, Array<{ at: string; value: unknown; version: number }>>();
-
-  constructor(private readonly reader?: SystemConfigReader) {}
 
   async get<TValue = unknown>(key: string): Promise<TValue | null> {
     if (this.cache.has(key)) {
