@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
-import type { AliyunOcrProvider } from './aliyun-ocr.provider.js';
+import { AliyunOcrProvider } from './aliyun-ocr.provider.js';
 
 type PaperType = 'contract' | 'feasibility' | 'funding' | 'tender';
 
 @Injectable()
 export class PaperDocumentExtractorService {
-  constructor(private readonly ocr: AliyunOcrProvider) {}
+  constructor(@Inject(AliyunOcrProvider) private readonly ocr: AliyunOcrProvider) {}
 
   /** OCRs a paper document and extracts structured fields for founder review. */
   async extract(input: { fileId: string; fileName: string; tenantId: string; type: PaperType }): Promise<Record<string, unknown>> {

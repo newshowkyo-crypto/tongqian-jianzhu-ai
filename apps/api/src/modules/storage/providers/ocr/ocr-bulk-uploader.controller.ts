@@ -1,11 +1,11 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 
-import type { PaperDocumentExtractorService } from './paper-document-extractor.service.js';
+import { PaperDocumentExtractorService } from './paper-document-extractor.service.js';
 
 @Controller('api/v1/admin/ocr')
 export class OcrBulkUploaderController {
   private readonly progress = new Map<string, Record<string, unknown>>();
-  constructor(private readonly extractor: PaperDocumentExtractorService) {}
+  constructor(@Inject(PaperDocumentExtractorService) private readonly extractor: PaperDocumentExtractorService) {}
 
   @Post('upload')
   async upload(@Body() body: Record<string, unknown>): Promise<Record<string, unknown>> {
