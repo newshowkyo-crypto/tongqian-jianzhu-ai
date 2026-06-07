@@ -50,6 +50,7 @@ LABEL org.opencontainers.image.source="https://github.com/newshowkyo-crypto/tong
 ENV NODE_ENV=production
 ENV PORT=4100
 
+RUN apk add --no-cache openssl
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nestjs
 
 COPY --from=builder --chown=nestjs:nodejs /prod-worker ./
