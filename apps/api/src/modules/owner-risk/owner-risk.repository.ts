@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import type { Prisma, PrismaClient } from '@prisma/client';
+import { Inject, Injectable } from '@nestjs/common';
+import { PrismaClient, type Prisma } from '@prisma/client';
 import { BusinessError, NotFoundError, type ErrorCode } from '@tongqian/errors';
 import type { OwnerRiskCardView, OwnerRiskUnlockLogView, OwnerRiskReportView, CreateOwnerRiskProfileDto, UpdateOwnerRiskProfileDto, OwnerRiskProfileView, OwnerRiskReviewRequestView, ReviewType, OwnerRiskGenerationLogView, OwnerRiskGenerationType, OwnerGuaranteeRecordView, OwnerCompanyMixingRecordView, CounterpartyWatchlistView, CounterpartyRiskEventView, ReceivableRiskRecordView } from '@tongqian/types';
 
@@ -7,7 +7,7 @@ import { BaseRepository } from '../../database/repository/base.repository.js';
 
 @Injectable()
 export class OwnerRiskRepository extends BaseRepository {
-  constructor(private readonly prisma: PrismaClient) {
+  constructor(@Inject(PrismaClient) private readonly prisma: PrismaClient) {
     super();
   }
 

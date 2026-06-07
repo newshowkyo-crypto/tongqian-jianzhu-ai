@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import type { PrismaClient ,
+import { Inject, Injectable } from '@nestjs/common';
+import { PrismaClient } from '@prisma/client';
+import type {
   MarketSignal,
   MarketSignalSource,
   MarketSignalTag,
@@ -35,7 +36,7 @@ import { BaseRepository } from '../../database/repository/base.repository.js';
 
 @Injectable()
 export class MarketSituationRepository extends BaseRepository {
-  constructor(private readonly prisma: PrismaClient) {
+  constructor(@Inject(PrismaClient) private readonly prisma: PrismaClient) {
     super();
   }
 
