@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import type { ChatChannel, ChatContext, ChatConversationView, ChatDispatchResult, ChatIntent, ChatMemoryView, ChatMessageView, ChatSendResult } from '@tongqian/types';
 
-import type { ToolRegistryService } from './tool-registry.service.js';
+import { ToolRegistryService } from './tool-registry.service.js';
 
 interface StoredConversation extends ChatConversationView {
   tenantId: string;
@@ -21,7 +21,7 @@ export class ChatHubService {
   private readonly messages = new Map<string, ChatMessageView[]>();
   private readonly summaries = new Map<string, StoredSummary>();
 
-  constructor(private readonly toolRegistry: ToolRegistryService) {}
+  constructor(@Inject(ToolRegistryService) private readonly toolRegistry: ToolRegistryService) {}
 
   createConversation(ctx: ChatContext, title = 'chat.conversation.defaultTitle'): ChatConversationView {
     const now = new Date().toISOString();
