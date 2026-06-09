@@ -13,10 +13,10 @@ export class HealthController {
     this.metrics.increment('tongqian_health_requests_total', { endpoint: '/api/health' });
     return {
       aiProviders: {
-        aliyunDashscope: this.dashscopeReady() ? 'ready:qwen3-max/qwen3-vl-max/text-embedding-v3' : 'mock-ready:qwen3-max/qwen3-vl-max',
-        dashvector: this.envReady('DASHVECTOR_API_KEY') ? 'ready' : 'deferred:mock-semantic-cache',
-        deepseekReasoner: process.env.DEEPSEEK_API_KEY ? 'ready:deepseek-reasoner' : 'mock-ready:deepseek-reasoner',
-        midlayer: this.midlayerReady() ? 'ready' : 'mock-ready',
+        aliyunDashscope: this.dashscopeReady() ? 'ready:qwen3-max/qwen3-vl-max/text-embedding-v3' : 'awaiting-credentials:qwen3-max/qwen3-vl-max',
+        dashvector: this.envReady('DASHVECTOR_API_KEY') ? 'ready' : 'awaiting-credentials:semantic-cache',
+        deepseekReasoner: process.env.DEEPSEEK_API_KEY ? 'ready:deepseek-reasoner' : 'disabled:optional-domestic-fallback',
+        midlayer: this.midlayerReady() ? 'ready:deprecated-fallback' : 'disabled:deprecated',
       },
       db: this.envReady('DATABASE_URL') ? 'ready' : 'mock-ready',
       redis: this.envReady('REDIS_URL') ? 'ready' : 'mock-ready',
@@ -40,8 +40,10 @@ export class HealthController {
     return {
       checks,
       ready: true,
-      status: 'ready',
-      summary: 'Core API is ready; missing P1 providers run in mock mode by policy.',
+      status: this.dashscopeReady() ? 'ready' : 'awaiting_ai_credentials',
+      summary: this.dashscopeReady()
+        ? 'Core API is ready with Aliyun DashScope production AI routing.'
+        : 'Core API is ready; production AI calls require ALIYUN_DASHSCOPE_API_KEY.',
     };
   }
 

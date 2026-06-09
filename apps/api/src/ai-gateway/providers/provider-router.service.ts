@@ -2,21 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { AiProviderCode } from '@tongqian/types';
 
 import type { AiProvider, AiProviderInvokeRequest, AiRawResponse } from './ai-provider.interface.js';
+import { DashScopeProvider } from './dashscope-provider.js';
 import { DeepSeekProvider } from './deepseek-provider.js';
-import { MidlayerProvider } from './midlayer-provider.js';
 import { MockAiProvider } from './mock-provider.js';
 
 @Injectable()
 export class ProviderRouterService {
   private readonly unhealthyUntil = new Map<AiProviderCode, number>();
   private readonly providers: AiProvider[] = [
-    process.env.MIDLAYER_API_KEY
-      ? new MidlayerProvider()
-      : new MockAiProvider(AiProviderCode.MIDLAYER, 1, ['deepseek-reasoner', 'deepseek-chat', 'qwen3-max'], isMidlayerAvailable()),
+    isDashScopeConfigured()
+      ? new DashScopeProvider(AiProviderCode.ALIYUN_DASHSCOPE, 1, ['qwen3-max', 'qwen3-vl-max', 'text-embedding-v3'])
+      : new MockAiProvider(AiProviderCode.ALIYUN_DASHSCOPE, 1, ['qwen3-max', 'qwen3-vl-max', 'text-embedding-v3'], isDashScopeAvailable(), 'ALIYUN_DASHSCOPE_API_KEY missing'),
     process.env.DEEPSEEK_API_KEY
       ? new DeepSeekProvider(AiProviderCode.DEEPSEEK_DIRECT, 99, ['deepseek-reasoner', 'deepseek-chat'])
       : new MockAiProvider(AiProviderCode.DEEPSEEK_DIRECT, 99, ['deepseek-reasoner'], isDeepSeekAvailable()),
-    new MockAiProvider(AiProviderCode.ALIYUN_DASHSCOPE, 2, ['qwen3-max', 'qwen3-vl-max', 'text-embedding-v3'], isDashScopeAvailable()),
+    new MockAiProvider(AiProviderCode.MIDLAYER, 100, ['deepseek-reasoner', 'deepseek-chat', 'qwen3-max'], isMidlayerAvailable(), 'MIDLAYER_API_KEY deprecated for production'),
   ];
 
   async invoke<T>(preferred: AiProviderCode | undefined, request: AiProviderInvokeRequest): Promise<AiRawResponse<T> & { provider: AiProviderCode }> {
@@ -100,12 +100,16 @@ function isConfigured(key: string): boolean {
   return Boolean(value && !value.includes('PLACEHOLDER') && value !== 'sk-xxx');
 }
 
+function isDashScopeConfigured(): boolean {
+  return isConfigured('ALIYUN_DASHSCOPE_API_KEY') || isConfigured('DASHSCOPE_API_KEY');
+}
+
 function isDeepSeekAvailable(): boolean {
   return isConfigured('DEEPSEEK_API_KEY') || process.env.DISABLE_DEEPSEEK_LOCAL_MOCK !== 'true';
 }
 
 function isDashScopeAvailable(): boolean {
-  return isConfigured('ALIYUN_DASHSCOPE_API_KEY') || isConfigured('DASHSCOPE_API_KEY') || process.env.DISABLE_DASHSCOPE_LOCAL_MOCK !== 'true';
+  return isDashScopeConfigured() || process.env.DISABLE_DASHSCOPE_LOCAL_MOCK !== 'true';
 }
 
 function isMidlayerAvailable(): boolean {
