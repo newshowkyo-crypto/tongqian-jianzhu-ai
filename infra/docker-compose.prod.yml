@@ -50,6 +50,16 @@ services:
       TZ: ${TZ:-Asia/Shanghai}
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-tongqian_prod}?schema=public
       REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      ALIYUN_DASHSCOPE_API_KEY: ${ALIYUN_DASHSCOPE_API_KEY:-}
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-}
+      DASHSCOPE_BASE_URL: ${DASHSCOPE_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}
+      DASHVECTOR_ENDPOINT: ${DASHVECTOR_ENDPOINT:-}
+      DASHVECTOR_API_KEY: ${DASHVECTOR_API_KEY:-}
+      DASHVECTOR_COLLECTION: ${DASHVECTOR_COLLECTION:-tongqian_main}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      DISABLE_DASHSCOPE_LOCAL_MOCK: ${DISABLE_DASHSCOPE_LOCAL_MOCK:-true}
+      DISABLE_DEEPSEEK_LOCAL_MOCK: ${DISABLE_DEEPSEEK_LOCAL_MOCK:-true}
+      DISABLE_MIDLAYER_LOCAL_MOCK: ${DISABLE_MIDLAYER_LOCAL_MOCK:-true}
     depends_on:
       postgres:
         condition: service_healthy
@@ -75,6 +85,16 @@ services:
       TZ: ${TZ:-Asia/Shanghai}
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-tongqian_prod}?schema=public
       REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      ALIYUN_DASHSCOPE_API_KEY: ${ALIYUN_DASHSCOPE_API_KEY:-}
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-}
+      DASHSCOPE_BASE_URL: ${DASHSCOPE_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}
+      DASHVECTOR_ENDPOINT: ${DASHVECTOR_ENDPOINT:-}
+      DASHVECTOR_API_KEY: ${DASHVECTOR_API_KEY:-}
+      DASHVECTOR_COLLECTION: ${DASHVECTOR_COLLECTION:-tongqian_main}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      DISABLE_DASHSCOPE_LOCAL_MOCK: ${DISABLE_DASHSCOPE_LOCAL_MOCK:-true}
+      DISABLE_DEEPSEEK_LOCAL_MOCK: ${DISABLE_DEEPSEEK_LOCAL_MOCK:-true}
+      DISABLE_MIDLAYER_LOCAL_MOCK: ${DISABLE_MIDLAYER_LOCAL_MOCK:-true}
     depends_on:
       postgres:
         condition: service_healthy
