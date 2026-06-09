@@ -112,6 +112,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           theme: zhCN.navigation.theme,
         }}
         assistant={<CyberAiOrb currentContext={currentContext} onConvert={async (targetTask) => { await apiClient.chatHub.convert('latest', targetTask); }} onSend={sendAssistantMessage} />}
+        basePath="/admin"
         brand={{ href: '/', title: zhCN.home.title }}
         currentLabel={current?.label}
         currentPath={pathname}
