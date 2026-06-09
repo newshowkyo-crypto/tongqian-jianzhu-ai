@@ -14,8 +14,11 @@ function setDevCookies(response: NextResponse): void {
 
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
-  const normalizedPath = pathname.startsWith(basePath) ? pathname.slice(basePath.length) || '/' : pathname;
-  if (publicPaths.some((path) => normalizedPath === path || normalizedPath.startsWith(`${path}/`))) return NextResponse.next();
+  const normalizedPath = pathname.startsWith(basePath)
+    ? pathname.slice(basePath.length) || '/'
+    : pathname;
+  if (publicPaths.some((path) => normalizedPath === path || normalizedPath.startsWith(`${path}/`)))
+    return NextResponse.next();
 
   const isDev = process.env.NODE_ENV !== 'production';
   const token = request.cookies.get('tq_auth_token')?.value;
@@ -42,7 +45,7 @@ export function middleware(request: NextRequest) {
   if (!allowedRoles.has(role)) {
     const url = request.nextUrl.clone();
     url.pathname = '/forbidden';
-    return NextResponse.rewrite(url);
+    return NextResponse.redirect(url);
   }
   return NextResponse.next();
 }

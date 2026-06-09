@@ -1,6 +1,13 @@
 'use client';
 
-import { type ComponentPropsWithoutRef, type ComponentType, type ReactNode, useEffect, useMemo, useState } from 'react';
+import {
+  type ComponentPropsWithoutRef,
+  type ComponentType,
+  type ReactNode,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 import { Command } from '../primitives/Command.js';
 import { Skeleton, Spinner } from '../primitives/data.js';
@@ -15,9 +22,19 @@ export interface PageLayoutProps extends ComponentPropsWithoutRef<'div'> {
   sidebar?: ReactNode;
 }
 
-export function PageLayout({ children, className, footer, header, sidebar, ...props }: PageLayoutProps): ReactNode {
+export function PageLayout({
+  children,
+  className,
+  footer,
+  header,
+  sidebar,
+  ...props
+}: PageLayoutProps): ReactNode {
   return (
-    <div className={cn('tq-cyber-shell min-h-screen text-[var(--text-primary)]', className)} {...props}>
+    <div
+      className={cn('tq-cyber-shell min-h-screen text-[var(--text-primary)]', className)}
+      {...props}
+    >
       {header}
       <div className="mx-auto grid w-full max-w-7xl gap-6 px-4 py-6 lg:grid-cols-[16rem_1fr] lg:px-6">
         {sidebar ? <aside className="hidden lg:block">{sidebar}</aside> : null}
@@ -44,12 +61,24 @@ export function PageHeader({
   ...props
 }: PageHeaderProps): ReactNode {
   return (
-    <header className={cn('mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between', className)} {...props}>
+    <header
+      className={cn(
+        'mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between',
+        className,
+      )}
+      {...props}
+    >
       <div className="min-w-0 space-y-2">
-        {breadcrumbs ? <div className="text-sm text-[var(--text-secondary)]">{breadcrumbs}</div> : null}
+        {breadcrumbs ? (
+          <div className="text-sm text-[var(--text-secondary)]">{breadcrumbs}</div>
+        ) : null}
         <div className="space-y-1">
-          <h1 className="text-2xl font-semibold tracking-normal text-white">{title}</h1>
-          {description ? <p className="max-w-3xl text-sm text-[var(--text-secondary)]">{description}</p> : null}
+          <h1 className="text-2xl font-semibold tracking-normal text-[var(--text-primary)]">
+            {title}
+          </h1>
+          {description ? (
+            <p className="max-w-3xl text-sm text-[var(--text-secondary)]">{description}</p>
+          ) : null}
         </div>
       </div>
       {actions ? <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div> : null}
@@ -78,17 +107,26 @@ export function SectionCard({
   ...props
 }: SectionCardProps): ReactNode {
   return (
-    <section className={cn(cardClassName, 'transition-shadow duration-200 hover:shadow-md', className)} {...props}>
+    <section
+      className={cn(cardClassName, 'transition-shadow duration-200 hover:shadow-md', className)}
+      {...props}
+    >
       {title || description || actions ? (
         <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-1">
-            {title ? <h2 className="text-base font-semibold text-white">{title}</h2> : null}
-            {description ? <p className="text-sm text-[var(--text-secondary)]">{description}</p> : null}
+            {title ? (
+              <h2 className="text-base font-semibold text-[var(--text-primary)]">{title}</h2>
+            ) : null}
+            {description ? (
+              <p className="text-sm text-[var(--text-secondary)]">{description}</p>
+            ) : null}
           </div>
           {actions ? <div className="flex shrink-0 items-center gap-2">{actions}</div> : null}
         </CardHeader>
       ) : null}
-      <CardContent className={title || description || actions ? '' : 'pt-4'}>{children}</CardContent>
+      <CardContent className={title || description || actions ? '' : 'pt-4'}>
+        {children}
+      </CardContent>
     </section>
   );
 }
@@ -98,7 +136,10 @@ export type FilterBarProps = ComponentPropsWithoutRef<'div'>;
 export function FilterBar({ className, ...props }: FilterBarProps): ReactNode {
   return (
     <div
-      className={cn('tq-cyber-panel flex flex-col gap-2 p-3 sm:flex-row sm:items-center', className)}
+      className={cn(
+        'tq-cyber-panel flex flex-col gap-2 p-3 sm:flex-row sm:items-center',
+        className,
+      )}
       {...props}
     />
   );
@@ -110,11 +151,25 @@ export interface EmptyStateProps extends Omit<ComponentPropsWithoutRef<'div'>, '
   title: ReactNode;
 }
 
-export function EmptyState({ action, className, description, title, ...props }: EmptyStateProps): ReactNode {
+export function EmptyState({
+  action,
+  className,
+  description,
+  title,
+  ...props
+}: EmptyStateProps): ReactNode {
   return (
-    <div className={cn('flex min-h-40 flex-col items-center justify-center rounded-md border border-dashed border-[var(--border-silver)] bg-white/5 p-6 text-center', className)} {...props}>
-      <h3 className="text-sm font-semibold text-white">{title}</h3>
-      {description ? <p className="mt-1 max-w-md text-sm text-[var(--text-secondary)]">{description}</p> : null}
+    <div
+      className={cn(
+        'flex min-h-40 flex-col items-center justify-center rounded-md border border-dashed border-[var(--border-silver)] bg-[var(--bg-glass)] p-6 text-center',
+        className,
+      )}
+      {...props}
+    >
+      <h3 className="text-sm font-semibold text-[var(--text-primary)]">{title}</h3>
+      {description ? (
+        <p className="mt-1 max-w-md text-sm text-[var(--text-secondary)]">{description}</p>
+      ) : null}
       {action ? <div className="mt-4">{action}</div> : null}
     </div>
   );
@@ -125,7 +180,12 @@ export interface LoadingStateProps extends ComponentPropsWithoutRef<'div'> {
   rows?: number;
 }
 
-export function LoadingState({ className, label, rows = 3, ...props }: LoadingStateProps): ReactNode {
+export function LoadingState({
+  className,
+  label,
+  rows = 3,
+  ...props
+}: LoadingStateProps): ReactNode {
   return (
     <div className={cn('tq-cyber-panel space-y-3 p-4', className)} {...props}>
       <div className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
@@ -155,7 +215,13 @@ export function ErrorState({
   ...props
 }: ErrorStateProps): ReactNode {
   return (
-    <div className={cn('rounded-md border border-danger-500/50 bg-danger-500/15 p-4 text-danger-100', className)} {...props}>
+    <div
+      className={cn(
+        'rounded-md border border-danger-200 bg-danger-50 p-4 text-danger-700',
+        className,
+      )}
+      {...props}
+    >
       <h3 className="text-sm font-semibold">{title}</h3>
       {description ? <p className="mt-1 text-sm">{description}</p> : null}
       {onRetry && actionLabel ? (
@@ -210,9 +276,23 @@ export interface TopNavProps extends ComponentPropsWithoutRef<'header'> {
   themeToggle?: ReactNode;
 }
 
-export function TopNav({ avatar, className, notifications, search, tenantSwitcher, themeToggle, ...props }: TopNavProps): ReactNode {
+export function TopNav({
+  avatar,
+  className,
+  notifications,
+  search,
+  tenantSwitcher,
+  themeToggle,
+  ...props
+}: TopNavProps): ReactNode {
   return (
-    <header className={cn('tq-cyber-topbar sticky top-0 z-40 flex h-16 items-center gap-3 px-4', className)} {...props}>
+    <header
+      className={cn(
+        'tq-cyber-topbar sticky top-0 z-40 flex h-16 items-center gap-3 px-4',
+        className,
+      )}
+      {...props}
+    >
       <div className="min-w-0 flex-1">{search}</div>
       {tenantSwitcher}
       {themeToggle}
@@ -280,9 +360,13 @@ export function CyberShell({
   const [openPanel, setOpenPanel] = useState<'avatar' | 'notifications' | 'tenant' | null>(null);
   const [themeMode, setThemeMode] = useState<'dark' | 'light'>('light');
   const toHref = (href: string): string => prefixBasePath(href, basePath);
+  const portalClassName = getPortalClassName(basePath);
 
   const activeItem = useMemo(
-    () => navigation.find((item) => currentPath === item.href || currentPath.startsWith(`${item.href}/`)),
+    () =>
+      navigation.find(
+        (item) => currentPath === item.href || currentPath.startsWith(`${item.href}/`),
+      ),
     [currentPath, navigation],
   );
   const crumb = currentLabel ?? activeItem?.label ?? homeLabel;
@@ -309,7 +393,7 @@ export function CyberShell({
   }
 
   return (
-    <div className="tq-cyber-shell min-h-screen text-[var(--text-primary)]">
+    <div className={cn('tq-cyber-shell min-h-screen text-[var(--text-primary)]', portalClassName)}>
       <header className="tq-cyber-topbar fixed inset-x-0 top-0 z-40 flex h-16 items-center px-4 lg:pl-72">
         <div className="relative flex w-full items-center gap-3">
           <Command placeholder={searchPlaceholder} />
@@ -328,7 +412,9 @@ export function CyberShell({
             onClick={() => togglePanel('notifications')}
             type="button"
           >
-            <span aria-hidden="true" className="text-base leading-none">!</span>
+            <span aria-hidden="true" className="text-base leading-none">
+              !
+            </span>
             <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-[var(--accent-rose)]" />
           </button>
           <button
@@ -341,7 +427,7 @@ export function CyberShell({
           <button
             aria-expanded={openPanel === 'avatar'}
             aria-label={String(actionLabels.avatarTitle ?? actionLabels.avatar)}
-            className="grid h-10 w-10 place-items-center rounded-full bg-[rgba(74,142,255,0.14)] text-sm font-semibold text-[var(--accent-rose)] ring-1 ring-[var(--border-silver)]"
+            className="grid h-10 w-10 place-items-center rounded-full bg-[rgba(201,138,117,0.14)] text-sm font-semibold text-[var(--accent-rose)] ring-1 ring-[var(--border-silver)]"
             onClick={() => togglePanel('avatar')}
             type="button"
           >
@@ -352,30 +438,51 @@ export function CyberShell({
             <div className="absolute right-0 top-12 z-50 w-72 rounded-md border border-[var(--border-silver)] bg-[var(--bg-glass)] p-3 text-sm text-[var(--text-secondary)] shadow-[var(--shadow-card)] backdrop-blur-xl">
               {openPanel === 'tenant' ? (
                 <div className="space-y-2">
-                  <p className="font-semibold text-[var(--text-primary)]">{actionLabels.tenantTitle ?? actionLabels.tenant}</p>
-                  <button className="w-full rounded-md border border-[var(--border-silver)] px-3 py-2 text-left hover:border-[var(--accent-rose)] hover:text-[var(--text-primary)]" type="button">
+                  <p className="font-semibold text-[var(--text-primary)]">
+                    {actionLabels.tenantTitle ?? actionLabels.tenant}
+                  </p>
+                  <button
+                    className="w-full rounded-md border border-[var(--border-silver)] px-3 py-2 text-left hover:border-[var(--accent-rose)] hover:text-[var(--text-primary)]"
+                    type="button"
+                  >
                     {actionLabels.tenant}
                   </button>
                 </div>
               ) : null}
               {openPanel === 'notifications' ? (
                 <div className="space-y-2">
-                  <p className="font-semibold text-[var(--text-primary)]">{actionLabels.notificationsTitle ?? actionLabels.notifications}</p>
-                  <a className="block rounded-md border border-[var(--border-silver)] px-3 py-2 hover:border-[var(--accent-rose)] hover:text-[var(--text-primary)]" href={toHref('/reports')}>
+                  <p className="font-semibold text-[var(--text-primary)]">
+                    {actionLabels.notificationsTitle ?? actionLabels.notifications}
+                  </p>
+                  <a
+                    className="block rounded-md border border-[var(--border-silver)] px-3 py-2 hover:border-[var(--accent-rose)] hover:text-[var(--text-primary)]"
+                    href={toHref('/reports')}
+                  >
                     AI 审计报告已生成
                   </a>
-                  <a className="block rounded-md border border-[var(--border-silver)] px-3 py-2 hover:border-[var(--accent-rose)] hover:text-[var(--text-primary)]" href={toHref('/approvals')}>
+                  <a
+                    className="block rounded-md border border-[var(--border-silver)] px-3 py-2 hover:border-[var(--accent-rose)] hover:text-[var(--text-primary)]"
+                    href={toHref('/approvals')}
+                  >
                     审批队列已更新
                   </a>
                 </div>
               ) : null}
               {openPanel === 'avatar' ? (
                 <div className="space-y-2">
-                  <p className="font-semibold text-[var(--text-primary)]">{actionLabels.avatarTitle ?? actionLabels.avatar}</p>
-                  <a className="block rounded-md border border-[var(--border-silver)] px-3 py-2 hover:border-[var(--accent-rose)] hover:text-[var(--text-primary)]" href={toHref('/settings')}>
+                  <p className="font-semibold text-[var(--text-primary)]">
+                    {actionLabels.avatarTitle ?? actionLabels.avatar}
+                  </p>
+                  <a
+                    className="block rounded-md border border-[var(--border-silver)] px-3 py-2 hover:border-[var(--accent-rose)] hover:text-[var(--text-primary)]"
+                    href={toHref('/settings')}
+                  >
                     账号设置
                   </a>
-                  <button className="w-full rounded-md border border-[var(--border-silver)] px-3 py-2 text-left hover:border-[var(--accent-rose)] hover:text-[var(--text-primary)]" type="button">
+                  <button
+                    className="w-full rounded-md border border-[var(--border-silver)] px-3 py-2 text-left hover:border-[var(--accent-rose)] hover:text-[var(--text-primary)]"
+                    type="button"
+                  >
                     会话已启用
                   </button>
                 </div>
@@ -386,8 +493,13 @@ export function CyberShell({
       </header>
 
       <aside className="tq-cyber-sidebar fixed inset-y-0 left-0 z-50 hidden w-64 p-4 lg:block">
-        <a className="tq-cyber-brand block rounded-lg p-4 text-[var(--text-primary)]" href={toHref(brand.href)}>
-          {brand.eyebrow ? <p className="text-sm font-medium text-[var(--text-secondary)]">{brand.eyebrow}</p> : null}
+        <a
+          className="tq-cyber-brand block rounded-lg p-4 text-[var(--text-primary)]"
+          href={toHref(brand.href)}
+        >
+          {brand.eyebrow ? (
+            <p className="text-sm font-medium text-[var(--text-secondary)]">{brand.eyebrow}</p>
+          ) : null}
           <p className="mt-1 text-base font-semibold">{brand.title}</p>
         </a>
         {tabs?.length ? (
@@ -411,9 +523,16 @@ export function CyberShell({
             const showGroup = item.groupLabel && item.group !== previous?.group;
             return (
               <div key={item.href} className="space-y-1">
-                {showGroup ? <p className="px-3 pt-2 text-[11px] font-semibold uppercase tracking-normal text-[var(--text-muted)]">{item.groupLabel}</p> : null}
+                {showGroup ? (
+                  <p className="px-3 pt-2 text-[11px] font-semibold uppercase tracking-normal text-[var(--text-muted)]">
+                    {item.groupLabel}
+                  </p>
+                ) : null}
                 <a
-                  className={cn('flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium transition-colors', active ? 'tq-cyber-nav-item-active' : 'tq-cyber-nav-item')}
+                  className={cn(
+                    'flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium transition-colors',
+                    active ? 'tq-cyber-nav-item-active' : 'tq-cyber-nav-item',
+                  )}
                   href={toHref(item.href)}
                 >
                   {Icon ? <Icon className="h-4 w-4" /> : null}
@@ -433,7 +552,11 @@ export function CyberShell({
           {navigation.map((item) => {
             const Icon = iconMap[item.icon];
             return (
-              <a key={item.href} className="flex h-11 items-center gap-3 rounded-md px-3 text-sm font-medium text-[var(--text-secondary)]" href={toHref(item.href)}>
+              <a
+                key={item.href}
+                className="flex h-11 items-center gap-3 rounded-md px-3 text-sm font-medium text-[var(--text-secondary)]"
+                href={toHref(item.href)}
+              >
                 {Icon ? <Icon className="h-4 w-4" /> : null}
                 {item.label}
               </a>
@@ -443,10 +566,14 @@ export function CyberShell({
       </details>
 
       <main className="px-4 pb-8 pt-20 lg:pl-72 lg:pr-8">
-        <div className={cn('mx-auto max-w-7xl', rightPanel && 'grid gap-6 xl:grid-cols-[1fr_280px]')}>
+        <div
+          className={cn('mx-auto max-w-7xl', rightPanel && 'grid gap-6 xl:grid-cols-[1fr_280px]')}
+        >
           <section>
             <div className="mb-4 text-sm text-[var(--text-secondary)]">
-              <a className="text-[var(--accent-rose)]" href={toHref(brand.href)}>{homeLabel}</a>
+              <a className="text-[var(--accent-rose)]" href={toHref(brand.href)}>
+                {homeLabel}
+              </a>
               <span className="px-2">/</span>
               <span>{crumb}</span>
             </div>
@@ -458,6 +585,13 @@ export function CyberShell({
       {assistant}
     </div>
   );
+}
+
+function getPortalClassName(basePath: string): string {
+  if (basePath === '/admin') return 'tq-portal-admin';
+  if (basePath === '/agent') return 'tq-portal-agent';
+  if (basePath === '/gov') return 'tq-portal-gov';
+  return 'tq-portal-web';
 }
 
 function prefixBasePath(href: string, basePath: string): string {

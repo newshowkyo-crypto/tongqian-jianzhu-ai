@@ -4,23 +4,23 @@
 [data-theme='light'] {
   --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Inter", "Helvetica Neue", Arial, sans-serif;
   --font-mono: "JetBrains Mono", "Source Code Pro", Menlo, Consolas, monospace;
-  --bg: #f7f9fc;
-  --surface: #ffffff;
-  --surface-muted: #f0f4fa;
-  --text-primary: #0a1d3d;
-  --text-secondary: #3f4a63;
-  --text-muted: #6b7895;
-  --border-silver: #e2e7f0;
-  --accent: #1e5fbf;
-  --accent-rose: #d99880;
-  --primary: #00479b;
-  --primary-container: #1e5fbf;
-  --secondary: #86513d;
-  --on-surface: #191b22;
-  --on-surface-variant: #424752;
-  --outline: #737784;
-  --outline-variant: #c2c6d4;
-  --surface-container-low: #f3f3fc;
+  --bg: #f7f3ee;
+  --surface: #fffaf7;
+  --surface-muted: #f0e7e2;
+  --text-primary: #10233f;
+  --text-secondary: #526073;
+  --text-muted: #7a8089;
+  --border-silver: #d8d3cc;
+  --accent: #10233f;
+  --accent-rose: #c98a75;
+  --primary: #10233f;
+  --primary-container: #203a5d;
+  --secondary: #9e6e72;
+  --on-surface: #10233f;
+  --on-surface-variant: #526073;
+  --outline: #8d8f94;
+  --outline-variant: #d8d3cc;
+  --surface-container-low: #f0e7e2;
 }
 
 [data-theme='dark'] {

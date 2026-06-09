@@ -45,7 +45,10 @@ function PermissionsPanel(): ReactNode {
       <h2 className="text-base font-semibold text-white">{zhCN.permissions.title}</h2>
       <div className="mt-4 space-y-4">
         {zhCN.permissions.items.map((item) => (
-          <label key={item.key} className="flex items-center justify-between gap-4 rounded-md border border-[var(--border-silver)] px-3 py-2 text-sm">
+          <label
+            key={item.key}
+            className="flex items-center justify-between gap-4 rounded-md border border-[var(--border-silver)] px-3 py-2 text-sm"
+          >
             <span>{item.label}</span>
             <input
               aria-label={item.label}
@@ -73,8 +76,13 @@ function LaunchOnboardingButton(): ReactNode {
   });
   const summary = query.data;
   return (
-    <Link className="fixed right-6 top-4 z-50 rounded-md border border-rose-300/60 bg-rose-500/20 px-4 py-2 text-sm font-semibold text-white shadow-card" href="/admin/onboarding">
-      {summary?.ready ? copy.completed : `${copy.badge} (${summary?.readyCount ?? 0}/${summary?.total ?? 3})`}
+    <Link
+      className="fixed right-6 top-4 z-50 rounded-md border border-rose-300/60 bg-rose-500/20 px-4 py-2 text-sm font-semibold text-white shadow-card"
+      href="/onboarding"
+    >
+      {summary?.ready
+        ? copy.completed
+        : `${copy.badge} (${summary?.readyCount ?? 0}/${summary?.total ?? 3})`}
     </Link>
   );
 }
@@ -87,11 +95,23 @@ export function AppShell({ children }: { children: ReactNode }) {
     return <>{children}</>;
   }
 
-  const current = navigationItems.find((item) => pathname === item.href || pathname.startsWith(`${item.href}/`));
+  const current = navigationItems.find(
+    (item) => pathname === item.href || pathname.startsWith(`${item.href}/`),
+  );
 
-  const currentContext: CyberChatPanelProps['currentContext'] = { module: 'dashboard', pathname, resourceId: pathname.split('/').filter(Boolean).at(1) };
-  async function sendAssistantMessage(input: Parameters<NonNullable<CyberChatPanelProps['onSend']>>[0]) {
-    const reply = await apiClient.aiGateway.invoke({ taskType: 'chat.ops', context: { ...input.context, recentMessages: input.messages.slice(-3) }, userInput: input.userInput });
+  const currentContext: CyberChatPanelProps['currentContext'] = {
+    module: 'dashboard',
+    pathname,
+    resourceId: pathname.split('/').filter(Boolean).at(1),
+  };
+  async function sendAssistantMessage(
+    input: Parameters<NonNullable<CyberChatPanelProps['onSend']>>[0],
+  ) {
+    const reply = await apiClient.aiGateway.invoke({
+      taskType: 'chat.ops',
+      context: { ...input.context, recentMessages: input.messages.slice(-3) },
+      userInput: input.userInput,
+    });
     return {
       confidence: 'medium' as const,
       content: reply.text ?? reply.summary ?? '已读取后台上下文。',
@@ -111,7 +131,15 @@ export function AppShell({ children }: { children: ReactNode }) {
           tenantTitle: zhCN.home.title,
           theme: zhCN.navigation.theme,
         }}
-        assistant={<CyberAiOrb currentContext={currentContext} onConvert={async (targetTask) => { await apiClient.chatHub.convert('latest', targetTask); }} onSend={sendAssistantMessage} />}
+        assistant={
+          <CyberAiOrb
+            currentContext={currentContext}
+            onConvert={async (targetTask) => {
+              await apiClient.chatHub.convert('latest', targetTask);
+            }}
+            onSend={sendAssistantMessage}
+          />
+        }
         basePath="/admin"
         brand={{ href: '/', title: zhCN.home.title }}
         currentLabel={current?.label}
