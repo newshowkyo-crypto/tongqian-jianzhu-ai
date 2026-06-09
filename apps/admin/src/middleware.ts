@@ -23,25 +23,25 @@ export function middleware(request: NextRequest) {
 
   if (isDev && (!token || !allowedRoles.has(role))) {
     const url = request.nextUrl.clone();
-    if (normalizedPath === '/') url.pathname = `${basePath}/dashboard`;
+    if (normalizedPath === '/') url.pathname = '/dashboard';
     const response = normalizedPath === '/' ? NextResponse.redirect(url) : NextResponse.next();
     setDevCookies(response);
     return response;
   }
   if (isDev && normalizedPath === '/') {
     const url = request.nextUrl.clone();
-    url.pathname = `${basePath}/dashboard`;
+    url.pathname = '/dashboard';
     return NextResponse.redirect(url);
   }
   if (!token) {
     const url = request.nextUrl.clone();
-    url.pathname = `${basePath}/login`;
+    url.pathname = '/login';
     url.searchParams.set('next', normalizedPath);
     return NextResponse.redirect(url);
   }
   if (!allowedRoles.has(role)) {
     const url = request.nextUrl.clone();
-    url.pathname = `${basePath}/forbidden`;
+    url.pathname = '/forbidden';
     return NextResponse.rewrite(url);
   }
   return NextResponse.next();
