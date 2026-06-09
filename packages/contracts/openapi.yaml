@@ -9,6 +9,8 @@ info:
 servers:
   - url: /api/v1
     description: Default API base path
+security:
+  - bearerAuth: []
 tags:
   - name: Health
     description: Service health endpoints.
@@ -495,31 +497,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-    get:
-      tags:
-        - Owner Risk Radar
-      operationId: listOwnerRiskReviewRequests
-      summary: List owner risk review requests
-      parameters:
-        - name: x-tenant-id
-          in: header
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: List of review requests.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OwnerRiskReviewRequestListResponse'
-        '4XX':
-          description: Request failed.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
   /market-situation/signals:
     get:
       tags:
@@ -1057,6 +1034,11 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     HealthResponse:
       type: object
@@ -1426,6 +1408,28 @@ components:
         message:
           type: string
           example: Report created
+        traceId:
+          type: string
+
+    OwnerRiskReportListResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - data
+        - message
+        - traceId
+      properties:
+        code:
+          type: string
+          example: OK
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/OwnerRiskReportView'
+        message:
+          type: string
+          example: Reports listed
         traceId:
           type: string
 
