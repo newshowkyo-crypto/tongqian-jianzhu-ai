@@ -609,6 +609,5 @@ function prefixBasePath(href: string, basePath: string): string {
   const normalizedBasePath = basePath.endsWith('/') ? basePath.slice(0, -1) : basePath;
   if (href === '/') return normalizedBasePath || '/';
   if (!href.startsWith('/')) return href;
-  if (href === normalizedBasePath || href.startsWith(`${normalizedBasePath}/`)) return href;
   return `${normalizedBasePath}${href}`;
 }
