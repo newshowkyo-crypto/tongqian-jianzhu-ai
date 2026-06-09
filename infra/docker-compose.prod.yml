@@ -112,7 +112,7 @@ services:
       PORT: 3000
       TZ: ${TZ:-Asia/Shanghai}
     ports:
-      - '${WEB_PORT:-3000}:3000'
+      - '127.0.0.1:${WEB_PORT:-3000}:3000'
     healthcheck:
       test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:3000/ || exit 1']
       interval: 30s
@@ -131,7 +131,7 @@ services:
       PORT: 3000
       TZ: ${TZ:-Asia/Shanghai}
     ports:
-      - '${GOV_PORT:-3003}:3000'
+      - '127.0.0.1:${GOV_PORT:-3003}:3000'
     healthcheck:
       test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:3000/gov/ || exit 1']
       interval: 30s
@@ -150,7 +150,7 @@ services:
       PORT: 3000
       TZ: ${TZ:-Asia/Shanghai}
     ports:
-      - '${AGENT_PORT:-3002}:3000'
+      - '127.0.0.1:${AGENT_PORT:-3002}:3000'
     healthcheck:
       test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:3000/agent/ || exit 1']
       interval: 30s
@@ -169,7 +169,7 @@ services:
       PORT: 3000
       TZ: ${TZ:-Asia/Shanghai}
     ports:
-      - '${ADMIN_PORT:-3001}:3000'
+      - '127.0.0.1:${ADMIN_PORT:-3001}:3000'
     healthcheck:
       test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:3000/admin/ || exit 1']
       interval: 30s
