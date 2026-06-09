@@ -4,6 +4,7 @@ const publicPaths = ['/login', '/forbidden'];
 const allowedRoles = new Set(['agent', 'platform_owner']);
 const DEV_TOKEN = 'dev-agent';
 const DEV_ROLE = 'agent';
+const basePath = '/agent';
 
 function setDevCookies(response: NextResponse): void {
   const expires = 60 * 60 * 24 * 7;
@@ -13,7 +14,8 @@ function setDevCookies(response: NextResponse): void {
 
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
-  if (publicPaths.some((path) => pathname === path || pathname.startsWith(`${path}/`))) return NextResponse.next();
+  const normalizedPath = pathname.startsWith(basePath) ? pathname.slice(basePath.length) || '/' : pathname;
+  if (publicPaths.some((path) => normalizedPath === path || normalizedPath.startsWith(`${path}/`))) return NextResponse.next();
 
   const isDev = process.env.NODE_ENV !== 'production';
   const token = request.cookies.get('tq_auth_token')?.value;
@@ -21,25 +23,25 @@ export function middleware(request: NextRequest) {
 
   if (isDev && (!token || !allowedRoles.has(role))) {
     const url = request.nextUrl.clone();
-    if (pathname === '/') url.pathname = '/dashboard';
-    const response = pathname === '/' ? NextResponse.redirect(url) : NextResponse.next();
+    if (normalizedPath === '/') url.pathname = `${basePath}/dashboard`;
+    const response = normalizedPath === '/' ? NextResponse.redirect(url) : NextResponse.next();
     setDevCookies(response);
     return response;
   }
-  if (isDev && pathname === '/') {
+  if (isDev && normalizedPath === '/') {
     const url = request.nextUrl.clone();
-    url.pathname = '/dashboard';
+    url.pathname = `${basePath}/dashboard`;
     return NextResponse.redirect(url);
   }
   if (!token) {
     const url = request.nextUrl.clone();
-    url.pathname = '/login';
-    url.searchParams.set('next', pathname);
+    url.pathname = `${basePath}/login`;
+    url.searchParams.set('next', normalizedPath);
     return NextResponse.redirect(url);
   }
   if (!allowedRoles.has(role)) {
     const url = request.nextUrl.clone();
-    url.pathname = '/forbidden';
+    url.pathname = `${basePath}/forbidden`;
     return NextResponse.rewrite(url);
   }
   return NextResponse.next();
