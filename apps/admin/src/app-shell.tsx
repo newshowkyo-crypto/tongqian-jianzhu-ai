@@ -78,7 +78,7 @@ function LaunchOnboardingButton(): ReactNode {
   return (
     <Link
       className="fixed right-6 top-4 z-50 rounded-md border border-rose-300/60 bg-rose-500/20 px-4 py-2 text-sm font-semibold text-white shadow-card"
-      href="/onboarding"
+      href="/admin/onboarding"
     >
       {summary?.ready
         ? copy.completed
