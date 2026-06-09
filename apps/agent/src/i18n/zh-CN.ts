@@ -50,7 +50,7 @@ export const zhCN = {
     items: [
       { href: '/dispatch', icon: 'dispatch', label: '派单大厅' },
       { href: '/reputation', icon: 'reputation', label: '信誉看板' },
-      { href: '/reports', icon: 'reports', label: '服务报告' },
+      { href: '/orders/history', icon: 'reports', label: '服务报告' },
       { href: '/earnings', icon: 'earnings', label: '收益提现' },
       { href: '/workspace', icon: 'workspace', label: '客户工作台' },
       { href: '/settings', icon: 'settings', label: '设置' },
