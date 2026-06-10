@@ -5,11 +5,20 @@ const allowedRoles = new Set(['platform_owner']);
 const DEV_TOKEN = 'dev-admin';
 const DEV_ROLE = 'platform_owner';
 const basePath = '/admin';
+const loginRole = 'admin';
 
 function setDevCookies(response: NextResponse): void {
   const expires = 60 * 60 * 24 * 7;
   response.cookies.set('tq_auth_token', DEV_TOKEN, { maxAge: expires, path: '/', sameSite: 'lax' });
   response.cookies.set('tq_role', DEV_ROLE, { maxAge: expires, path: '/', sameSite: 'lax' });
+}
+
+function redirectToUnifiedLogin(request: NextRequest, normalizedPath: string): NextResponse {
+  const nextPath = normalizedPath === '/' ? `${basePath}/dashboard` : `${basePath}${normalizedPath}`;
+  const url = new URL('/Boss/login', request.url);
+  url.searchParams.set('role', loginRole);
+  url.searchParams.set('next', nextPath);
+  return NextResponse.redirect(url);
 }
 
 export function middleware(request: NextRequest) {
@@ -37,15 +46,10 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
   if (!token) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/login';
-    url.searchParams.set('next', normalizedPath);
-    return NextResponse.redirect(url);
+    return redirectToUnifiedLogin(request, normalizedPath);
   }
   if (!allowedRoles.has(role)) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/forbidden';
-    return NextResponse.redirect(url);
+    return redirectToUnifiedLogin(request, normalizedPath);
   }
   return NextResponse.next();
 }

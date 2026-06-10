@@ -355,8 +355,28 @@ body::after {
 }
 
 [data-theme='dark'] .tq-cyber-shell .bg-white,
+[data-theme='dark'] .tq-cyber-shell .bg-white\/95,
+[data-theme='dark'] .tq-cyber-shell .bg-white\/90,
+[data-theme='dark'] .tq-cyber-shell .bg-white\/80,
+[data-theme='dark'] .tq-cyber-shell .bg-white\/70,
+[data-theme='dark'] .tq-cyber-shell .bg-white\/60,
+[data-theme='dark'] .tq-cyber-shell .bg-white\/55,
 [data-theme='dark'] .tq-cyber-shell .bg-neutral-50,
-[data-theme='dark'] .tq-cyber-shell .bg-gray-50 {
+[data-theme='dark'] .tq-cyber-shell .bg-neutral-100,
+[data-theme='dark'] .tq-cyber-shell .bg-neutral-200,
+[data-theme='dark'] .tq-cyber-shell .bg-gray-50,
+[data-theme='dark'] .tq-cyber-shell .bg-gray-100,
+[data-theme='dark'] .tq-cyber-shell .bg-gray-200,
+[data-theme='dark'] .tq-cyber-shell .bg-slate-50,
+[data-theme='dark'] .tq-cyber-shell .bg-slate-100,
+[data-theme='dark'] .tq-cyber-shell .bg-slate-200,
+[data-theme='dark'] .tq-cyber-shell .bg-zinc-50,
+[data-theme='dark'] .tq-cyber-shell .bg-zinc-100,
+[data-theme='dark'] .tq-cyber-shell .bg-zinc-200,
+[data-theme='dark'] .tq-cyber-shell [class*='bg-[#fffaf7]'],
+[data-theme='dark'] .tq-cyber-shell [class*='bg-[#f7f3ee]'],
+[data-theme='dark'] .tq-cyber-shell [class*='bg-[#f0e7e2]'],
+[data-theme='dark'] .tq-cyber-shell [class*='bg-[#ffffff]'] {
   background-color: rgba(11, 25, 45, 0.9) !important;
   border-color: rgba(216, 211, 204, 0.26) !important;
   color: #fffaf7 !important;
@@ -392,19 +412,45 @@ body::after {
 [data-theme='dark'] .tq-cyber-shell .text-neutral-950,
 [data-theme='dark'] .tq-cyber-shell .text-neutral-900,
 [data-theme='dark'] .tq-cyber-shell .text-neutral-800,
+[data-theme='dark'] .tq-cyber-shell .text-zinc-950,
+[data-theme='dark'] .tq-cyber-shell .text-zinc-900,
+[data-theme='dark'] .tq-cyber-shell .text-zinc-800,
+[data-theme='dark'] .tq-cyber-shell .text-slate-950,
+[data-theme='dark'] .tq-cyber-shell .text-slate-900,
+[data-theme='dark'] .tq-cyber-shell .text-slate-800,
+[data-theme='dark'] .tq-cyber-shell .text-gray-950,
+[data-theme='dark'] .tq-cyber-shell .text-gray-900,
+[data-theme='dark'] .tq-cyber-shell .text-gray-800,
+[data-theme='dark'] .tq-cyber-shell .text-black,
+[data-theme='dark'] .tq-cyber-shell .text-navy,
+[data-theme='dark'] .tq-cyber-shell .text-navy-deepest,
 [data-theme='dark'] .tq-cyber-shell .text-primary-950,
-[data-theme='dark'] .tq-cyber-shell .text-primary-900 {
+[data-theme='dark'] .tq-cyber-shell .text-primary-900,
+[data-theme='dark'] .tq-cyber-shell [class*='text-[#10233f]'] {
   color: #fffaf7 !important;
 }
 
 [data-theme='dark'] .tq-cyber-shell .text-neutral-700,
 [data-theme='dark'] .tq-cyber-shell .text-neutral-600,
-[data-theme='dark'] .tq-cyber-shell .text-gray-700 {
+[data-theme='dark'] .tq-cyber-shell .text-zinc-700,
+[data-theme='dark'] .tq-cyber-shell .text-zinc-600,
+[data-theme='dark'] .tq-cyber-shell .text-slate-700,
+[data-theme='dark'] .tq-cyber-shell .text-slate-600,
+[data-theme='dark'] .tq-cyber-shell .text-gray-700,
+[data-theme='dark'] .tq-cyber-shell .text-gray-600 {
   color: #d8d3cc !important;
 }
 
 [data-theme='dark'] .tq-cyber-shell .text-neutral-500,
-[data-theme='dark'] .tq-cyber-shell .text-gray-500 {
+[data-theme='dark'] .tq-cyber-shell .text-neutral-400,
+[data-theme='dark'] .tq-cyber-shell .text-zinc-500,
+[data-theme='dark'] .tq-cyber-shell .text-zinc-400,
+[data-theme='dark'] .tq-cyber-shell .text-slate-500,
+[data-theme='dark'] .tq-cyber-shell .text-slate-400,
+[data-theme='dark'] .tq-cyber-shell .text-gray-500,
+[data-theme='dark'] .tq-cyber-shell .text-gray-400,
+[data-theme='dark'] .tq-cyber-shell [class*='text-[#526073]'],
+[data-theme='dark'] .tq-cyber-shell [class*='text-[#7a8089]'] {
   color: #afc6d6 !important;
 }
 
@@ -429,9 +475,20 @@ body::after {
 }
 
 [data-theme='dark'] .tq-cyber-shell .border-neutral-200,
+[data-theme='dark'] .tq-cyber-shell .border-neutral-300,
+[data-theme='dark'] .tq-cyber-shell .border-gray-200,
+[data-theme='dark'] .tq-cyber-shell .border-gray-300,
+[data-theme='dark'] .tq-cyber-shell .border-zinc-200,
+[data-theme='dark'] .tq-cyber-shell .border-zinc-300,
+[data-theme='dark'] .tq-cyber-shell .border-slate-200,
+[data-theme='dark'] .tq-cyber-shell .border-slate-300,
+[data-theme='dark'] .tq-cyber-shell .border-silver-light,
 [data-theme='dark'] .tq-cyber-shell .border-primary-100,
+[data-theme='dark'] .tq-cyber-shell .border-primary-200,
 [data-theme='dark'] .tq-cyber-shell .border-danger-100,
+[data-theme='dark'] .tq-cyber-shell .border-danger-200,
 [data-theme='dark'] .tq-cyber-shell .border-warning-100,
+[data-theme='dark'] .tq-cyber-shell .border-warning-200,
 [data-theme='dark'] .tq-cyber-shell .border-success-100 {
   border-color: rgba(216, 211, 204, 0.26) !important;
 }
