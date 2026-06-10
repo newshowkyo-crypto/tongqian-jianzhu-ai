@@ -731,7 +731,7 @@ export function createApiClient(options: ApiClientOptions = {}) {
       const traceId = error.response?.data?.traceId ?? String(error.response?.headers?.[traceHeader] ?? '');
       if (status === 401) {
         options.onUnauthorized?.();
-        if (typeof window !== 'undefined') window.location.href = '/login';
+        if (typeof window !== 'undefined') window.location.href = resolveUnauthorizedLoginHref();
       } else if (status === 422) {
         options.onFriendlyError?.(error.response?.data?.message ?? 'Request parameters need review.', traceId);
       } else if (status && status >= 500) {
@@ -1661,6 +1661,22 @@ function delay<T>(value: T): Promise<T> {
 
 function readBrowserToken(): string | undefined {
   return readBrowserValue('tongqian.jwt');
+}
+
+function resolveUnauthorizedLoginHref(): string {
+  const current = `${window.location.pathname}${window.location.search}`;
+  if (window.location.pathname.endsWith('/login')) return window.location.pathname;
+  const next = encodeURIComponent(current);
+  if (window.location.pathname === '/admin' || window.location.pathname.startsWith('/admin/')) {
+    return `/Boss/login?role=admin&next=${next}`;
+  }
+  if (window.location.pathname === '/agent' || window.location.pathname.startsWith('/agent/')) {
+    return `/Boss/login?role=agent&next=${next}`;
+  }
+  if (window.location.pathname === '/gov' || window.location.pathname.startsWith('/gov/')) {
+    return `/Boss/login?role=gov&next=${next}`;
+  }
+  return `/Boss/login?next=${next}`;
 }
 
 function readBrowserValue(key: string): string | undefined {

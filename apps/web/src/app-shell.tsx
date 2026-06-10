@@ -58,9 +58,27 @@ const navigationItems: CyberShellNavigationItem[] = zhCN.navigation.items.map((i
 }));
 const cyberImportCheck: CyberHeroProps['className'] = 'web-cyber-shell';
 void cyberImportCheck;
+const basePath = '/Boss';
+
+function toBossHref(href: string): string {
+  if (
+    href.startsWith('http://') ||
+    href.startsWith('https://') ||
+    href.startsWith('#') ||
+    href.startsWith('mailto:') ||
+    href.startsWith('tel:')
+  ) {
+    return href;
+  }
+  if (href === '/') return basePath;
+  return `${basePath}${href.startsWith('/') ? href : `/${href}`}`;
+}
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const pathname = usePathname();
+  const rawPathname = usePathname();
+  const pathname = rawPathname.startsWith(basePath)
+    ? rawPathname.slice(basePath.length) || '/'
+    : rawPathname;
   const isPublic = pathname === '/login' || pathname === '/forbidden';
 
   if (isPublic) {
@@ -99,7 +117,8 @@ export function AppShell({ children }: { children: ReactNode }) {
         tenantTitle: zhCN.brand.name,
         theme: zhCN.navigation.theme,
       }}
-      assistant={<CyberAiOrb currentContext={currentContext} onConvert={async (targetTask) => { const reply = await apiClient.chatHub.convert('latest', targetTask); if (typeof window !== 'undefined') window.location.href = `/${targetTask === 'risk-review' ? 'contracts' : targetTask}s/${reply.taskId}`; }} onSend={sendAssistantMessage} />}
+      assistant={<CyberAiOrb currentContext={currentContext} onConvert={async (targetTask) => { const reply = await apiClient.chatHub.convert('latest', targetTask); if (typeof window !== 'undefined') window.location.href = toBossHref(`/${targetTask === 'risk-review' ? 'contracts' : targetTask}s/${reply.taskId}`); }} onSend={sendAssistantMessage} />}
+      basePath={basePath}
       brand={{ eyebrow: zhCN.brand.name, href: '/dashboard', title: zhCN.brand.subBrand }}
       currentLabel={current?.label}
       currentPath={pathname}
