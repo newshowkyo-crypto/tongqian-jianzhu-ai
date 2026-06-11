@@ -21,28 +21,28 @@ export class AuthController {
   ) {}
 
   @Post('register')
-  register(@Body() body: RegistrationInput): unknown {
-    return { code: 'OK', data: this.registration.register(body), message: 'Registered', traceId: crypto.randomUUID() };
+  async register(@Body() body: RegistrationInput): Promise<unknown> {
+    return { code: 0, data: await this.registration.register(body), message: 'Registered', traceId: crypto.randomUUID() };
   }
 
   @Post('login')
-  login(@Body() body: LoginInput): unknown {
-    return { code: 'OK', data: this.loginService.login(body), message: 'Logged in', traceId: crypto.randomUUID() };
+  async login(@Body() body: LoginInput): Promise<unknown> {
+    return { code: 0, data: await this.loginService.login(body), message: 'Logged in', traceId: crypto.randomUUID() };
   }
 
   @Post('refresh')
   refresh(@Body() body: { refreshToken: string }): unknown {
-    return { code: 'OK', data: this.jwt.refresh(body.refreshToken), message: 'Refreshed', traceId: crypto.randomUUID() };
+    return { code: 0, data: this.jwt.refresh(body.refreshToken), message: 'Refreshed', traceId: crypto.randomUUID() };
   }
 
   @Post('logout')
   logout(@Body() body: { refreshToken: string }): unknown {
     this.jwt.revoke(body.refreshToken);
-    return { code: 'OK', data: { revoked: true }, message: 'Logged out', traceId: crypto.randomUUID() };
+    return { code: 0, data: { revoked: true }, message: 'Logged out', traceId: crypto.randomUUID() };
   }
 
   @Post('consents/oversea-model')
   grantOverseaModelConsent(@Headers('x-user-id') userId = 'mock-user'): unknown {
-    return { code: 'OK', data: this.consent.grant(userId), message: 'Consent granted', traceId: crypto.randomUUID() };
+    return { code: 0, data: this.consent.grant(userId), message: 'Consent granted', traceId: crypto.randomUUID() };
   }
 }

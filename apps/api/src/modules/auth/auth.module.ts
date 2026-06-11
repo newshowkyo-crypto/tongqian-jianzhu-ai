@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 
+import { AuthAccountRepository } from './auth-account.repository.js';
 import { AuthController } from './auth.controller.js';
 import { OverseaModelConsentService } from './consent/oversea-model-consent.service.js';
 import { JwtTokenService } from './login/jwt.service.js';
@@ -17,9 +18,10 @@ import { UnifiedRegistrationService } from './registration/unified-registration.
 
 @Module({
   controllers: [AuthController],
-  exports: [OverseaModelConsentService, PlatformUserService, TwoFactorService],
+  exports: [AuthAccountRepository, OverseaModelConsentService, PlatformUserService, TwoFactorService],
   providers: [
     AgentRegistrationService,
+    AuthAccountRepository,
     AttributionService,
     BuildingCompanyRegistrationService,
     ConflictDetectorService,

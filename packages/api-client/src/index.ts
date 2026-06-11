@@ -1,10 +1,54 @@
 import axios, { type AxiosError, type AxiosInstance, type AxiosResponse } from 'axios';
 
 export interface ApiEnvelope<TData> {
-  code: string;
+  code: number | string;
   data: TData;
   message: string;
   traceId: string;
+}
+
+export type AuthRegistrationRole = 'AGENT' | 'BUILDING_COMPANY_USER' | 'GOV_USER' | 'PLATFORM';
+export type AuthDashboardKey = 'admin' | 'agent' | 'doc_staff' | 'finance' | 'gov' | 'owner' | 'pm' | 'tender_writer';
+
+export interface AuthRegisterInput {
+  agentSubtype?: string;
+  domain?: string;
+  name: string;
+  password?: string;
+  phone: string;
+  ref?: string;
+  role: AuthRegistrationRole;
+  smsCode?: string;
+  socialCreditCode?: string;
+  unionId?: string;
+}
+
+export interface AuthRegistrationResult {
+  approvalRequired: boolean;
+  defaultDashboard: AuthDashboardKey | string;
+  status: 'active' | 'pending_review' | 'training';
+  tenantId: string;
+  userId: string;
+}
+
+export interface AuthLoginInput {
+  deviceId?: string;
+  ip?: string;
+  password?: string;
+  phone: string;
+  smsCode?: string;
+  twoFactorCode?: string;
+}
+
+export interface AuthLoginResult {
+  accessToken: string;
+  accessTokenExpiresAt: string;
+  defaultDashboard: AuthDashboardKey | string;
+  deviceId?: string;
+  refreshToken: string;
+  refreshTokenExpiresAt: string;
+  tenantId: string;
+  userId: string;
 }
 
 export type CredentialMode = 'mock' | 'real';
@@ -744,6 +788,7 @@ export function createApiClient(options: ApiClientOptions = {}) {
 
   return {
     admin: createAdminApi(http, mock),
+    auth: createAuthApi(http, mock),
     ai: createAiApi(http, mock),
     aiGateway: createAiGatewayApi(http, mock),
     chatHub: createChatHubApi(http, mock),
@@ -761,6 +806,43 @@ export function createApiClient(options: ApiClientOptions = {}) {
     projectSite: createProjectSiteApi(http, mock),
     ownerRisk: createOwnerRiskApi(http, mock),
     marketSituation: createMarketSituationApi(http, mock),
+  };
+}
+
+function createAuthApi(http: AxiosInstance, mock: boolean) {
+  const mockAccounts = new Map<string, { input: AuthRegisterInput; registered: AuthRegistrationResult }>();
+  return {
+    async login(input: AuthLoginInput): Promise<AuthLoginResult> {
+      if (mock) {
+        const account = mockAccounts.get(input.phone);
+        if (!account && input.password !== 'Passw0rd!') throw new Error('AUTH.LOGIN.PASSWORD_INVALID');
+        return delay({
+          accessToken: `mock-jwt.${input.phone}.${cryptoRandomId()}`,
+          accessTokenExpiresAt: new Date(Date.now() + 30 * 60_000).toISOString(),
+          defaultDashboard: account?.registered.defaultDashboard ?? dashboardFromAuthRole('BUILDING_COMPANY_USER'),
+          deviceId: input.deviceId,
+          refreshToken: `mock-refresh.${cryptoRandomId()}`,
+          refreshTokenExpiresAt: new Date(Date.now() + 30 * 24 * 60 * 60_000).toISOString(),
+          tenantId: account?.registered.tenantId ?? 'mock-tenant',
+          userId: account?.registered.userId ?? 'mock-user',
+        });
+      }
+      return unwrap<AuthLoginResult>(await http.post('/auth/login', input));
+    },
+    async register(input: AuthRegisterInput): Promise<AuthRegistrationResult> {
+      if (mock) {
+        const registered: AuthRegistrationResult = {
+          approvalRequired: input.role !== 'BUILDING_COMPANY_USER',
+          defaultDashboard: dashboardFromAuthRole(input.role),
+          status: input.role === 'BUILDING_COMPANY_USER' ? 'active' : 'pending_review',
+          tenantId: `mock-tenant-${input.role.toLowerCase()}`,
+          userId: `mock-user-${input.phone.slice(-4)}`,
+        };
+        mockAccounts.set(input.phone, { input, registered });
+        return delay(registered);
+      }
+      return unwrap<AuthRegistrationResult>(await http.post('/auth/register', input));
+    },
   };
 }
 
@@ -1661,6 +1743,13 @@ function delay<T>(value: T): Promise<T> {
 
 function readBrowserToken(): string | undefined {
   return readBrowserValue('tongqian.jwt');
+}
+
+function dashboardFromAuthRole(role: AuthRegistrationRole): AuthDashboardKey {
+  if (role === 'PLATFORM') return 'admin';
+  if (role === 'AGENT') return 'agent';
+  if (role === 'GOV_USER') return 'gov';
+  return 'owner';
 }
 
 function resolveUnauthorizedLoginHref(): string {

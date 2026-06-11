@@ -1,6 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BusinessError, ErrorCodes } from '@tongqian/errors';
 
+import { AuthAccountRepository, type AuthAccountRecord } from '../auth-account.repository.js';
+
 import { JwtTokenService } from './jwt.service.js';
 import type { TokenPair } from './jwt.service.js';
 import { LockoutService } from './lockout.service.js';
@@ -21,6 +23,8 @@ export class LoginService {
   private readonly lastLogin = new Map<string, { city?: string; deviceId?: string; ip?: string; loginAt: number }>();
 
   constructor(
+    @Inject(AuthAccountRepository)
+    private readonly accounts: AuthAccountRepository,
     @Inject(JwtTokenService)
     private readonly jwt: JwtTokenService,
     @Inject(LockoutService)
@@ -29,19 +33,28 @@ export class LoginService {
     private readonly twoFactor: TwoFactorService,
   ) {}
 
-  login(input: LoginInput): TokenPair & { defaultDashboard: string } {
+  async login(input: LoginInput): Promise<TokenPair & { defaultDashboard: string; tenantId: string; userId: string }> {
     this.lockout.assertAllowed(input.phone);
-    const risk = this.assessLoginRisk(input);
-    if (!input.password && !input.smsCode) {
+    const account = await this.accounts.findByPhone(input.phone);
+    if (!account || account.status !== 'active') {
       this.lockout.recordFailure(input.phone);
-      throw this.authError('AUTH.LOGIN.PASSWORD_INVALID', { phone: input.phone });
+      throw this.authError('AUTH.LOGIN.PASSWORD_INVALID', { phoneMasked: this.maskPhone(input.phone) });
+    }
+    if (account.tenantStatus !== 'active' && account.tenantStatus !== 'training' && account.tenantStatus !== 'pending_review') {
+      this.lockout.recordFailure(input.phone);
+      throw this.authError('AUTH.LOGIN.TENANT_INACTIVE', { tenantId: account.tenantId, tenantStatus: account.tenantStatus });
+    }
+    const risk = this.assessLoginRisk(input);
+    if (!this.verifyCredential(account, input)) {
+      this.lockout.recordFailure(input.phone);
+      throw this.authError('AUTH.LOGIN.PASSWORD_INVALID', { phoneMasked: this.maskPhone(input.phone) });
     }
     if (risk.requiresTwoFactor && !this.twoFactor.verify(input.phone, input.twoFactorCode)) {
       throw this.authError('AUTH.2FA.INVALID', { risk });
     }
     this.lockout.reset(input.phone);
     this.lastLogin.set(input.phone, { deviceId: input.deviceId, ip: input.ip, loginAt: Date.now() });
-    return { ...this.jwt.issueForDevice(input.phone, input.deviceId), defaultDashboard: this.defaultDashboard(input.phone) };
+    return { ...this.jwt.issueForDevice(account.userId, input.deviceId), defaultDashboard: account.defaultDashboard, tenantId: account.tenantId, userId: account.userId };
   }
 
   /**
@@ -85,10 +98,16 @@ export class LoginService {
     return new BusinessError({ code: ErrorCodes.AUTH_LOGIN_PASSWORD_INVALID.code, details: { ...details, code }, message: code });
   }
 
-  private defaultDashboard(phone: string): string {
-    if (phone.includes('finance')) return 'finance';
-    if (phone.includes('pm')) return 'pm';
-    if (phone.includes('tender')) return 'tender_writer';
-    return 'owner';
+  private maskPhone(phone: string): string {
+    return phone.replace(/(\d{3})\d{4}(\d{4})/u, '$1****$2');
+  }
+
+  private verifyCredential(account: AuthAccountRecord, input: LoginInput): boolean {
+    if (input.password && this.accounts.verifyPassword(account.passwordHash, input.password)) return true;
+    if (input.smsCode) {
+      if (process.env.NODE_ENV === 'production') return false;
+      return this.twoFactor.verify(account.userId, input.smsCode);
+    }
+    return false;
   }
 }

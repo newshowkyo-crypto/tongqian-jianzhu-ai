@@ -1,6 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BusinessError, ErrorCodes } from '@tongqian/errors';
 
+import { AuthAccountRepository } from '../auth-account.repository.js';
+
 import { AgentRegistrationService } from './agent-registration.service.js';
 import { BuildingCompanyRegistrationService } from './building-company-registration.service.js';
 import { ConflictDetectorService } from './conflict-detector.service.js';
@@ -13,6 +15,8 @@ export class UnifiedRegistrationService {
   constructor(
     @Inject(AgentRegistrationService)
     private readonly agentRegistration: AgentRegistrationService,
+    @Inject(AuthAccountRepository)
+    private readonly accounts: AuthAccountRepository,
     @Inject(BuildingCompanyRegistrationService)
     private readonly buildingRegistration: BuildingCompanyRegistrationService,
     @Inject(ConflictDetectorService)
@@ -23,7 +27,7 @@ export class UnifiedRegistrationService {
     private readonly govRegistration: GovRegistrationService,
   ) {}
 
-  register(input: RegistrationInput): RegistrationResult {
+  async register(input: RegistrationInput): Promise<RegistrationResult> {
     const role = this.domainRouter.resolve(input.domain) ?? input.role;
     const conflict = this.conflictDetector.check(input.phone, role, this.extractSignals(input));
     if (!conflict.ok) {
@@ -31,9 +35,10 @@ export class UnifiedRegistrationService {
     }
 
     const result = this.dispatchByRole({ ...input, role });
+    const persisted = await this.accounts.createRegisteredAccount({ ...input, ...result, role });
 
     this.conflictDetector.rememberSignals({ ...this.extractSignals(input), phone: input.phone }, role);
-    return result;
+    return persisted;
   }
 
   /**

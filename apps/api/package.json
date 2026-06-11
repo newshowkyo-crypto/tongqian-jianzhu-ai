@@ -10,7 +10,7 @@
     "start": "node dist/main.js",
     "lint": "eslint src --ext .ts --no-error-on-unmatched-pattern",
     "typecheck": "tsc --noEmit --project tsconfig.json",
-    "test": "node --import tsx --test src/modules/subscription/discount-rebate.service.spec.ts src/modules/risk-review/red-flag-scan.service.spec.ts src/modules/cost-catalog/cost-catalog.service.spec.ts src/modules/owner-risk/owner-risk.service.spec.ts src/modules/market-situation/market-situation.service.spec.ts src/modules/admin/credentials/credentials-admin.service.spec.ts src/modules/credit/credit.service.spec.ts src/ai-gateway/providers/provider-router.service.spec.ts",
+    "test": "node --import tsx --test src/modules/subscription/discount-rebate.service.spec.ts src/modules/risk-review/red-flag-scan.service.spec.ts src/modules/cost-catalog/cost-catalog.service.spec.ts src/modules/owner-risk/owner-risk.service.spec.ts src/modules/market-situation/market-situation.service.spec.ts src/modules/admin/credentials/credentials-admin.service.spec.ts src/modules/credit/credit.service.spec.ts src/modules/auth/auth-account-flow.spec.ts src/ai-gateway/providers/provider-router.service.spec.ts",
     "test:golden": "node ../../scripts/run-m36-golden.mjs",
     "clean": "rimraf dist tsconfig.tsbuildinfo"
   },
@@ -23,6 +23,7 @@
     "@tongqian/errors": "workspace:*",
     "@tongqian/permissions": "workspace:*",
     "@tongqian/types": "workspace:*",
+    "bcryptjs": "^3.0.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "zod": "^3.25.76"
