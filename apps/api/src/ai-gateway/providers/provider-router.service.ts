@@ -13,9 +13,9 @@ export class ProviderRouterService {
     isDashScopeConfigured()
       ? new DashScopeProvider(AiProviderCode.ALIYUN_DASHSCOPE, 1, ['qwen3-max', 'qwen3-vl-max', 'text-embedding-v3'])
       : new MockAiProvider(AiProviderCode.ALIYUN_DASHSCOPE, 1, ['qwen3-max', 'qwen3-vl-max', 'text-embedding-v3'], isDashScopeAvailable(), 'ALIYUN_DASHSCOPE_API_KEY missing'),
-    process.env.DEEPSEEK_API_KEY
+    isDeepSeekConfigured()
       ? new DeepSeekProvider(AiProviderCode.DEEPSEEK_DIRECT, 99, ['deepseek-reasoner', 'deepseek-chat'])
-      : new MockAiProvider(AiProviderCode.DEEPSEEK_DIRECT, 99, ['deepseek-reasoner'], isDeepSeekAvailable()),
+      : new MockAiProvider(AiProviderCode.DEEPSEEK_DIRECT, 99, ['deepseek-reasoner'], isDeepSeekAvailable(), 'DEEPSEEK_API_KEY missing'),
     new MockAiProvider(AiProviderCode.MIDLAYER, 100, ['deepseek-reasoner', 'deepseek-chat', 'qwen3-max'], isMidlayerAvailable(), 'MIDLAYER_API_KEY deprecated for production'),
   ];
 
@@ -104,14 +104,28 @@ function isDashScopeConfigured(): boolean {
   return isConfigured('ALIYUN_DASHSCOPE_API_KEY') || isConfigured('DASHSCOPE_API_KEY');
 }
 
+function isDeepSeekConfigured(): boolean {
+  return isConfigured('DEEPSEEK_API_KEY');
+}
+
 function isDeepSeekAvailable(): boolean {
-  return isConfigured('DEEPSEEK_API_KEY') || process.env.DISABLE_DEEPSEEK_LOCAL_MOCK !== 'true';
+  return isDeepSeekConfigured() || isLocalMockAllowed('DISABLE_DEEPSEEK_LOCAL_MOCK');
 }
 
 function isDashScopeAvailable(): boolean {
-  return isDashScopeConfigured() || process.env.DISABLE_DASHSCOPE_LOCAL_MOCK !== 'true';
+  return isDashScopeConfigured() || isLocalMockAllowed('DISABLE_DASHSCOPE_LOCAL_MOCK');
 }
 
 function isMidlayerAvailable(): boolean {
-  return (isConfigured('MIDLAYER_API_KEY') && isConfigured('MIDLAYER_BASE_URL')) || process.env.DISABLE_MIDLAYER_LOCAL_MOCK !== 'true';
+  if (isProductionRuntime()) return false;
+  return (isConfigured('MIDLAYER_API_KEY') && isConfigured('MIDLAYER_BASE_URL')) || isLocalMockAllowed('DISABLE_MIDLAYER_LOCAL_MOCK');
+}
+
+function isLocalMockAllowed(disableFlag: string): boolean {
+  if (isProductionRuntime()) return false;
+  return process.env[disableFlag] !== 'true';
+}
+
+function isProductionRuntime(): boolean {
+  return process.env.NODE_ENV === 'production';
 }
